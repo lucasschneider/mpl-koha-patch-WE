@@ -1,0 +1,131 @@
+{
+  "manifest_version": 2,
+
+  "name": "MPL Koha Patch",
+  "author": "Lucas Schneider",
+  "version": "18.0.0",
+  "description": "LibLime Koha ILS modifications targeted to the staff of Madison Public Library in Wisconsin's South Central Library System",
+  "default_locale": "en",
+  "applications": {
+    "gecko": { 
+      "id": "3338f72b-be88-4c0b-98ec-d24eeef851b4",
+      "strict_min_version": "45.0"
+    }
+  },
+
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "webRequest",
+    "webNavigation",
+    "*://scls-staff.kohalibrary.com/*"
+    ],
+
+
+  "main": "index.js",
+
+  "icon": "resource://3338f72b-be88-4c0b-98ec-d24eeef851b4-at-jetpack/data/MPL/icon-32.png",
+  "icon64": "resource://3338f72b-be88-4c0b-98ec-d24eeef851b4-at-jetpack/data/MPL/icon-64.png",
+  "permissions": {"private-browsing": true, "multiprocess": true},
+
+  "preferences": [{
+    "name": "skin",
+    "title": "Select a display:",
+    "description": "Determines the appearance of the extension",
+    "type": "menulist",
+    "value": "MPL",
+    "options": [
+      {
+        "value": "MID",
+        "label": "MID"
+      },
+      {
+        "value": "MPL",
+        "label": "MPL"
+      },
+      {
+        "value": "SCLS",
+        "label": "SCLS"
+      }
+    ]
+  },
+  {
+    "name": "patronMsg",
+    "title": "Additional Patron Messages",
+    "description": "Replace several of LibLime's predefined patron messages with messages more often used by MPL circ",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "name": "validAddr",
+    "title": "Validate Madison Addresses",
+    "description": "Alerts library staff when an unacceptable or restricted Madison address has been entered",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "name": "autoUserId",
+    "title": "Autofill OPAC Login Number",
+    "description": "Autofill a patron's OPAC username to the value of their library card",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "name": "selectPSTAT",
+    "title": "Lookup PSTAT",
+    "description": "Automatically lookup PSTAT value for all libraries in the SCLS that sort by county subdivision or census tract number. If the PSTAT is able to be determined, a button will appear allowing staff to automatically select the geographically closest MPL location for the patron's home library",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "name": "forceDigest",
+    "title": "Autoselect \"Digests Only\"",
+    "description": "Automatically selects the \"Digests Only\" option (when available) while selecting patron notification options",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "name": "restrictNotificationOptions",
+    "title": "Due Date/Advanced Notice Toggle",
+    "description": "Forces library staff to select either \"Due Date\" or \"Advanced Notice\" notification options, but not both",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "name": "middleName",
+    "title": "Generate Middle Initials",
+    "description": "Automatically generates a patron's middle initial from the first name field",
+    "type": "bool",
+    "value": true
+  },
+  {
+    "name": "updateAccountType",
+    "title": "Update Account Type",
+    "description": "This feature will update JU -> AD and LUJ -> LU when saving a patron record if the patron is 18 years or older",
+    "type": "bool",
+    "value": true
+  },{
+    "name": "receiptFont",
+    "title": "Receipt Font:",
+    "description": "Determines the font size for the patron barcode printing function",
+    "type": "menulist",
+    "value": "MPL",
+    "options": [
+      {
+        "value": "MPL",
+        "label": "MPL (36px)"
+      },
+      {
+        "value": "MOO",
+        "label": "MOO (28px)"
+      }
+    ]
+  },
+  {
+    "name": "disableDropbox",
+    "title": "Disable Dropbox Mode",
+    "description": "Prevents staff from checking dropbox mode by disabling the checkbox.",
+    "type": "bool",
+    "value": false
+  }]
+}
