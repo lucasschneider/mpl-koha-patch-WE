@@ -1,8 +1,7 @@
-window.addEventListener ("load", myMain, false);
-
-function myMain (evt) {
+'use strict';
 
 /*** SORT ON LOGIN SCREEN ***/
+console.log('cats');
 var branchList = document.getElementById('branch'),
     allBranch = false,
     allBranchPos,
@@ -85,6 +84,4 @@ if (workLibList !== null) {
     workLibList.options[i + 1].value = arrOptions[i][1];
     if (workLibList.options[i].text === selectedText) workLibList.options[i].selected = true;
   }
-}
-
 }

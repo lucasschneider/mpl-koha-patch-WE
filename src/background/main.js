@@ -1,3 +1,14 @@
+// Load preference-selected function files
+function handleUpdated(tabId, changeInfo, tabInfo) {
+  if (weh.prefs.middleName) {
+    browser.tabs.executeScript({
+      file: "content/scripts/middleName.js"
+    }); 
+  }
+}
+
+browser.tabs.onUpdated.addListener(handleUpdated);
+
 switch(weh.prefs.skin) {
   case "MID":
     browser.browserAction.setIcon({path: {
@@ -38,13 +49,13 @@ weh.ui.update("default",{
             case "addNote":
                 weh.ui.close("default");
                 browser.tabs.executeScript({
-                   file: "/background/build-tools/addPaymentPlanNote.js"
+                   file: "/content/popup-tools/addPaymentPlanNote.js"
                 }); 
                 break;
             case "addLostCardNote":
                 weh.ui.close("default");
                 browser.tabs.executeScript({
-                   file: "/background/build-tools/addLostCardNote.js"
+                   file: "/content/popup-tools/addLostCardNote.js"
                 }); 
                 break;
             case "addr2PSTAT":
@@ -56,7 +67,7 @@ weh.ui.update("default",{
                     url:"http://host.evanced.info/madison/evanced/eventspr.asp"
                 }).then((tab) => {
                     browser.tabs.executeScript({
-                        file: "/background/build-tools/calendarAnnouncements.js"
+                        file: "/content/popup-tools/calendarAnnouncements.js"
                     }); 
                 });
                 break;

@@ -26,13 +26,17 @@
     ],
     "persistent": true
   },
-  "content-scripts": [
+  "content_scripts": [
     {
       "matches": [
-        "*://*scls-staff.kohalibrary.com/*"
+        "*://*.kohalibrary.com/*"
       ],
       "js": [
-        "content/scripts/sortLibraries.js"
+        "content/scripts/collegeExp.js",
+        "content/scripts/fixSessionCkoDiv.js",
+        "content/scripts/printBarcode.js",
+        "content/scripts/sortLibraries.js",
+        "content/scripts/standardFormat.js"
       ]
     }
   ],
@@ -58,7 +62,7 @@
     "tabs",
     "webRequest",
     "webNavigation",
-    "*://scls-staff.kohalibrary.com/*",
+    "*://*.kohalibrary.com/*",
     "*://host.evanced.info/madison/*"
   ]
 }
