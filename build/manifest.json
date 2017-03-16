@@ -26,6 +26,16 @@
     ],
     "persistent": true
   },
+  "content-scripts": [
+    {
+      "matches": [
+        "*://*scls-staff.kohalibrary.com/*"
+      ],
+      "js": [
+        "content/scripts/sortLibraries.js"
+      ]
+    }
+  ],
   "icons": {
     "16": "content/images/mpl-icon-16.png",
     "32": "content/images/mpl-icon-32.png",
