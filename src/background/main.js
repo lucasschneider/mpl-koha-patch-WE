@@ -122,70 +122,71 @@ var d = new Date(),
   countySub,
   censusTract,
   zip,
-  closestLib = "";;
+  closestLib = "";
 
 setIcon();
 weh.prefs.on("skin",setIcon);
 
 // Load preference-selected function files
-function handleUpdated(tabId, changeInfo, tabInfo) {
+function handleUpdated(details) {
   if (weh.prefs.patronMsg) {
-    browser.tabs.executeScript({
+    browser.tabs.executeScript(details.tabId,{
       file: "content/scripts/patronMessages.js"
     });
   }
   if (weh.prefs.validAddr) {
-    browser.tabs.executeScript({
+    browser.tabs.executeScript(details.tabId,{
       file: "content/scripts/validateAddresses.js"
     });
   }
   if (weh.prefs.autoUserId) {
-    browser.tabs.executeScript({
+    browser.tabs.executeScript(details.tabId,{
       file: "content/scripts/autofillUserId.js"
     }); 
   }
   if (weh.prefs.selectPSTAT) {
-    browser.tabs.executeScript({
+    browser.tabs.executeScript(details.tabId,{
       file: "content/scripts/selectPSTAT.js"
     }); 
   }
   if (weh.prefs.forceDigest) {
-    browser.tabs.executeScript({
+    browser.tabs.executeScript(details.tabId,{
       file: "content/scripts/forceDigest.js"
     }); 
   }
   if (weh.prefs.restrictNotificationOptions) {
-    browser.tabs.executeScript({
+    browser.tabs.executeScript(details.tabId,{
       file: "content/scripts/restrictNotificationOptions.js"
     }); 
   }
   if (weh.prefs.middleName) {
-    browser.tabs.executeScript({
+    browser.tabs.executeScript(details.tabId,{
       file: "content/scripts/middleName.js"
     }); 
   }
   if (weh.prefs.updateAccountType) {
-    browser.tabs.executeScript({
+    browser.tabs.executeScript(details.tabId,{
       file: "content/scripts/updateAccountType.js"
     }); 
   }
   if (weh.prefs.collegeExp) {
-    browser.tabs.executeScript({
+    browser.tabs.executeScript(details.tabId,{
       file: "content/scripts/collegeExp.js"
     }); 
   }
   if (weh.prefs.disableDropbox) {
-    browser.tabs.executeScript({
+    browser.tabs.executeScript(details.tabId,{
       file: "content/scripts/disableDropbox.js"
     }); 
   } else if (day === 0) {
-    browser.tabs.executeScript({
+    browser.tabs.executeScript(details.tabId,{
       file: "content/scripts/sundayDropbox.js"
     }); 
   }
 }
 
-browser.tabs.onUpdated.addListener(handleUpdated);
+browser.webNavigation.onCompleted.addListener(handleUpdated);
+
 
 weh.ui.update("default",{
     type: "popup",
@@ -209,6 +210,19 @@ weh.ui.update("default",{
                 break;
             case "addr2PSTAT":
                 weh.ui.close("default");
+                var querying = browser.tabs.query({currentWindow: true, active: true});
+                querying.then((tabs)=>{
+                  for (let tab of tabs) {
+                    browser.tabs.executeScript(tab.id,{
+                      code: "x=document.createElement('span');x.id='querySecondaryPSTAT';x.style.display='none';document.body.appendChild(x);"
+                    });
+                    if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberentry\.pl.*/.test(tab.url)) {
+                      browser.tabs.sendMessage(tab.id,{key: "querySecondaryPSTAT"});
+                    } else {
+                      browser.tabs.sendMessage(tab.id,{key: "querySecondaryPSTATFail"});
+                    }
+                  }
+                });
                 break;
             case "calendarAnnouncements":
                 weh.ui.close("default");
@@ -225,7 +239,7 @@ weh.ui.update("default",{
 });
 
 // Handle messages form content pages
-browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+function handleMessages(request, sender, sendResponse) {
   switch(request.key) {
     case "queryGeocoder":
       if (request.isSecondPass) {
@@ -635,8 +649,9 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 break;
             }
           }
-
-          if (closestLib && closestLib != "") {
+        }
+      });
+      if (closestLib && closestLib != "") {
             sendResponse({
               key: "receivedNearestLib",
               closestLib: closestLib
@@ -646,12 +661,6 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
               key: "failedNearestLib"
             });
           }
-        } else {
-          sendResponse({
-            key: "failedNearestLib"
-          });
-        }
-      });
       break;
     case "printBarcode":
       browser.tabs.create({
@@ -666,7 +675,9 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       });
       break;
   }
-});
+}
+
+browser.runtime.onMessage.addListener(handleMessages);
 
 weh.ui.update("settings",{
     type: "tab",
@@ -675,7 +686,7 @@ weh.ui.update("settings",{
 
 /* if you don't need to activate the addon from the browser context menu,
     - remove section below
-*/
+
 browser.contextMenus.create({
     "title": weh._("title"),
     "type": "normal",
@@ -685,6 +696,7 @@ browser.contextMenus.create({
 
 browser.contextMenus.onClicked.addListener(function(info) {
     if(info.menuItemId == "weh-skeleton" ) {
-        /* do something here */
+        // do something here
     }
 });
+*/

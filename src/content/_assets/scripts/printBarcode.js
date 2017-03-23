@@ -1,6 +1,4 @@
-(function () {"use strict"; /*jslint browser:true regexp: true indent: 2 devel: true plusplus: true*/
-  /*global self*/
-
+"use strict";
   function printBarcode() {
     var start = false,
       barcode = "",
@@ -37,5 +35,3 @@
     li.appendChild(button);
     toolbar.appendChild(li);
   }
-
-}()); //end use strict

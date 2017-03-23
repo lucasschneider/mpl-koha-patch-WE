@@ -13,7 +13,6 @@
     ],
     "persistent": true
   },
-  "content_security_policy": "script-src 'self' 'sha256-Z4nYjltJ/RciFs77n2n91dzwoz1Qg/1JFwU5ODwWPC8='; object-src 'self';",
   "content_scripts": [
     {
       "matches": ["*://*.kohalibrary.com/*"],
