@@ -20,7 +20,10 @@
           barcode = name[i] + barcode;
         }
       }
-      self.port.emit("printBarcode", barcode);
+      browser.runtime.sendMessage({
+        key: "printBarcode",
+        data: barcode
+      });
     }
   }
 

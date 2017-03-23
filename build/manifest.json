@@ -5,12 +5,6 @@
   "version": "18.0.0",
   "author": "Lucas Schneider",
   "description": "LibLime Koha ILS modifications targeted to the staff of Madison Public Library in Wisconsin's South Central Library System",
-  "applications": {
-    "gecko": {
-      "id": "lrschneider94@gmail.com",
-      "strict_min_version": "45.0"
-    }
-  },
   "background": {
     "scripts": [
       "background/weh-core.js",
@@ -26,6 +20,7 @@
     ],
     "persistent": true
   },
+  "content_security_policy": "script-src 'self' 'sha256-Z4nYjltJ/RciFs77n2n91dzwoz1Qg/1JFwU5ODwWPC8='; object-src 'self';",
   "content_scripts": [
     {
       "matches": [
@@ -36,7 +31,8 @@
         "content/scripts/fixSessionCkoDiv.js",
         "content/scripts/printBarcode.js",
         "content/scripts/sortLibraries.js",
-        "content/scripts/standardFormat.js"
+        "content/scripts/standardFormat.js",
+        "content/scripts/sortItemCheckoutHistory.js"
       ]
     }
   ],

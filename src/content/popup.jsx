@@ -37,7 +37,7 @@ ReactDOM.render (
                 <li><Link messageType={"addLostCardNote"} label={"addLostCardNote"}/></li>
                 <li><Link messageType={"addr2PSTAT"} label={"addr2PSTAT"}/></li>
                 <li><Link messageType={"calendarAnnouncements"} label={"calendarAnnouncements"}/></li>
-                <li><a href="https://github.com/lucasschneider/mpl-koha-patch" target="_blank">View Source on GitHub</a></li>
+                <li><a href="https://github.com/lucasschneider/mpl-koha-patch-WE" target="_blank">View Source on GitHub</a></li>
             </ul>
         </div>
         <div className="toolbar">

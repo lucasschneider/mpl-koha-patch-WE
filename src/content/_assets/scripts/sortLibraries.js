@@ -1,5 +1,4 @@
 /*** SORT ON LOGIN SCREEN ***/
-console.log('cats');
 var branchList=document.getElementById('branch'),
   allBranch = false,
   allBranchPos,
