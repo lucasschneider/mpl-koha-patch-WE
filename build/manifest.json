@@ -15,6 +15,7 @@
       "background/weh-ui.js",
       "background/weh-ajax.js",
       "background/weh-i18n-keys.js",
+      "thirdParty/jquery-3.2.0.min.js",
       "background/default-prefs.js",
       "background/main.js"
     ],
@@ -59,6 +60,8 @@
     "webRequest",
     "webNavigation",
     "*://*.kohalibrary.com/*",
-    "*://host.evanced.info/madison/*"
+    "*://host.evanced.info/madison/*",
+    "*://*.census.gov/*",
+    "*://*.googleapis.com/*"
   ]
 }

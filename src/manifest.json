@@ -7,6 +7,7 @@
   "description": "LibLime Koha ILS modifications targeted to the staff of Madison Public Library in Wisconsin's South Central Library System",
   "background": {
     "scripts": [
+      "thirdParty/jquery-3.2.0.min.js",
       "background/default-prefs.js",
       "background/main.js"
     ],
@@ -47,6 +48,8 @@
     "webRequest",
     "webNavigation",
     "*://*.kohalibrary.com/*",
-    "*://host.evanced.info/madison/*"
+    "*://host.evanced.info/madison/*",
+    "*://*.census.gov/*",
+    "*://*.googleapis.com/*"
   ]
 }
