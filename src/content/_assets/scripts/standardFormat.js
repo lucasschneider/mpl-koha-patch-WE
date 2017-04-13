@@ -1,4 +1,5 @@
-(function () {"use strict"; /*jslint browser:true regexp: true indent: 2 devel: true plusplus: true*/
+"use strict";
+if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members.*/.test(location.href)) {
   /*** CORRECT TEXT CASE ***/
   var inputs = document.querySelectorAll("input[type=text]"),
     i;
@@ -242,4 +243,4 @@
       }
     }
   }, false);
-  }()); //end use strict
+}
