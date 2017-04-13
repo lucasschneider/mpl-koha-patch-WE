@@ -5,7 +5,7 @@ var d = new Date(),
     setIcon = function setIcon() {
   switch (weh.prefs.skin) {
     case "MID":
-      chrome.browserAction.setIcon({ path: {
+      browser.browserAction.setIcon({ path: {
           16: "content/images/mid-icon-16.png",
           32: "content/images/mid-icon-32.png",
           48: "content/images/mid-icon-48.png",
@@ -14,7 +14,7 @@ var d = new Date(),
         } });
       break;
     case "SCLS":
-      chrome.browserAction.setIcon({ path: {
+      browser.browserAction.setIcon({ path: {
           16: "content/images/scls-icon-16.png",
           32: "content/images/scls-icon-32.png",
           48: "content/images/scls-icon-48.png",
@@ -23,7 +23,7 @@ var d = new Date(),
         } });
       break;
     default:
-      chrome.browserAction.setIcon({ path: {
+      browser.browserAction.setIcon({ path: {
           16: "content/images/mpl-icon-16.png",
           32: "content/images/mpl-icon-32.png",
           48: "content/images/mpl-icon-48.png",
@@ -84,62 +84,62 @@ weh.prefs.on("skin", setIcon);
 // Load preference-selected function files
 function handleUpdated(details) {
   if (weh.prefs.patronMsg) {
-    chrome.tabs.executeScript(details.tabId, {
+    browser.tabs.executeScript(details.tabId, {
       file: "content/scripts/patronMessages.js"
     });
   }
   if (weh.prefs.validAddr) {
-    chrome.tabs.executeScript(details.tabId, {
+    browser.tabs.executeScript(details.tabId, {
       file: "content/scripts/validateAddresses.js"
     });
   }
   if (weh.prefs.autoUserId) {
-    chrome.tabs.executeScript(details.tabId, {
+    browser.tabs.executeScript(details.tabId, {
       file: "content/scripts/autofillUserId.js"
     });
   }
   if (weh.prefs.selectPSTAT) {
-    chrome.tabs.executeScript(details.tabId, {
+    browser.tabs.executeScript(details.tabId, {
       file: "content/scripts/selectPSTAT.js"
     });
   }
   if (weh.prefs.forceDigest) {
-    chrome.tabs.executeScript(details.tabId, {
+    browser.tabs.executeScript(details.tabId, {
       file: "content/scripts/forceDigest.js"
     });
   }
   if (weh.prefs.restrictNotificationOptions) {
-    chrome.tabs.executeScript(details.tabId, {
+    browser.tabs.executeScript(details.tabId, {
       file: "content/scripts/restrictNotificationOptions.js"
     });
   }
   if (weh.prefs.middleName) {
-    chrome.tabs.executeScript(details.tabId, {
+    browser.tabs.executeScript(details.tabId, {
       file: "content/scripts/middleName.js"
     });
   }
   if (weh.prefs.updateAccountType) {
-    chrome.tabs.executeScript(details.tabId, {
+    browser.tabs.executeScript(details.tabId, {
       file: "content/scripts/updateAccountType.js"
     });
   }
   if (weh.prefs.collegeExp) {
-    chrome.tabs.executeScript(details.tabId, {
+    browser.tabs.executeScript(details.tabId, {
       file: "content/scripts/collegeExp.js"
     });
   }
   if (weh.prefs.disableDropbox) {
-    chrome.tabs.executeScript(details.tabId, {
+    browser.tabs.executeScript(details.tabId, {
       file: "content/scripts/disableDropbox.js"
     });
   } else if (day === 0) {
-    chrome.tabs.executeScript(details.tabId, {
+    browser.tabs.executeScript(details.tabId, {
       file: "content/scripts/sundayDropbox.js"
     });
   }
 }
 
-chrome.webNavigation.onCompleted.addListener(handleUpdated);
+browser.webNavigation.onCompleted.addListener(handleUpdated);
 
 weh.ui.update("default", {
   type: "popup",
@@ -151,19 +151,19 @@ weh.ui.update("default", {
         break;
       case "addNote":
         weh.ui.close("default");
-        chrome.tabs.executeScript({
+        browser.tabs.executeScript({
           file: "content/popup-tools/addPaymentPlanNote.js"
         });
         break;
       case "addLostCardNote":
         weh.ui.close("default");
-        chrome.tabs.executeScript({
+        browser.tabs.executeScript({
           file: "content/popup-tools/addLostCardNote.js"
         });
         break;
       case "addr2PSTAT":
         weh.ui.close("default");
-        var querying = chrome.tabs.query({ currentWindow: true, active: true });
+        var querying = browser.tabs.query({ currentWindow: true, active: true });
         querying.then(function (tabs) {
           var _iteratorNormalCompletion = true;
           var _didIteratorError = false;
@@ -173,13 +173,13 @@ weh.ui.update("default", {
             for (var _iterator = tabs[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
               var tab = _step.value;
 
-              chrome.tabs.executeScript(tab.id, {
+              browser.tabs.executeScript(tab.id, {
                 code: "x=document.createElement('span');x.id='querySecondaryPSTAT';x.style.display='none';document.body.appendChild(x);"
               });
               if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberentry\.pl.*/.test(tab.url)) {
-                chrome.tabs.sendMessage(tab.id, { key: "querySecondaryPSTAT" });
+                browser.tabs.sendMessage(tab.id, { key: "querySecondaryPSTAT" });
               } else {
-                chrome.tabs.sendMessage(tab.id, { key: "querySecondaryPSTATFail" });
+                browser.tabs.sendMessage(tab.id, { key: "querySecondaryPSTATFail" });
               }
             }
           } catch (err) {
@@ -200,10 +200,10 @@ weh.ui.update("default", {
         break;
       case "calendarAnnouncements":
         weh.ui.close("default");
-        chrome.tabs.create({
+        browser.tabs.create({
           url: "http://host.evanced.info/madison/evanced/eventspr.asp"
         }).then(function (tab) {
-          chrome.tabs.executeScript({
+          browser.tabs.executeScript({
             file: "/content/popup-tools/calendarAnnouncements.js"
           });
         });
@@ -767,40 +767,40 @@ function handleMessages(request, sender, sendResponse) {
       }
       break;
     case "printBarcode":
-      chrome.tabs.create({
+      browser.tabs.create({
         active: false,
         url: "/printBarcode" + weh.prefs.receiptFont + ".html"
       }).then(function (tab) {
-        chrome.tabs.sendMessage(tab.id, {
+        browser.tabs.sendMessage(tab.id, {
           key: "printBarcode",
           data: request.data
         });
         setTimeout(function () {
-          chrome.tabs.remove(tab.id);
+          browser.tabs.remove(tab.id);
         }, 1000);
       });
       break;
   }
 }
 
-chrome.runtime.onMessage.addListener(handleMessages);
+browser.runtime.onMessage.addListener(handleMessages);
 
 weh.ui.update("settings", {
   type: "tab",
   contentURL: "content/settings.html"
 });
 
-/* if you don't need to activate the addon from the chrome context menu,
+/* if you don't need to activate the addon from the browser context menu,
     - remove section below
 
-chrome.contextMenus.create({
+browser.contextMenus.create({
     "title": weh._("title"),
     "type": "normal",
     "contexts":["page"],
     "id": "weh-skeleton"
 });
 
-chrome.contextMenus.onClicked.addListener(function(info) {
+browser.contextMenus.onClicked.addListener(function(info) {
     if(info.menuItemId == "weh-skeleton" ) {
         // do something here
     }
