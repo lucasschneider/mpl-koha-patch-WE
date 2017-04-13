@@ -21,7 +21,7 @@ weh.prefs.declare([{
 }, {
     name: "validAddr",
     type: "boolean",
-    defaultValue: true
+    defaultValue: false
 }, {
     name: "autoUserId",
     type: "boolean",

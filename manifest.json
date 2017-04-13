@@ -6,12 +6,6 @@
   "version": "18.0.0",
   "description": "LibLime Koha ILS modifications targeted to the staff of Madison Public Library in Wisconsin's South Central Library System",
   "default_locale": "en",
-  "applications": {
-    "gecko": { 
-      "id": "3338f72b-be88-4c0b-98ec-d24eeef851b4",
-      "strict_min_version": "45.0"
-    }
-  },
 
   "permissions": [
     "tabs",

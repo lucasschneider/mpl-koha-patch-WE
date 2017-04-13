@@ -1,18 +1,9 @@
 "use strict";
 
-if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members.*/.test(location.href)) {
-  var aptToNum = function aptToNum() {
-    this.value = this.value.replace(/( apt\.? #? ?| unit #? ?| # )/i, " #").replace(/\./g, '');
-  };
-
-  var parseMadisonWI = function parseMadisonWI() {
-    if (/madison(,? wi(sconsin)?)?|mad/i.test(this.value)) {
-      this.value = "MADISON WI";
-    }
-    this.value = this.value.replace(/,/, '');
-  };
-
+(function () {
+  "use strict"; /*jslint browser:true regexp: true indent: 2 devel: true plusplus: true*/
   /*** CORRECT TEXT CASE ***/
+
   var inputs = document.querySelectorAll("input[type=text]"),
       i;
   if (inputs !== null) {
@@ -39,6 +30,10 @@ if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members.*/.test(l
       bAddress = document.getElementById('B_address'),
       altAddress = document.getElementById('altcontactaddress1');
 
+  function aptToNum() {
+    this.value = this.value.replace(/( apt\.? #? ?| unit #? ?| # )/i, " #").replace(/\./g, '');
+  }
+
   if (address) {
     address.addEventListener('blur', aptToNum);
   }
@@ -55,6 +50,13 @@ if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members.*/.test(l
   var city = document.getElementById('city'),
       city2 = document.getElementById('B_city'),
       city3 = document.getElementById('altcontactaddress3');
+
+  function parseMadisonWI() {
+    if (/madison(,? wi(sconsin)?)?|mad/i.test(this.value)) {
+      this.value = "MADISON WI";
+    }
+    this.value = this.value.replace(/,/, '');
+  }
 
   if (city) {
     city.addEventListener('blur', parseMadisonWI);
@@ -211,4 +213,4 @@ if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members.*/.test(l
       }
     }
   }, false);
-}
+})(); //end use strict

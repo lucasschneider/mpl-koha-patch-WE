@@ -30,7 +30,7 @@ if (addrElt && cityElt) {
     }
   });
 
-  addr.parentElement.appendChild(notice);
+  addrElt.parentElement.appendChild(notice);
 }
 
 function cleanAddr(addr) {
@@ -216,12 +216,11 @@ function queryPSTAT(addr, city, queryB, secondPass) {
 
               nearestMPL.onclick = function () {
                 var selected = document.getElementById('mapRegionList').selectedOptions[0].value,
-                    nearestLib = browser.runtime.sendMessage({
+                    nearestLib = chrome.runtime.sendMessage({
                   key: "findNearestLib",
                   matchAddr4DistQuery: matchAddr4DistQuery,
                   selected: selected
-                });
-                nearestLib.then(handleResponse, handleError);
+                }, handleResponse);
               };
 
               branchList.parentElement.appendChild(nearestMPL);
@@ -1814,14 +1813,13 @@ function queryPSTAT(addr, city, queryB, secondPass) {
       }
     }, 12000);
 
-    var geocoder = browser.runtime.sendMessage({
+    var geocoder = chrome.runtime.sendMessage({
       key: "queryGeocoder",
       URIencodedAddress: cleanAddr(addr),
       city: pullCity(city.value),
       addrElement: addr,
       isSecondPass: secondPass
-    });
-    geocoder.then(handleResponse, handleError);
+    }, handleResponse);
   }
 }
 
@@ -1840,7 +1838,7 @@ function parseMadisonWI(elt) {
   elt.value = elt.value.replace(/,/, '');
 }
 
-browser.runtime.onMessage.addListener(function (request) {
+chrome.runtime.onMessage.addListener(function (request) {
   if (request.key = "querySecondaryPSTAT") {
     var qspElt = document.getElementById('querySecondaryPSTAT'),
         addrB = document.getElementById('B_address'),
