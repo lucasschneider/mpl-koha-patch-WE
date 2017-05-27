@@ -1,5 +1,5 @@
 "use strict";
-if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members.*/.test(location.href)) {
+if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberentry\.pl.*/.test(location.href)) {
   /*** CORRECT TEXT CASE ***/
   var inputs = document.querySelectorAll("input[type=text]"),
     i;

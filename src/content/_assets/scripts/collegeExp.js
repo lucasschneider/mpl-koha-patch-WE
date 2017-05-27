@@ -19,6 +19,7 @@
       bn = document.getElementById('borrowernotes'),
       dormAddr = [
         new Address("625 babcock", "Slichter Hall"),
+        new Address("1000 edgewood college d", "Edgewood College"),
         new Address("625 elm", "Cole Hall"),
         new Address("635 elm", "Sullivan Hall"),
         new Address("640 elm", "DeJope Hall"),

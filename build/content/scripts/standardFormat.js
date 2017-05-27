@@ -1,6 +1,6 @@
 "use strict";
 
-if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members.*/.test(location.href)) {
+if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberentry\.pl.*/.test(location.href)) {
   var aptToNum = function aptToNum() {
     this.value = this.value.replace(/( apt\.? #? ?| unit #? ?| # )/i, " #").replace(/\./g, '');
   };

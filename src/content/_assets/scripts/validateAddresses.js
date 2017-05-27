@@ -69,7 +69,6 @@ function parseBadAddr() {
     field = document.getElementsByClassName('action'),
     cityRegEx = /mad(ison([,]? wi.*)?)?|monona([,]? wi.*)?/i,
     unacceptable = [
-      new Address("1819 aberg a", "1819 Aberg Ave", "State Job Placement Center"),
       new Address("1955 atwood a", "1955 Atwood Ave", "Briarpatch"),
       new Address("4581 w(est)? beltline h(igh)?wa?y", "4581 W Beltline Hwy", "PO Boxes/Mail Services"),
       new Address("147 s(outh)? butler s", "147 S Butler St", "Veteran's house"),
@@ -82,6 +81,7 @@ function parseBadAddr() {
       new Address("310 s(outh)? ingersoll s", "310 S Ingersoll St", "Luke House"),
       new Address("210 martin luther king j(unio)?r b", "210 Matrin Luther King Jr Blvd", "Dane County Jail"),
       new Address("215 martin luther king j(unio)?r b", "215 Matrin Luther King Jr Blvd", "Madison Municipal Building"),
+      new Address("1490 martin s", "1490 Martin St", "Hospitality House"),
       new Address("3902 milwaukee s", "3902 Milwaukee St", "Main Post Office"),
       new Address("4514 monona d", "4514 Monona Dr", "PO Boxes/Mail Services"),
       new Address("1202 northport d", "1202 Northport Dr", "Dane County Social Services"),
@@ -134,8 +134,8 @@ function parseBadAddr() {
   if (cc) cc = cc[0];
   if (addr && city && cityRegEx.test(city.value) && bn) {
     addrVal = addr2 !== null && (addr2.value !== null && addr2.value !== "") ? addr.value + " " + addr2.value : addr.value;
-    // Test for Hospitality House
-    if (/1490 martin s/i.test(addrVal)) {
+    // Test for State Job Placement Center
+    if (/1819 aberg a/i.test(addrVal)) {
       foundBadAddr = true;
       if (cc) {
         if (cc.value === "AD") {
@@ -149,8 +149,8 @@ function parseBadAddr() {
       if (field && field[0].children[0].value === 'Override Block') {
         restoreSave();
       }
-      if (!/Patron's account is Limited Use due to address \(Hospitality House, 1490 Martin St/i.test(bn.value)) {
-        initial = prompt("--- NOTE ---\n1490 MARTIN ST is the Hospitality House, a daytime resource center for homeless and low-income people in Dane County. A LIMITED USE account may be set up, however, all library cards issued to that address MUST be mailed, whether or not the patron provides proof of that address.\n\nIn order to have the Limited Use restrictions removed from their account, a patron must first provide proof that they are living at a valid residential address.\n\nFor more info refer to the list of unacceptable addresses on the staff wiki:\nhttp://mplnet.pbworks.com/w/file/fetch/79700849/UNACCEPTABLE%20ADDRESSES.pdf\n\nIf this is a new address, enter your initials and library code to confirm: (e.g. LS/MAD)");
+      if (!/Patron's account is Limited Use due to address \(State Job Placement Center, 1819 Aberg St/i.test(bn.value)) {
+        initial = prompt("--- NOTE ---\n1819 ABERG ST is the State Job Placement Center. A LIMITED USE account may be set up, however, all library cards issued to that address MUST be mailed, whether or not the patron provides proof of that address.\n\nIn order to have the Limited Use restrictions removed from their account, a patron must first provide proof that they are living at a valid residential address.\n\nFor more info refer to the list of unacceptable addresses on the staff wiki:\nhttp://www.mplnet.org/system/files/UNACCEPTABLE%20ADDRESSES.pdf\n\nIf this is a new address, enter your initials and library code to confirm: (e.g. LS/MAD)");
         if (!initial) initial = "";
         if (bn.value !== '') {
           bn.value += "\n\n";
@@ -174,7 +174,7 @@ function parseBadAddr() {
         restoreSave();
       }
       if (!/Patron's account is Limited Use due to address \(Salvation Army, 630 E Washington Ave/i.test(bn.value)) {
-        initial = prompt("--- NOTE ---\n630 E WASHINGTON AVE is the Salvation Army. People staying at the Salvation Army cannot receive personal mail there so library cards CANNOT BE MAILED. Patrons must have proof that they are staying at the Salvation Army to get a library card (usually through a letter from the director).\n\nIn order to have the Limited Use restrictions removed from their account, a patron must first provide proof that they are living at a valid residential address.\n\nFor more info refer to the list of unacceptable addresses on the staff wiki:\nhttp://mplnet.pbworks.com/w/file/fetch/79700849/UNACCEPTABLE%20ADDRESSES.pdf\n\nIf this is a new address, enter your initials and library code to confirm: (e.g. LS/MAD)");
+        initial = prompt("--- NOTE ---\n630 E WASHINGTON AVE is the Salvation Army. People staying at the Salvation Army cannot receive personal mail there so library cards CANNOT BE MAILED. Patrons must have proof that they are staying at the Salvation Army to get a library card (usually through a letter from the director).\n\nIn order to have the Limited Use restrictions removed from their account, a patron must first provide proof that they are living at a valid residential address.\n\nFor more info refer to the list of unacceptable addresses on the staff wiki:\nhttp://www.mplnet.org/system/files/UNACCEPTABLE%20ADDRESSES.pdf\n\nIf this is a new address, enter your initials and library code to confirm: (e.g. LS/MAD)");
         if (!initial) initial = "";
         if (bn.value !== '') {
           bn.value += "\n\n";
@@ -190,7 +190,7 @@ function parseBadAddr() {
       }
       fullAddrRegEx = new RegExp(addrRegExFirst.source + unacceptable[i].addrRegEx + addrRegExLast.source, "i");
       if (fullAddrRegEx.test(addrVal)) {
-        alert("--- STOP ---\nA library card CANNOT be issued to this address.\n" + unacceptable[i].addr + " (" + unacceptable[i].place + ") is NOT a valid residential address.\n\nInform any patron providing this address that they must provide proof of a valid residential address in order to get a library card. (You could offer them an internet access card.)\n\nFor more info refer to the list of unacceptable addresses on the staff wiki:\nhttp://mplnet.pbworks.com/w/file/fetch/79700849/UNACCEPTABLE%20ADDRESSES.pdf");
+        alert("--- STOP ---\nA library card CANNOT be issued to this address.\n" + unacceptable[i].addr + " (" + unacceptable[i].place + ") is NOT a valid residential address.\n\nInform any patron providing this address that they must provide proof of a valid residential address in order to get a library card. (You could offer them an internet access card.)\n\nFor more info refer to the list of unacceptable addresses on the staff wiki:\nhttp://www.mplnet.org/system/files/UNACCEPTABLE%20ADDRESSES.pdf");
         field = document.getElementsByClassName('action')[0];
         if (field !== null && field.children[0].value !== 'Override Block') {
           blockSubmit();
@@ -220,7 +220,7 @@ function parseBadAddr() {
           restoreSave();
         }
         if (!noteTest.test(bn.value)) {
-          initial = prompt("--- NOTE ---\nA library card issued to " + restricted[i].addr + " (" + restricted[i].place + ") must be LIMITED USE.\n\nIn order to have the limited use restrictions removed from their account, a patron must first provide proof that they are living at a valid residential address.\n\nFor more info refer to the list of unacceptable addresses on the staff wiki:\nhttp://mplnet.pbworks.com/w/file/fetch/79700849/UNACCEPTABLE%20ADDRESSES.pdf\n\nIf this is a new address, enter your initials and library code to confirm: (e.g. LS/MAD)");
+          initial = prompt("--- NOTE ---\nA library card issued to " + restricted[i].addr + " (" + restricted[i].place + ") must be LIMITED USE.\n\nIn order to have the limited use restrictions removed from their account, a patron must first provide proof that they are living at a valid residential address.\n\nFor more info refer to the list of unacceptable addresses on the staff wiki:\nhttp://www.mplnet.org/system/files/UNACCEPTABLE%20ADDRESSES.pdf\n\nIf this is a new address, enter your initials and library code to confirm: (e.g. LS/MAD)");
           if (!initial) initial = "";
           if (bn.value !== '') {
             bn.value += "\n\n";

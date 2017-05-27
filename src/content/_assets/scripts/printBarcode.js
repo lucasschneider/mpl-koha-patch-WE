@@ -1,37 +1,37 @@
 "use strict";
-  function printBarcode() {
-    var start = false,
-      barcode = "",
-      name = document.getElementsByClassName('patroninfo')[0].children[0].innerHTML,
-      i;
-    if (name != null) {
-      for (i = name.length - 1; i > -1; i--) {
-        if (name[i] === ")") {
-          start = true;
-        } else if (name[i] === "("){
-          start = false;
-          break;
-        } else if (start === true) {
-          barcode = name[i] + barcode
-        }
+function printBarcode() {
+  var start = false,
+    barcode = "",
+    name = document.getElementsByClassName('patroninfo')[0].children[0].innerHTML,
+    i;
+  if (name != null) {
+    for (i = name.length - 1; i > -1; i--) {
+      if (name[i] === ")") {
+        start = true;
+      } else if (name[i] === "("){
+        start = false;
+        break;
+      } else if (start === true) {
+        barcode = name[i] + barcode
       }
-      browser.runtime.sendMessage({
-        key: "printBarcode",
-        data: barcode
-      });
     }
+    browser.runtime.sendMessage({
+      key: "printBarcode",
+      data: barcode
+    });
   }
+}
 
-  var toolbar = document.getElementsByClassName('toolbar')[0],
+var toolbar = document.getElementsByClassName('toolbar')[0],
   li,
   button;
   
-  if (toolbar && /^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/(members|circ).*/.test(location.href)) {
-    li = document.createElement('li');
-    button = document.createElement('button');
-    button.onclick = printBarcode;
-    button.innerHTML = "Print Barcode";
+if (toolbar && /^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/(members|circ).*/.test(location.href)) {
+  li = document.createElement('li');
+  button = document.createElement('button');
+  button.onclick = printBarcode;
+  button.innerHTML = "Print Barcode";
 
-    li.appendChild(button);
-    toolbar.appendChild(li);
-  }
+  li.appendChild(button);
+  toolbar.appendChild(li);
+}
