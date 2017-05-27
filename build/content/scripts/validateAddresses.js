@@ -104,7 +104,7 @@ function parseBadAddr() {
         if (bn.value !== '') {
           bn.value += "\n\n";
         }
-        bn.value += "Patron's account is Limited Use due to address (Hospitality House, 1490 Martin St). Patron must show proof of valid residential address in order to remove restrictions. " + curDate() + " " + initial;
+        bn.value += "Patron's account is Limited Use due to address (State Job Placement Center, 1819 Aberg St). Patron must show proof of valid residential address in order to remove restrictions. " + curDate() + " " + initial;
         if (wasLU) alert('Please delete the circulation note regarding the patron\'s pervious limited use address');
       }
       // Test for Salvation Army address
