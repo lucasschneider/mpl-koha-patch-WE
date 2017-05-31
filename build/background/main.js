@@ -83,59 +83,64 @@ weh.prefs.on("skin", setIcon);
 
 // Load preference-selected function files
 function handleUpdated(details) {
-  if (weh.prefs.patronMsg) {
-    browser.tabs.executeScript(details.tabId, {
-      file: "content/scripts/patronMessages.js"
-    });
-  }
-  if (weh.prefs.validAddr) {
-    browser.tabs.executeScript(details.tabId, {
-      file: "content/scripts/validateAddresses.js"
-    });
-  }
-  if (weh.prefs.autoUserId) {
-    browser.tabs.executeScript(details.tabId, {
-      file: "content/scripts/autofillUserId.js"
-    });
-  }
-  if (weh.prefs.selectPSTAT) {
-    browser.tabs.executeScript(details.tabId, {
-      file: "content/scripts/selectPSTAT.js"
-    });
-  }
-  if (weh.prefs.forceDigest) {
-    browser.tabs.executeScript(details.tabId, {
-      file: "content/scripts/forceDigest.js"
-    });
-  }
-  if (weh.prefs.restrictNotificationOptions) {
-    browser.tabs.executeScript(details.tabId, {
-      file: "content/scripts/restrictNotificationOptions.js"
-    });
-  }
-  if (weh.prefs.middleName) {
-    browser.tabs.executeScript(details.tabId, {
-      file: "content/scripts/middleName.js"
-    });
-  }
-  if (weh.prefs.updateAccountType) {
-    browser.tabs.executeScript(details.tabId, {
-      file: "content/scripts/updateAccountType.js"
-    });
-  }
-  if (weh.prefs.collegeExp) {
-    browser.tabs.executeScript(details.tabId, {
-      file: "content/scripts/collegeExp.js"
-    });
-  }
-  if (weh.prefs.disableDropbox) {
-    browser.tabs.executeScript(details.tabId, {
-      file: "content/scripts/disableDropbox.js"
-    });
-  } else if (day === 0) {
-    browser.tabs.executeScript(details.tabId, {
-      file: "content/scripts/sundayDropbox.js"
-    });
+  console.log(details.frameId);
+  if (details.frameId == 0) {
+    // 0 indicates the navigation happens in the tab content window;
+    // A positive value indicates navigation in a subframe.
+    if (weh.prefs.patronMsg) {
+      browser.tabs.executeScript(details.tabId, {
+        file: "content/scripts/patronMessages.js"
+      });
+    }
+    if (weh.prefs.validAddr) {
+      browser.tabs.executeScript(details.tabId, {
+        file: "content/scripts/validateAddresses.js"
+      });
+    }
+    if (weh.prefs.autoUserId) {
+      browser.tabs.executeScript(details.tabId, {
+        file: "content/scripts/autofillUserId.js"
+      });
+    }
+    if (weh.prefs.selectPSTAT) {
+      browser.tabs.executeScript(details.tabId, {
+        file: "content/scripts/selectPSTAT.js"
+      });
+    }
+    if (weh.prefs.forceDigest) {
+      browser.tabs.executeScript(details.tabId, {
+        file: "content/scripts/forceDigest.js"
+      });
+    }
+    if (weh.prefs.restrictNotificationOptions) {
+      browser.tabs.executeScript(details.tabId, {
+        file: "content/scripts/restrictNotificationOptions.js"
+      });
+    }
+    if (weh.prefs.middleName) {
+      browser.tabs.executeScript(details.tabId, {
+        file: "content/scripts/middleName.js"
+      });
+    }
+    if (weh.prefs.updateAccountType) {
+      browser.tabs.executeScript(details.tabId, {
+        file: "content/scripts/updateAccountType.js"
+      });
+    }
+    if (weh.prefs.collegeExp) {
+      browser.tabs.executeScript(details.tabId, {
+        file: "content/scripts/collegeExp.js"
+      });
+    }
+    if (weh.prefs.disableDropbox) {
+      browser.tabs.executeScript(details.tabId, {
+        file: "content/scripts/disableDropbox.js"
+      });
+    } else if (day === 0) {
+      browser.tabs.executeScript(details.tabId, {
+        file: "content/scripts/sundayDropbox.js"
+      });
+    }
   }
 }
 

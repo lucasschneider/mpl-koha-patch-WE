@@ -129,6 +129,9 @@ weh.prefs.on("skin",setIcon);
 
 // Load preference-selected function files
 function handleUpdated(details) {
+console.log(details.frameId);
+if (details.frameId == 0) { // 0 indicates the navigation happens in the tab content window;
+                            // A positive value indicates navigation in a subframe.
   if (weh.prefs.patronMsg) {
     browser.tabs.executeScript(details.tabId,{
       file: "content/scripts/patronMessages.js"
@@ -182,6 +185,7 @@ function handleUpdated(details) {
     browser.tabs.executeScript(details.tabId,{
       file: "content/scripts/sundayDropbox.js"
     }); 
+  }
   }
 }
 
