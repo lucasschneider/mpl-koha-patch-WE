@@ -17,15 +17,28 @@ if(msgSelect != null) {
     laptopAgreement.value = "Patron has signed Laptop/iPad Loan Agreement form. Form on file.";
     laptopAgreement.textContent = "Patron signed laptop agreement";
     msgSelect.insertBefore(laptopAgreement,msgSelect.options[2]);
+    
+    var lostPaymentNote = document.createElement('option');
+    lostPaymentNote.value = "[LostPaymentPlaceholder]";
+    lostPaymentNote.textContent = "Lost item payment note (sending $ to lib.)"
+    msgSelect.insertBefore(lostPaymentNote,msgSelect.options[3]);
   }
 
   msgSelect.onchange = function () {
-    // Code from Koha
     this.form.borrower_message.value=this.options[this.selectedIndex].value;
-    // Added function
     if (msgSelect.selectedOptions[0].value === "Patron has signed Laptop/iPad Loan Agreement form. Form on file.") {
       initials = prompt("Enter your initials and library location (e.g. LS/MAD)");
       document.getElementById('borrower_message').value += " (" + initials + ")";
+    } else if (msgSelect.selectedOptions[0].value === "[LostPaymentPlaceholder]") {
+      var lostPayment = prompt("To generate a note in the following format, please enter the value for each bracketed field in that order, separated by a single semi-colon.\n\nCheck for $[X.XX] will be issued by Madison City Finance to [Owning Library] for [Item Title] ([barcode]). [Initials/Library]\n\n[X.XX];[Owning Library];[Item Title];[barcode];[Initials/Library]");
+      lostPayment = lostPayment.replace("$","").split(";")
+      
+      if (lostPayment.length === 5) {
+        document.getElementById('borrower_message').value = "Check for $" + lostPayment[0] + " will be issued by Madison City Finance to " + lostPayment[1] + " for " + lostPayment[2] + " (" + lostPayment[3] + "). " + lostPayment[4];
+      } else {
+        document.getElementById('borrower_message').value = "";
+        alert('Improper formatting. No note was added.');
+      }
     }
   }
  
