@@ -21,7 +21,8 @@
         "content/scripts/printBarcode.js",
         "content/scripts/sortLibraries.js",
         "content/scripts/standardFormat.js",
-        "content/scripts/sortItemCheckoutHistory.js"]
+        "content/scripts/sortItemCheckoutHistory.js",
+        "content/scripts/notifyLostReplacementFees.js"]
     }
   ],
   "icons": {
