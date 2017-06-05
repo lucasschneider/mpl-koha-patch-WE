@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "MPL Koha Patch",
   "default_locale": "en_US",
-  "version": "18.0.4",
+  "version": "18.0.5",
   "author": "Lucas Schneider",
   "description": "LibLime Koha ILS modifications targeted to the staff of Madison Public Library in Wisconsin's South Central Library System",
   "background": {
@@ -21,8 +21,7 @@
         "content/scripts/printBarcode.js",
         "content/scripts/sortLibraries.js",
         "content/scripts/standardFormat.js",
-        "content/scripts/sortItemCheckoutHistory.js",
-        "content/scripts/notifyLostReplacementFees.js"]
+        "content/scripts/sortItemCheckoutHistory.js"]
     }
   ],
   "icons": {
