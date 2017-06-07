@@ -20,10 +20,12 @@ if (msgSelect != null) {
     laptopAgreement.textContent = "Patron signed laptop agreement";
     msgSelect.insertBefore(laptopAgreement, msgSelect.options[2]);
 
-    var lostPaymentNote = document.createElement('option');
-    lostPaymentNote.value = "Check for $[X.XX] will be issued by Madison City Finance to [Owning Library] for [Item Title] ([barcode]). [Initials/Library]";
-    lostPaymentNote.textContent = "Check for $[X.XX] will be issued by Madison City Finance...";
-    msgSelect.insertBefore(lostPaymentNote, msgSelect.options[3]);
+    /* Margie doesn't want this as a predefined note as of June 5, 2017
+       var lostPaymentNote = document.createElement('option');
+       lostPaymentNote.value = "Check for $[X.XX] will be issued by Madison City Finance to [Owning Library] for [Item Title] ([barcode]). [Initials/Library]";
+       lostPaymentNote.textContent = "Check for $[X.XX] will be issued by Madison City Finance..."
+       msgSelect.insertBefore(lostPaymentNote,msgSelect.options[3]);
+    */
   }
 
   msgSelect.onchange = function () {

@@ -1,4 +1,4 @@
-browser.onMessage.addListener(
+browser.runtime.onMessage.addListener(
       function(request, sender, sendResponse) {
         window.onload = function(e) {
           if(request.key == "printBarcode") {
