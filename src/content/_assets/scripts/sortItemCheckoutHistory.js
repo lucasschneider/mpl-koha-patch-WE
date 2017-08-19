@@ -277,9 +277,25 @@
       if (lb && lb.value.length === 14) {
         resetTable = true;
         sortTable(itemHistoryEntries, lastSortCode, lb.value);
+		var circRows = document.getElementById('checkouthistt').children[1].children,
+          bcCount = 0;
+        for (var i = 0; i < circRows.length; i++) {
+          if (circRows[i].style.display != "none") {
+            bcCount++;
+          }
+        }
+		document.getElementsByClassName('searchresults')[0].children[0].children[0].textContent = "Item with barcode " + lb.value + " has been checked out " + bcCount + " times";
       } else if (resetTable) {
         resetTable = false;
         sortTable(itemHistoryEntries, lastSortCode, "");
+        var circRows = document.getElementById('checkouthistt').children[1].children,
+          bcCount = 0;
+        for (var i = 0; i < circRows.length; i++) {
+          if (circRows[i].style.display != "none") {
+            bcCount++;
+          }
+        }
+		document.getElementsByClassName('searchresults')[0].children[0].children[0].textContent = "Has been checked out " + bcCount + " times";
       }
     });
     span2.textContent = " Restrict to: ";
