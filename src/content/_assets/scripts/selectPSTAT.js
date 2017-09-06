@@ -1818,7 +1818,6 @@ function queryPSTAT(addr, city, queryB, secondPass) {
       key: "queryGeocoder",
       URIencodedAddress: cleanAddr(addr),
       city: pullCity(city.value),
-      addrElement: addr,
       isSecondPass: secondPass
     });
     geocoder.then(handleResponse, handleError);

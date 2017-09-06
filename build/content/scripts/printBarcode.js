@@ -24,10 +24,11 @@ function printBarcode() {
 }
 
 var toolbar = document.getElementsByClassName('toolbar')[0],
+    patroninfo = document.getElementsByClassName('patroninfo'),
     li,
     button;
 
-if (toolbar && /^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/(members|circ).*/.test(location.href)) {
+if (toolbar && /^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/(members|circ).*/.test(location.href) && patroninfo.length > 0) {
   li = document.createElement('li');
   button = document.createElement('button');
   button.onclick = printBarcode;
