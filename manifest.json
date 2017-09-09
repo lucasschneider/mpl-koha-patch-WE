@@ -3,7 +3,7 @@
 
   "name": "MPL Koha Patch",
   "author": "Lucas Schneider",
-  "version": "18.0.7",
+  "version": "18.0.11",
   "description": "LibLime Koha ILS modifications targeted to the staff of Madison Public Library in Wisconsin's South Central Library System",
   "default_locale": "en",
 
