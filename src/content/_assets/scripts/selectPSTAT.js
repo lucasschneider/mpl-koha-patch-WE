@@ -1,42 +1,78 @@
 "use strict";
 
+/**
+  * This script is used to look up the proper PSTAT (sort1) value
+  * for a patron's record based on their address, using the US
+  * Census Geocoder
+  */
+
+// Declare global variables
 var addrElt = document.getElementById('address'),
   cityElt = document.getElementById('city'),
+  cityElt2 = document.getElementById('B_city'),
+  cityElt3 = document.getElementById('altcontactaddress3'),
   notice = document.createElement('div'),
   result = document.createElement('span'),
   userEnteredAddress,
   userEnteredCity,
   matchAddr4DistQuery,
   selected;
+
+// Initialize the notice and result messages for communicating success/failure
+// and place them underneath the address field
 notice.id = 'tractNotice';
 notice.setAttribute('style', 'margin-top:.2em;margin-left:118px;font-style:italic;color:#c00;');
 result.setAttribute('id', 'tractResult');
+if (addrElt) {
+  addrElt.parentElement.appendChild(notice);
+}
 
+// Query PSTAT if the address and city fields contain values
 if (addrElt && cityElt) {
   addrElt.addEventListener('blur', function() {
-    userEnteredAddress = this.value;
     if (addrElt.value && cityElt.value) {
+      userEnteredAddress = addrElt.value;
+	  parseMadisonWI(cityElt);
       userEnteredCity = cityElt.value;
-      queryPSTATPrep();
+      queryPSTAT(addrElt, cityElt, false, false);
     }
   });
 
   cityElt.addEventListener('blur', function() {
-    parseMadisonWI(this);
-    userEnteredCity = pullCity(cityElt.value);
     if (addrElt.value && cityElt.value) {
       userEnteredAddress = addrElt.value;
-      queryPSTATPrep();
+	  parseMadisonWI(cityElt);
+      userEnteredCity = cityElt.value;
+      queryPSTAT(addrElt, cityElt, false, false);
     }
   });
-
-  addr.parentElement.appendChild(notice);
 }
 
-function cleanAddr(addr) {
+// Parse the secondary city field for "MADISON WI"
+if (cityElt2) {
+  cityElt2.addEventListener('blur', function() {
+    parseMadisonWI(this);
+  });
+}
+
+// Parse the alternate city field for "MADISON WI"
+if (cityElt3) {
+  cityElt3.addEventListener('blur', function() {
+    parseMadisonWI(this);
+  });
+}
+
+/**
+  * This function takes the address from an input field
+  * and returns a plaintext address that can more easily
+  * be interpreted by the Census Geocoder
+  * 
+  * addrElt: The html input field containing an address
+  */
+function cleanAddr(addrElt) {
   var i, addrParts, addrTrim;
-  if (addr !== null) {
-    addrParts = addr.value.toLowerCase().replace(/ cn?ty /i, ' co ').split(" ");
+  if (addrElt !== null) {
+    addrParts = addrElt.value.toLowerCase().replace(/ cn?ty /i, ' co ').split(" ");
   }
   addrTrim = '';
   for (i = 0; i < addrParts.length; i++) {
@@ -69,30 +105,56 @@ function cleanAddr(addr) {
   return addrTrim;
 }
 
-function pullCity(city) {
-  var cty = '',
+/**
+  * This function extracts the city from an input field
+  * containing both the city and state abbreviation
+  * by stripping non-alphabetic characters and removing
+  * the last string separated by a space
+  *
+  * cityElt: The html input field containing a city and
+  *          state abbreviation.
+  */
+function pullCity(cityElt) {
+  var city = '',
     ctyArr,
     i;
-  if (city !== null) {
-    ctyArr = city.replace(/[^a-zA-Z 0-9]+/g, '').toLowerCase().split(' ');
+  if (cityElt !== null) {
+    ctyArr = cityElt.replace(/[^a-zA-Z 0-9]+/g, '').toLowerCase().split(' ');
     for (i = 0; i < ctyArr.length - 1; i++) {
       if (i === 0) {
-        cty += ctyArr[i];
+        city += ctyArr[i];
       } else {
-        cty += " " + ctyArr[i];
+        city += " " + ctyArr[i];
       }
     }
   }
-  return cty;
+  return city;
 }
 
-function selectUND(selectList) {
-  var addr = document.getElementById('address');
-  if (addr && selectList && selectList.children[selectList.selectedIndex].value === '') {
-    selectList.value = "X-UND";
+/**
+  * This function forces the city/state html input field
+  * to display Madison as "MADISON WI" and allows users to
+  * enter "mad" as a shortcut for "MADISON WI"
+  */
+function parseMadisonWI(cityElt) {
+  if (/madison(,? wi(sconsin)?)?|mad/i.test(cityElt.value)) {
+    cityElt.value = "MADISON WI";
   }
+  cityElt.value = cityElt.value.replace(/,/, '');
 }
 
+/**
+  * This funciton automatically selects the PSTAT value given the
+  * select list element, the Value of the PSTAT option, the result
+  * element and the matching address returned by the Geocoder.
+  *
+  * selectList: The html select element containing the list of
+  *             possible PSTAT values
+  * value:      The plaintext PSTAT value that would match the
+  *             target option in the select list
+  * result:     The result element
+  * matchAddr:  The matching address returned by the Geocoder
+  */
 function selectPSTAT(selectList, value, result, matchAddr) {
   if (selectList && value && result && matchAddr) {
     if (value == "D-X-SUN" || value == "X-UND") {
@@ -107,6 +169,38 @@ function selectPSTAT(selectList, value, result, matchAddr) {
   }
 }
 
+/**
+  * This function selects the "Undetermined: PSTAT value for a
+  * patron's library record.
+  * 
+  * selectList: The html select element containing the list of
+  *             possible PSTAT values
+  */
+function selectUND(selectList) {
+  var addr = document.getElementById('address');
+  if (addr && selectList && selectList.children[selectList.selectedIndex].value === '') {
+    selectList.value = "X-UND";
+  }
+}
+
+/**
+  * This is the main function used to send a data query to the US
+  * Census Geocoder. The data returned determines the way in which
+  * the PSTAT is selected (i.e. Census Tract Number for MPL, Voting
+  * district for SUN, MOO, and MID, non-SCLS library system, or
+  * the census tract number for everywhere else. Currently, the
+  * PSTAT cannot be automatically selected for VER.
+  * 
+  * addr:       The html input field containing an address
+  * city:       The html input field containing a city and
+  *             state abbreviation.
+  * queryB:     A boolean value representing whether the
+  *             secondary address should be used in the
+  *             query rather than the primary address
+  * secondPass: A boolean value representing wether the
+  *             Geocoder should be queried specifying
+  *             current data (false) or 2010 data (true)
+  */
 function queryPSTAT(addr, city, queryB, secondPass) {
   var entryForm = document.forms.entryform,
     selectList = entryForm ? entryForm.elements.sort1 : null,
@@ -125,7 +219,7 @@ function queryPSTAT(addr, city, queryB, secondPass) {
     setTimeout(function() {
       if (result !== null && result.textContent === '') {
         result.setAttribute('style', 'display:inline-block;color:#a5a500;');
-        result.textContent = '[NOTE: Server slow to respondâ€”please enter zipcode and sort field manually]';
+        result.textContent = '[NOTE: Server slow to respond—please enter zipcode and sort field manually]';
       }
     }, 12000);
 
@@ -1824,21 +1918,8 @@ function queryPSTAT(addr, city, queryB, secondPass) {
   }
 }
 
-function queryPSTATPrep() {
-  var addr = document.getElementById('address'),
-    city = document.getElementById('city');
-  if (addr && city) {
-    queryPSTAT(addr, city, false, false);
-  }
-}
-
-function parseMadisonWI(elt) {
-  if (/madison(,? wi(sconsin)?)?|mad/i.test(elt.value)) {
-    elt.value = "MADISON WI";
-  }
-  elt.value = elt.value.replace(/,/, '');
-}
-
+// Listener for selecting the PSTAT value by a patron's
+// secondary address rather than their primary address
 browser.runtime.onMessage.addListener((request) => {
   if (request.key = "querySecondaryPSTAT") {
     var qspElt = document.getElementById('querySecondaryPSTAT'),
@@ -1859,19 +1940,3 @@ browser.runtime.onMessage.addListener((request) => {
     }
   }
 });
-
-/*** CORRECT CITY FORMAT ***/
-var city2 = document.getElementById('B_city'),
-  city3 = document.getElementById('altcontactaddress3');
-
-if (city2) {
-  city2.addEventListener('blur', function() {
-    parseMadisonWI(this);
-  });
-}
-
-if (city3) {
-  city3.addEventListener('blur', function() {
-    parseMadisonWI(this);
-  });
-}

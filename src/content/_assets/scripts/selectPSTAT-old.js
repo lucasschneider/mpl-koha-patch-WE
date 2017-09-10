@@ -1,79 +1,42 @@
 "use strict";
 
-/**
-  * This script is used to look up the proper PSTAT (sort1) value
-  * for a patron's record based on their address, using the US
-  * Census Geocoder
-  */
-
-// Declare global variables
-
 var addrElt = document.getElementById('address'),
-    cityElt = document.getElementById('city'),
-    cityElt2 = document.getElementById('B_city'),
-    cityElt3 = document.getElementById('altcontactaddress3'),
-    notice = document.createElement('div'),
-    result = document.createElement('span'),
-    userEnteredAddress,
-    userEnteredCity,
-    matchAddr4DistQuery,
-    selected;
-
-// Initialize the notice and result messages for communicating success/failure
-// and place them underneath the address field
+  cityElt = document.getElementById('city'),
+  notice = document.createElement('div'),
+  result = document.createElement('span'),
+  userEnteredAddress,
+  userEnteredCity,
+  matchAddr4DistQuery,
+  selected;
 notice.id = 'tractNotice';
 notice.setAttribute('style', 'margin-top:.2em;margin-left:118px;font-style:italic;color:#c00;');
 result.setAttribute('id', 'tractResult');
-if (addrElt) {
-  addrElt.parentElement.appendChild(notice);
-}
 
-// Query PSTAT if the address and city fields contain values
 if (addrElt && cityElt) {
-  addrElt.addEventListener('blur', function () {
+  addrElt.addEventListener('blur', function() {
+    userEnteredAddress = this.value;
     if (addrElt.value && cityElt.value) {
-      userEnteredAddress = addrElt.value;
-      parseMadisonWI(cityElt);
       userEnteredCity = cityElt.value;
-      queryPSTAT(addrElt, cityElt, false, false);
+      queryPSTATPrep();
     }
   });
 
-  cityElt.addEventListener('blur', function () {
+  cityElt.addEventListener('blur', function() {
+    parseMadisonWI(this);
+    userEnteredCity = pullCity(cityElt.value);
     if (addrElt.value && cityElt.value) {
       userEnteredAddress = addrElt.value;
-      parseMadisonWI(cityElt);
-      userEnteredCity = cityElt.value;
-      queryPSTAT(addrElt, cityElt, false, false);
+      queryPSTATPrep();
     }
   });
+
+  addr.parentElement.appendChild(notice);
 }
 
-// Parse the secondary city field for "MADISON WI"
-if (cityElt2) {
-  cityElt2.addEventListener('blur', function () {
-    parseMadisonWI(this);
-  });
-}
-
-// Parse the alternate city field for "MADISON WI"
-if (cityElt3) {
-  cityElt3.addEventListener('blur', function () {
-    parseMadisonWI(this);
-  });
-}
-
-/**
-  * This function takes the address from an input field
-  * and returns a plaintext address that can more easily
-  * be interpreted by the Census Geocoder
-  * 
-  * addrElt: The html input field containing an address
-  */
-function cleanAddr(addrElt) {
+function cleanAddr(addr) {
   var i, addrParts, addrTrim;
-  if (addrElt !== null) {
-    addrParts = addrElt.value.toLowerCase().replace(/ cn?ty /i, ' co ').split(" ");
+  if (addr !== null) {
+    addrParts = addr.value.toLowerCase().replace(/ cn?ty /i, ' co ').split(" ");
   }
   addrTrim = '';
   for (i = 0; i < addrParts.length; i++) {
@@ -106,56 +69,30 @@ function cleanAddr(addrElt) {
   return addrTrim;
 }
 
-/**
-  * This function extracts the city from an input field
-  * containing both the city and state abbreviation
-  * by stripping non-alphabetic characters and removing
-  * the last string separated by a space
-  *
-  * cityElt: The html input field containing a city and
-  *          state abbreviation.
-  */
-function pullCity(cityElt) {
-  var city = '',
-      ctyArr,
-      i;
-  if (cityElt !== null) {
-    ctyArr = cityElt.replace(/[^a-zA-Z 0-9]+/g, '').toLowerCase().split(' ');
+function pullCity(city) {
+  var cty = '',
+    ctyArr,
+    i;
+  if (city !== null) {
+    ctyArr = city.replace(/[^a-zA-Z 0-9]+/g, '').toLowerCase().split(' ');
     for (i = 0; i < ctyArr.length - 1; i++) {
       if (i === 0) {
-        city += ctyArr[i];
+        cty += ctyArr[i];
       } else {
-        city += " " + ctyArr[i];
+        cty += " " + ctyArr[i];
       }
     }
   }
-  return city;
+  return cty;
 }
 
-/**
-  * This function forces the city/state html input field
-  * to display Madison as "MADISON WI" and allows users to
-  * enter "mad" as a shortcut for "MADISON WI"
-  */
-function parseMadisonWI(cityElt) {
-  if (/madison(,? wi(sconsin)?)?|mad/i.test(cityElt.value)) {
-    cityElt.value = "MADISON WI";
+function selectUND(selectList) {
+  var addr = document.getElementById('address');
+  if (addr && selectList && selectList.children[selectList.selectedIndex].value === '') {
+    selectList.value = "X-UND";
   }
-  cityElt.value = cityElt.value.replace(/,/, '');
 }
 
-/**
-  * This funciton automatically selects the PSTAT value given the
-  * select list element, the Value of the PSTAT option, the result
-  * element and the matching address returned by the Geocoder.
-  *
-  * selectList: The html select element containing the list of
-  *             possible PSTAT values
-  * value:      The plaintext PSTAT value that would match the
-  *             target option in the select list
-  * result:     The result element
-  * matchAddr:  The matching address returned by the Geocoder
-  */
 function selectPSTAT(selectList, value, result, matchAddr) {
   if (selectList && value && result && matchAddr) {
     if (value == "D-X-SUN" || value == "X-UND") {
@@ -170,63 +107,44 @@ function selectPSTAT(selectList, value, result, matchAddr) {
   }
 }
 
-/**
-  * This function selects the "Undetermined: PSTAT value for a
-  * patron's library record.
-  * 
-  * selectList: The html select element containing the list of
-  *             possible PSTAT values
-  */
-function selectUND(selectList) {
-  var addr = document.getElementById('address');
-  if (addr && selectList && selectList.children[selectList.selectedIndex].value === '') {
-    selectList.value = "X-UND";
-  }
-}
-
-/**
-  * This is the main function used to send a data query to the US
-  * Census Geocoder. The data returned determines the way in which
-  * the PSTAT is selected (i.e. Census Tract Number for MPL, Voting
-  * district for SUN, MOO, and MID, non-SCLS library system, or
-  * the census tract number for everywhere else. Currently, the
-  * PSTAT cannot be automatically selected for VER.
-  * 
-  * addr:       The html input field containing an address
-  * city:       The html input field containing a city and
-  *             state abbreviation.
-  * queryB:     A boolean value representing whether the
-  *             secondary address should be used in the
-  *             query rather than the primary address
-  * secondPass: A boolean value representing wether the
-  *             Geocoder should be queried specifying
-  *             current data (false) or 2010 data (true)
-  */
 function queryPSTAT(addr, city, queryB, secondPass) {
   var entryForm = document.forms.entryform,
-      selectList = entryForm ? entryForm.elements.sort1 : null,
-      notice = document.getElementById('tractNotice'),
-      zipElt = document.getElementById('zipcode'),
-      zipEltB = document.getElementById('B_zipcode');
+    selectList = entryForm ? entryForm.elements.sort1 : null,
+    notice = document.getElementById('tractNotice'),
+    zipElt = document.getElementById('zipcode'),
+    zipEltB = document.getElementById('B_zipcode');
 
   if (addr.value !== "" && city.value !== "" && selectList) {
-    var handleResponse = function handleResponse(message) {
+    
+    addr.parentElement.appendChild(notice);
+
+    // Generate loading message
+    notice.textContent = "Searching for sort value and zipcode... ";
+    result.textContent = '';
+    notice.appendChild(result);
+    setTimeout(function() {
+      if (result !== null && result.textContent === '') {
+        result.setAttribute('style', 'display:inline-block;color:#a5a500;');
+        result.textContent = '[NOTE: Server slow to respond—please enter zipcode and sort field manually]';
+      }
+    }, 12000);
+
+    function handleResponse(message) {
       switch (message.key) {
         case "receivedGeocoderQuery":
           if (message.hasData) {
             var matchAddr = message.matchAddr.split(',')[0].toUpperCase(),
-                sortID = "X-UND",
-                generatedZip = message.zip,
+              sortID = "X-UND",
+              generatedZip = message.zip,
 
-
-            // Add button to allow staff to select the geographically closest MPL location
-            matchAddr4DistQuery = message.matchAddr.replace(/ /g, "+"),
-                branchList = document.getElementById('branchcode'),
-                nearestMPL = document.createElement('span'),
-                nearestMPLold = document.getElementById('nearestMPL'),
-                mapRegionListOld = document.getElementById('mapRegionList'),
-                lnBreak1 = document.createElement('br'),
-                lnBreak2 = document.createElement('br');
+              // Add button to allow staff to select the geographically closest MPL location
+              matchAddr4DistQuery = message.matchAddr.replace(/ /g, "+"),
+              branchList = document.getElementById('branchcode'),
+              nearestMPL = document.createElement('span'),
+              nearestMPLold = document.getElementById('nearestMPL'),
+              mapRegionListOld = document.getElementById('mapRegionList'),
+              lnBreak1 = document.createElement('br'),
+              lnBreak2 = document.createElement('br');
 
             lnBreak1.id = "nearestMPLbreak1";
             lnBreak2.id = "nearestMPLbreak2";
@@ -247,10 +165,10 @@ function queryPSTAT(addr, city, queryB, secondPass) {
               nearestMPL.id = "nearestMPL";
               nearestMPL.textContent = "Set home library to geographically closest location within...";
               nearestMPL.style = "display: inline-block;cursor:pointer;color:#00c;text-decoration:underline;margin-left:118px;";
-              nearestMPL.onmouseover = function () {
+              nearestMPL.onmouseover = function() {
                 document.getElementById('nearestMPL').style = "display: inline-block;cursor:pointer;color:#669acc;text-decoration:underline;margin-left:118px;";
               };
-              nearestMPL.onmouseout = function () {
+              nearestMPL.onmouseout = function() {
                 document.getElementById('nearestMPL').style = "display: inline-block;cursor:pointer;color:#00c;text-decoration:underline;margin-left:118px;";
               };
 
@@ -309,13 +227,13 @@ function queryPSTAT(addr, city, queryB, secondPass) {
               scls.value = "SCLS";
               mapRegionList.appendChild(scls);
 
-              nearestMPL.onclick = function () {
+              nearestMPL.onclick = function() {
                 var selected = document.getElementById('mapRegionList').selectedOptions[0].value,
-                    nearestLib = browser.runtime.sendMessage({
-                  key: "findNearestLib",
-                  matchAddr4DistQuery: matchAddr4DistQuery,
-                  selected: selected
-                });
+                  nearestLib = browser.runtime.sendMessage({
+                    key: "findNearestLib",
+                    matchAddr4DistQuery: matchAddr4DistQuery,
+                    selected: selected
+                  });
                 nearestLib.then(handleResponse, handleError);
               };
 
@@ -442,12 +360,12 @@ function queryPSTAT(addr, city, queryB, secondPass) {
                       result.textContent = "[FAILED: cannot determine sort value for Sun Prairie; please enter PSTAT manually.]";
                     }
                     break;
-                  /*** UNDETERMINABLE COUNTY SUBDIVISIONS ***/
+                    /*** UNDETERMINABLE COUNTY SUBDIVISIONS ***/
                   case "Verona city":
                     result.textContent = "[FAILED: cannot determine sort value for Verona; please enter PSTAT manually.]";
                     break;
 
-                  /*** MAIN LIST ***/
+                    /*** MAIN LIST ***/
                   case "Adams city":
                     sortID = "A-ADM-C";
                     break;
@@ -1152,7 +1070,7 @@ function queryPSTAT(addr, city, queryB, secondPass) {
                 }
                 break;
 
-              /*** ARROWHEAD LIBRARY SYSTEM ***/
+                /*** ARROWHEAD LIBRARY SYSTEM ***/
               case "Rock":
                 // Has with/without library option
                 switch (message.countySub) {
@@ -1186,13 +1104,13 @@ function queryPSTAT(addr, city, queryB, secondPass) {
                 }
                 break;
 
-              /*** EASTERN SHORES LIBRARY SYSTEM ***/
+                /*** EASTERN SHORES LIBRARY SYSTEM ***/
               case "Ozaukee":
               case "Sheboygan":
                 sortID = "O-ESLS";
                 break;
 
-              /*** INDIANHEAD FEDERATED LIBRARY SYSTEM ***/
+                /*** INDIANHEAD FEDERATED LIBRARY SYSTEM ***/
               case "Barron":
               case "Chippewa":
               case "Dunn":
@@ -1206,29 +1124,29 @@ function queryPSTAT(addr, city, queryB, secondPass) {
                 sortID = "O-IFLS";
                 break;
 
-              /*** KENOSHA COUNTY LIBRARY SYSTEM ***/
+                /*** KENOSHA COUNTY LIBRARY SYSTEM ***/
               case "Kenosha":
                 sortID = "O-KCLS";
                 break;
 
-              /*** LAKESHORES LIBRARY SYSTEM ***/
+                /*** LAKESHORES LIBRARY SYSTEM ***/
               case "Racine":
               case "Walworth":
                 sortID = "O-LLS";
                 break;
 
-              /*** MANITOWOC-CALUMET LIBRARY SYSTEM ***/
+                /*** MANITOWOC-CALUMET LIBRARY SYSTEM ***/
               case "Calumet":
               case "Manitowoc":
                 sortID = "O-MCLS";
                 break;
 
-              /*** MILWAUKEE COUNTY FEDERATED LIBRARY SYSTEM ***/
+                /*** MILWAUKEE COUNTY FEDERATED LIBRARY SYSTEM ***/
               case "Milwaukee":
                 result.textContent = '[FAILED: Do NOT issue a library card to Milwaukee County patrons.]';
                 break;
 
-              /*** MID-WISCONSIN FEDERATED LIBRARY SYSTEM ***/
+                /*** MID-WISCONSIN FEDERATED LIBRARY SYSTEM ***/
               case "Dodge":
                 // Has with/without library option
                 switch (message.countySub) {
@@ -1462,7 +1380,7 @@ function queryPSTAT(addr, city, queryB, secondPass) {
                 sortID = "O-MWFLS";
                 break;
 
-              /*** NICOLET FEDERATED LIBRARY SYSTEM ***/
+                /*** NICOLET FEDERATED LIBRARY SYSTEM ***/
               case "Brown":
               case "Door":
               case "Florence":
@@ -1474,7 +1392,7 @@ function queryPSTAT(addr, city, queryB, secondPass) {
                 sortID = "O-NFLS";
                 break;
 
-              /*** NORTHERN WATERS LIBRARY SYSTEM ***/
+                /*** NORTHERN WATERS LIBRARY SYSTEM ***/
               case "Ashland":
               case "Bayfield":
               case "Burnett":
@@ -1486,8 +1404,8 @@ function queryPSTAT(addr, city, queryB, secondPass) {
                 sortID = "O-NWLS";
                 break;
 
-              /*** OUTAGAMIE-WAUPACA LIBRARY SYSTEM ***/
-              // Has with/without library option
+                /*** OUTAGAMIE-WAUPACA LIBRARY SYSTEM ***/
+                // Has with/without library option
               case "Outagamie":
                 sortID = "O-OWLS";
                 break;
@@ -1495,7 +1413,7 @@ function queryPSTAT(addr, city, queryB, secondPass) {
                 result.textContent = '[FAILED: Manually select sort option "Waupaca County" with or w/out library.]';
                 break;
 
-              /*** SOUTH WEST LIBRARY SYSTEM ***/
+                /*** SOUTH WEST LIBRARY SYSTEM ***/
               case "Iowa":
                 // Has with/without library option
                 switch (message.countySub) {
@@ -1612,12 +1530,12 @@ function queryPSTAT(addr, city, queryB, secondPass) {
                 sortID = "O-SWLS";
                 break;
 
-              /*** WAUKESHA COUNTY FEDERATED LIBRARY SYSTEM ***/
+                /*** WAUKESHA COUNTY FEDERATED LIBRARY SYSTEM ***/
               case "Waukesha":
                 sortID = "O-WCFLS";
                 break;
 
-              /*** WINNEFOX LIBRARY SYSTEM ***/
+                /*** WINNEFOX LIBRARY SYSTEM ***/
               case "Green Lake":
                 // Has with/without library option
                 switch (message.countySub) {
@@ -1691,7 +1609,7 @@ function queryPSTAT(addr, city, queryB, secondPass) {
                     break;
                 }
                 break;
-              // Has with/without library option
+                // Has with/without library option
               case "Waushara":
                 result.textContent = '[FAILED: Manually select sort option "Waushara County" with or w/out library.]';
                 break;
@@ -1700,7 +1618,7 @@ function queryPSTAT(addr, city, queryB, secondPass) {
                 sortID = "O-WLS";
                 break;
 
-              /*** WINDING RIVERS LIBRARY SYSTEM ***/
+                /*** WINDING RIVERS LIBRARY SYSTEM ***/
               case "Juneau":
                 // Has with/without library option
                 switch (message.countySub) {
@@ -1733,11 +1651,11 @@ function queryPSTAT(addr, city, queryB, secondPass) {
                     break;
                 }
                 break;
-              // Has with/without library option
+                // Has with/without library option
               case "Jackson":
                 result.textContent = '[FAILED: Manually select sort option "Jackson County" with or w/out library.]';
                 break;
-              // Has with/without library option
+                // Has with/without library option
               case "Vernon":
                 result.textContent = '[FAILED: Manually select sort option "Vernon County" with or w/out library.]';
                 break;
@@ -1748,11 +1666,11 @@ function queryPSTAT(addr, city, queryB, secondPass) {
                 sortID = "O-WRLS";
                 break;
 
-              /*** WISCONSIN VALLEY LIBRARY SYSTEM ***/
+                /*** WISCONSIN VALLEY LIBRARY SYSTEM ***/
               case "Marathon":
                 sortID = "O-WVLS-MNLI";
                 break;
-              // Has with/without library option
+                // Has with/without library option
               case "Clark":
                 result.textContent = '[FAILED: Manually select sort option "Clark County" with or w/out library.]';
                 break;
@@ -1764,7 +1682,7 @@ function queryPSTAT(addr, city, queryB, secondPass) {
                 sortID = "O-WVLS";
                 break;
 
-              /*** COUNTY SELECT DEFAULT ***/
+                /*** COUNTY SELECT DEFAULT ***/
               default:
                 break;
             } //end county switch
@@ -1847,8 +1765,8 @@ function queryPSTAT(addr, city, queryB, secondPass) {
           break;
         case "receivedNearestLib":
           var branchList = document.getElementById('branchcode'),
-              msg = document.getElementById("nearestMPL"),
-              list = document.getElementById("mapRegionList");
+            msg = document.getElementById("nearestMPL"),
+            list = document.getElementById("mapRegionList");
           if (branchList) {
             branchList.value = message.closestLib;
 
@@ -1869,8 +1787,8 @@ function queryPSTAT(addr, city, queryB, secondPass) {
           break;
         case "failedNearestLib":
           var branchList = document.getElementById('branchcode'),
-              msg = document.getElementById("nearestMPL"),
-              list = document.getElementById("mapRegionList");
+            msg = document.getElementById("nearestMPL"),
+            list = document.getElementById("mapRegionList");
 
           if (branchList) {
 
@@ -1890,24 +1808,11 @@ function queryPSTAT(addr, city, queryB, secondPass) {
           }
           break;
       }
-    };
+    }
 
-    var handleError = function handleError(error) {
-      console.log('Error: ' + error);
-    };
-
-    addr.parentElement.appendChild(notice);
-
-    // Generate loading message
-    notice.textContent = "Searching for sort value and zipcode... ";
-    result.textContent = '';
-    notice.appendChild(result);
-    setTimeout(function () {
-      if (result !== null && result.textContent === '') {
-        result.setAttribute('style', 'display:inline-block;color:#a5a500;');
-        result.textContent = '[NOTE: Server slow to respond�please enter zipcode and sort field manually]';
-      }
-    }, 12000);
+    function handleError(error) {
+      console.log(`Error: ${error}`);
+    }
 
     var geocoder = browser.runtime.sendMessage({
       key: "queryGeocoder",
@@ -1919,13 +1824,26 @@ function queryPSTAT(addr, city, queryB, secondPass) {
   }
 }
 
-// Listener for selecting the PSTAT value by a patron's
-// secondary address rather than their primary address
-browser.runtime.onMessage.addListener(function (request) {
+function queryPSTATPrep() {
+  var addr = document.getElementById('address'),
+    city = document.getElementById('city');
+  if (addr && city) {
+    queryPSTAT(addr, city, false, false);
+  }
+}
+
+function parseMadisonWI(elt) {
+  if (/madison(,? wi(sconsin)?)?|mad/i.test(elt.value)) {
+    elt.value = "MADISON WI";
+  }
+  elt.value = elt.value.replace(/,/, '');
+}
+
+browser.runtime.onMessage.addListener((request) => {
   if (request.key = "querySecondaryPSTAT") {
     var qspElt = document.getElementById('querySecondaryPSTAT'),
-        addrB = document.getElementById('B_address'),
-        cityB = document.getElementById('B_city');
+      addrB = document.getElementById('B_address'),
+      cityB = document.getElementById('B_city');
     if (qspElt && addrB && cityB && addrB.value !== '' && cityB.value !== '') {
       userEnteredAddress = addrB.value;
       userEnteredCity = pullCity(cityB.value);
@@ -1941,3 +1859,19 @@ browser.runtime.onMessage.addListener(function (request) {
     }
   }
 });
+
+/*** CORRECT CITY FORMAT ***/
+var city2 = document.getElementById('B_city'),
+  city3 = document.getElementById('altcontactaddress3');
+
+if (city2) {
+  city2.addEventListener('blur', function() {
+    parseMadisonWI(this);
+  });
+}
+
+if (city3) {
+  city3.addEventListener('blur', function() {
+    parseMadisonWI(this);
+  });
+}

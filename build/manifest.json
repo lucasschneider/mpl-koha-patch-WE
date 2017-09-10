@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "MPL Koha Patch",
   "default_locale": "en_US",
-  "version": "18.0.11",
+  "version": "18.1.0",
   "author": "Lucas Schneider",
   "description": "LibLime Koha ILS modifications targeted to the staff of Madison Public Library in Wisconsin's South Central Library System",
   "background": {
@@ -15,6 +15,7 @@
       "background/weh-ui.js",
       "background/weh-ajax.js",
       "background/weh-i18n-keys.js",
+      "third-party/jquery-3.2.1.min.js",
       "background/default-prefs.js",
       "background/main.js"
     ],
