@@ -6,9 +6,11 @@ var holdTable = document.getElementById('holdst'),
     holdTableHead = holdTable.tHead,
     holdTableBody = holdTable.tBodies[0],
     trArray = holdTableBody.children,
-    newTBody = document.createElement('tbody'),
+    newTBody,
     waitingHolds = [],
-    numWaitingHolds = 0;
+    numWaitingHolds = 0,
+    sortCode = "patronAsc",
+    isDateFiltered = false;
 
 // Create expiration date header
 var expirationDateTH = document.createElement('th');
@@ -22,7 +24,7 @@ Date.prototype.addDays = function (days) {
 function getExpiration(date) {
   date.addDays(8);
   var days = "" + date.getUTCDate(),
-      month = "" + date.getUTCMonth(),
+      month = "" + (date.getUTCMonth() + 1),
       year = date.getFullYear();
 
   if (days.length == 1) {
@@ -62,17 +64,35 @@ function WaitingHold(htmlTR) {
   * timitType: The type of date to filter (i.e. available since or expiration)
   * limitDate: The date to filter
   **/
-function sortWaitingHolds(waitingHolds, sortCode, limitType, limitDate) {
-  numWaitingHolds = 0;
-  // Extract table data
-  if (holdTable && trArray) {
-    for (var i = 0; i < trArray.length; i++) {
-      waitingHolds.push(new WaitingHold(trArray[i]));
-      numWaitingHolds++;
-    }
-  }
-
+function sortWaitingHolds(waitingHolds, sortCode, dateType, limitDate) {
+  newTBody = document.createElement('tbody');
   switch (sortCode) {
+    case "availableDateAsc":
+      waitingHolds.sort(function (a, b) {
+        if (a.availableSince < b.availableSince) return -1;else if (a.availableSince > b.availableSince) return 1;else if (a.patronLast < b.patronLast) return -1;else if (a.patronLast > b.patronLast) return 1;else if (a.patronFirst < b.patronFirst) return -1;else if (a.patronFirst > b.patronFirst) return 1;else if (a.title < b.title) return -1;else if (a.title > b.title) return 1;else return 0;
+      });
+      break;
+    case "availableDateDesc":
+      waitingHolds.sort(function (a, b) {
+        if (a.availableSince < b.availableSince) return 1;else if (a.availableSince > b.availableSince) return -1;else if (a.patronLast < b.patronLast) return 1;else if (a.patronLast > b.patronLast) return -1;else if (a.patronFirst < b.patronFirst) return 1;else if (a.patronFirst > b.patronFirst) return -1;else if (a.title < b.title) return 1;else if (a.title > b.title) return -1;else return 0;
+      });
+      break;
+    case "expDateAsc":
+      waitingHolds.sort(function (a, b) {
+        if (a.expirationDate < b.expirationDate) return -1;else if (a.expirationDate > b.expirationDate) return 1;else if (a.patronLast < b.patronLast) return -1;else if (a.patronLast > b.patronLast) return 1;else if (a.patronFirst < b.patronFirst) return -1;else if (a.patronFirst > b.patronFirst) return 1;else if (a.title < b.title) return -1;else if (a.title > b.title) return 1;else return 0;
+      });
+      break;
+    case "expDateDesc":
+      waitingHolds.sort(function (a, b) {
+        if (a.expirationDate < b.expirationDate) return 1;else if (a.expirationDate > b.expirationDate) return -1;else if (a.patronLast < b.patronLast) return 1;else if (a.patronLast > b.patronLast) return -1;else if (a.patronFirst < b.patronFirst) return 1;else if (a.patronFirst > b.patronFirst) return -1;else if (a.title < b.title) return 1;else if (a.title > b.title) return -1;else return 0;
+      });
+      break;
+    case "patornDesc":
+      waitingHolds.sort(function (a, b) {
+        if (a.patronLast < b.patronLast) return 1;else if (a.patronLast > b.patronLast) return -1;else if (a.patronFirst < b.patronFirst) return 1;else if (a.patronFirst > b.patronFirst) return -1;else if (a.expirationDate < b.expirationDate) return 1;else if (a.expirationDate > b.expirationDate) return -1;else if (a.title < b.title) return 1;else if (a.title > b.title) return -1;else return 0;
+      });
+      break;
+    case "PatronAsc":
     default:
       waitingHolds.sort(function (a, b) {
         if (a.patronLast < b.patronLast) return -1;else if (a.patronLast > b.patronLast) return 1;else if (a.patronFirst < b.patronFirst) return -1;else if (a.patronFirst > b.patronFirst) return 1;else if (a.expirationDate < b.expirationDate) return -1;else if (a.expirationDate > b.expirationDate) return 1;else if (a.title < b.title) return -1;else if (a.title > b.title) return 1;else return 0;
@@ -81,17 +101,12 @@ function sortWaitingHolds(waitingHolds, sortCode, limitType, limitDate) {
   }
 
   for (var i = 0; i < waitingHolds.length; i++) {
-    if (limitDate && limitDate === waitingHolds[i].expirationDate) {
-      var expirationDate = document.createElement('td');
-      expirationDate.textContent = waitingHolds[i].expirationDate;
-
-      waitingHolds[i].html.insertBefore(expirationDate, waitingHolds[i].html.children[1]);
-      newTBody.appendChild(waitingHolds[i].html);
-    } else if (!limitDate) {
-      var expirationDate = document.createElement('td');
-      expirationDate.textContent = waitingHolds[i].expirationDate;
-
-      waitingHolds[i].html.insertBefore(expirationDate, waitingHolds[i].html.children[1]);
+    /** If limitDate has a non-empty value, and either
+      * 1) The avaialableSince filter is selected and matches the object's available date
+      * 2) The heldThrough filter is selected and matches the object's exxpiration date
+      * Or there is no filter selected, add teh object to the sorted table
+      */
+    if (limitDate && dateType && dateType === "availableSince" && waitingHolds.availableSince === limitDate.value || limitDate && dateType && dateType === "heldThrough" && waitingHolds.expirationDate === limitDate.value || !limitDate) {
       newTBody.appendChild(waitingHolds[i].html);
     }
   }
@@ -100,12 +115,25 @@ function sortWaitingHolds(waitingHolds, sortCode, limitType, limitDate) {
   holdTable.appendChild(newTBody);
 }
 
-// Gather table data
+// Insert "Item held through" header
 holdTableHead.children[0].insertBefore(expirationDateTH, holdTableHead.children[0].children[1]);
 
 // Extract table data
 if (holdTable && trArray) {
-  sortWaitingHolds(waitingHolds, "", "", "09/14/2017");
+  for (var i = 0; i < trArray.length; i++) {
+    waitingHolds.push(new WaitingHold(trArray[i]));
+    numWaitingHolds++;
+
+    var expirationDate = document.createElement('td');
+    expirationDate.textContent = waitingHolds[i].expirationDate;
+
+    waitingHolds[i].html.insertBefore(expirationDate, waitingHolds[i].html.children[1]);
+  }
+}
+
+// Sort and display data
+if (holdTable && trArray) {
+  sortWaitingHolds(waitingHolds, sortCode, null, null);
 }
 
 // Generate sort options
@@ -137,8 +165,20 @@ dateFilter.type = "text";
 dateFilter.placeholder = "MM/DD/YYYY";
 dateFilter.addEventListener('input', function (e) {
   var df = document.getElementById('dateFilter');
+  if (df.value.length > 10) {
+    df.value = df.value.substring(0, 10);
+  }
   if (df.value.length == 10) {
-    sortWaitingHolds(waitingHolds, "", "", df.value);
+    if (document.getElementById('heldThrough').checked) {
+      isDateFiltered = true;
+      sortWaitingHolds(waitingHolds, sortCode, "heldThrough", df.value);
+    } else if (document.getElementById('availableSince').checked) {
+      isDateFiltered = true;
+      sortWaitingHolds(waitingHolds, sortCode, "availableSince", df.value);
+    }
+  } else if (isDateFiltered) {
+    isDateFiltered = false;
+    sortWaitingHolds(waitingHolds, "PatronAsc", null, null);
   }
 });
 
