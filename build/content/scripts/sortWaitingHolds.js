@@ -71,8 +71,6 @@ function sortWaitingHolds(waitingHolds, sortCode, dateType, limitDate) {
   if (sortDirection) {
     sortDirection = sortDirection.checked ? "Asc" : "Desc";
   }
-  console.log(dateType + ", " + limitDate);
-  console.log(sortCode + sortDirection);
   switch (sortCode + sortDirection) {
     case "availableDateAsc":
       waitingHolds.sort(function (a, b) {
@@ -146,10 +144,13 @@ if (holdTable && trArray) {
 var sortWrapper = document.createElement('div'),
     title = document.createElement('span'),
     dateTypeWrapper = document.createElement('span'),
+    sortTypeWrapper = document.createElement('span'),
     availableSinceLabel = document.createElement('label'),
     availableSince = document.createElement('input'),
     br = document.createElement('br'),
     br2 = document.createElement('br'),
+    br3 = document.createElement('br'),
+    br4 = document.createElement('br'),
     heldThroughLabel = document.createElement('label'),
     heldThrough = document.createElement('input'),
     dateFilterLabel = document.createElement('label'),
@@ -158,7 +159,13 @@ var sortWrapper = document.createElement('div'),
     ascLabel = document.createElement('label'),
     asc = document.createElement('input'),
     descLabel = document.createElement('label'),
-    desc = document.createElement('input');
+    desc = document.createElement('input'),
+    availableSinceSortLabel = document.createElement('label'),
+    availableSinceSort = document.createElement('input'),
+    heldThroughSortLabel = document.createElement('label'),
+    heldThroughSort = document.createElement('input'),
+    patronSortLabel = document.createElement('label'),
+    patronSort = document.createElement('input');
 
 // Define input fields
 availableSince.name = "dateType";
@@ -166,11 +173,27 @@ availableSince.value = "availableSince";
 availableSince.id = "availableSince";
 availableSince.type = "radio";
 
+availableSinceSort.name = "sortType";
+availableSinceSort.value = "availableSinceSort";
+availableSinceSort.id = "availableSinceSort";
+availableSinceSort.type = "radio";
+
 heldThrough.name = "dateType";
 heldThrough.value = "heldThrough";
 heldThrough.id = "heldThrough";
 heldThrough.type = "radio";
 heldThrough.checked = true;
+
+heldThroughSort.name = "sortType";
+heldThroughSort.value = "heldThroughSort";
+heldThroughSort.id = "heldThroughSort";
+heldThroughSort.type = "radio";
+
+patronSort.name = "sortType";
+patronSort.value = "patronSort";
+patronSort.id = "patronSort";
+patronSort.type = "radio";
+patronSort.checked = true;
 
 asc.name = "sortDirection";
 asc.value = "Asc";
@@ -187,12 +210,71 @@ dateFilter.id = "dateFilter";
 dateFilter.type = "text";
 dateFilter.setAttribute("style", "font-weight: normal;");
 dateFilter.placeholder = "MM/DD/YYYY";
-dateFilter.addEventListener('input', function (e) {
+dateFilter.addEventListener('keyup', function (e) {
   var df = document.getElementById('dateFilter'),
       sortCode = "patron";
-  if (df.value.length > 10) {
-    df.value = df.value.substring(0, 10);
-  } else if (isDateFiltered) {
+
+  switch (df.value.length) {
+    case 1:
+      if (!df.value.match(/[01]/)) {
+        df.value = "";
+      }
+      break;
+    case 2:
+      if (!df.value.match(/0[1-9]|1[0-2]/)) {
+        df.value = df.value.substring(0, 1);
+      } else if (e.keyCode !== 8 && e.keyCode !== 46) {
+        df.value += "/";
+      }
+      break;
+    case 3:
+      if (!df.value.match(/(0[1-9]|1[0-2])\//)) {
+        df.value = df.value.substring(0, 2);
+      }
+      break;
+    case 4:
+      if (!df.value.match(/(0[1-9]|1[0-2])\/[0-3]/)) {
+        df.value = df.value.substring(0, 3);
+      }
+      break;
+    case 5:
+      if (!df.value.match(/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])/)) {
+        df.value = df.value.substring(0, 4);
+      } else if (e.keyCode !== 8 && e.keyCode !== 46) {
+        df.value += "/";
+      }
+      break;
+    case 6:
+      if (!df.value.match(/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\//)) {
+        df.value = df.value.substring(0, 5);
+      }
+      break;
+    case 7:
+      if (!df.value.match(/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/2/)) {
+        df.value = df.value.substring(0, 6);
+      }
+      break;
+    case 8:
+      if (!df.value.match(/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/2[01]/)) {
+        df.value = df.value.substring(0, 7);
+      }
+      break;
+    case 9:
+      if (!df.value.match(/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/2[01][0-9]/)) {
+        df.value = df.value.substring(0, 8);
+      }
+      break;
+    case 10:
+      if (!df.value.match(/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/2[01][0-9]{2}/)) {
+        df.value = df.value.substring(0, 9);
+      }
+      break;
+    default:
+      df.value = df.value.substring(0, 10);
+      break;
+  }
+
+  if (df.value.length < 10 && isDateFiltered) {
     isDateFiltered = false;
     asc.checked = true;
     desc.checked = false;
@@ -214,10 +296,25 @@ availableSinceLabel.setAttribute("style", "cursor:pointer");
 availableSinceLabel.textContent = "Available Since: ";
 availableSinceLabel.appendChild(availableSince);
 
+availableSinceSortLabel.setAttribute("for", "availableSinceSort");
+availableSinceSortLabel.setAttribute("style", "cursor:pointer");
+availableSinceSortLabel.textContent = "Available Since: ";
+availableSinceSortLabel.appendChild(availableSinceSort);
+
 heldThroughLabel.setAttribute("for", "heldThrough");
 heldThroughLabel.setAttribute("style", "cursor:pointer");
 heldThroughLabel.textContent = "Held Through: ";
 heldThroughLabel.appendChild(heldThrough);
+
+heldThroughSortLabel.setAttribute("for", "heldThroughSort");
+heldThroughSortLabel.setAttribute("style", "cursor:pointer");
+heldThroughSortLabel.textContent = "Held Through: ";
+heldThroughSortLabel.appendChild(heldThroughSort);
+
+patronSortLabel.setAttribute("for", "patronSort");
+patronSortLabel.setAttribute("style", "cursor:pointer");
+patronSortLabel.textContent = "Held Through: ";
+patronSortLabel.appendChild(patronSort);
 
 ascLabel.setAttribute("for", "Asc");
 ascLabel.setAttribute("style", "cursor:pointer");
@@ -234,7 +331,7 @@ dateFilterLabel.setAttribute("style", "margin-left:2.5em;font-weight:bold;");
 dateFilterLabel.textContent = "Filter Date: ";
 dateFilterLabel.appendChild(dateFilter);
 
-// Append lables to wrapper elements
+// Append labels to wrapper elements
 sortWrapper.id = "sortWrapper";
 sortWrapper.setAttribute("style", "margin:1em;");
 
@@ -251,8 +348,16 @@ sortDirectionWrapper.appendChild(ascLabel);
 sortDirectionWrapper.appendChild(br2);
 sortDirectionWrapper.appendChild(descLabel);
 
+sortTypeWrapper.setAttribute("style", "display:inline-block;vertical-align:middle;text-align:right;margin-right:2.5em;");
+sortTypeWrapper.appendChild(patronSortLabel);
+sortTypeWrapper.appendChild(br3);
+sortTypeWrapper.appendChild(availableSinceSortLabel);
+sortTypeWrapper.appendChild(br4);
+sortTypeWrapper.appendChild(heldThroughSortLabel);
+
 // Compile sort wrapper
 sortWrapper.appendChild(title);
+sortWrapper.appendChild(sortTypeWrapper);
 sortWrapper.appendChild(sortDirectionWrapper);
 sortWrapper.appendChild(dateFilterLabel);
 sortWrapper.appendChild(dateTypeWrapper);
