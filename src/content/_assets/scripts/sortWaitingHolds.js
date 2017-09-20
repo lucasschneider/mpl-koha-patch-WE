@@ -8,7 +8,7 @@ var holdTable = document.getElementById('holdst'),
   newTBody,
   waitingHolds = [],
   numWaitingHolds = 0,
-  sortCode = "patronAsc",
+  sortCode = "patron",
   isDateFiltered = false;
 
 // Create expiration date header
@@ -65,7 +65,14 @@ function WaitingHold(htmlTR) {
   **/
 function sortWaitingHolds(waitingHolds, sortCode, dateType, limitDate) {  
   newTBody = document.createElement('tbody');
-  switch(sortCode) {
+  var sortDirection = document.getElementById('Asc');
+
+  if (sortDirection) {
+    sortDirection = sortDirection.checked ? "Asc" : "Desc";
+  }
+  console.log(dateType+", "+limitDate);
+  console.log(sortCode+sortDirection);
+  switch(sortCode+sortDirection) {
     case "availableDateAsc":
       waitingHolds.sort(function(a, b) {
         if (a.availableSince < b.availableSince) return -1;
@@ -131,33 +138,31 @@ function sortWaitingHolds(waitingHolds, sortCode, dateType, limitDate) {
         else return 0;
       });
 	  break;
-	case "PatronAsc":
-    default:
-      waitingHolds.sort(function(a, b) {
-        if (a.patronLast < b.patronLast) return -1;
-        else if (a.patronLast > b.patronLast) return 1;
-        else if (a.patronFirst < b.patronFirst) return -1;
-        else if (a.patronFirst > b.patronFirst) return 1;
-        else if (a.expirationDate < b.expirationDate) return -1;
-        else if (a.expirationDate > b.expirationDate) return 1;
-        else if (a.title < b.title) return -1;
-        else if (a.title > b.title) return 1;
-        else return 0;
-      });
+	case "patronAsc":
+  default:
+    waitingHolds.sort(function(a, b) {
+      if (a.patronLast < b.patronLast) return -1;
+      else if (a.patronLast > b.patronLast) return 1;
+      else if (a.patronFirst < b.patronFirst) return -1;
+      else if (a.patronFirst > b.patronFirst) return 1;
+      else if (a.expirationDate < b.expirationDate) return -1;
+      else if (a.expirationDate > b.expirationDate) return 1;
+      else if (a.title < b.title) return -1;
+      else if (a.title > b.title) return 1;
+      else return 0;
+    });
 	  break;
   }
-  
+
   for (var i = 0; i < waitingHolds.length; i++) {
     /** If limitDate has a non-empty value, and either
       * 1) The avaialableSince filter is selected and matches the object's available date
       * 2) The heldThrough filter is selected and matches the object's exxpiration date
       * Or there is no filter selected, add teh object to the sorted table
       */
-    if (((limitDate && dateType && dateType === "availableSince"
-              && waitingHolds.availableSince === limitDate.value)
-          || (limitDate && dateType && dateType === "heldThrough"
-              && waitingHolds.expirationDate === limitDate.value))
-          || !limitDate) {
+    if (!limitDate) {
+      newTBody.appendChild(waitingHolds[i].html);
+    } else if (limitDate && dateType && dateType === "heldThrough" && waitingHolds[i].expirationDate === limitDate) {
       newTBody.appendChild(waitingHolds[i].html);
     }
   }
@@ -169,7 +174,7 @@ function sortWaitingHolds(waitingHolds, sortCode, dateType, limitDate) {
 // Insert "Item held through" header
 holdTableHead.children[0].insertBefore(expirationDateTH, holdTableHead.children[0].children[1]);
 
-// Extract table data
+// Extract, sort, and display table data
 if (holdTable && trArray) {
   for (var i = 0; i < trArray.length; i++) {
     waitingHolds.push(new WaitingHold(trArray[i]));
@@ -180,10 +185,7 @@ if (holdTable && trArray) {
     
     waitingHolds[i].html.insertBefore(expirationDate, waitingHolds[i].html.children[1]);
   }
-}
-
-// Sort and display data
-if (holdTable && trArray) {
+  
   sortWaitingHolds(waitingHolds, sortCode, null, null);
 }
 
@@ -194,10 +196,16 @@ var sortWrapper = document.createElement('div'),
   availableSinceLabel = document.createElement('label'),
   availableSince = document.createElement('input'),
   br = document.createElement('br'),
+  br2 = document.createElement('br'),
   heldThroughLabel = document.createElement('label'),
   heldThrough = document.createElement('input'),
   dateFilterLabel = document.createElement('label'),
-  dateFilter = document.createElement('input');
+  dateFilter = document.createElement('input'),
+  sortDirectionWrapper = document.createElement('span'),
+  ascLabel = document.createElement('label'),
+  asc = document.createElement('input'),
+  descLabel = document.createElement('label'),
+  desc = document.createElement('input');
   
 // Define input fields
 availableSince.name = "dateType";
@@ -211,25 +219,39 @@ heldThrough.id = "heldThrough";
 heldThrough.type = "radio";
 heldThrough.checked = true;
 
+asc.name = "sortDirection";
+asc.value = "Asc";
+asc.id = "Asc";
+asc.type = "radio";
+asc.checked = true;
+
+desc.name = "sortDirection";
+desc.value = "Desc";
+desc.id = "Desc";
+desc.type = "radio";
+
 dateFilter.id = "dateFilter";
 dateFilter.type = "text";
+dateFilter.setAttribute("style","font-weight: normal;");
 dateFilter.placeholder = "MM/DD/YYYY";
 dateFilter.addEventListener('input', function (e) {
-  var df = document.getElementById('dateFilter');
+  var df = document.getElementById('dateFilter'),
+    sortCode = "patron";
   if (df.value.length > 10) {
     df.value = df.value.substring(0,10);
-  }
-  if (df.value.length == 10) {
-    if (document.getElementById('heldThrough').checked) {
+  } else if (isDateFiltered) {
+    isDateFiltered = false;
+    asc.checked = true;
+    desc.checked = false;
+    sortWaitingHolds(waitingHolds, "patronAsc", null, null);
+  } else {
+    if (df.value.length == 10 && document.getElementById('heldThrough').checked) {
       isDateFiltered = true;
       sortWaitingHolds(waitingHolds, sortCode, "heldThrough", df.value);
-    } else if (document.getElementById('availableSince').checked) {
+    } else if (df.value.length == 10 && document.getElementById('availableSince').checked) {
       isDateFiltered = true;
       sortWaitingHolds(waitingHolds, sortCode, "availableSince", df.value);
     }
-  } else if (isDateFiltered) {
-    isDateFiltered = false;
-    sortWaitingHolds(waitingHolds, "PatronAsc", null, null);
   }
 });
 
@@ -244,9 +266,19 @@ heldThroughLabel.setAttribute("style","cursor:pointer");
 heldThroughLabel.textContent = "Held Through: ";
 heldThroughLabel.appendChild(heldThrough);
 
+ascLabel.setAttribute("for", "Asc");
+ascLabel.setAttribute("style","cursor:pointer");
+ascLabel.textContent = "ASC: ";
+ascLabel.appendChild(asc);
+
+descLabel.setAttribute("for", "Desc");
+descLabel.setAttribute("style","cursor:pointer");
+descLabel.textContent = "DESC: ";
+descLabel.appendChild(desc);
+
 dateFilterLabel.setAttribute("for","dateFilter");
-dateFilterLabel.setAttribute("style","margin-left:2.5em;");
-dateFilterLabel.textContent = "Date: ";
+dateFilterLabel.setAttribute("style","margin-left:2.5em;font-weight:bold;");
+dateFilterLabel.textContent = "Filter Date: ";
 dateFilterLabel.appendChild(dateFilter);
 
 // Append lables to wrapper elements
@@ -254,16 +286,22 @@ sortWrapper.id = "sortWrapper";
 sortWrapper.setAttribute("style","margin:1em;");
 
 title.setAttribute("style","font-weight:bold;margin-right:2.5em;");
-title.textContent = "Limit by Date: ";
+title.textContent = "Sort Options: ";
 
-dateTypeWrapper.setAttribute("style","display:inline-block;vertical-align:middle;text-align:right;");
+dateTypeWrapper.setAttribute("style","display:inline-block;vertical-align:middle;text-align:right;margin-left:2.5em;");
 dateTypeWrapper.appendChild(availableSinceLabel);
 dateTypeWrapper.appendChild(br);
 dateTypeWrapper.appendChild(heldThroughLabel);
 
+sortDirectionWrapper.setAttribute("style","display:inline-block;vertical-align:middle;text-align:right;");
+sortDirectionWrapper.appendChild(ascLabel);
+sortDirectionWrapper.appendChild(br2);
+sortDirectionWrapper.appendChild(descLabel);
+
 // Compile sort wrapper
 sortWrapper.appendChild(title);
-sortWrapper.appendChild(dateTypeWrapper);
+sortWrapper.appendChild(sortDirectionWrapper);
 sortWrapper.appendChild(dateFilterLabel);
+sortWrapper.appendChild(dateTypeWrapper);
 
 document.getElementsByClassName('yui-g')[0].insertBefore(sortWrapper,document.getElementsByClassName('yui-g')[0].children[1]);
