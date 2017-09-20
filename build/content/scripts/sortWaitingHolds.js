@@ -10,10 +10,9 @@ var holdTable = document.getElementById('holdst'),
     waitingHolds = [],
     numWaitingHolds = 0,
     sortCode = "patron",
-    isDateFiltered = false;
+    isDateFiltered = false,
+    expirationDateTH = document.createElement('th');
 
-// Create expiration date header
-var expirationDateTH = document.createElement('th');
 expirationDateTH.textContent = "Item held through";
 
 /** Define function to add days to date **/
@@ -66,33 +65,29 @@ function WaitingHold(htmlTR) {
   **/
 function sortWaitingHolds(waitingHolds, sortCode, dateType, limitDate) {
   newTBody = document.createElement('tbody');
-  var sortDirection = document.getElementById('Asc');
 
-  if (sortDirection) {
-    sortDirection = sortDirection.checked ? "Asc" : "Desc";
-  }
-  switch (sortCode + sortDirection) {
-    case "availableDateAsc":
+  switch (sortCode) {
+    case "availableSinceAsc":
       waitingHolds.sort(function (a, b) {
         if (a.availableSince < b.availableSince) return -1;else if (a.availableSince > b.availableSince) return 1;else if (a.patronLast < b.patronLast) return -1;else if (a.patronLast > b.patronLast) return 1;else if (a.patronFirst < b.patronFirst) return -1;else if (a.patronFirst > b.patronFirst) return 1;else if (a.title < b.title) return -1;else if (a.title > b.title) return 1;else return 0;
       });
       break;
-    case "availableDateDesc":
+    case "availableSinceDesc":
       waitingHolds.sort(function (a, b) {
         if (a.availableSince < b.availableSince) return 1;else if (a.availableSince > b.availableSince) return -1;else if (a.patronLast < b.patronLast) return 1;else if (a.patronLast > b.patronLast) return -1;else if (a.patronFirst < b.patronFirst) return 1;else if (a.patronFirst > b.patronFirst) return -1;else if (a.title < b.title) return 1;else if (a.title > b.title) return -1;else return 0;
       });
       break;
-    case "expDateAsc":
+    case "heldThroughAsc":
       waitingHolds.sort(function (a, b) {
         if (a.expirationDate < b.expirationDate) return -1;else if (a.expirationDate > b.expirationDate) return 1;else if (a.patronLast < b.patronLast) return -1;else if (a.patronLast > b.patronLast) return 1;else if (a.patronFirst < b.patronFirst) return -1;else if (a.patronFirst > b.patronFirst) return 1;else if (a.title < b.title) return -1;else if (a.title > b.title) return 1;else return 0;
       });
       break;
-    case "expDateDesc":
+    case "heldThroughDesc":
       waitingHolds.sort(function (a, b) {
         if (a.expirationDate < b.expirationDate) return 1;else if (a.expirationDate > b.expirationDate) return -1;else if (a.patronLast < b.patronLast) return 1;else if (a.patronLast > b.patronLast) return -1;else if (a.patronFirst < b.patronFirst) return 1;else if (a.patronFirst > b.patronFirst) return -1;else if (a.title < b.title) return 1;else if (a.title > b.title) return -1;else return 0;
       });
       break;
-    case "patornDesc":
+    case "patronDesc":
       waitingHolds.sort(function (a, b) {
         if (a.patronLast < b.patronLast) return 1;else if (a.patronLast > b.patronLast) return -1;else if (a.patronFirst < b.patronFirst) return 1;else if (a.patronFirst > b.patronFirst) return -1;else if (a.expirationDate < b.expirationDate) return 1;else if (a.expirationDate > b.expirationDate) return -1;else if (a.title < b.title) return 1;else if (a.title > b.title) return -1;else return 0;
       });
@@ -115,11 +110,56 @@ function sortWaitingHolds(waitingHolds, sortCode, dateType, limitDate) {
       newTBody.appendChild(waitingHolds[i].html);
     } else if (limitDate && dateType && dateType === "heldThrough" && waitingHolds[i].expirationDate === limitDate) {
       newTBody.appendChild(waitingHolds[i].html);
+    } else if (limitDate && dateType && dateType === "availableSince" && waitingHolds[i].availableSince === limitDate) {
+      newTBody.appendChild(waitingHolds[i].html);
     }
   }
 
   holdTable.children[1].remove();
   holdTable.appendChild(newTBody);
+}
+
+/**
+  * waitingHolds: An array of WaitingHold objects to be sorted and displayed
+  */
+function updateHoldTable(waitingHolds) {
+  var sortCodeVal = "",
+      dateTypeVal = "",
+      limitDateVal = "",
+      patronSort = document.getElementById('patronSort'),
+      availableSinceSort = document.getElementById('availableSinceSort'),
+      heldThroughSort = document.getElementById('heldThroughSort'),
+      asc = document.getElementById('Asc'),
+      desc = document.getElementById('Desc'),
+      dateFilter = document.getElementById('dateFilter'),
+      availableSince = document.getElementById('availableSince'),
+      heldThrough = document.getElementById('heldThrough');
+
+  if (dateFilter) {
+    limitDateVal = dateFilter.value;
+  }
+
+  if (patronSort && patronSort.checked == true) {
+    sortCodeVal = "patron";
+  } else if (availableSinceSort && availableSinceSort.checked == true) {
+    sortCodeVal = "availableSince";
+  } else if (heldThroughSort && heldThroughSort.checked == true) {
+    sortCodeVal = "heldThrough";
+  }
+
+  if (asc && asc.checked) {
+    sortCodeVal += "Asc";
+  } else {
+    sortCodeVal += "Desc";
+  }
+
+  if (availableSince && availableSince.checked == true) {
+    dateTypeVal = "availableSince";
+  } else if (heldThrough && heldThrough.checked == true) {
+    dateTypeVal = "heldThrough";
+  }
+
+  sortWaitingHolds(waitingHolds, sortCodeVal, dateTypeVal, limitDateVal);
 }
 
 // Insert "Item held through" header
@@ -172,47 +212,71 @@ availableSince.name = "dateType";
 availableSince.value = "availableSince";
 availableSince.id = "availableSince";
 availableSince.type = "radio";
+availableSince.addEventListener('click', function () {
+  var dateFilter = document.getElementById('dateFilter');if (dateFilter && dateFilter.value) {
+    updateHoldTable(waitingHolds);
+  }
+});
 
 availableSinceSort.name = "sortType";
 availableSinceSort.value = "availableSinceSort";
 availableSinceSort.id = "availableSinceSort";
 availableSinceSort.type = "radio";
+availableSinceSort.addEventListener('click', function () {
+  updateHoldTable(waitingHolds);
+});
 
 heldThrough.name = "dateType";
 heldThrough.value = "heldThrough";
 heldThrough.id = "heldThrough";
 heldThrough.type = "radio";
 heldThrough.checked = true;
+heldThrough.addEventListener('click', function () {
+  var dateFilter = document.getElementById('dateFilter');if (dateFilter && dateFilter.value) {
+    updateHoldTable(waitingHolds);
+  }
+});
 
 heldThroughSort.name = "sortType";
 heldThroughSort.value = "heldThroughSort";
 heldThroughSort.id = "heldThroughSort";
 heldThroughSort.type = "radio";
+heldThroughSort.addEventListener('click', function () {
+  updateHoldTable(waitingHolds);
+});
 
 patronSort.name = "sortType";
 patronSort.value = "patronSort";
 patronSort.id = "patronSort";
 patronSort.type = "radio";
 patronSort.checked = true;
+patronSort.addEventListener('click', function () {
+  updateHoldTable(waitingHolds);
+});
 
 asc.name = "sortDirection";
 asc.value = "Asc";
 asc.id = "Asc";
 asc.type = "radio";
 asc.checked = true;
+asc.addEventListener('click', function () {
+  updateHoldTable(waitingHolds);
+});
 
 desc.name = "sortDirection";
 desc.value = "Desc";
 desc.id = "Desc";
 desc.type = "radio";
+desc.addEventListener('click', function () {
+  updateHoldTable(waitingHolds);
+});
 
 dateFilter.id = "dateFilter";
 dateFilter.type = "text";
 dateFilter.setAttribute("style", "font-weight: normal;");
 dateFilter.placeholder = "MM/DD/YYYY";
 dateFilter.addEventListener('keyup', function (e) {
-  var df = document.getElementById('dateFilter'),
-      sortCode = "patron";
+  var df = document.getElementById('dateFilter');
 
   switch (df.value.length) {
     case 1:
@@ -276,17 +340,10 @@ dateFilter.addEventListener('keyup', function (e) {
 
   if (df.value.length < 10 && isDateFiltered) {
     isDateFiltered = false;
-    asc.checked = true;
-    desc.checked = false;
-    sortWaitingHolds(waitingHolds, "patronAsc", null, null);
-  } else {
-    if (df.value.length == 10 && document.getElementById('heldThrough').checked) {
-      isDateFiltered = true;
-      sortWaitingHolds(waitingHolds, sortCode, "heldThrough", df.value);
-    } else if (df.value.length == 10 && document.getElementById('availableSince').checked) {
-      isDateFiltered = true;
-      sortWaitingHolds(waitingHolds, sortCode, "availableSince", df.value);
-    }
+    updateHoldTable(waitingHolds);
+  } else if (df.value.length === 10) {
+    isDateFiltered = true;
+    updateHoldTable(waitingHolds);
   }
 });
 
@@ -295,36 +352,43 @@ availableSinceLabel.setAttribute("for", "availableSince");
 availableSinceLabel.setAttribute("style", "cursor:pointer");
 availableSinceLabel.textContent = "Available Since: ";
 availableSinceLabel.appendChild(availableSince);
+//availableSinceLabel.addEventListener('click',function() {updateHoldTable(waitingHolds);});
 
 availableSinceSortLabel.setAttribute("for", "availableSinceSort");
 availableSinceSortLabel.setAttribute("style", "cursor:pointer");
 availableSinceSortLabel.textContent = "Available Since: ";
 availableSinceSortLabel.appendChild(availableSinceSort);
+//availableSinceSortLabel.addEventListener('click',function() {updateHoldTable(waitingHolds);});
 
 heldThroughLabel.setAttribute("for", "heldThrough");
 heldThroughLabel.setAttribute("style", "cursor:pointer");
 heldThroughLabel.textContent = "Held Through: ";
 heldThroughLabel.appendChild(heldThrough);
+//heldThroughLabel.addEventListener('click',function() {updateHoldTable(waitingHolds);});
 
 heldThroughSortLabel.setAttribute("for", "heldThroughSort");
 heldThroughSortLabel.setAttribute("style", "cursor:pointer");
 heldThroughSortLabel.textContent = "Held Through: ";
 heldThroughSortLabel.appendChild(heldThroughSort);
+//heldThroughSortLabel.addEventListener('click',function() {updateHoldTable(waitingHolds);});
 
 patronSortLabel.setAttribute("for", "patronSort");
 patronSortLabel.setAttribute("style", "cursor:pointer");
-patronSortLabel.textContent = "Held Through: ";
+patronSortLabel.textContent = "Patron: ";
 patronSortLabel.appendChild(patronSort);
+//patronSortLabel.addEventListener('click',function() {updateHoldTable(waitingHolds);});
 
 ascLabel.setAttribute("for", "Asc");
 ascLabel.setAttribute("style", "cursor:pointer");
 ascLabel.textContent = "ASC: ";
 ascLabel.appendChild(asc);
+//ascLabel.addEventListener('click',function() {updateHoldTable(waitingHolds);});
 
 descLabel.setAttribute("for", "Desc");
 descLabel.setAttribute("style", "cursor:pointer");
 descLabel.textContent = "DESC: ";
 descLabel.appendChild(desc);
+//descLabel.addEventListener('click',function() {updateHoldTable(waitingHolds);});
 
 dateFilterLabel.setAttribute("for", "dateFilter");
 dateFilterLabel.setAttribute("style", "margin-left:2.5em;font-weight:bold;");
@@ -333,7 +397,7 @@ dateFilterLabel.appendChild(dateFilter);
 
 // Append labels to wrapper elements
 sortWrapper.id = "sortWrapper";
-sortWrapper.setAttribute("style", "margin:1em;");
+sortWrapper.setAttribute("style", "margin:1em;width:100%");
 
 title.setAttribute("style", "font-weight:bold;margin-right:2.5em;");
 title.textContent = "Sort Options: ";
