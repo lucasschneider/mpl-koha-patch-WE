@@ -219,14 +219,13 @@ function queryPSTAT(addr, city, queryB, secondPass) {
     setTimeout(function() {
       if (result !== null && result.textContent === '') {
         result.setAttribute('style', 'display:inline-block;color:#a5a500;');
-        result.textContent = '[NOTE: Server slow to respond—please enter zipcode and sort field manually]';
+        result.textContent = '[NOTE: Server slow to respondâ€”please enter zipcode and sort field manually]';
       }
     }, 12000);
-
-    function handleResponse(message) {
-      switch (message.key) {
-        case "receivedGeocoderQuery":
-          if (message.hasData) {
+    
+    browser.runtime.onMessage.addListener(message => {
+      if (message) {
+        if (message.hasData) {
             var matchAddr = message.matchAddr.split(',')[0].toUpperCase(),
               sortID = "X-UND",
               generatedZip = message.zip,
@@ -1856,7 +1855,11 @@ function queryPSTAT(addr, city, queryB, secondPass) {
               result.textContent = "[FAILED: unable to determine county; please enter PSTAT manually.]";
             }
           }
-          break;
+      }
+    });
+
+    function handleResponse(message) {
+      switch (message.key) {
         case "receivedNearestLib":
           var branchList = document.getElementById('branchcode'),
             msg = document.getElementById("nearestMPL"),
@@ -1921,7 +1924,7 @@ function queryPSTAT(addr, city, queryB, secondPass) {
 // Listener for selecting the PSTAT value by a patron's
 // secondary address rather than their primary address
 browser.runtime.onMessage.addListener((request) => {
-  if (request.key = "querySecondaryPSTAT") {
+  if (request.key == "querySecondaryPSTAT") {
     var qspElt = document.getElementById('querySecondaryPSTAT'),
       addrB = document.getElementById('B_address'),
       cityB = document.getElementById('B_city');

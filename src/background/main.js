@@ -263,27 +263,34 @@ function handleMessages(request, sender, sendResponse) {
                 countySub = match.geographies[ 'County Subdivisions' ][0].NAME;
                 censusTract = match.geographies[ 'Census Tracts' ][0].BASENAME;
                 zip = match[ 'addressComponents' ].zip;
+                
+                function onError(error) {
+                  console.error(`Error: ${error}`);
+                }
+                
+                function sendGeocoderResponse(tabs) {
+                  for (let tab of tabs) {
+                    browser.tabs.sendMessage(tab.id, {
+                      key: "receivedGeocoderQuery",
+                      hasData: true,
+                      matchAddr: matchAddr,
+                      county: county,
+                      countySub: countySub,
+                      censusTract: censusTract,
+                      zip: zip
+                    });
+                  }
+                }
+                
+                browser.tabs.query({
+                  currentWindow: true,
+                  active: true
+                }).then(sendGeocoderResponse).catch(onError);
               }
             }
           }
         }
       });
-      if (matchAddr && county && countySub && censusTract && zip) {
-        sendResponse({
-          key: "receivedGeocoderQuery",
-          hasData: true,
-          matchAddr: matchAddr,
-          county: county,
-          countySub: countySub,
-          censusTract: censusTract,
-          zip: zip
-        });
-      } else {
-        sendResponse({
-          key: "receivedGeocoderQuery",
-          hasData: false
-        });
-      }
       break;
     case "findNearestLib":
       var patronAddr = request.matchAddr4DistQuery,
@@ -686,20 +693,3 @@ weh.ui.update("settings",{
     type: "tab",
     contentURL: "content/settings.html"
 });
-
-/* if you don't need to activate the addon from the browser context menu,
-    - remove section below
-
-browser.contextMenus.create({
-    "title": weh._("title"),
-    "type": "normal",
-    "contexts":["page"],
-    "id": "weh-skeleton"
-});
-
-browser.contextMenus.onClicked.addListener(function(info) {
-    if(info.menuItemId == "weh-skeleton" ) {
-        // do something here
-    }
-});
-*/

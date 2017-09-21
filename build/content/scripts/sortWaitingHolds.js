@@ -397,7 +397,7 @@ dateFilterLabel.appendChild(dateFilter);
 
 // Append labels to wrapper elements
 sortWrapper.id = "sortWrapper";
-sortWrapper.setAttribute("style", "margin:1em;width:100%");
+sortWrapper.setAttribute("style", "margin:1em;width:950px;");
 
 title.setAttribute("style", "font-weight:bold;margin-right:2.5em;");
 title.textContent = "Sort Options: ";

@@ -233,32 +233,60 @@ function handleMessages(request, sender, sendResponse) {
             if (match) {
               match = match[0];
               if (match && match !== '') {
+                var onError = function onError(error) {
+                  console.error("Error: " + error);
+                };
+
+                var sendGeocoderResponse = function sendGeocoderResponse(tabs) {
+                  var _iteratorNormalCompletion2 = true;
+                  var _didIteratorError2 = false;
+                  var _iteratorError2 = undefined;
+
+                  try {
+                    for (var _iterator2 = tabs[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                      var tab = _step2.value;
+
+                      browser.tabs.sendMessage(tab.id, {
+                        key: "receivedGeocoderQuery",
+                        hasData: true,
+                        matchAddr: matchAddr,
+                        county: county,
+                        countySub: countySub,
+                        censusTract: censusTract,
+                        zip: zip
+                      });
+                    }
+                  } catch (err) {
+                    _didIteratorError2 = true;
+                    _iteratorError2 = err;
+                  } finally {
+                    try {
+                      if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                        _iterator2.return();
+                      }
+                    } finally {
+                      if (_didIteratorError2) {
+                        throw _iteratorError2;
+                      }
+                    }
+                  }
+                };
+
                 matchAddr = match.matchedAddress.split(',')[0].toUpperCase();
                 county = match.geographies.Counties[0].BASENAME;
                 countySub = match.geographies['County Subdivisions'][0].NAME;
                 censusTract = match.geographies['Census Tracts'][0].BASENAME;
                 zip = match['addressComponents'].zip;
+
+                browser.tabs.query({
+                  currentWindow: true,
+                  active: true
+                }).then(sendGeocoderResponse).catch(onError);
               }
             }
           }
         }
       });
-      if (matchAddr && county && countySub && censusTract && zip) {
-        sendResponse({
-          key: "receivedGeocoderQuery",
-          hasData: true,
-          matchAddr: matchAddr,
-          county: county,
-          countySub: countySub,
-          censusTract: censusTract,
-          zip: zip
-        });
-      } else {
-        sendResponse({
-          key: "receivedGeocoderQuery",
-          hasData: false
-        });
-      }
       break;
     case "findNearestLib":
       var patronAddr = request.matchAddr4DistQuery,
@@ -793,20 +821,3 @@ weh.ui.update("settings", {
   type: "tab",
   contentURL: "content/settings.html"
 });
-
-/* if you don't need to activate the addon from the browser context menu,
-    - remove section below
-
-browser.contextMenus.create({
-    "title": weh._("title"),
-    "type": "normal",
-    "contexts":["page"],
-    "id": "weh-skeleton"
-});
-
-browser.contextMenus.onClicked.addListener(function(info) {
-    if(info.menuItemId == "weh-skeleton" ) {
-        // do something here
-    }
-});
-*/
