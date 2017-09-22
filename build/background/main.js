@@ -349,6 +349,46 @@ function handleMessages(request, sender, sendResponse) {
       }
       $.getJSON(mapURL).done(function (response) {
         if (response) {
+          var onError = function onError(error) {
+            console.error("Error: " + error);
+          };
+
+          var sendMapResponse = function sendMapResponse(tabs) {
+            var _iteratorNormalCompletion3 = true;
+            var _didIteratorError3 = false;
+            var _iteratorError3 = undefined;
+
+            try {
+              for (var _iterator3 = tabs[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                var tab = _step3.value;
+
+                if (closestLib && closestLib != "") {
+                  browser.tabs.sendMessage(tab.id, {
+                    key: "receivedNearestLib",
+                    closestLib: closestLib
+                  });
+                } else {
+                  browser.tabs.sendMessage(tab.id, {
+                    key: "failedNearestLib"
+                  });
+                }
+              }
+            } catch (err) {
+              _didIteratorError3 = true;
+              _iteratorError3 = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                  _iterator3.return();
+                }
+              } finally {
+                if (_didIteratorError3) {
+                  throw _iteratorError3;
+                }
+              }
+            }
+          };
+
           var elements = response.rows[0].elements;
           if (elements) {
             switch (region) {
@@ -785,18 +825,13 @@ function handleMessages(request, sender, sendResponse) {
                 break;
             }
           }
+
+          browser.tabs.query({
+            currentWindow: true,
+            active: true
+          }).then(sendMapResponse).catch(onError);
         }
       });
-      if (closestLib && closestLib != "") {
-        sendResponse({
-          key: "receivedNearestLib",
-          closestLib: closestLib
-        });
-      } else {
-        sendResponse({
-          key: "failedNearestLib"
-        });
-      }
       break;
     case "printBarcode":
       browser.tabs.create({

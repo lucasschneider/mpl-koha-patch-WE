@@ -659,18 +659,33 @@ function handleMessages(request, sender, sendResponse) {
                 break;
             }
           }
+          
+          function onError(error) {
+            console.error(`Error: ${error}`);
+          }
+ 
+          function sendMapResponse(tabs) {
+            for (let tab of tabs) {
+              if (closestLib && closestLib != "") {
+                browser.tabs.sendMessage(tab.id, {
+                  key: "receivedNearestLib",
+                  closestLib: closestLib
+                });
+              } else {
+                browser.tabs.sendMessage(tab.id, {
+                  key: "failedNearestLib"
+                });
+              }
+            }
+          }
+
+          browser.tabs.query({
+            currentWindow: true,
+            active: true
+          }).then(sendMapResponse).catch(onError);
+
         }
       });
-      if (closestLib && closestLib != "") {
-            sendResponse({
-              key: "receivedNearestLib",
-              closestLib: closestLib
-            });
-          } else {
-            sendResponse({
-              key: "failedNearestLib"
-            });
-          }
       break;
     case "printBarcode":
       browser.tabs.create({

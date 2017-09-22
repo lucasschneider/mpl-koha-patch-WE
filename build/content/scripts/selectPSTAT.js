@@ -210,58 +210,6 @@ function queryPSTAT(addr, city, queryB, secondPass) {
       zipEltB = document.getElementById('B_zipcode');
 
   if (addr.value !== "" && city.value !== "" && selectList) {
-    var handleResponse = function handleResponse(message) {
-      switch (message.key) {
-        case "receivedNearestLib":
-          var branchList = document.getElementById('branchcode'),
-              msg = document.getElementById("nearestMPL"),
-              list = document.getElementById("mapRegionList");
-          if (branchList) {
-            branchList.value = message.closestLib;
-
-            if (list) {
-              list.remove();
-            }
-
-            if (msg) {
-              msg.remove();
-            }
-
-            msg = document.createElement('span');
-            msg.id = "nearestMPL";
-            msg.style = "display: inline-block;color:#00c000;margin-left:118px;";
-            msg.textContent = "< Success! >";
-            branchList.parentElement.appendChild(msg);
-          }
-          break;
-        case "failedNearestLib":
-          var branchList = document.getElementById('branchcode'),
-              msg = document.getElementById("nearestMPL"),
-              list = document.getElementById("mapRegionList");
-
-          if (branchList) {
-
-            if (list) {
-              list.remove();
-            }
-
-            if (msg) {
-              msg.remove();
-            }
-
-            msg = document.createElement('span');
-            msg.id = "nearestMPL";
-            msg.style = "display: inline-block;color:#c00;margin-left:118px;";
-            msg.textContent = "< Failed to retrieve map data >";
-            branchList.parentElement.appendChild(msg);
-          }
-          break;
-      }
-    };
-
-    var handleError = function handleError(error) {
-      console.log('Error: ' + error);
-    };
 
     addr.parentElement.appendChild(notice);
 
@@ -277,7 +225,7 @@ function queryPSTAT(addr, city, queryB, secondPass) {
     }, 12000);
 
     browser.runtime.onMessage.addListener(function (message) {
-      if (message) {
+      if (message && message.key === "receivedGeocoderQuery") {
         if (message.hasData) {
           var matchAddr = message.matchAddr.split(',')[0].toUpperCase(),
               sortID = "X-UND",
@@ -1912,13 +1860,63 @@ function queryPSTAT(addr, city, queryB, secondPass) {
       }
     });
 
+    browser.runtime.onMessage.addListener(function (message) {
+      if (message) {
+        switch (message.key) {
+          case "receivedNearestLib":
+            var branchList = document.getElementById('branchcode'),
+                msg = document.getElementById("nearestMPL"),
+                list = document.getElementById("mapRegionList");
+            if (branchList) {
+              branchList.value = message.closestLib;
+
+              if (list) {
+                list.remove();
+              }
+
+              if (msg) {
+                msg.remove();
+              }
+
+              msg = document.createElement('span');
+              msg.id = "nearestMPL";
+              msg.style = "display: inline-block;color:#00c000;margin-left:118px;";
+              msg.textContent = "< Success! >";
+              branchList.parentElement.appendChild(msg);
+            }
+            break;
+          case "failedNearestLib":
+            var branchList = document.getElementById('branchcode'),
+                msg = document.getElementById("nearestMPL"),
+                list = document.getElementById("mapRegionList");
+
+            if (branchList) {
+
+              if (list) {
+                list.remove();
+              }
+
+              if (msg) {
+                msg.remove();
+              }
+
+              msg = document.createElement('span');
+              msg.id = "nearestMPL";
+              msg.style = "display: inline-block;color:#c00;margin-left:118px;";
+              msg.textContent = "< Failed to retrieve map data >";
+              branchList.parentElement.appendChild(msg);
+            }
+            break;
+        }
+      }
+    });
+
     var geocoder = browser.runtime.sendMessage({
       key: "queryGeocoder",
       URIencodedAddress: cleanAddr(addr),
       city: pullCity(city.value),
       isSecondPass: secondPass
     });
-    geocoder.then(handleResponse, handleError);
   }
 }
 
