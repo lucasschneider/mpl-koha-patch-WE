@@ -64,6 +64,7 @@
     "*://*.kohalibrary.com/*",
     "*://host.evanced.info/madison/*",
     "*://*.census.gov/*",
-    "*://*.googleapis.com/*"
+    "*://*.googleapis.com/*",
+    "*://*.lrschneider.com/*"
   ]
 }

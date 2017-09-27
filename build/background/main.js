@@ -847,6 +847,64 @@ function handleMessages(request, sender, sendResponse) {
         }, 1000);
       });
       break;
+    case "getDormData":
+      $.getJSON("http://mpl-koha-patch.lrschneider.com/dormAddr").done(function (response) {
+        var dormName;
+
+        for (var i = 0; i < response.length; i++) {
+          var regex = new RegExp(response[i].regex, "i");
+          if (regex.test(request.addrVal)) {
+            dormName = response[i].name;
+            break;
+          }
+        }
+
+        function onError(error) {
+          console.error("Error: " + error);
+        }
+
+        function sendMapResponse(tabs) {
+          var _iteratorNormalCompletion4 = true;
+          var _didIteratorError4 = false;
+          var _iteratorError4 = undefined;
+
+          try {
+            for (var _iterator4 = tabs[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+              var tab = _step4.value;
+
+              if (dormName && dormName != "") {
+                browser.tabs.sendMessage(tab.id, {
+                  key: "receivedMatchDorm",
+                  dormName: dormName
+                });
+              } else {
+                browser.tabs.sendMessage(tab.id, {
+                  key: "failedMatchDorm"
+                });
+              }
+            }
+          } catch (err) {
+            _didIteratorError4 = true;
+            _iteratorError4 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion4 && _iterator4.return) {
+                _iterator4.return();
+              }
+            } finally {
+              if (_didIteratorError4) {
+                throw _iteratorError4;
+              }
+            }
+          }
+        }
+
+        browser.tabs.query({
+          currentWindow: true,
+          active: true
+        }).then(sendMapResponse).catch(onError);
+      });
+      break;
   }
 }
 

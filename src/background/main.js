@@ -699,6 +699,45 @@ function handleMessages(request, sender, sendResponse) {
         setTimeout(() => {browser.tabs.remove(tab.id)}, 1000);
       });
       break;
+    case "getDormData":
+      $.getJSON("http://mpl-koha-patch.lrschneider.com/dormAddr").done(function(response) {
+        var dormName;
+      
+        for (var i = 0; i < response.length; i++) {
+          var regex = new RegExp(response[i].regex, "i");
+          if (regex.test(request.addrVal)) {
+            dormName = response[i].name;            
+            break;
+          }
+        }
+        
+        function onError(error) {
+          console.error(`Error: ${error}`);
+        }
+        
+        function sendMapResponse(tabs) {
+          for (let tab of tabs) {
+            if (dormName && dormName != "") {
+              browser.tabs.sendMessage(tab.id, {
+                key: "receivedMatchDorm",
+                dormName: dormName
+              });
+            } else {
+              browser.tabs.sendMessage(tab.id, {
+                key: "failedMatchDorm"
+              });
+            }
+          }
+        }
+
+        browser.tabs.query({
+          currentWindow: true,
+          active: true
+        }).then(sendMapResponse).catch(onError);
+
+        
+      });
+      break;
   }
 }
 
