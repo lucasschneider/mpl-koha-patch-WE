@@ -905,6 +905,91 @@ function handleMessages(request, sender, sendResponse) {
         }).then(sendMapResponse).catch(onError);
       });
       break;
+    case "getBadAddrs":
+      $.getJSON("http://mpl-koha-patch.lrschneider.com/badAddr").done(function (response) {
+        var name, type, address, note;
+
+        for (var i = 0; i < response.length; i++) {
+          var regex = new RegExp(response[i].regex, "i");
+          if (regex.test(request.addrVal)) {
+            name = response[i].name;
+            type = response[i].type;
+            address = response[i].address;
+            note = response[i].note;
+            break;
+          }
+        }
+
+        function onError(error) {
+          console.error("Error: " + error);
+        }
+
+        function sendBadAddrs(tabs) {
+          var _iteratorNormalCompletion5 = true;
+          var _didIteratorError5 = false;
+          var _iteratorError5 = undefined;
+
+          try {
+            for (var _iterator5 = tabs[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+              var tab = _step5.value;
+
+              if (name && type && address) {
+                browser.tabs.sendMessage(tab.id, {
+                  key: "receivedBadAddrs",
+                  name: name,
+                  type: type,
+                  address: address,
+                  note: note
+                });
+              } else {
+                browser.tabs.sendMessage(tab.id, {
+                  key: "noBadAddrs"
+                });
+              }
+            }
+          } catch (err) {
+            _didIteratorError5 = true;
+            _iteratorError5 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion5 && _iterator5.return) {
+                _iterator5.return();
+              }
+            } finally {
+              if (_didIteratorError5) {
+                throw _iteratorError5;
+              }
+            }
+          }
+        }
+
+        browser.tabs.query({
+          currentWindow: true,
+          active: true
+        }).then(sendBadAddrs).catch(onError);
+      });
+      break;
+    case "getPstatRegex":
+      var pstatURL = "http://mpl-koha-patch.lrschneider.com/pstats/";
+      switch (request.lib) {
+        case "mad":
+          pstatURL += "mad";
+          break;
+        case "mid":
+          pstatURL += "mid";
+          break;
+        case "moo":
+          pstatURL += "moo";
+          break;
+        case "sun":
+          pstatURL += "sun";
+          break;
+        case "ver":
+          pstatURL += "ver";
+          break;
+      }
+      pstatURL += "?val=all&regex=true";
+      break;
   }
 }
 

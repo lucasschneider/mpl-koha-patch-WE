@@ -44,7 +44,7 @@ var d = new Date(),
     ["PIN","204+Cottage+Grove+Rd,+Madison,+WI+53716"],
     ["SEQ","4340+Tokay+Blvd,+Madison,+WI+53711"],
     ["SMB","2222+S+Park+St,+Madison,+WI+53713"],
-	
+    
     // OTHER DANE COUNTY [9-26]
     ["BLV","130+S+Vine+St,+Belleville,+WI+53508"],
     ["BER","1210+Mills+St,+Black+Earth,+WI+53515"],
@@ -734,9 +734,74 @@ function handleMessages(request, sender, sendResponse) {
           currentWindow: true,
           active: true
         }).then(sendMapResponse).catch(onError);
-
-        
       });
+      break;
+    case "getBadAddrs":
+      $.getJSON("http://mpl-koha-patch.lrschneider.com/badAddr").done(function(response) {
+        var name,
+          type,
+          address,
+          note;
+
+        for (var i = 0; i < response.length; i++) {
+          var regex = new RegExp(response[i].regex, "i");
+          if (regex.test(request.addrVal)) {
+            name = response[i].name;
+            type = response[i].type;
+            address = response[i].address;
+            note = response[i].note;
+            break;
+          }
+        }
+        
+        function onError(error) {
+          console.error(`Error: ${error}`);
+        }
+        
+        function sendBadAddrs(tabs) {
+          for (let tab of tabs) {
+            if (name && type && address) {
+              browser.tabs.sendMessage(tab.id, {
+                key: "receivedBadAddrs",
+                name: name,
+                type: type,
+                address: address,
+                note: note
+              });
+            } else {
+              browser.tabs.sendMessage(tab.id, {
+                key: "noBadAddrs"
+              });
+            }
+          }
+        }
+        
+        browser.tabs.query({
+          currentWindow: true,
+          active: true
+        }).then(sendBadAddrs).catch(onError);
+      });
+      break;
+    case "getPstatRegex":
+      var pstatURL = "http://mpl-koha-patch.lrschneider.com/pstats/"
+      switch(request.lib) {
+        case "mad":
+          pstatURL += "mad";
+          break;
+        case "mid":
+          pstatURL += "mid";
+          break;
+        case "moo":
+          pstatURL += "moo";
+          break;
+        case "sun":
+          pstatURL += "sun";
+          break;
+        case "ver":
+          pstatURL += "ver";
+          break;
+      }
+      pstatURL += "?val=all&regex=true";
       break;
   }
 }

@@ -2,8 +2,21 @@
 /*** CHECK AGAINST LIST OF UNACCEPTABLE
      AND RESTRICTED ADDRESSES ***/
 
-// Define address object
+var addr = document.getElementById('address'),
+    addr2 = document.getElementById('address2'),
+    city = document.getElementById('city'),
+    bn = document.getElementById('borrowernotes'),
+    cc = document.getElementsByClassName('categorycode'),
+    field = document.getElementsByClassName('action'),
+    cityRegEx = /mad(ison([,]? wi.*)?)?|monona([,]? wi.*)?/i,
+    fullAddrRegEx = new RegExp(),
+    addrVal,
+    i,
+    field,
+    initial,
+    wasLU = false;
 
+// Define address object
 var Address = function Address(addrRegEx, addr, place) {
   // addrRegEx formatted to be inserted as a regex literal
   this.addrRegEx = addrRegEx;
@@ -59,104 +72,36 @@ function curDate() {
   return month + '/' + day + '/' + year;
 }
 
+function deleteMsgNotice() {
+  alert('Please delete the circulation note regarding the patron\'s pervious limited use address');
+}
+
 /** Compare a patron's address to the list of unacceptable and
  * restricted addresses */
 function parseBadAddr() {
-  var addr = document.getElementById('address'),
-      addr2 = document.getElementById('address2'),
-      city = document.getElementById('city'),
-      bn = document.getElementById('borrowernotes'),
-      cc = document.getElementsByClassName('categorycode'),
-      field = document.getElementsByClassName('action'),
-      cityRegEx = /mad(ison([,]? wi.*)?)?|monona([,]? wi.*)?/i,
-      unacceptable = [new Address("1955 atwood a", "1955 Atwood Ave", "Briarpatch"), new Address("4581 w(est)? beltline h(igh)?wa?y", "4581 W Beltline Hwy", "PO Boxes/Mail Services"), new Address("147 s(outh)? butler s", "147 S Butler St", "Veteran's house"), new Address("115 w(est)? doty s", "115 W Doty St", "Dane County Jail"), new Address("4230 e(ast)? towne b", "4230 E Towne Blvd", "PO Boxes/Mail Services"), new Address("6441 enterprise l", "6441 Enterprise Ln", "PO Boxes/Mail Services"), new Address("2935 fish hatchery r", "2935 Fish Hatchery Rd", "PO Boxes/Mail Services"), new Address("802 e(ast)? gorham s", "802 E Gorham St", "Yahara House"), new Address("408 w(est)? gorham s", "408 W Gorham St", "Social Club"), new Address("310 s(outh)? ingersoll s", "310 S Ingersoll St", "Luke House"), new Address("210 martin luther king j(unio)?r b", "210 Matrin Luther King Jr Blvd", "Dane County Jail"), new Address("215 martin luther king j(unio)?r b", "215 Matrin Luther King Jr Blvd", "Madison Municipal Building"), new Address("1490 martin s", "1490 Martin St", "Hospitality House"), new Address("3902 milwaukee s", "3902 Milwaukee St", "Main Post Office"), new Address("4514 monona d", "4514 Monona Dr", "PO Boxes/Mail Services"), new Address("1202 northport d", "1202 Northport Dr", "Dane County Social Services"), new Address("1206 northport d", "1206 Northport Dr", "Dane County Social Services"), new Address("6666 odana r", "6666 Odana Rd", "PO Boxes/Mail Services"), new Address("128 e(ast)? olin a", "128 E Olin Ave", "Family Service Madison"), new Address("1228 s(outh)? park s", "1228 S Park St", "Dane County Housing Authority"), new Address("1240 s(outh)? park s", "1240 S Park St", "Housing Service"), new Address("1360 regent s", "1360 Regent St", "PO Boxes/Mail Services"), new Address("2120 rimrock r", "2120 Rimrock Rd", "Dane County Jail"), new Address("3150 st paul a", "3150 St Paul Ave", "DoC Housing - 2 Week Stay"), new Address("103 s(outh)? (second|2nd) s", "103 S Second St", "Mail Service"), new Address("1213 n(orth)? sherman a", "1213 N Sherman Ave", "PO Boxes/Mail Services"), new Address("731 state s", "731 State St", "Pres House"), new Address("2701 university a", "2701 University Ave", "PO Boxes/Mail Services"), new Address("322 e(ast)? washington a", "322 E Washington Ave", "St John's Lutheran Church"), new Address("512 e(ast)? washington a", "512 E Washington Ave", "Probation/Parole"), new Address("1245 e(ast)? washinton a", "1245 E Washington Ave", "Advocacy Offices"), new Address("116 w(est)? washington a", "116 W Washington Ave", "Grace Episcopal Church"), new Address("625 w(est)? washington a", "625 W Washington Ave", "Meriter Health Center"), new Address("668 w(est)? washington a", "668 W Washington Ave", "Mail Service")],
-      restricted = [new Address("221 s(outh)? baldwin s", "221 S Baldwin St", "Port St Vincent"), new Address("141 s(outh)? butler s", "141 S Butler St", "Hostelling International - Madison"), new Address("2009 e(ast)? dayton s", "2009 E Dayton St", "ARC Dayton"), new Address("4117 dwight d", "4117 Dwight Dr", "Dwight Halfway House"), new Address("300 femrite d", "300 Femrite Dr", "Telurian"), new Address("4 n(orth)? hancock s", "4 N Hancock St", "Off Square Club"), new Address("3501 kipling d", "3501 Kipling Dr", "Schwert Halfway House"), new Address("4202 monona d", "4202 Monona Dr", "ARC Maternal Infant Program"), new Address("4006 nakoosa t", "4006 Nakoosa Trl", "Porchlight/Safe Haven"), new Address("422 n(orth)? s", "422 North St", "Arise Family Services"), new Address("5706 odana r", "5706 Odana Rd", "Foster Halfway House"), new Address("810 w(est)? olin a", "810 W Olin Ave", "Rebos Chris Farley House"), new Address("202 n(orth)? patt?erson s", "202 N Paterson St", "ARC Patterson"), new Address("2720 rimrock r", "2720 Rimrock Rd", "Youth Services of Southern Wisconsin"), new Address("312 wisconsin a", "312 Wisconsin Ave", "Bethel Lutheran Church"), new Address("1301 williamson s", "1301 Williamson St", "Port St Vincent")],
-      addrRegExFirst = /^[ ]*/,
-      addrRegExLast = /.*/,
-      fullAddrRegEx = new RegExp(),
-      foundBadAddr = false,
-      addrVal,
-      i,
-      field,
-      initial,
-      wasLU = false;
   if (cc) cc = cc[0];
   if (addr && city && cityRegEx.test(city.value) && bn) {
     addrVal = addr2 !== null && addr2.value !== null && addr2.value !== "" ? addr.value + " " + addr2.value : addr.value;
-    // Test for State Job Placement Center
-    if (/1819 aberg a/i.test(addrVal)) {
-      foundBadAddr = true;
-      if (cc) {
-        if (cc.value === "AD") {
-          cc.value = "LU";
-        } else if (cc.value === "JU") {
-          cc.value = "LUJ";
-        } else if (cc.value === "LU" || cc.value === "LUJ") {
-          wasLU = true;
-        }
-      }
-      if (field && field[0].children[0].value === 'Override Block') {
-        restoreSave();
-      }
-      if (!/Patron's account is Limited Use due to address \(State Job Placement Center, 1819 Aberg St/i.test(bn.value)) {
-        initial = prompt("--- NOTE ---\n1819 ABERG ST is the State Job Placement Center. A LIMITED USE account may be set up, however, all library cards issued to that address MUST be mailed, whether or not the patron provides proof of that address.\n\nIn order to have the Limited Use restrictions removed from their account, a patron must first provide proof that they are living at a valid residential address.\n\nFor more info refer to the list of unacceptable addresses on the staff wiki:\nhttp://www.mplnet.org/system/files/UNACCEPTABLE%20ADDRESSES.pdf\n\nIf this is a new address, enter your initials and library code to confirm: (e.g. LS/MAD)");
-        if (!initial) initial = "";
-        if (bn.value !== '') {
-          bn.value += "\n\n";
-        }
-        bn.value += "Patron's account is Limited Use due to address (State Job Placement Center, 1819 Aberg St). Patron must show proof of valid residential address in order to remove restrictions. " + curDate() + " " + initial;
-        if (wasLU) alert('Please delete the circulation note regarding the patron\'s pervious limited use address');
-      }
-      // Test for Salvation Army address
-    } else if (/630 e(ast)? washington a/i.test(addrVal)) {
-      foundBadAddr = true;
-      if (cc) {
-        if (cc.value === "AD") {
-          cc.value = "LU";
-        } else if (cc.value === "JU") {
-          cc.value = "LUJ";
-        } else if (cc.value === "LU" || cc.value === "LUJ") {
-          wasLU = true;
-        }
-      }
-      if (field && field[0].children[0].value === 'Override Block') {
-        restoreSave();
-      }
-      if (!/Patron's account is Limited Use due to address \(Salvation Army, 630 E Washington Ave/i.test(bn.value)) {
-        initial = prompt("--- NOTE ---\n630 E WASHINGTON AVE is the Salvation Army. People staying at the Salvation Army cannot receive personal mail there so library cards CANNOT BE MAILED. Patrons must have proof that they are staying at the Salvation Army to get a library card (usually through a letter from the director).\n\nIn order to have the Limited Use restrictions removed from their account, a patron must first provide proof that they are living at a valid residential address.\n\nFor more info refer to the list of unacceptable addresses on the staff wiki:\nhttp://www.mplnet.org/system/files/UNACCEPTABLE%20ADDRESSES.pdf\n\nIf this is a new address, enter your initials and library code to confirm: (e.g. LS/MAD)");
-        if (!initial) initial = "";
-        if (bn.value !== '') {
-          bn.value += "\n\n";
-        }
-        bn.value += "Patron's account is Limited Use due to address (Salvation Army, 630 E Washington Ave). Patron must show proof of valid residential address in order to remove restrictions. " + curDate() + " " + initial;
-        if (wasLU) alert('Please delete the circulation note regarding the patron\'s pervious limited use address');
-      }
-    }
-    // Test for unacceptable addresses
-    for (i = 0; i < unacceptable.length; i++) {
-      if (foundBadAddr) {
-        break;
-      }
-      fullAddrRegEx = new RegExp(addrRegExFirst.source + unacceptable[i].addrRegEx + addrRegExLast.source, "i");
-      if (fullAddrRegEx.test(addrVal)) {
-        alert("--- STOP ---\nA library card CANNOT be issued to this address.\n" + unacceptable[i].addr + " (" + unacceptable[i].place + ") is NOT a valid residential address.\n\nInform any patron providing this address that they must provide proof of a valid residential address in order to get a library card. (You could offer them an internet access card.)\n\nFor more info refer to the list of unacceptable addresses on the staff wiki:\nhttp://www.mplnet.org/system/files/UNACCEPTABLE%20ADDRESSES.pdf");
+    browser.runtime.sendMessage({
+      key: "getBadAddrs",
+      addrVal: addrVal
+    });
+  }
+}
+
+browser.runtime.onMessage.addListener(function (message) {
+  if (message && message.key == "receivedBadAddrs") {
+    if (message.name && message.type) {
+      if (message.type === "unacceptable") {
+        alert("--- STOP ---\nA library card CANNOT be issued to this address.\n" + message.address + " (" + message.name + ") is NOT a valid residential address.\n\nInform any patron providing this address that they must provide proof of a valid residential address in order to get a library card. (You could offer them an internet access card.)\n\nFor more info refer to the list of unacceptable addresses on the staff wiki:\nhttp://www.mplnet.org/system/files/UNACCEPTABLE%20ADDRESSES.pdf");
         field = document.getElementsByClassName('action')[0];
         if (field !== null && field.children[0].value !== 'Override Block') {
           blockSubmit();
         }
-        foundBadAddr = true;
-      }
-    }
-    // Test for restricted addresses
-    for (i = 0; i < restricted.length; i++) {
-      if (foundBadAddr) {
-        break;
-      }
-      fullAddrRegEx = new RegExp(addrRegExFirst.source + restricted[i].addrRegEx + addrRegExLast.source, "i");
-      var noteTest = new RegExp(restricted[i].place + ".{3}" + restricted[i].addr + addrRegExLast.source, "i");
-      if (fullAddrRegEx.test(addrVal)) {
-        foundBadAddr = true;
+      } else {
+        // Make account Limited Use
         if (cc) {
+          wasLU = false;
           if (cc.value === "AD") {
             cc.value = "LU";
           } else if (cc.value === "JU") {
@@ -165,37 +110,60 @@ function parseBadAddr() {
             wasLU = true;
           }
         }
+
+        // Enable save button, if necessary
         if (field && field[0].children[0].value === 'Override Block') {
           restoreSave();
         }
-        if (!noteTest.test(bn.value)) {
-          initial = prompt("--- NOTE ---\nA library card issued to " + restricted[i].addr + " (" + restricted[i].place + ") must be LIMITED USE.\n\nIn order to have the limited use restrictions removed from their account, a patron must first provide proof that they are living at a valid residential address.\n\nFor more info refer to the list of unacceptable addresses on the staff wiki:\nhttp://www.mplnet.org/system/files/UNACCEPTABLE%20ADDRESSES.pdf\n\nIf this is a new address, enter your initials and library code to confirm: (e.g. LS/MAD)");
-          if (!initial) initial = "";
-          if (bn.value !== '') {
-            bn.value += "\n\n";
+
+        // Handle non-unacceptable bad addresses
+        if (message.type === "restricted") {
+          if (!noteTest.test(bn.value)) {
+            initial = prompt("--- NOTE ---\nA library card issued to " + message.address + " (" + message.name + ") must be LIMITED USE.\n\nIn order to have the limited use restrictions removed from their account, a patron must first provide proof that they are living at a valid residential address.\n\nFor more info refer to the list of unacceptable addresses on the staff wiki:\nhttp://www.mplnet.org/system/files/UNACCEPTABLE%20ADDRESSES.pdf\n\nIf this is a new address, enter your initials and library code to confirm: (e.g. LS/MAD)");
+            if (!initial) initial = "";
+            if (bn.value !== '') {
+              bn.value += "\n\n";
+            }
+            if (!initial) {
+              initial = "";
+            }
+            bn.value += "Patron's account is Limited Use due to temporary residence at " + message.name + ", (" + message.address + "). Patron must show proof of valid residential address in order to remove restrictions. " + curDate() + " " + initial;
+            if (wasLU) {
+              deleteMsgNotice();
+            }
           }
-          if (!initial) {
-            initial = "";
+        } else if (message.type === "unique") {
+          if (!new RegExp("Patron's account is Limited Use due to temporary residence at " + message.name + ", (" + message.address + ")").test(bn.value)) {
+            initial = prompt(message.note.replace("\\n", "\n"));
+            if (!initial) initial = "";
+            if (bn.value !== '') {
+              bn.value += "\n\n";
+            }
+            bn.value += "Patron's account is Limited Use due to temporary residence at " + message.name + ", (" + message.address + "). Patron must show proof of valid residential address in order to remove restrictions. " + curDate() + " " + initial;
+            if (wasLU) {
+              deleteMsgNotice();
+            }
           }
-          bn.value += "Patron's account is Limited Use due to temporary residence at " + restricted[i].place + ", (" + restricted[i].addr + "). Patron must show proof of valid residential address in order to remove restrictions. " + curDate() + " " + initial;
-          if (wasLU) alert('Please delete the circulation note regarding the patron\'s pervious limited use address');
         }
       }
+    } else {
+      // TODO: Handle bad address without data for name or type
     }
-    if (!foundBadAddr) {
-      if (field && field[0].children[0].value === 'Override Block') {
-        restoreSave();
-      }
-      if (cc.value === "LU" && /Patron must show proof of valid residential address in order to remove restrictions/.test(bn.value)) {
+  } else if (message && message.key == "noBadAddrs") {
+    if (field && field[0].children[0].value === 'Override Block') {
+      restoreSave();
+    }
+    if (/Patron must show proof of valid residential address in order to remove restrictions/.test(bn.value)) {
+      deleteMsgNotice();
+
+      if (cc.value === "LU") {
         cc.value = "AD";
-        alert('Please delete the circulation note regarding the patron\'s pervious limited use address');
-      } else if (cc.value === "LUJ" && /Patron must show proof of valid residential address in order to remove restrictions/.test(bn.value)) {
+      } else if (cc.value === "LUJ") {
         cc.value = "JU";
-        alert('Please delete the circulation note regarding the patron\'s pervious limited use address');
       }
     }
   }
-}
+});
 
 addr = document.getElementById('address');
 if (addr !== null) {
