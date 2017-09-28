@@ -16,7 +16,12 @@ var addrElt = document.getElementById('address'),
   userEnteredAddress,
   userEnteredCity,
   matchAddr4DistQuery,
-  selected;
+  entryForm = document.forms.entryform,
+  selectList = entryForm ? entryForm.elements.sort1 : null,
+  selected,
+  matchAddr,
+  sortID = "X-UND",
+  generatedZip;
 
 // Initialize the notice and result messages for communicating success/failure
 // and place them underneath the address field
@@ -226,12 +231,12 @@ function queryPSTAT(addr, city, queryB, secondPass) {
     browser.runtime.onMessage.addListener(message => {
       if (message && message.key === "receivedGeocoderQuery") {
         if (message.hasData) {
-            var matchAddr = message.matchAddr.split(',')[0].toUpperCase(),
+            matchAddr = message.matchAddr.split(',')[0].toUpperCase(),
               sortID = "X-UND",
-              generatedZip = message.zip,
+              generatedZip = message.zip;
 
-              // Add button to allow staff to select the geographically closest MPL location
-              matchAddr4DistQuery = message.matchAddr.replace(/ /g, "+"),
+            // Add button to allow staff to select the geographically closest MPL location
+            var matchAddr4DistQuery = message.matchAddr.replace(/ /g, "+"),
               branchList = document.getElementById('branchcode'),
               nearestMPL = document.createElement('span'),
               nearestMPLold = document.getElementById('nearestMPL'),
@@ -359,102 +364,48 @@ function queryPSTAT(addr, city, queryB, secondPass) {
                     sortID = "D-FIT-T";
                     break;
                   case "Monona city":
-                    if (/.*(arrowhead d|baskerville a|clear spring c|(6[01][13579]|61[7-9]|6[2-9][0-9]|[7-9][0-0]{2}) w(est)? dean a|ferchland p|(707|80[57]) greenway r|grove s|joyce r|mathys r|4[0-9]{2}[13579] mckenna r|mesa r|4[5-6][0-9][13579] midmoor r|(3[7-9][0-9]{2}|4[0-2][0-9]{2}) monona d|monona r|11(19|20|22) nichols r|(44[0-9]{2}|4810) outlook s|10[35] parkway d|progressive l|roigan t|rothman p|schultz p|thunderbird l|tonyawatha t|vogts l|waterman w|winnequah d|(4[23][0-9][13579]|44[0-2][13579]|54[01][02468]|4[5-9][0-9]{2}|5[0-3][0-9]{2}|540[13]) winnequah r|[0-9]?[0-9]{2}[13579] winnequah t|wyldhaven a).*/i.test(matchAddr)) {
-                      sortID = "D-MON-C1";
-                    } else if (/.*(w(est)? coldspring a|([1-5][0-9]{2}|6(0[02468]|1[0246])) w(est)? dean a|gordon a|greenway r|healy l|lamboley a|lofty a|maywood r|(500[579]|51[0-9][13579]|520[13579]) mckenna r|(47[1-9][13579]|4[89][0-9][13579]|5[01][0-9][13579]|52[01][13579]|44(08|[1-9][02468])|4[5-9][0-9][02468]|5[01][0-9][02468]|52(0[02468]|1[02])) midmoor r|(4[2-9][0-9]{2}|5[0-2][0-9]{2}) monona d|navajo t|([1-7][0-9][13579]|80[13579]|81[13]) nichols r|oak c|450[0-9] outlook s|10[46] parkway d|s(ain)?t teresa t|schluter r|schofield (a|s)|shore acres r|sioux t|spring h(aven)?|starry a|valorie l|wallace a|(4[2-4][0-9][02468]|551[35]|55[1-9][02468]|561[024]) winnequah r|woodridge r).*/i.test(matchAddr)) {
-                      // NOTE: 707, 805, 807 Greenway Rd => D-MON-C1
-                      sortID = "D-MON-C2";
-                      if (/5(3[0-9][02468]|4[0-9][02468]|50[246]) maywood r/i.test(matchAddr)) {
-                        sortID = "D-MON-C3";
-                      }
-                    } else if (/.*(anthony p|birch haven c|brant p|(5[7-9][0-9][13579]|6[0-3][0-9][13579]) bridge r|cardinal c|cove c|dellwood c|ela t|engel s|flamingo r|frost ?woods r|garden c|goucher l|graham a|greenwood s|henuah c|kelly p|5[3-6][0-9]{2} mckenna r|5[3-7][0-9]{2} midmoor r|midwood a|5[3-9][0-9]{2} monona d|monona p|moygara r|neponset t|[3-9][0-9][02468] nichols r|(n(orth )?e(ast)? )?nishishin t|owen r|panther t|pheasant hill r|pocohontas d|ridgewood a|squaw c|stone t|tecumseh a|(55[0-9][13579]|5618|6[34][0-9]{2}) winnequah r|[0-9]?[0-9]{2}[02468] winnequah t).*/i.test(matchAddr)) {
-                      // NOTE: 5506-5202 [EVEN] Maywood Rd addressed in previous conditional
-                      sortID = "D-MON-C3";
-                      if (/((2(0[6-9]|[1-9][0-9])|3[0-9]{2}|4(0[0-9]|1[0-2])) frost ?woods r|4[0-9]{2} greenwood s|63(0[4-9]|1[0-4]) midwood a).*/i.test(matchAddr)) {
-                        sortID = "D-MON-C4";
-                      }
-                    } else if (/.*(acacia l|admiral d|asher c|bartels s|bjelde l|(5[7-9][0-9]{2}|6[0-4][0-9]{2}) bridge r|(e(ast)?|w(est)?) broadway|broadway (e(ast)?|w(est)?)| columbia c|copps a|crestview d|e(ast)? ?gate r|falcon c|femrite d|ford s|gateway g|gisholt d|industrial d|interlake d|jeffrey c|kathryn s|kings r|kristi c|labelle l|mangrove l|midland l|6[0-9]{3} monona d|pflaum r|pirate island r|queens w|raywood r|river p|roselawn a|royal a|sethne c|shato l|sleepy lagoon d|southern c|sylvan l|taylor s|tompkins d|water ?front d|w(est)? ?gate r|whispering waters c|6[3-9][0-9]{2} winnequah r|woodstock c|woody l).*/i.test(matchAddr)) {
-                      // NOTE: 206-412 [EVEN] Frost Woods Rd addressed in previous conditional
-                      // NOTE: 400s Greenwood St addressed in previous conditional
-                      // NOTE: 6304-6314 Midwood Ave addressed in previous conditional
-                      sortID = "D-MON-C4";
-                    }
+                    browser.runtime.sendMessage({
+                      key: "getPstatByDist",
+                      addrVal: matchAddr,
+                      lib: "Moo"
+                    });
                     break;
-                  case "Madison city":
-                    /*** NOTE: MUST MATCH WITH CONDITIONALS AT BOTTOM OF PAGE ***/
-                    if (/81(01|19) mayo d.*/i.test(userEnteredAddress) && /madison/i.test(userEnteredCity)) {
-                      sortID = "D-4.06";
-                      matchAddr = userEnteredAddress.toUpperCase();
-                      generatedZip = "53719";
-                    } else if (/7(02|2(5|7)|49|50) university r.*/i.test(userEnteredAddress) && /madison/i.test(userEnteredCity)) {
-                      sortID = "D-1";
-                      matchAddr = userEnteredAddress.toUpperCase();
-                      generatedZip = "53705";
-                    } else if (/.*brookside d.*/i.test(userEnteredAddress) && /madison/i.test(userEnteredCity)) {
-                      sortID = "D-114.02";
-                      matchAddr = userEnteredAddress.toUpperCase();
-                      generatedZip = "53718";
-                    } else if (/.*halley w.*/i.test(userEnteredAddress) && /madison/i.test(userEnteredCity)) {
-                      sortID = "D-114.01";
-                      matchAddr = userEnteredAddress.toUpperCase();
-                      generatedZip = "53718";
-                    } else if (/7(53(0|8)|6(02|10|26|34|42)) mid ?town r.*/i.test(userEnteredAddress) && /madison/i.test(userEnteredCity)) {
-                      sortID = "D-4.05";
-                      matchAddr = userEnteredAddress.toUpperCase();
-                      generatedZip = "53719";
-                    } else if (/720(1|3) mid ?town r.*/i.test(userEnteredAddress) && /madison/i.test(userEnteredCity)) {
-                      sortID = "D-5.04";
-                      matchAddr = userEnteredAddress.toUpperCase();
-                      generatedZip = "53719";
-                    } else if (/.*camino del sol/i.test(userEnteredAddress) && /madison/i.test(userEnteredCity)) {
-                      sortID = "D-23.01";
-                      matchAddr = userEnteredAddress.toUpperCase();
-                      generatedZip = "53704";
-                    } else {
-                      sortID = "D-" + message.censusTract;
-                    }
+                  case "Madison city":p
+                    browser.runtime.sendMessage({
+                      key: "getPstatByDist",
+                      addrVal: matchAddr,
+                      lib: "Mad",
+                      tract: message.censusTract
+                    });
                     break;
                   case "Madison town":
                     sortID = "D-MAD-T";
                     break;
                   case "Middleton city":
-                    if (/.*(aspen c|aurora s|blackhawk r|blackwood c|1(8(09|[1-9][0-9])|9[0-9]{2}) bristol s|cayuga s|cobblestone c|1(2[6-9][0-9]|[3-9][0-9]{2}) deming w|elderwood c|7([0-7][0-9]{2}|800) elmwood ave|foxridge c|greenway b|grosse point d|hambrecht r|henry c|henry s|(1[2-7][0-9][02468]|1[4-7][0-9][13579]) n(orth)? high point r|hillcrest a|7([0-5][0-9]{2}|600) hubbard a|john q\.? hammons d|77[0-9]{2} kenyon d|market s|meadow c|1[7-9][0-9][02468] middleton s|1[7-9][0-9]{2} park s|(1[4-6][0-9][02468]|1[7-9][0-9]{2}) parmenter s|(1322|1[4-9][0-9]{2}) pleasant view r|quarry r|research w|reservoir r|7[0-4][0-9][02468] south a|stratford c|sunset c|terrace a|[78][0-9]{3} university a).*/i.test(matchAddr)) {
-                      sortID = "D-MID-C1";
-                    } else if (/.*(boundary r|briarcliff l|camberwell c|canterbury c|clovernook c|clovernook r|club c|devonshire c|falcon c|fargo c|fortune d|n(orth)? gammon rd|granite c|(e(ast)?|w(est)?) hampstead ct|1[23][0-9][13579] n(orth)? high point r|hunter's c|7[4-6][0-9]{2} kenyon d|knights c|lannon stone c|1[2-6][0-9]{2} middleton s|muirfield c|park shores c|15[0-9]{2} park s|1[4-6][0-9][13579] parmenter s|pond view c|pond view r|quartz c|red oak c|rooster r|sandstone c|sellery s|shirley (c|s)|sleepy hollow c|7[2-4][0-9][13579] south a|squire c|stone glen d|stonefield c|6[3-7][0-9]{2} stonefield r|sweeny d|voss p|westchester d|n(orth)? westfield rd|windfield w|woodgate r|wydown c).*/i.test(matchAddr)) {
-                      sortID = "D-MID-C2";
-                    } else if (/.*(anderson a|beechwood c|boulder l|[0-9]{3}[02468] branch s|2[0-2][0-9]{2} bristol s|clark s|columbus d|coolidge c|cooper (a|c)|countryside d|cypress t|dohse c|(6[2-5][0-9][13579]|6[6-9][0-9]{2}) elmwood a|franklin a|s(outh)? gateway|6[3-9][0-9]{2} hubbard a|lee s|maple (c|s)|mayflower d|(6[6-9][0-9]{2}|7[0-2][0-9]{2}) maywood a|meadowcrest l|2[01][0-9]{2} middleton s|nina c|north a|orchid l|park lawn p|(16[0-9]{2}|1[7-9][0-9][13579]|2[0-4][0-9]{2}) park s|2[0-4][0-9][13579] parmenter s|pinta c|santa maria c|shady oak c|(6[3-9][0-9]{2}|7[01][0-9][13579]) south a|62[0-9]{2} stonefield r|(6[6-9][0-9][13579]|6(6[5-9][02468]|[7-9][0-9][02468])|7[0-4][0-9][02468]) university a|violet p|walnut c|willow t|(e(ast)?|w(est)?) wood cir|wood r).*/i.test(matchAddr)) {
-                      sortID = "D-MID-C3";
-                    } else if (/.*(adler c|allen b|amherst r|[0-9]{3}[13579] branch s|butler c|6[1-5][0-9][13579] century a|century harbor r|charing cross l|countryside l|dewey c|6[2-5][0-9]{2} elmwood a|n(orth)? gateway|lake s|lakefield c|lakeview (a|b)|6[2-5][0-9]{2} maywood a|maywood c|mendota a|middleton beach r|middleton springs d|mound d|oakwood p|overlook p|paske c|pheasant l|(6([1-5][0-9]{2}|6([01][0-9]|2[0-2]))|6(2(5[1-9]|[6-9][0-9])|[3-5][0-9][13579])|63[0-9]{2}) university a).*/i.test(matchAddr)) {
-                      sortID = "D-MID-C4";
-                    } else if (/.*(airport r|alpha l|bauer c|belle fontaine b|black opal a|bravo l|calla p|caneel t|capitol view r|cardinal d|(6[89][0-9]{2}|[789][0-9]{3}) century a|century p|charis t|charlie l|companion l|delta l|[23][0-9]{3} deming w|discovery d|(6[89][0-9][02468]|7[0-6][0-9]{2}) donna d|eagle d|echo l|evergreen r|fairway p|feather l|flagstone c|forsythia (c|s)|7[0-4][0-9]{2} friendship l|glenn l|glenview c|graber r|(n(orth)?|s(outh)?|w(est)?) greenview dr|3[3-9][0-9][02468] high r|kasten c|knoll c|laura l|lily l|lisa l|lynn (c|s)|29[0-9]{2} meadowbrook r|misty valley d|mockingbird l|montclair d|murphy d|newton c|niebler l|nightingale c|nightingale l|northbrook d|nursery d|park c|(2[6-8][0-9][02468]|(29[0-9]{2}|3[0-2][0-9]{2})|3[3-7][0-9]{2}) park s|(2[0-4][0-9][02468]|(2[5-9][0-9]{2}|[34][0-9]{3})) parmenter s|parview r|patty l|peak view w|pinehurst d|(2[0-9]{3}|3[0-2][0-9]{2}) pleasant view r|prairie d|ravine c|ravine d|red beryl d|rohlich c|sand pearl t|selleck l|shower c|spring hill c|7[0-9]{3} spring hill d|sunstone l|tribeca d|7[5-9][0-9]{2} university a|university g|uw health c|webber r|white coral w|yukon w).*/i.test(matchAddr)) {
-                      sortID = "D-MID-C5";
-                    } else if (/.*(aldo leopold w|algonquin d|apprentice p|associates w|black cherry l|brookdale d|(6[1-589][0-9][02468]|6[67][0-9]{2}) century a|(n(orth)?|s(outh)?) chickahauk t|conservancy l|diversity r|6[89][0-9][13579] donna d|erdman b|fellowship r|forest glade c|frank lloyd wright a|69[0-9]{2} friendship l|gaylord nelson r|glacier ridge r|harmony w|3[3-9][0-9][13579] high r|john muir d|mandimus c|mantino c|marina d|28[0-9]{2} meadowbrook r|old creek r|(2[6-8]|3[3-8])[0-9][13579] park s|pheasant branch r|phil lewis w|prairie glade r|ramse r|river birch l|spring grove c|3[67][0-9]{2} spring hill d|strawberry l|whittlesey r).*/i.test(matchAddr)) {
-                      sortID = "D-MID-C6";
-                    } else if (/.*(anna l|aster c|baskerville (a|w)|cedar c|cedar ridge r|cedar t|(5[12][0-9][13579]|(5[3-9][0-9]{2}|6[0-9]{3})) century a|clarewood c|connie l|creekview d|dahlia c|dianne d|elm l|harbor village r|heather (c|r)|hedden r|highland (c|t|w)|jennifer l|jonquil c|5[34][0-9][13579] larkspur r|lincoln s|marigold c|mathews r|mendota d|(3([6-8][0-9][02468]|90[0246])|3[6-9][0-9][13579]) rolling hill d|roosevelt s|sarah l|south ridge w|sunrise c|taft s|tomahawk c|valley creek c|valley ridge p|3[4-9][0-9]{2} valley ridge r|waconica l|woodcreek l|woodland t).*/i.test(matchAddr)) {
-                      sortID = "D-MID-C7";
-                    } else if (/.*(brindisi c|bunker h|5[12][0-9][02468] century a|churchil l|c(ou)?nty h(igh)?wa?y q|concord d|conservancy d|flyway c|frisco c|goldfinch c|grassland t|heron t|hilltop c|indigo w|iris c|lakespur c|54[0-9][02468] larkspur r|lexington (c|d)|marino c|milano c|mirandy rose c|monarch c|napoli l|nappe d|nathan hale c|park t|patrick henry w|prairie rose c|redtail p|rock crest r|39[1-9][0-9] rolling hill d|roma l|salerno c|sandhill d|savannah c|sedgemeadow r|shorecrest d|signature d|teal c|torino c|upland (c|t)|4[0-9]{3} valley ridge r|wenlock rose c).*/i.test(matchAddr)) {
-                      sortID = "D-MID-C8";
-                    }
+                    console.log("Sending getPstatByDist");
+                    browser.runtime.sendMessage({
+                      key: "getPstatByDist",
+                      addrVal: matchAddr,
+                      lib: "Mid"
+                    });
                     break;
                   case "Middleton town":
                     sortID = "D-MID-T";
                     break;
                   case "Sun Prairie city":
-                    if (/.*(allen a|angell s|arrowhead c|baneberry d|barbara s|benz c|birchwood t|(12[13579]|1[3-9][13579]|2([0-7][13579]|8[1357])) n(orth)? bird s|[1-9][0-9][13579] s(outh)? bird s|blankenheim l|bluestem c|(1[4-9][13579]|[2-5][0-9][13579]|6[0-3][13579]|1[0-9][02468]|2([0-5][02468]|6[02])) n(orth)? bristol s|s(outh) bristol s|camp ?fire d|cannery (p|s)|cardinal crest d|carriage d|cattail c|chase b|church s|clara s|clardell d|clements a|cliff s|([1-7][0-9]{2}|8([0-3][02468]|4[02])[89][0-9][13579]) columbus s|crescent c|cypress c|(7[01][13579]|72[13]) daniel s|derby d|dewey s|elizabeth c|elizabeth l|e(ast)? elm s|featherwood p|flint s|foxglove d|frances c|[5-7][0-9]{2} frederick s|galena c|gary c|gas light d|gerald a|glenview l|[12][0-9][12579] e(ast)? goodland s|granite w|grove s|hanley d|harvest l|hawthorn d|hickory c|hill(crest)? (s|c|d)|hummingbird c|jackson s|james c|jeanne c|jones s|joyce c|katherine d|kelly s|king s|kingston ci|3[0-9][13579] e(ast)? kohler s|kroncke d|(e(ast)?|w(est)?) lane s|larkspur c|laura s|[3-7][0-9]{2} linnerud d|e(ast)? main s|[1-6][0-9]{2} w(est)? main s|maple s|market s|marshview d|martin s|meadow(lark d|sweet c)|mockingbird l|(n(orth)?|s(outh)?) musket ridge( d)?|[12][0-9]{2} north s|oak s|old indian mound t|oriole c|pelican l|pilgrim t|powder horn r|prairie clover c|prairie rose d|railroad s|remington w|robin d|roland s|sandpiper c|sandstone t|sanibel l|scheuerell l|schuster r|shirley w|south s|spoke c|stagecoach c|stonecress c|sumter c|sunnyview l|sunset c|surrey (c|d)|sweet grass d|swordleaf l|talon p|thomas d|thunderbird l|timber r|town hall d|([12][0-9]{2}|3[0-2][0-9]) union s|valley ridge d|vernig r|vine s|walbridge c|wellington c|westend c|westover c|westridge d|white tail d|williamson a|willow brook t|[4-7][0-9]{2} wilson s|[1-7][0-9][13579] windsor s|wood violet l|woodgrove w|woodview d).*/i.test(userEnteredAddress)) {
-                      sortID = "D-SP-C1";
-                    } else if (/.*(allison s|andrews d|arabian c|aspen p|athletic w|baitinger c|barrington d|betty lee c|(6(1[79]|[2-9][13579])|7(0[13579]|13)|9(2[79]|[3-9][13579])|1([0-3][0-9][13579]|4([01][13579]|21))|5(3[468]|[4-9][02468])|[6-8][0-9][02468]|9([0-2][02468]|3[02])) n(orth)? bird s|birkinbine d|blaser c|boulder w|([89][0-9][13579]|10[0-4][13579]|[3-8][0-9][02468]) n(orth)? bristol s|([6-9][0-9]{2}|1([0-3][0-9][13579])|4([01][13579]|2[1357])) broadway d|broome s|bruce s|bunker hilll d|calico (c|l)|cardinal w|carrington d|1[2-6[0-9]{2} chadsworth d|8[0-9]{2} chalfont d|chandler l|chicory w|chipper l|circle d|cobblestone c|columbus c|(8[6-9][02468]|9[0-9][02468]|1[0-3][0-9][02468]|1203) columbus s|continental w|crossing ridge (c|t)|daniel s|7(1[68]|[2-9][02468])|[89][0-9]{2}|1[01][0-9]{2} daniel s|dickson d|donald d|(6[3-9]|[78][0-9])[13579] eddington d|w(est)? elm s|18[0-9]{2} essex d|fairchild s|fitness r|gayle c|[12][0-9][02468] e(ast)? goodland s|w(est)? goodland s|grandview c|grandview d|harmon c|harwood c|16[0-9]{2} hidden valley t|homestead d|hoover s|huntwick c|independence w|jenifer c|jerico l|juniper s|(e(ast)?|w(est)?) klubertanz d|knorr s|(1[0-9][13579]|[1-3][0-9][02468]) e(ast)? kohler s|w(est)? kohler s|kuhle d|lewis c|liberty b|liberty d|lincoln (c|d)|lois d|lori (c|l)|luther d|(e(ast)?|w(est)?) macarthur s|maynard d|miller s|millrun c|north pine s|[3-9][0-9]{2} north s|old glory w|park view d|patriot w|paul s|pebblebrook t|pine s|pony l|robert (c|d)|ruxton ridge d|sandridge t|sawyer w|scenic c|scenic ridge p|schiller s|school s|schumann s|s(ain)?t albert the great c|(([89]|1[0-8])[0-9][13579]|([89]|1[0-6])[0-9][02468]) s(ain)?t albert the great d|([89]|1[0-8])[0-9]{2} steven s|stone quarry r|([1-9][0-9]|[0-9]{3}|1[0-2][0-9]{2}) stonehaven d|stonewood (c|x)|stull s|summit a|taft s|tara d|terrace c|tower d|trapp s|(3[3-9][0-9]|[45][0-9]{2}) union s|vandenburg s|village l|wagner c|wallinford d|werner c|william d|windemere c|([1-7][0-9][02468]|1[45][0-9][02468]) windsor s|woodland d|woodsend c).*/i.test(userEnteredAddress)) {
-                      sortID = "D-SP-C2";
-                    } else if (/.*(amber t|andaman s|apple d|audley d|bailey r|beech (c|s)|(1(1[2468]|[2-9][02468])|2([0-7][02468]|80)) n(orth)? bird s|(1[2-9][02468]|[23][0-9][02468]|4[0-4][02468]|7(4[68]|5[02])) s(outh)? bird s|blazingstar l|blue aster b|briar l|(2[0-8][13579]) broadway d|brown bear w|buena vista d|castle d|celebration b|clarmar d|colony c|[1-9][0-9]{2}[13579] colorado a|compass plant b|coral d|cornwall c|covey s|covington trl|crystal l|davison d|diamond c|don simon d|dover w|echo d|emerald t|emerson s|enterprise l|field c|fireside s|fountain d|foxdale d|([8-9]|10)[0-9]{2} frederick s|garden d|garnet d|s(outh)? goldenrod d|n(orth)? grand a|greenfield c|harmony s|hart r|harvard d|hazelnut t|heath c|heritage (c|l)|hunters t|huntington d|irish c|ivory d|jade c|jasper c|jenny wren t|joshua c|koshkonong w|s(outh)? legacy w|leopold w|linnerud c|1[3-7][0-9]{2} linnerud d|s(outh)? longfield d|lothe s|1[0-1][0-9][13579] w(est)? main s|major w|new town d|o'?keeffe a|oconto d|olymipic s|oneida c|park c|pasque s|pearl l|percheron t|pleasant s|prairie dog d|prairie r|prospect (c|d)|providence (c|s)|queens s|rickel r|ring s|ruby l|rustic d|sapphire w|severson d|shane c|silverado d|sky blue d|smith'?s (c|x)|smithfield d|spahn c|sun c|sunfield s|sweet sparrow p|tall grass t|thoreau d|triumph d|us h(igh)?wa?y 151|villa c|walker c|(n(orth)?|s(outh)?) walker w|[1-9][0-9] walmar d|wild iris s|[89][0-9]{2} wilson s|winding stream w|wyoming a).*/i.test(userEnteredAddress)) {
-                      sortID = "D-SP-C3";
-                    } else if (/.*(abbington c|abbott l|amberson d|armagh l|atcheson a|bainbridge c|barrington c|bella w|berwick d|bethany c|black wolf t|blue heron b|bookham d|box hill r|brantford l|brighton d|([23][0-9][02468]|1[0-4][[0-9][02468]) broadway d|bull r|burnham c|camden l|1[78][0-9]{2} chadsworth d|9[0-9]{2} chalfont d|cobham l|collingwood d|[1-9][0-9]{2}[02468] colorado a|concord d|corinth d|cottage c|delaware d|dolan d|duncannon w|durham d|dynes w|eddington d|edgemore d|edmonton d|effingham w|(19[0-9]{2}|2[0-3][0-9]{2}) essex d|frawley d|gray hawk w|greenbriar d|hawaii l|(n(orth)?|s(outh)?) heatherstone d|17[0-9]{2} hidden valley t|huntsville r|innsbrooke d|invermere d|ironwood d|jo ann c|kelvington d|kentville d|kerry d|kimberton c|kings forest c|lynwood d|3[0-9]{3} w(est)? main s|n(orth)? mallard d|marcella c|margaret c|mccoomsky l|mcmahon d|michigan a|monaghan w|montana a|moorland p|newhaven c|normandin c|norridge d|oakland a|overlook p|peacock c|pennsylvania a|pinncale c|quail c|rebel d|richmond c|selkirk d|sherbrooke d|(1[78][0-9][13579]|(19|2[0-9])[0-9][02468]) s(ain)?t albert the great d|s(aint)?t patrick w|(19|2[0-3])[0-9]{2}|steward (c|d)|(1[7-9]|2[0-6])[0-9]{2} stonehaven d|summerton c|n(orth)? thompson r|token r|trenton d|troon d|virdon d|waldorf c|wallinford c|[1-9][0-9]{2} walmar d|walnut hill l|(n(orth)?|s(outh)?) westmount dr|weybridge d|wickersham c|2110 windsor s|wisconsin a|woodward d|wyndham d).*/i.test(userEnteredAddress)) {
-                      sortID = "D-SP-C4";
-                    } else {
-                      sortID = "D-X-SUN";
-                      result.textContent = "[FAILED: cannot determine sort value for Sun Prairie; please enter PSTAT manually.]";
-                    }
+                    browser.runtime.sendMessage({
+                      key: "getPstatByDist",
+                      addrVal: matchAddr,
+                      lib: "Sun"
+                    });
                     break;
                     /*** UNDETERMINABLE COUNTY SUBDIVISIONS ***/
                   case "Verona city":
+                    /*browser.runtime.sendMessage({
+                      key: "getPstatByDist",
+                      addrVal: matchAddr,
+                      lib: "Ver"
+                    });*/
                     result.textContent = "[FAILED: cannot determine sort value for Verona; please enter PSTAT manually.]";
                     break;
 
@@ -1783,14 +1734,10 @@ function queryPSTAT(addr, city, queryB, secondPass) {
             if (sortID) {
               selectPSTAT(selectList, sortID, result, matchAddr);
               // Set zip code
-              if (queryB) {
-                if (zipEltB !== null) {
-                  zipEltB.value = generatedZip;
-                }
-              } else {
-                if (zipElt !== null) {
-                  zipElt.value = generatedZip;
-                }
+              if (queryB && zipEltB) {
+                zipEltB.value = generatedZip;
+              } else if (zipElt) {
+                zipElt.value = generatedZip;
               }
             } else if (!secondPass) {
               queryPSTAT(addr, city, queryB, true);
@@ -1835,14 +1782,10 @@ function queryPSTAT(addr, city, queryB, secondPass) {
           if (sortID) {
             selectPSTAT(selectList, sortID, result, matchAddr);
             // Set zip code
-            if (queryB) {
-              if (zipEltB !== null) {
+            if (queryB && zipEltB) {
                 zipEltB.value = generatedZip;
-              }
-            } else {
-              if (zipElt !== null) {
-                zipElt.value = generatedZip;
-              }
+            } else if (zipElt) {
+              zipElt.value = generatedZip;
             }
             /*** END OF EXCEPTIONS ***/
           } else if (!secondPass) {
@@ -1918,10 +1861,16 @@ function queryPSTAT(addr, city, queryB, secondPass) {
   }
 }
 
-// Listener for selecting the PSTAT value by a patron's
+// Listener for selecting the PSTAT for the MAD exceptions, MID,
+// MOO, SUN, and VER or for selecting the PSTAT value by a patron's
 // secondary address rather than their primary address
 browser.runtime.onMessage.addListener((request) => {
-  if (request.key == "querySecondaryPSTAT") {
+  if (request.key === "receivedMadException") {
+    selectPSTAT(selectList, request.value, result, matchAddr);
+    
+  } else if (/received(m(id|oo)|sun|ver)PSTAT/i.test(request.key)) {
+    selectPSTAT(selectList, request.value, result, matchAddr);
+  } else if (request.key === "querySecondaryPSTAT") {
     var qspElt = document.getElementById('querySecondaryPSTAT'),
       addrB = document.getElementById('B_address'),
       cityB = document.getElementById('B_city');
@@ -1932,7 +1881,10 @@ browser.runtime.onMessage.addListener((request) => {
     } else {
       alert('You may only generate the PSTAT value from the ALTERNATE ADDRESS section, NOT the alternate contact section underneath.');
     }
-  } else if (request.key = "querySecondaryPSTATFail") {
+  } else if (request.key === "noPstatByDist") {
+    selectUND(selectList);
+    result.textContent = "[FAILED: unable to determine county; please enter PSTAT manually.]"
+  } else if (request.key === "querySecondaryPSTATFail") {
     var qspFailElt = document.getElementById('querySecondaryPSTATFail');
     if (qspFailElt) {
       alert("You must be currently editing a patron\'s record to generate the PSTAT value from their alternate address");

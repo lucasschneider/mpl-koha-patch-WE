@@ -969,26 +969,97 @@ function handleMessages(request, sender, sendResponse) {
         }).then(sendBadAddrs).catch(onError);
       });
       break;
-    case "getPstatRegex":
+    case "getPstatByDist":
+      console.log("Executing getPstatByDist");
       var pstatURL = "http://mpl-koha-patch.lrschneider.com/pstats/";
       switch (request.lib) {
-        case "mad":
-          pstatURL += "mad";
+        case "Mad":
+          pstatURL += "madExceptions";
           break;
-        case "mid":
+        case "Mid":
           pstatURL += "mid";
           break;
-        case "moo":
+        case "Moo":
           pstatURL += "moo";
           break;
-        case "sun":
+        case "Sun":
           pstatURL += "sun";
           break;
-        case "ver":
+        case "Ver":
           pstatURL += "ver";
           break;
       }
       pstatURL += "?val=all&regex=true";
+
+      $.getJSON(pstatURL).done(function (response) {
+        console.log("Got JSON:");
+        console.log(response);
+        var value, zip;
+
+        for (var i = 0; i < response.length; i++) {
+          var regex = new RegExp(response[i].regex, "i");
+          if (regex.test(request.addrVal)) {
+            value = response[i].value;
+            zip = response[i].zip;
+            break;
+          }
+        }
+
+        console.log("Current value: " + value);
+
+        function onError(error) {
+          console.error("Error: " + error);
+        }
+
+        function sendPSTAT(tabs) {
+          var _iteratorNormalCompletion6 = true;
+          var _didIteratorError6 = false;
+          var _iteratorError6 = undefined;
+
+          try {
+            for (var _iterator6 = tabs[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+              var tab = _step6.value;
+
+              if (value && request.lib === "mad") {
+                browser.tabs.sendMessage(tab.id, {
+                  key: "receivedMadException",
+                  value: value,
+                  zip: zip
+                });
+              } else if (value && /m(id|moo)|ver|sun/i.test(request.lib)) {
+                console.log("Sending value " + value);
+                browser.tabs.sendMessage(tab.id, {
+                  key: "received" + request.lib + "PSTAT",
+                  value: value
+                });
+              } else {
+                console.log("FAIL");
+                browser.tabs.sendMessage(tab.id, {
+                  key: "noPstatByDist"
+                });
+              }
+            }
+          } catch (err) {
+            _didIteratorError6 = true;
+            _iteratorError6 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion6 && _iterator6.return) {
+                _iterator6.return();
+              }
+            } finally {
+              if (_didIteratorError6) {
+                throw _iteratorError6;
+              }
+            }
+          }
+        }
+
+        browser.tabs.query({
+          currentWindow: true,
+          active: true
+        }).then(sendPSTAT).catch(onError);
+      });
       break;
   }
 }

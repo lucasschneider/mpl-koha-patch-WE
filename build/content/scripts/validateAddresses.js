@@ -101,10 +101,11 @@ browser.runtime.onMessage.addListener(function (message) {
       } else {
         // Make account Limited Use
         if (cc) {
-          wasLU = false;
           if (cc.value === "AD") {
+            wasLU = false;
             cc.value = "LU";
           } else if (cc.value === "JU") {
+            wasLU = false;
             cc.value = "LUJ";
           } else if (cc.value === "LU" || cc.value === "LUJ") {
             wasLU = true;
@@ -118,7 +119,7 @@ browser.runtime.onMessage.addListener(function (message) {
 
         // Handle non-unacceptable bad addresses
         if (message.type === "restricted") {
-          if (!noteTest.test(bn.value)) {
+          if (!new RegExp("Patron's account is Limited Use due to temporary residence at " + message.name + " \\(" + message.address).test(bn.value)) {
             initial = prompt("--- NOTE ---\nA library card issued to " + message.address + " (" + message.name + ") must be LIMITED USE.\n\nIn order to have the limited use restrictions removed from their account, a patron must first provide proof that they are living at a valid residential address.\n\nFor more info refer to the list of unacceptable addresses on the staff wiki:\nhttp://www.mplnet.org/system/files/UNACCEPTABLE%20ADDRESSES.pdf\n\nIf this is a new address, enter your initials and library code to confirm: (e.g. LS/MAD)");
             if (!initial) initial = "";
             if (bn.value !== '') {
@@ -127,19 +128,19 @@ browser.runtime.onMessage.addListener(function (message) {
             if (!initial) {
               initial = "";
             }
-            bn.value += "Patron's account is Limited Use due to temporary residence at " + message.name + ", (" + message.address + "). Patron must show proof of valid residential address in order to remove restrictions. " + curDate() + " " + initial;
+            bn.value += "Patron's account is Limited Use due to temporary residence at " + message.name + " (" + message.address + "). Patron must show proof of valid residential address in order to remove restrictions. " + curDate() + " " + initial;
             if (wasLU) {
               deleteMsgNotice();
             }
           }
         } else if (message.type === "unique") {
-          if (!new RegExp("Patron's account is Limited Use due to temporary residence at " + message.name + ", (" + message.address + ")").test(bn.value)) {
-            initial = prompt(message.note.replace("\\n", "\n"));
+          if (!new RegExp("Patron's account is Limited Use due to temporary residence at " + message.name + " \\(" + message.address).test(bn.value)) {
+            initial = prompt(message.note.replace(/\\n/g, "\n"));
             if (!initial) initial = "";
             if (bn.value !== '') {
               bn.value += "\n\n";
             }
-            bn.value += "Patron's account is Limited Use due to temporary residence at " + message.name + ", (" + message.address + "). Patron must show proof of valid residential address in order to remove restrictions. " + curDate() + " " + initial;
+            bn.value += "Patron's account is Limited Use due to temporary residence at " + message.name + " (" + message.address + "). Patron must show proof of valid residential address in order to remove restrictions. " + curDate() + " " + initial;
             if (wasLU) {
               deleteMsgNotice();
             }
