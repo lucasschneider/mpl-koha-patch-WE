@@ -362,15 +362,7 @@ function queryPSTAT(addr, city, queryB, secondPass) {
                 case "Fitchburg city":
                   sortID = "D-FIT-T";
                   break;
-                case "Monona city":
-                  browser.runtime.sendMessage({
-                    key: "getPstatByDist",
-                    addrVal: matchAddr,
-                    lib: "Moo"
-                  });
-                  break;
                 case "Madison city":
-                  p;
                   browser.runtime.sendMessage({
                     key: "getPstatByDist",
                     addrVal: matchAddr,
@@ -382,7 +374,6 @@ function queryPSTAT(addr, city, queryB, secondPass) {
                   sortID = "D-MAD-T";
                   break;
                 case "Middleton city":
-                  console.log("Sending getPstatByDist");
                   browser.runtime.sendMessage({
                     key: "getPstatByDist",
                     addrVal: matchAddr,
@@ -391,6 +382,13 @@ function queryPSTAT(addr, city, queryB, secondPass) {
                   break;
                 case "Middleton town":
                   sortID = "D-MID-T";
+                  break;
+                case "Monona city":
+                  browser.runtime.sendMessage({
+                    key: "getPstatByDist",
+                    addrVal: matchAddr,
+                    lib: "Moo"
+                  });
                   break;
                 case "Sun Prairie city":
                   browser.runtime.sendMessage({
@@ -401,12 +399,11 @@ function queryPSTAT(addr, city, queryB, secondPass) {
                   break;
                 /*** UNDETERMINABLE COUNTY SUBDIVISIONS ***/
                 case "Verona city":
-                  /*browser.runtime.sendMessage({
+                  browser.runtime.sendMessage({
                     key: "getPstatByDist",
                     addrVal: matchAddr,
                     lib: "Ver"
-                  });*/
-                  result.textContent = "[FAILED: cannot determine sort value for Verona; please enter PSTAT manually.]";
+                  });
                   break;
 
                 /*** MAIN LIST ***/
@@ -1748,55 +1745,19 @@ function queryPSTAT(addr, city, queryB, secondPass) {
               result.textContent = "[FAILED: unable to determine county subdivision; please enter PSTAT manually.]";
             }
           }
-          /*** ADDRESS PSTAT EXCEPTIONS ***/
-          /*** NOTE: MUST MATCH WITH CONDITIONALS AT TOP OF PAGE ***/
-        } else if (/81(01|19) mayo d.*/i.test(userEnteredAddress) && /madison/i.test(userEnteredCity)) {
-          sortID = "D-4.06";
-          matchAddr = userEnteredAddress.toUpperCase();
-          generatedZip = "53719";
-        } else if (/7(02|2(5|7)|49|50) university r.*/i.test(userEnteredAddress) && /madison/i.test(userEnteredCity)) {
-          sortID = "D-1";
-          matchAddr = userEnteredAddress.toUpperCase();
-          generatedZip = "53705";
-        } else if (/.*brookside d.*/i.test(userEnteredAddress) && /madison/i.test(userEnteredCity)) {
-          sortID = "D-114.02";
-          matchAddr = userEnteredAddress.toUpperCase();
-          generatedZip = "53718";
-        } else if (/.*halley w.*/i.test(userEnteredAddress) && /madison/i.test(userEnteredCity)) {
-          sortID = "D-114.01";
-          matchAddr = userEnteredAddress.toUpperCase();
-          generatedZip = "53718";
-        } else if (/7(53(0|8)|6(02|10|26|34|42)) mid ?town r.*/i.test(userEnteredAddress) && /madison/i.test(userEnteredCity)) {
-          sortID = "D-4.05";
-          matchAddr = userEnteredAddress.toUpperCase();
-          generatedZip = "53719";
-        } else if (/720(1|3) mid ?town r.*/i.test(userEnteredAddress) && /madison/i.test(userEnteredCity)) {
-          sortID = "D-5.04";
-          matchAddr = userEnteredAddress.toUpperCase();
-          generatedZip = "53719";
-        } else if (/.*camino del sol/i.test(userEnteredAddress) && /madison/i.test(userEnteredCity)) {
-          sortID = "D-23.01";
-          matchAddr = userEnteredAddress.toUpperCase();
-          generatedZip = "53704";
-        }
-        if (sortID) {
-          selectPSTAT(selectList, sortID, result, matchAddr);
-          // Set zip code
-          if (queryB && zipEltB) {
-            zipEltB.value = generatedZip;
-          } else if (zipElt) {
-            zipElt.value = generatedZip;
-          }
-          /*** END OF EXCEPTIONS ***/
-        } else if (!secondPass) {
-          queryPSTAT(addr, city, queryB, true);
         } else {
-          // data === null
-          selectUND(selectList);
-          result.setAttribute('style', 'display:inline-block');
-          if (result.textContent === '') {
-            result.textContent = "[FAILED: unable to determine county; please enter PSTAT manually.]";
-          }
+          // Check for MAD exceptions in case the Geocoder couldn't find the address
+          browser.runtime.sendMessage({
+            key: "getPstatByDist",
+            addrVal: matchAddr,
+            lib: "Mad",
+            tract: message.censusTract
+          });
+        }
+
+        // Run query with previous census data if the first pass failed
+        if (!secondPass) {
+          queryPSTAT(addr, city, queryB, true);
         }
       }
     });
@@ -1866,7 +1827,15 @@ function queryPSTAT(addr, city, queryB, secondPass) {
 // secondary address rather than their primary address
 browser.runtime.onMessage.addListener(function (request) {
   if (request.key === "receivedMadException") {
-    selectPSTAT(selectList, request.value, result, matchAddr);
+    sortID = request.tract;
+
+    selectPSTAT(selectList, sortID, result, matchAddr);
+    // Set zip code
+    if (queryB && zipEltB) {
+      zipEltB.value = request.zip;
+    } else if (zipElt) {
+      zipElt.value = request.zip;
+    }
   } else if (/received(m(id|oo)|sun|ver)PSTAT/i.test(request.key)) {
     selectPSTAT(selectList, request.value, result, matchAddr);
   } else if (request.key === "querySecondaryPSTAT") {

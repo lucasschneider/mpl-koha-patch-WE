@@ -970,7 +970,6 @@ function handleMessages(request, sender, sendResponse) {
       });
       break;
     case "getPstatByDist":
-      console.log("Executing getPstatByDist");
       var pstatURL = "http://mpl-koha-patch.lrschneider.com/pstats/";
       switch (request.lib) {
         case "Mad":
@@ -992,20 +991,16 @@ function handleMessages(request, sender, sendResponse) {
       pstatURL += "?val=all&regex=true";
 
       $.getJSON(pstatURL).done(function (response) {
-        console.log("Got JSON:");
-        console.log(response);
-        var value, zip;
+        var value, zip, tract;
 
         for (var i = 0; i < response.length; i++) {
           var regex = new RegExp(response[i].regex, "i");
           if (regex.test(request.addrVal)) {
-            value = response[i].value;
+            tract = !!request.tract ? request.tract : response[i].value;
             zip = response[i].zip;
             break;
           }
         }
-
-        console.log("Current value: " + value);
 
         function onError(error) {
           console.error("Error: " + error);
@@ -1026,14 +1021,12 @@ function handleMessages(request, sender, sendResponse) {
                   value: value,
                   zip: zip
                 });
-              } else if (value && /m(id|moo)|ver|sun/i.test(request.lib)) {
-                console.log("Sending value " + value);
+              } else if (value && /m(id|oo)|ver|sun/i.test(request.lib)) {
                 browser.tabs.sendMessage(tab.id, {
                   key: "received" + request.lib + "PSTAT",
                   value: value
                 });
               } else {
-                console.log("FAIL");
                 browser.tabs.sendMessage(tab.id, {
                   key: "noPstatByDist"
                 });
