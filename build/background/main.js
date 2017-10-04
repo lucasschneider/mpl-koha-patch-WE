@@ -76,7 +76,8 @@ libraryAddresses = [
     countySub,
     censusTract,
     zip,
-    closestLib = "";
+    closestLib = "",
+    value = "";
 
 setIcon();
 weh.prefs.on("skin", setIcon);
@@ -230,7 +231,7 @@ function handleMessages(request, sender, sendResponse) {
           match = response.result;
           if (match) {
             match = match.addressMatches;
-            if (match) {
+            if (match && match.length > 0) {
               match = match[0];
               if (match && match !== '') {
                 var onError = function onError(error) {
@@ -283,6 +284,50 @@ function handleMessages(request, sender, sendResponse) {
                   active: true
                 }).then(sendGeocoderResponse).catch(onError);
               }
+            } else {
+              // If no matched address found...
+
+              var _onError = function _onError(error) {
+                console.error("Error: " + error);
+              };
+
+              var _sendGeocoderResponse = function _sendGeocoderResponse(tabs) {
+                var _iteratorNormalCompletion3 = true;
+                var _didIteratorError3 = false;
+                var _iteratorError3 = undefined;
+
+                try {
+                  for (var _iterator3 = tabs[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                    var tab = _step3.value;
+
+                    browser.tabs.sendMessage(tab.id, {
+                      key: "requestMadExceptions",
+                      addrVal: request.address,
+                      lib: "Mad",
+                      tract: "",
+                      zip: ""
+                    });
+                  }
+                } catch (err) {
+                  _didIteratorError3 = true;
+                  _iteratorError3 = err;
+                } finally {
+                  try {
+                    if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                      _iterator3.return();
+                    }
+                  } finally {
+                    if (_didIteratorError3) {
+                      throw _iteratorError3;
+                    }
+                  }
+                }
+              };
+
+              browser.tabs.query({
+                currentWindow: true,
+                active: true
+              }).then(_sendGeocoderResponse).catch(_onError);
             }
           }
         }
@@ -354,13 +399,13 @@ function handleMessages(request, sender, sendResponse) {
           };
 
           var sendMapResponse = function sendMapResponse(tabs) {
-            var _iteratorNormalCompletion3 = true;
-            var _didIteratorError3 = false;
-            var _iteratorError3 = undefined;
+            var _iteratorNormalCompletion4 = true;
+            var _didIteratorError4 = false;
+            var _iteratorError4 = undefined;
 
             try {
-              for (var _iterator3 = tabs[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-                var tab = _step3.value;
+              for (var _iterator4 = tabs[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+                var tab = _step4.value;
 
                 if (closestLib && closestLib != "") {
                   browser.tabs.sendMessage(tab.id, {
@@ -374,16 +419,16 @@ function handleMessages(request, sender, sendResponse) {
                 }
               }
             } catch (err) {
-              _didIteratorError3 = true;
-              _iteratorError3 = err;
+              _didIteratorError4 = true;
+              _iteratorError4 = err;
             } finally {
               try {
-                if (!_iteratorNormalCompletion3 && _iterator3.return) {
-                  _iterator3.return();
+                if (!_iteratorNormalCompletion4 && _iterator4.return) {
+                  _iterator4.return();
                 }
               } finally {
-                if (_didIteratorError3) {
-                  throw _iteratorError3;
+                if (_didIteratorError4) {
+                  throw _iteratorError4;
                 }
               }
             }
@@ -864,13 +909,13 @@ function handleMessages(request, sender, sendResponse) {
         }
 
         function sendMapResponse(tabs) {
-          var _iteratorNormalCompletion4 = true;
-          var _didIteratorError4 = false;
-          var _iteratorError4 = undefined;
+          var _iteratorNormalCompletion5 = true;
+          var _didIteratorError5 = false;
+          var _iteratorError5 = undefined;
 
           try {
-            for (var _iterator4 = tabs[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-              var tab = _step4.value;
+            for (var _iterator5 = tabs[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+              var tab = _step5.value;
 
               if (dormName && dormName != "") {
                 browser.tabs.sendMessage(tab.id, {
@@ -884,16 +929,16 @@ function handleMessages(request, sender, sendResponse) {
               }
             }
           } catch (err) {
-            _didIteratorError4 = true;
-            _iteratorError4 = err;
+            _didIteratorError5 = true;
+            _iteratorError5 = err;
           } finally {
             try {
-              if (!_iteratorNormalCompletion4 && _iterator4.return) {
-                _iterator4.return();
+              if (!_iteratorNormalCompletion5 && _iterator5.return) {
+                _iterator5.return();
               }
             } finally {
-              if (_didIteratorError4) {
-                throw _iteratorError4;
+              if (_didIteratorError5) {
+                throw _iteratorError5;
               }
             }
           }
@@ -925,13 +970,13 @@ function handleMessages(request, sender, sendResponse) {
         }
 
         function sendBadAddrs(tabs) {
-          var _iteratorNormalCompletion5 = true;
-          var _didIteratorError5 = false;
-          var _iteratorError5 = undefined;
+          var _iteratorNormalCompletion6 = true;
+          var _didIteratorError6 = false;
+          var _iteratorError6 = undefined;
 
           try {
-            for (var _iterator5 = tabs[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-              var tab = _step5.value;
+            for (var _iterator6 = tabs[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+              var tab = _step6.value;
 
               if (name && type && address) {
                 browser.tabs.sendMessage(tab.id, {
@@ -948,16 +993,16 @@ function handleMessages(request, sender, sendResponse) {
               }
             }
           } catch (err) {
-            _didIteratorError5 = true;
-            _iteratorError5 = err;
+            _didIteratorError6 = true;
+            _iteratorError6 = err;
           } finally {
             try {
-              if (!_iteratorNormalCompletion5 && _iterator5.return) {
-                _iterator5.return();
+              if (!_iteratorNormalCompletion6 && _iterator6.return) {
+                _iterator6.return();
               }
             } finally {
-              if (_didIteratorError5) {
-                throw _iteratorError5;
+              if (_didIteratorError6) {
+                throw _iteratorError6;
               }
             }
           }
@@ -991,13 +1036,15 @@ function handleMessages(request, sender, sendResponse) {
       pstatURL += "?val=all&regex=true";
 
       $.getJSON(pstatURL).done(function (response) {
-        var value, zip, tract;
-
+        var value = !!request.tract ? "D-" + request.tract : "",
+            zip = !!request.zip ? request.zip : "";
         for (var i = 0; i < response.length; i++) {
           var regex = new RegExp(response[i].regex, "i");
           if (regex.test(request.addrVal)) {
-            tract = !!request.tract ? request.tract : response[i].value;
-            zip = response[i].zip;
+            value = response[i].value;
+            if (response[i].zip) {
+              zip = response[i].zip;
+            }
             break;
           }
         }
@@ -1007,17 +1054,17 @@ function handleMessages(request, sender, sendResponse) {
         }
 
         function sendPSTAT(tabs) {
-          var _iteratorNormalCompletion6 = true;
-          var _didIteratorError6 = false;
-          var _iteratorError6 = undefined;
+          var _iteratorNormalCompletion7 = true;
+          var _didIteratorError7 = false;
+          var _iteratorError7 = undefined;
 
           try {
-            for (var _iterator6 = tabs[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-              var tab = _step6.value;
+            for (var _iterator7 = tabs[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+              var tab = _step7.value;
 
-              if (value && request.lib === "mad") {
+              if (value && request.lib === "Mad") {
                 browser.tabs.sendMessage(tab.id, {
-                  key: "receivedMadException",
+                  key: "receivedMAD",
                   value: value,
                   zip: zip
                 });
@@ -1033,16 +1080,16 @@ function handleMessages(request, sender, sendResponse) {
               }
             }
           } catch (err) {
-            _didIteratorError6 = true;
-            _iteratorError6 = err;
+            _didIteratorError7 = true;
+            _iteratorError7 = err;
           } finally {
             try {
-              if (!_iteratorNormalCompletion6 && _iterator6.return) {
-                _iterator6.return();
+              if (!_iteratorNormalCompletion7 && _iterator7.return) {
+                _iterator7.return();
               }
             } finally {
-              if (_didIteratorError6) {
-                throw _iteratorError6;
+              if (_didIteratorError7) {
+                throw _iteratorError7;
               }
             }
           }

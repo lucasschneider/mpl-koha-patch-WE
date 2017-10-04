@@ -122,7 +122,8 @@ var d = new Date(),
   countySub,
   censusTract,
   zip,
-  closestLib = "";
+  closestLib = "",
+  value = "";
 
 setIcon();
 weh.prefs.on("skin",setIcon);
@@ -255,7 +256,7 @@ function handleMessages(request, sender, sendResponse) {
           match = response.result;
           if (match) {
             match = match.addressMatches;
-            if (match) {
+            if (match && match.length > 0) {
               match = match[0];
               if (match && match !== '') {
                 matchAddr = match.matchedAddress.split(',')[0].toUpperCase();
@@ -287,6 +288,29 @@ function handleMessages(request, sender, sendResponse) {
                   active: true
                 }).then(sendGeocoderResponse).catch(onError);
               }
+            } else {
+              // If no matched address found...
+              
+              function onError(error) {
+                console.error(`Error: ${error}`);
+              }
+
+              function sendGeocoderResponse(tabs) {
+                for (let tab of tabs) {
+                  browser.tabs.sendMessage(tab.id, {
+                    key: "requestMadExceptions",
+                    addrVal: request.address,
+                    lib: "Mad",
+                    tract: "",
+                    zip: ""
+                  });
+                }
+              }
+
+              browser.tabs.query({
+                currentWindow: true,
+                active: true
+              }).then(sendGeocoderResponse).catch(onError)
             }
           }
         }
@@ -804,15 +828,15 @@ function handleMessages(request, sender, sendResponse) {
       pstatURL += "?val=all&regex=true";
       
       $.getJSON(pstatURL).done(function(response) {
-        var value,
-          zip,
-          tract;
-          
+        var value = !!request.tract ? "D-" + request.tract : "",
+          zip = !!request.zip ? request.zip : "";
         for (var i = 0; i < response.length; i++) {
           var regex = new RegExp(response[i].regex, "i");
           if (regex.test(request.addrVal)) {
-            tract = !!request.tract ? request.tract : response[i].value;
-            zip = response[i].zip;
+            value = response[i].value;
+            if (response[i].zip) {
+              zip = response[i].zip;
+            }
             break;
           }
         }
@@ -823,9 +847,9 @@ function handleMessages(request, sender, sendResponse) {
         
         function sendPSTAT(tabs) {
           for (let tab of tabs) {
-            if (value && request.lib === "mad") {
+            if (value && request.lib === "Mad") {
               browser.tabs.sendMessage(tab.id, {
-                key: "receivedMadException",
+                key: "receivedMAD",
                 value: value,
                 zip: zip
               });
