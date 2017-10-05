@@ -379,14 +379,18 @@ browser.runtime.onMessage.addListener(message => {
               sortID = "D-FIT-T";
               break;
             case "Madison city":
-              exceptionQuery = true;
-              browser.runtime.sendMessage({
-                key: "getPstatByDist",
-                addrVal: matchAddr,
-                lib: "Mad",
-                tract: message.censusTract,
-                zip: message.zip
-              });
+              if (message.censusTract) {
+                sortID = "D-" + message.censusTract;
+              } else {
+                exceptionQuery = true;
+                browser.runtime.sendMessage({
+                  key: "getPstatByDist",
+                  addrVal: matchAddr,
+                  lib: "Mad",
+                  tract: message.censusTract,
+                  zip: message.zip
+                });
+              }
               break;
             case "Madison town":
               sortID = "D-MAD-T";
