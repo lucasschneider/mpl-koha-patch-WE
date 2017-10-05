@@ -244,7 +244,7 @@ if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberen
   };
 
   textNote.addEventListener('click', function () {
-    if (!this.checked) {
+    if (this.checked) {
       receiveTextNotifications();
     } else {
       removeTextNotifications();
