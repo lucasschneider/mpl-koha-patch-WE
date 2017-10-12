@@ -216,8 +216,10 @@ if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberen
     }
   }
   
+  /*** PER MPL MANAGEMENT, DO NOT ADD FEATURE TO EASE ENABLING OF
+       TEXT NOTIFICATIONS! ***/
   /*** Add checkbox to set text notifications ***/
-  var phoneElt = document.getElementById('phone'),
+  /* var phoneElt = document.getElementById('phone'),
     email = document.getElementById('email'),
     email2 = document.getElementById('emailpro'),
     emailAlt = document.getElementById('B_email'),
@@ -252,10 +254,10 @@ if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberen
       
       emailAlt.value = email.value;
       email.value = "";
-      
-      if (!/^(T1-)/.test(phoneElt.value)) {
-        phoneElt.value = "T1-" + phoneElt.value;
-      }
+    }
+    
+    if (!/^(T1-)/.test(phoneElt.value)) {
+      phoneElt.value = "T1-" + phoneElt.value;
     }
   };
   
@@ -285,7 +287,8 @@ if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberen
  
   if (/^(T1-)/.test(phoneElt.value)) {
     textNote.checked = true;
-  }
+  } */
+  /*** SEE ABOVE COMMENT FOR EXPLANATION FOR COMMENTED CODE ***/
 
   /*** Control-space to save patron record ***/
   document.addEventListener("keydown", function (e) {

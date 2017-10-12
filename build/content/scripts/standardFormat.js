@@ -184,54 +184,56 @@ if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberen
     }
   }
 
+  /*** PER MPL MANAGEMENT, DO NOT ADD FEATURE TO EASE ENABLING OF
+       TEXT NOTIFICATIONS! ***/
   /*** Add checkbox to set text notifications ***/
-  var phoneElt = document.getElementById('phone'),
-      email = document.getElementById('email'),
-      email2 = document.getElementById('emailpro'),
-      emailAlt = document.getElementById('B_email'),
-      optionUL,
-      textNoteWrapper = document.createElement('li'),
-      textNoteLabel = document.createElement('label'),
-      textNote = document.createElement('input'),
-      textNoteText = document.createElement('span');
-
+  /* var phoneElt = document.getElementById('phone'),
+    email = document.getElementById('email'),
+    email2 = document.getElementById('emailpro'),
+    emailAlt = document.getElementById('B_email'),
+    optionUL,
+    textNoteWrapper = document.createElement('li'),
+    textNoteLabel = document.createElement('label'),
+    textNote = document.createElement('input'),
+    textNoteText = document.createElement('span');
+  
   if (phoneElt) {
     optionUL = phoneElt.parentElement.parentElement;
   }
-
+  
   textNoteText.textContent = " Receive text notifications";
   textNote.id = "textNote";
   textNote.type = "checkbox";
   textNoteLabel.textContent = "SMS:";
-
+  
   textNoteWrapper.appendChild(textNoteLabel);
   textNoteWrapper.appendChild(textNote);
   textNoteWrapper.appendChild(textNoteText);
-
+  
   optionUL.insertBefore(textNoteWrapper, optionUL.children[1]);
-
-  var receiveTextNotifications = function receiveTextNotifications() {
+  
+    var receiveTextNotifications = function() {  
     // If there is a primary email address and no alternate email address
     if (email && email.value && emailAlt && !emailAlt.value) {
       // and if there is a secondary email address
-      if (email2 && email2.value) {
+      if(email2 && email2.value) {
         email2.value = "";
       }
-
+      
       emailAlt.value = email.value;
       email.value = "";
-
-      if (!/^(T1-)/.test(phoneElt.value)) {
-        phoneElt.value = "T1-" + phoneElt.value;
-      }
+    }
+    
+    if (!/^(T1-)/.test(phoneElt.value)) {
+      phoneElt.value = "T1-" + phoneElt.value;
     }
   };
-
-  var removeTextNotifications = function removeTextNotifications() {
+  
+  var removeTextNotifications = function() {
     if (/^(T1-)/.test(phoneElt.value)) {
       phoneElt.value = phoneElt.value.substring(3);
     }
-
+    
     if (email && !email.value) {
       if (emailAlt && emailAlt.value) {
         email.value = emailAlt.value;
@@ -241,19 +243,20 @@ if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberen
         email2.value = "";
       }
     }
-  };
-
-  textNote.addEventListener('click', function () {
+  }
+  
+  textNote.addEventListener('click', function() {
     if (this.checked) {
       receiveTextNotifications();
     } else {
       removeTextNotifications();
     }
   });
-
+  
   if (/^(T1-)/.test(phoneElt.value)) {
     textNote.checked = true;
-  }
+  } */
+  /*** SEE ABOVE COMMENT FOR EXPLANATION FOR COMMENTED CODE ***/
 
   /*** Control-space to save patron record ***/
   document.addEventListener("keydown", function (e) {
