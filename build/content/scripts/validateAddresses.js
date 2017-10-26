@@ -14,7 +14,8 @@ var addr = document.getElementById('address'),
     i,
     field,
     initial,
-    wasLU = false;
+    wasLU = false,
+    wasNotifiedToDel = false;
 
 // Define address object
 var Address = function Address(addrRegEx, addr, place) {
@@ -129,7 +130,8 @@ browser.runtime.onMessage.addListener(function (message) {
               initial = "";
             }
             bn.value += "Patron's account is Limited Use due to temporary residence at " + message.name + " (" + message.address + "). Patron must show proof of valid residential address in order to remove restrictions. " + curDate() + " " + initial;
-            if (wasLU) {
+            if (wasLU && !wasNotifiedToDel) {
+              wasNotifiedToDel = true;
               deleteMsgNotice();
             }
           }
@@ -141,7 +143,8 @@ browser.runtime.onMessage.addListener(function (message) {
               bn.value += "\n\n";
             }
             bn.value += "Patron's account is Limited Use due to temporary residence at " + message.name + " (" + message.address + "). Patron must show proof of valid residential address in order to remove restrictions. " + curDate() + " " + initial;
-            if (wasLU) {
+            if (wasLU && !wasNotifiedToDel) {
+              wasNotifiedToDel = true;
               deleteMsgNotice();
             }
           }
@@ -154,7 +157,8 @@ browser.runtime.onMessage.addListener(function (message) {
     if (field && field[0].children[0].value === 'Override Block') {
       restoreSave();
     }
-    if (/Patron must show proof of valid residential address in order to remove restrictions/.test(bn.value)) {
+    if (/Patron must show proof of valid residential address in order to remove restrictions/.test(bn.value) && !wasNotifiedToDel) {
+      wasNotifiedToDel = true;
       deleteMsgNotice();
 
       if (cc.value === "LU") {
