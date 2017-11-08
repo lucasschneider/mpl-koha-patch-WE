@@ -5,7 +5,7 @@ var d = new Date(),
       var skin = res.hasOwnProperty('skin') ? res.skin : 'mad'
       
       switch(skin) {
-        case "mid":
+        case "MID":
           browser.browserAction.setIcon({path: {
             16: "content/img/mid-icon-16.png",
             32: "content/img/mid-icon-32.png",
@@ -14,7 +14,7 @@ var d = new Date(),
             128: "content/img/mid-icon-128.png"
           }});
           break;
-        case "scls":
+        case "SCLS":
           browser.browserAction.setIcon({path: {
             16: "content/img/scls-icon-16.png",
             32: "content/img/scls-icon-32.png",
@@ -130,131 +130,81 @@ var d = new Date(),
   value = "";
 
 setIcon();
-weh.prefs.on("skin",setIcon);
 
 // Load preference-selected function files
 function handleUpdated(details) {
-if (details.frameId == 0) { // 0 indicates the navigation happens in the tab content window;
+  if (details.frameId == 0) { // 0 indicates the navigation happens in the tab content window;
                             // A positive value indicates navigation in a subframe.
 
-  browser.storage.sync.get().then((res) => {
-    if (!res.hasOwnProperty('patronMsg') || (res.hasOwnProperty('patronMsg') && res.patronMsg)) {
-      browser.tabs.executeScript(details.tabId,{
-        file: "content/scripts/patronMessages.js"
-      });
-    }
+    browser.storage.sync.get().then((res) => {
+      if (!res.hasOwnProperty('patronMsg') || (res.hasOwnProperty('patronMsg') && res.patronMsg)) {
+        browser.tabs.executeScript(details.tabId,{
+          file: "content/scripts/patronMessages.js"
+        });
+      }
     
-    if (!res.hasOwnProperty('validAddr') || (res.hasOwnProperty('validAddr') && res.validAddr)) {
-      browser.tabs.executeScript(details.tabId,{
-        file: "content/scripts/validateAddresses.js"
-      });
-    }
+      if (!res.hasOwnProperty('validAddr') || (res.hasOwnProperty('validAddr') && res.validAddr)) {
+        browser.tabs.executeScript(details.tabId,{
+          file: "content/scripts/validateAddresses.js"
+        });
+      }
     
-    if (!res.hasOwnProperty('autoBarcode') || (res.hasOwnProperty('autoBarcode') && res.autoBarcode)) {
-      browser.tabs.executeScript(details.tabId,{
-        file: "content/scripts/autofillUserId.js"
-      }); 
-    }
+      if (!res.hasOwnProperty('autoBarcode') || (res.hasOwnProperty('autoBarcode') && res.autoBarcode)) {
+        browser.tabs.executeScript(details.tabId,{
+          file: "content/scripts/autofillUserId.js"
+        }); 
+      }
     
-    if (!res.hasOwnProperty('lookupPSTAT') || (res.hasOwnProperty('lookupPSTAT') && res.lookupPSTAT)) {
-      browser.tabs.executeScript(details.tabId,{
-        file: "content/scripts/selectPSTAT.js"
-      });
-    }
+      if (!res.hasOwnProperty('lookupPSTAT') || (res.hasOwnProperty('lookupPSTAT') && res.lookupPSTAT)) {
+        browser.tabs.executeScript(details.tabId,{
+          file: "content/scripts/selectPSTAT.js"
+        });
+      }
     
-    if (!res.hasOwnProperty('digestOnly') || (res.hasOwnProperty('digestOnly') && res.digestOnly)) {
-      browser.tabs.executeScript(details.tabId,{
-        file: "content/scripts/forceDigest.js"
-      });
-    }
+      if (!res.hasOwnProperty('digestOnly') || (res.hasOwnProperty('digestOnly') && res.digestOnly)) {
+        browser.tabs.executeScript(details.tabId,{
+          file: "content/scripts/forceDigest.js"
+        });
+      }
     
-    if (!res.hasOwnProperty('dueDateToggle') || (res.hasOwnProperty('dueDateToggle') && res.dueDateToggle)) {
-      browser.tabs.executeScript(details.tabId,{
-        file: "content/scripts/restrictNotificationOptions.js"
-      });
-    }
+      if (!res.hasOwnProperty('dueDateToggle') || (res.hasOwnProperty('dueDateToggle') && res.dueDateToggle)) {
+        browser.tabs.executeScript(details.tabId,{
+          file: "content/scripts/restrictNotificationOptions.js"
+        });
+      }
     
-    if (!res.hasOwnProperty('middleInitials') || (res.hasOwnProperty('middleInitials') && res.middleInitials)) {
-      browser.tabs.executeScript(details.tabId,{
-        file: "content/scripts/middleName.js"
-      });
-    }
+      if (!res.hasOwnProperty('middleInitials') || (res.hasOwnProperty('middleInitials') && res.middleInitials)) {
+        browser.tabs.executeScript(details.tabId,{
+          file: "content/scripts/middleName.js"
+        });
+      }
     
-    if (!res.hasOwnProperty('updateAccountType') || (res.hasOwnProperty('updateAccountType') && res.updateAccountType)) {
-      browser.tabs.executeScript(details.tabId,{
-        file: "content/scripts/updateAccountType.js"
-      });
-    }
+      if (!res.hasOwnProperty('updateAccountType') || (res.hasOwnProperty('updateAccountType') && res.updateAccountType)) {
+        browser.tabs.executeScript(details.tabId,{
+          file: "content/scripts/updateAccountType.js"
+        });
+      }
     
-    if (!res.hasOwnProperty('disableDropbox') || (res.hasOwnProperty('disableDropbox') && res.disableDropbox)) {
-      browser.tabs.executeScript(details.tabId,{
-        file: "content/scripts/disableDropbox.js"
-      });    
-    } else if (day === 0) {
-      browser.tabs.executeScript(details.tabId,{
-        file: "content/scripts/sundayDropbox.js"
-      }); 
-    }
-  });
+      if (!res.hasOwnProperty('disableDropbox') || (res.hasOwnProperty('disableDropbox') && res.disableDropbox)) {
+        browser.tabs.executeScript(details.tabId,{
+          file: "content/scripts/disableDropbox.js"
+        });    
+      } else if (day === 0) {
+        browser.tabs.executeScript(details.tabId,{
+          file: "content/scripts/sundayDropbox.js"
+        }); 
+      }
+    });
+  }
 }
 
 browser.webNavigation.onCompleted.addListener(handleUpdated);
-
-
-weh.ui.update("default",{
-    type: "popup",
-    onMessage: function(message) {
-        switch(message.type) {
-            case "open-settings":
-                weh.ui.close("default");
-                weh.ui.open("settings");
-                break;
-            case "addNote":
-                weh.ui.close("default");
-                browser.tabs.executeScript({
-                   file: "content/popup-tools/addPaymentPlanNote.js"
-                }); 
-                break;
-            case "addLostCardNote":
-                weh.ui.close("default");
-                browser.tabs.executeScript({
-                   file: "content/popup-tools/addLostCardNote.js"
-                }); 
-                break;
-            case "addr2PSTAT":
-                weh.ui.close("default");
-                var querying = browser.tabs.query({currentWindow: true, active: true});
-                querying.then((tabs)=>{
-                  for (let tab of tabs) {
-                    browser.tabs.executeScript(tab.id,{
-                      code: "x=document.createElement('span');x.id='querySecondaryPSTAT';x.style.display='none';document.body.appendChild(x);"
-                    });
-                    if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberentry\.pl.*/.test(tab.url)) {
-                      browser.tabs.sendMessage(tab.id,{key: "querySecondaryPSTAT"});
-                    } else {
-                      browser.tabs.sendMessage(tab.id,{key: "querySecondaryPSTATFail"});
-                    }
-                  }
-                });
-                break;
-            case "calendarAnnouncements":
-                weh.ui.close("default");
-                browser.tabs.create({
-                    url:"http://host.evanced.info/madison/evanced/eventspr.asp"
-                }).then((tab) => {
-                    browser.tabs.executeScript({
-                        file: "/content/popup-tools/calendarAnnouncements.js"
-                    }); 
-                });
-                break;
-        }
-    }
-});
 
 // Handle messages form content pages
 function handleMessages(request, sender, sendResponse) {
   switch(request.key) {
     case "queryGeocoder":
+      console.log("start queryGeocoder");
       if (request.isSecondPass) {
         geocoderAPI = "https://geocoding.geo.census.gov/geocoder/geographies/address?street="+request.URIencodedAddress+"&city="+request.city+"&state=wi&benchmark=Public_AR_Census2010&vintage=Census2010_Census2010&layers=Counties,Census Tracts,County+Subdivisions,2010+Census+ZIP+Code+Tabulation+Areas&format=json";
       } else {
@@ -721,15 +671,20 @@ function handleMessages(request, sender, sendResponse) {
       });
       break;
     case "printBarcode":
-      browser.tabs.create({
-        active: false,
-        url: "/printBarcode"+weh.prefs.receiptFont+".html"
-      }).then((tab) => {
-        browser.tabs.sendMessage(tab.id,{
-          key: "printBarcode",
-          data: request.data
+      browser.storage.sync.get().then((res) => {
+        var barcodeLib = res.hasOwnProperty('receiptFont') ? res.receiptFont : "MPL";
+
+        // TODO: Change URL by preference
+        browser.tabs.create({
+          active: false,
+          url: "/printBarcode" + barcodeLib + ".html"
+        }).then((tab) => {
+          browser.tabs.sendMessage(tab.id,{
+            key: "printBarcode",
+            data: request.data
+          });
+          setTimeout(() => {browser.tabs.remove(tab.id)}, 1000);
         });
-        setTimeout(() => {browser.tabs.remove(tab.id)}, 1000);
       });
       break;
     case "getDormData":
@@ -881,12 +836,44 @@ function handleMessages(request, sender, sendResponse) {
         }).then(sendPSTAT).catch(onError);
       });
       break;
+    case "updateExtensionIcon":
+      setIcon();
+      break;
+    case "addNote":
+      browser.tabs.executeScript({
+        file: "browserAction/scripts/addPaymentPlanNote.js"
+      }); 
+      break;
+    case "addLostCardNote":
+      browser.tabs.executeScript({
+        file: "browserAction/scripts/addLostCardNote.js"
+      }); 
+      break;
+    case "addr2PSTAT":
+      var querying = browser.tabs.query({currentWindow: true, active: true});
+      querying.then((tabs)=>{
+        for (let tab of tabs) {
+          browser.tabs.executeScript(tab.id,{
+            code: "x=document.createElement('span');x.id='querySecondaryPSTAT';x.style.display='none';document.body.appendChild(x);"
+          });
+          if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberentry\.pl.*/.test(tab.url)) {
+            browser.tabs.sendMessage(tab.id,{key: "querySecondaryPSTAT"});
+          } else {
+            browser.tabs.sendMessage(tab.id,{key: "querySecondaryPSTATFail"});
+          }
+        }
+      });
+      break;
+    case "calendarAnnouncements":
+      browser.tabs.create({
+        url:"http://host.evanced.info/madison/evanced/eventspr.asp"
+      }).then((tab) => {
+        browser.tabs.executeScript({
+          file: "browserAction/scripts/calendarAnnouncements.js"
+        }); 
+      });
+      break;
   }
 }
 
 browser.runtime.onMessage.addListener(handleMessages);
-
-weh.ui.update("settings",{
-    type: "tab",
-    contentURL: "content/settings.html"
-});

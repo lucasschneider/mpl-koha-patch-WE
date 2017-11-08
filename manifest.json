@@ -8,8 +8,8 @@
   
   "applications": {
     "gecko": {
-      "id": "mpl-koha-patch@lrschneider.com",
-      "strict_min_version": "42.0"
+      "id": "3338f72b-be88-4c0b-98ec-d24eeef851b4@jetpack",
+      "strict_min_version": "48.0"
     }
   },
 
@@ -36,8 +36,8 @@
   
   "background": {
       "scripts": [
-        "background/main.js",
-        "third-party/jquery-3.2.1.min.js"
+        "thirdParty/jquery-3.2.1.min.js",
+        "background/main.js"
       ]
   },
   "content_scripts": [

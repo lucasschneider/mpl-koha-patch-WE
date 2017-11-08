@@ -1,37 +1,24 @@
-﻿function setDefaultOptions() {
-    document.querySelector("#skin").value = "mad";
-    document.querySelector("#patronMsg").checked = true;
-    document.querySelector("#validAddr").checked = true;
-    document.querySelector("#autoBarcode").checked = true;
-    document.querySelector("#lookupPSTAT").checked = true;
-    document.querySelector("#digestOnly").checked = true;
-    document.querySelector("#dueDateToggle").checked = true;
-    document.querySelector("#middleInitials").checked = true;
-    document.querySelector("#updateAccountType").checked = true;
-    document.querySelector("#receiptFont").value = "36";
-    document.querySelector("#disableDropbox").checked = false;
-}
-
-function saveOptions(e) {
+﻿function setDefaultOptions() {    
   browser.storage.sync.set({
-    skin: document.querySelector("#skin").value,
-    patronMsg: document.querySelector("#patronMsg").checked,
-    validAddr: document.querySelector("#validAddr").checked,
-    autoBarcode: document.querySelector("#autoBarcode").checked,
-    lookupPSTAT: document.querySelector("#lookupPSTAT").checked,
-    digestOnly: document.querySelector("#digestOnly").checked,
-    dueDateToggle: document.querySelector("#dueDateToggle").checked,
-    middleInitials: document.querySelector("#middleInitials").checked,
-    updateAccountType: document.querySelector("#updateAccountType").checked,
-    receiptFont: document.querySelector("#receiptFont").value,
-    disableDropbox: document.querySelector("#disableDropbox").checked
+    skin: "MAD",
+    patronMsg: true,
+    validAddr: true,
+    autoBarcode: true,
+    lookupPSTAT: true,
+    digestOnly: true,
+    dueDateToggle: true,
+    middleInitials: true,
+    updateAccountType: true,
+    receiptFont: "MPL",
+    disableDropbox: false
   });
-  e.preventDefault();
+  browser.runtime.sendMessage({key: "updateExtensionIcon"});
+  restoreOptions();
 }
 
 function restoreOptions() {
   browser.storage.sync.get('skin').then((res) => {
-    document.querySelector("#skin").value = res.skin || 'mad';
+    document.querySelector("#skin").value = res.skin;
   });
   
   browser.storage.sync.get('patronMsg').then((res) => {
@@ -67,7 +54,7 @@ function restoreOptions() {
   });
   
   browser.storage.sync.get('receiptFont').then((res) => {
-    document.querySelector("#receiptFont").value = res.receiptFont || '36';
+    document.querySelector("#receiptFont").value = res.receiptFont;
   });
   
   browser.storage.sync.get('disableDropbox').then((res) => {
@@ -91,9 +78,46 @@ document.addEventListener('DOMContentLoaded', function() {
       restoreOptions();
     } else {
       setDefaultOptions();
-      saveOptions();
     }
   });
 });
-document.querySelector("form").addEventListener("submit", saveOptions);
+
+// Listener for Set Default Options Button
 document.getElementById("setDefault").addEventListener('click', setDefaultOptions);
+
+// Option update listeners
+document.getElementById("skin").addEventListener('change', function() {
+  browser.storage.sync.set({skin: document.getElementById("skin").value}).then((res) => {
+    browser.runtime.sendMessage({key: "updateExtensionIcon"});
+  });
+});
+document.getElementById("patronMsg").addEventListener('click', function() {
+   browser.storage.sync.set({patronMsg: document.getElementById("patronMsg").checked});
+});
+document.getElementById("validAddr").addEventListener('click', function() {
+   browser.storage.sync.set({validAddr: document.getElementById("validAddr").checked});
+});
+document.getElementById("autoBarcode").addEventListener('click', function() {
+   browser.storage.sync.set({autoBarcode: document.getElementById("autoBarcode").checked});
+});
+document.getElementById("lookupPSTAT").addEventListener('click', function() {
+   browser.storage.sync.set({lookupPSTAT: document.getElementById("lookupPSTAT").checked});
+});
+document.getElementById("digestOnly").addEventListener('click', function() {
+   browser.storage.sync.set({digestOnly: document.getElementById("digestOnly").checked});
+});
+document.getElementById("dueDateToggle").addEventListener('click', function() {
+   browser.storage.sync.set({dueDateToggle: document.getElementById("dueDateToggle").checked});
+});
+document.getElementById("middleInitials").addEventListener('click', function() {
+   browser.storage.sync.set({middleInitials: document.getElementById("middleInitials").checked});
+});
+document.getElementById("updateAccountType").addEventListener('click', function() {
+   browser.storage.sync.set({updateAccountType: document.getElementById("updateAccountType").checked});
+});
+document.getElementById("receiptFont").addEventListener('change', function() {
+   browser.storage.sync.set({receiptFont: document.getElementById("receiptFont").value});
+});
+document.getElementById("disableDropbox").addEventListener('click', function() {
+   browser.storage.sync.set({disableDropbox: document.getElementById("disableDropbox").checked});
+});

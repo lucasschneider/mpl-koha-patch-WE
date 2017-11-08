@@ -2,7 +2,7 @@
 function printBarcode() {
   var start = false,
     barcode = "",
-    name = document.getElementsByClassName('patroninfo')[0].children[0].innerHTML,
+    name = document.getElementsByClassName('patroninfo')[0].children[0].textContent,
     i;
   if (name != null) {
     for (i = name.length - 1; i > -1; i--) {
