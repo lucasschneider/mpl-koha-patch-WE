@@ -1,0 +1,115 @@
+﻿<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="options.css" />
+  </head>
+
+<body>
+  <form>
+    <div class="option">
+      <h2>Select a Display</h2>
+      <select id="skin">
+        <option value="mid">MID</option>
+        <option value="mad">MAD</option>
+        <option value="scls">SCLS</option>
+      </select>
+    </div>
+    <div class="option">
+      <h2>Additional Patron Messages</h2>
+      <table>
+        <tr>
+          <td><input type="checkbox" id="patronMsg" /></td>
+          <td>Replace several of LibLime's predefined patron messages with messages more often used by MPL circ</td>
+        </tr>
+      </table>
+    </div>
+    <div class="option">
+      <h2>Validate Madison Addresses</h2>
+      <table>
+        <tr>
+          <td><input type="checkbox" id="validAddr" /></td>
+          <td>Alerts library staff when an unacceptable or restricted Madison address has been entered</td>
+        </tr>
+      </table>
+    </div>
+    <div class="option">
+      <h2>Autofill OPAC Login Number</h2>
+      <table>
+        <tr>
+          <td><input type="checkbox" id="autoBarcode" /></td>
+          <td>Autofill a patron's OPAC username to the value of their library card</td>
+        </tr>
+      </table>
+    </div>
+    <div class="option">
+      <h2>Lookup PSTAT</h2>
+      <table>
+        <tr>
+          <td><input type="checkbox" id="lookupPSTAT" /></td>
+          <td>Automatically lookup PSTAT value for all libraries in the SCLS that sort by county subdivision or census tract number. If the PSTAT is able to be determined, a button will appear allowing staff to automatically select the geographically closest MPL location for the patron's home library</td>
+        </tr>
+      </table>
+    </div>
+    <div class="option">
+      <h2>Autoselect "Digests Only"</h2>
+      <table>
+        <tr>
+          <td><input type="checkbox" id="digestOnly" /></td>
+          <td>Automatically selects the "Digests Only" option (when available) while selecting patron notification options</td>
+        </tr>
+      </table>
+    </div>
+    <div class="option">
+      <h2>Due Date/Advanced Notice Toggle</h2>
+      <table>
+        <tr>
+          <td><input type="checkbox" id="dueDateToggle" /></td>
+          <td>Forces library staff to select either "Due Date" or "Advanced Notice" notification options, but not both</td>
+        </tr>
+      </table>
+    </div>
+    <div class="option">
+      <h2>Generate Middle Initials</h2>
+      <table>
+        <tr>
+          <td><input type="checkbox" id="middleInitials" /></td>
+          <td>Automatically generates a patron's middle initial from the first name field</td>
+        </tr>
+      </table>
+    </div>
+    <div class="option">
+      <h2>Update Account Type</h2>
+      <table>
+        <tr>
+          <td><input type="checkbox" id="updateAccountType" /></td>
+          <td>Update JU -> AD and LUJ -> LU when saving a patron record if the patron is 18 years or older</td>
+        </tr>
+      </table>
+    </div>
+    <div class="option">
+      <h2>Receipt Font</h2>
+      <select id="receiptFont">
+        <option value="36">MPL (36px)</option>
+        <option value="28">MOO (28px)</option>
+      </select>
+      <p>Determines the font size for the patron barcode printing function</p>
+    </div>
+    <div class="option">
+      <h2>Disable Dropbox Mode</h2>
+      <table>
+        <tr>
+          <td><input type="checkbox" id="disableDropbox" /></td>
+          <td>Prevents staff from checking dropbox mode by disabling the checkbox</td>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <button type="submit">Save</button>
+    </div>
+  </form>
+  <script src="options.js"></script>
+</body>
+
+</html>

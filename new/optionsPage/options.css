@@ -1,0 +1,14 @@
+﻿input {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+}
+
+button {
+  margin-top: 1em;
+}
+
+table td:first-child {
+  padding-right: 1em;
+}
