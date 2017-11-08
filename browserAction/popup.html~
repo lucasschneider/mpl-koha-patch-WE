@@ -1,0 +1,41 @@
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="popup.css" />
+  </head>
+  <body>
+    <h1>Tools</h1>
+    <div>Add Payment Plan Note</div>
+    <div>Add Lost Library Card Note</div>
+    <div>Generate PSTAT from secondary address</div>
+    <div>Generate Calendar Announcements</div>
+    <h1>Shortcuts</h1>
+    <div><a href="http://scls-staff.kohalibrary.com/cgi-bin/koha/circ/returns.pl" target="_blank">Koha&#8212;Checkin</a></div>
+    <div><a href="http://scls-staff.kohalibrary.com/cgi-bin/koha/circ/circulation.pl" target="_blank">Koha&#8212;Checkout</a></div>
+    <div><a href="http://factfinder.census.gov/faces/nav/jsf/pages/searchresults.xhtml?refresh=t" target="_blank">American Fact Finder</a></div>
+    <div><a href="http://madisonpubliclibrary.org" target="_blank">MPL Home Page</a></div>
+    <div><a href="http://www.mplnet.org" target="_blank">MPLnet</a></div>
+    <div><a href="http://www.madisonpubliclibrary.org/research/referenc2" target="_blank">MPL Reference Tools</a></div>
+    <!--<div>
+      <div className="panel">
+        <h2>Quick Links</h2>
+        <ul>
+          <li></li>
+
+        </ul>
+        <h2>Tools</h2>
+        <ul>
+          <li><Link messageType={"addNote"} label={"addNote"}/></li>
+          <li><Link messageType={"addLostCardNote"} label={"addLostCardNote"}/></li>
+          <li><Link messageType={"addr2PSTAT"} label={"addr2PSTAT"}/></li>
+          <li><Link messageType={"calendarAnnouncements"} label={"calendarAnnouncements"}/></li>
+          <li></li>
+        </ul>
+      </div>
+    </div>-->
+    
+    <script src="popus.js"></script>
+  </body>
+</html>
