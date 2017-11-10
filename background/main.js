@@ -674,15 +674,10 @@ function handleMessages(request, sender, sendResponse) {
       browser.storage.sync.get().then((res) => {
         var barcodeLib = res.hasOwnProperty('receiptFont') ? res.receiptFont : "MPL";
 
-        // TODO: Change URL by preference
         browser.tabs.create({
           active: false,
-          url: "/printBarcode" + barcodeLib + ".html"
+          url: "/printBarcode.html?barcode="+request.data+"&lib="+barcodeLib
         }).then((tab) => {
-          browser.tabs.sendMessage(tab.id,{
-            key: "printBarcode",
-            data: request.data
-          });
           setTimeout(() => {browser.tabs.remove(tab.id)}, 1000);
         });
       });

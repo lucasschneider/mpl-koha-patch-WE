@@ -1,3 +1,4 @@
+"use strict";
 /*** CUSTOM PREDEFINED MESSAGES ***/
 var msgSelect = document.getElementById('type'),
   initials = "";
