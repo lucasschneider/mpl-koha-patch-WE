@@ -1,72 +1,12 @@
-"use strict";
-if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberentry\.pl.*/.test(location.href)) {
-  /*** CORRECT TEXT CASE ***/
-  var inputs = document.querySelectorAll("input[type=text]"),
-    i;
-  if (inputs !== null) {
-    for (i = 3; i < inputs.length; i++) {
-      if (/email|emailpro|B_email/.test(inputs[i].id)) {
-        inputs[i].addEventListener('blur', function () {this.value = this.value.toLowerCase().trim().replace(/\s{2,}/g, ' '); });
-      } else {
-        inputs[i].addEventListener('blur', function () {
-          this.value = this.value.toUpperCase().replace(/\s{2,}/g, ' ');
-          if (/^[ 	]+$/.test(this.value)) {
-            this.value = ' ';
-          } else {
-            this.value = this.value.trim();
-          }
-        });
-      }
-    }
-  }
-
-  /*** "APT " -> "#" ***/
-  var address = document.getElementById('address'),
-    bAddress = document.getElementById('B_address'),
-    altAddress = document.getElementById('altcontactaddress1');
-
-  function aptToNum() {
-    this.value = this.value.replace(/( apt\.? #? ?| unit #? ?| # )/i, " #").replace(/\./g, '');
-  }
-
-  if (address) {
-    address.addEventListener('blur', aptToNum);
-  }
-
-  if (bAddress) {
-    bAddress.addEventListener('blur', aptToNum);
-  }
-
-  if (altAddress) {
-    altAddress.addEventListener('blur', aptToNum);
-  }
-
-  /*** CORRECT CITY FORMAT ***/
-  var city = document.getElementById('city'),
-    city2 = document.getElementById('B_city'),
-    city3 = document.getElementById('altcontactaddress3');
-
-  function parseMadisonWI() {
-    if (/madison(,? wi(sconsin)?)?|mad/i.test(this.value)) {
-      this.value = "MADISON WI";
-    }
-    this.value = this.value.replace(/,/, '');
-  }
-    
-  if (city) {
-    city.addEventListener('blur', parseMadisonWI);
-  }
-
-  if (city2) {
-    city2.addEventListener('blur', parseMadisonWI);
-  }
-
-  if (city3) {
-    city3.addEventListener('blur', parseMadisonWI);
-  }
-
-  /*** DISABLE RARELY USED FIELDS ***/
-  var unusedFields = ['streetnumber',
+﻿"use strict";
+var inputs = document.querySelectorAll("input[type=text]"),
+  address = document.getElementById('address'),
+  bAddress = document.getElementById('B_address'),
+  altAddress = document.getElementById('altcontactaddress1'),
+  city = document.getElementById('city'),
+  city2 = document.getElementById('B_city'),
+  city3 = document.getElementById('altcontactaddress3'),
+  unusedFields = ['streetnumber',
     'address2',
     'select_city',
     'country',
@@ -108,23 +48,89 @@ if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberen
     'altcontactaddress3',
     'altcontactzipcode',
     'altcontactphone'
-    ],
-    parentElt = document.getElementById('entryform'),
-    sibling,
-    enableOptsLabel = document.createElement('label'),
-    enableOpts = document.createElement('input'),
-    enableOptsContainer = document.createElement('div'),
-    elt,
-    categorycode = document.getElementsByClassName('categorycode'),
-    bn = document.getElementById('borrowernotes'),
-    zip = document.getElementById('zipcode'),
-    sortElts = document.getElementsByName('sort1'),
-    usr = document.getElementsByClassName('loggedinusername');
+  ],
+  parentElt = document.getElementById('entryform'),
+  sibling,
+  enableOptsLabel = document.createElement('label'),
+  enableOpts = document.createElement('input'),
+  enableOptsContainer = document.createElement('div'),
+  elt,
+  categorycode = document.getElementsByClassName('categorycode'),
+  bn = document.getElementById('borrowernotes'),
+  zip = document.getElementById('zipcode'),
+  sortElts = document.getElementsByName('sort1'),
+  usr = document.getElementsByClassName('loggedinusername');
 
-  if (categorycode) categorycode = categorycode[0];
-  if (usr) usr = usr[0];
-  if (sortElts) sortElts = sortElts[0];
-    
+if (categorycode) categorycode = categorycode[0];
+if (usr) usr = usr[0].textContent.trim();
+if (sortElts) sortElts = sortElts[0];
+
+HTMLInputElement.prototype.correctTextCase = function () {
+  if (/email|emailpro|B_email/.test(this.id)) {
+    this.value = this.value.toLowerCase().trim().replace(/\s{2,}/g, ' ');
+  } else {
+    this.value = this.value.toUpperCase().replace(/\s{2,}/g, ' ');
+    if (/^[ 	]+$/.test(this.value)) {
+      this.value = ' ';
+    } else {
+      this.value = this.value.trim();
+    }
+  }
+}
+
+HTMLInputElement.prototype.aptToNum = function () {
+  this.value = this.value.replace(/( apt\.? #? ?| unit #? ?| # )/i, " #").replace(/\./g, '');
+}
+
+HTMLInputElement.prototype.parseMadisonAddress = function () {
+  if (/madison(,? wi(sconsin)?)?|mad/i.test(this.value)) {
+    this.value = "MADISON WI";
+  }
+  this.value = this.value.replace(/,/, '');
+}
+
+if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberentry\.pl.*/.test(location.href)) {
+  /*** CORRECT TEXT CASE ***/
+  if (inputs) {
+    for (var i = 3; i < inputs.length; i++) {
+      inputs[i].correctTextCase();
+      inputs[i].addEventListener('blur', HTMLInputElement.prototype.correctTextCase);
+    }
+  }
+  
+  /*** "APT " -> "#" ***/
+  if (address) {
+    address.aptToNum();
+    address.addEventListener('blur', HTMLInputElement.prototype.aptToNum);
+  }
+
+  if (bAddress) {
+    bAddress.aptToNum();
+    bAddress.addEventListener('blur', HTMLInputElement.prototype.aptToNum);
+  }
+
+  if (altAddress) {
+    altAddress.aptToNum();
+    altAddress.addEventListener('blur', HTMLInputElement.prototype.aptToNum);
+  }
+
+  /*** Parse Madison Addresses ***/
+  if (city) {
+    city.parseMadisonAddress();
+    city.addEventListener('blur', HTMLInputElement.prototype.parseMadisonAddress);
+  }
+
+  if (city2) {
+    city2.parseMadisonAddress();
+    city2.addEventListener('blur', HTMLInputElement.prototype.parseMadisonAddress);
+  }
+
+  if (city3) {
+    city3.parseMadisonAddress();
+    city3.addEventListener('blur', HTMLInputElement.prototype.parseMadisonAddress);
+  }
+  
+  /*** DISABLE RARELY USED FIELDS ***/
   if (parentElt !== null) {
     sibling = parentElt.children[0];
 
@@ -147,7 +153,7 @@ if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberen
             elt.style.backgroundColor = '';
           }
         }
-        if (categorycode && categorycode.value === "WEB" && /(mad|hpb|seq|smb|msb|pin|haw|lak|mea)/i.test(usr.textContent.trim())) {
+        if (categorycode && categorycode.value === "WEB" && /(mad|hpb|seq|smb|msb|pin|haw|lak|mea)/i.test(usr)) {
           for (i = 0; i < unused4WebUse.length; i++) {
             elt = document.getElementById(unused4WebUse[i]);
             if (elt !== null) {
@@ -164,7 +170,7 @@ if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberen
             elt.style.backgroundColor = '#cecece';
           }
         }
-        if (categorycode && categorycode.value === "WEB" && /(mad|hpb|seq|smb|msb|pin|haw|lak|mea)/i.test(usr.textContent.trim())) {
+        if (categorycode && categorycode.value === "WEB" && /(mad|hpb|seq|smb|msb|pin|haw|lak|mea)/i.test(usr)) {
           for (i = 0; i < unused4WebUse.length; i++) {
             elt = document.getElementById(unused4WebUse[i]);
             if (elt !== null) {
@@ -207,7 +213,7 @@ if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberen
         }
       }
     });
-    if (categorycode.value === "WEB" && /(mad|hpb|seq|smb|msb|pin|haw|lak|mea)/i.test(usr.textContent.trim())) {
+    if (categorycode.value === "WEB" && /(mad|hpb|seq|smb|msb|pin|haw|lak|mea)/i.test(usr)) {
       if (bn && bn.value === "") bn.value = "FOR INTERNET USE ONLY; NO CKO ALLOWED. jfk";
       if (address && address.value === "") address.value = "NA";
       if (city && city.value === "") city.value = "MADISON WI";
@@ -216,79 +222,78 @@ if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberen
     }
   }
   
-  /*** PER MPL MANAGEMENT, DO NOT ADD FEATURE TO EASE ENABLING OF
-       TEXT NOTIFICATIONS! ***/
-  /*** Add checkbox to set text notifications ***/
-  /* var phoneElt = document.getElementById('phone'),
-    email = document.getElementById('email'),
-    email2 = document.getElementById('emailpro'),
-    emailAlt = document.getElementById('B_email'),
-    optionUL,
-    textNoteWrapper = document.createElement('li'),
-    textNoteLabel = document.createElement('label'),
-    textNote = document.createElement('input'),
-    textNoteText = document.createElement('span');
-  
-  if (phoneElt) {
-    optionUL = phoneElt.parentElement.parentElement;
-  }
-  
-  textNoteText.textContent = " Receive text notifications";
-  textNote.id = "textNote";
-  textNote.type = "checkbox";
-  textNoteLabel.textContent = "SMS:";
-  
-  textNoteWrapper.appendChild(textNoteLabel);
-  textNoteWrapper.appendChild(textNote);
-  textNoteWrapper.appendChild(textNoteText);
-  
-  optionUL.insertBefore(textNoteWrapper, optionUL.children[1]);
-  
-    var receiveTextNotifications = function() {  
-    // If there is a primary email address and no alternate email address
-    if (email && email.value && emailAlt && !emailAlt.value) {
-      // and if there is a secondary email address
-      if(email2 && email2.value) {
-        email2.value = "";
+  /* Add text notification checkbox ONLY for PCPLs */
+  if (/(stp|plo|alm|ros)/.test(usr)) {
+    var phoneElt = document.getElementById('phone'),
+      email = document.getElementById('email'),
+      email2 = document.getElementById('emailpro'),
+      emailAlt = document.getElementById('B_email'),
+      optionUL,
+      textNoteWrapper = document.createElement('li'),
+      textNoteLabel = document.createElement('label'),
+      textNote = document.createElement('input'),
+      textNoteText = document.createElement('span');
+
+    if (phoneElt) {
+      optionUL = phoneElt.parentElement.parentElement;
+    }
+
+    textNoteText.textContent = " Receive text notifications";
+    textNote.id = "textNote";
+    textNote.type = "checkbox";
+    textNoteLabel.textContent = "SMS:";
+
+    textNoteWrapper.appendChild(textNoteLabel);
+    textNoteWrapper.appendChild(textNote);
+    textNoteWrapper.appendChild(textNoteText);
+
+    optionUL.insertBefore(textNoteWrapper, optionUL.children[1]);
+
+    var receiveTextNotifications = function() {
+      // If there is a primary email address and no alternate email address
+      if (email && email.value && emailAlt && !emailAlt.value) {
+        // and if there is a secondary email address
+        if (email2 && email2.value) {
+          email2.value = "";
+        }
+
+        emailAlt.value = email.value;
+        email.value = "";
       }
-      
-      emailAlt.value = email.value;
-      email.value = "";
+
+      if (!/^(T1-)/.test(phoneElt.value)) {
+        phoneElt.value = "T1-" + phoneElt.value;
+      }
+    };
+
+    var removeTextNotifications = function() {
+      if (/^(T1-)/.test(phoneElt.value)) {
+        phoneElt.value = phoneElt.value.substring(3);
+      }
+
+      if (email && !email.value) {
+        if (emailAlt && emailAlt.value) {
+          email.value = emailAlt.value;
+          emailAlt.value = "";
+        } else if (email2 && email2.value) {
+          email.value = email2.value;
+          email2.value = "";
+        }
+      }
     }
-    
-    if (!/^(T1-)/.test(phoneElt.value)) {
-      phoneElt.value = "T1-" + phoneElt.value;
-    }
-  };
-  
-  var removeTextNotifications = function() {
+
+    textNote.addEventListener('click', function() {
+      if (this.checked) {
+        receiveTextNotifications();
+      } else {
+        removeTextNotifications();
+      }
+    });
+
     if (/^(T1-)/.test(phoneElt.value)) {
-      phoneElt.value = phoneElt.value.substring(3);
-    }
-    
-    if (email && !email.value) {
-      if (emailAlt && emailAlt.value) {
-        email.value = emailAlt.value;
-        emailAlt.value = "";
-      } else if (email2 && email2.value) {
-        email.value = email2.value;
-        email2.value = "";
-      }
+      textNote.checked = true;
     }
   }
-  
-  textNote.addEventListener('click', function() {
-    if (this.checked) {
-      receiveTextNotifications();
-    } else {
-      removeTextNotifications();
-    }
-  });
- 
-  if (/^(T1-)/.test(phoneElt.value)) {
-    textNote.checked = true;
-  } */
-  /*** SEE ABOVE COMMENT FOR EXPLANATION FOR COMMENTED CODE ***/
 
   /*** Control-space to save patron record ***/
   document.addEventListener("keydown", function (e) {

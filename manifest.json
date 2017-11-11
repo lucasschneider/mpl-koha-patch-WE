@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "MPL Koha Patch",
-  "version": "20.0.2",
+  "version": "20.0.4",
   "author": "Lucas Schneider",
   "description": "LibLime Koha ILS modifications targeted to the staff of Madison Public Library in Wisconsin's South Central Library System",
   "homepage_url": "https://github.com/lucasschneider/mpl-koha-patch-WE",
