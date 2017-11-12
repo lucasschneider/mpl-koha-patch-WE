@@ -201,21 +201,21 @@ function selectUND(selectList) {
   * the census tract number for everywhere else. Currently, the
   * PSTAT cannot be automatically selected for VER.
   * 
-  * addr:       The html input field containing an address
-  * city:       The html input field containing a city and
-  *             state abbreviation.
-  * queryB:     A boolean value representing whether the
-  *             secondary address should be used in the
-  *             query rather than the primary address
-  * secondPass: A boolean value representing wether the
-  *             Geocoder should be queried specifying
-  *             current data (false) or 2010 data (true)
+  * addr: The html input field containing an address
+  * city: The html input field containing a city and
+  *       state abbreviation.
+  * qB:   A boolean value representing whether the
+  *       secondary address should be used in the
+  *       query rather than the primary address
+  * sP:   A boolean value representing wether the
+  *       Geocoder should be queried specifying
+  *       current data (false) or 2010 data (true)
   */
-function queryPSTAT(addr, city, queryB, secondPass) {
+function queryPSTAT(addr, city, qB, sP) {
     notice = document.getElementById('tractNotice'),
     exceptionQuery = false,
-    secondPass = secondPass,
-    queryB = queryB;
+    secondPass = sP,
+    queryB = qB;
 
   if (addr.value !== "" && city.value !== "" && selectList) {
     
@@ -1780,7 +1780,7 @@ browser.runtime.onMessage.addListener(message => {
         queryPSTAT(addr, city, queryB, true);
       } else if (!exceptionQuery) {
         selectUND(selectList);
-          result.setAttribute('style', 'display:inline-block;color:#c00;');
+        result.setAttribute('style', 'display:inline-block;color:#c00;');
         if (result.textContent === '') {
           result.setAttribute('style', 'display:inline-block;color:#c00;');
           result.textContent = "[FAILED: unable to determine county subdivision; please enter PSTAT manually.]";
