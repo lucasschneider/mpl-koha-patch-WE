@@ -185,7 +185,7 @@ function handleUpdated(details) {
         });
       }
     
-      if (!res.hasOwnProperty('disableDropbox') || (res.hasOwnProperty('disableDropbox') && res.disableDropbox)) {
+      if (res.hasOwnProperty('disableDropbox') && res.disableDropbox) {
         browser.tabs.executeScript(details.tabId,{
           file: "content/scripts/disableDropbox.js"
         });    
