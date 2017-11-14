@@ -26,7 +26,7 @@ This extension is ___not___ intended for use with the open source [Koha](https:/
 	* [Autofill OPAC login number](#autofill-opac-login-number)
 	* [Lookup "sort 1" (PSTAT)](#lookup-sort-1-pstat)
 	* [Autoselect "Digests Only"](#autoselect-digests-only)
-	* [Due date/advanced notice toggle](#due-date-advanced-notice-toggle)
+	* [Due date/advanced notice toggle](#due-dateadvanced-notice-toggle)
 	* [Generate middle initials](#generate-middle-initials)
 	* [Update account type](#update-account-type)
 	* [Receipt font](#receipt-font)
