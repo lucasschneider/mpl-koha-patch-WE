@@ -144,10 +144,10 @@ You may choose to have a patron's barcode print in size 36px font (used by MPL) 
 This feature was requested by Monona library, which does not use dropbox mode. In most cases this feature should remain disabled. It should ___not___ be used by staff of a Madison Public Library location.
 # Keyboard shortcuts
 
-| Key Command | Function |
-| ----------- | -------- |
+| Key Command      | Function |
+| ---------------- | -------- |
 | [CTRL] + [SPACE] | Prompts the user to save a patron's record |
-| [ESC] | Cancels editing a patron's record and returns to their overview page |
+| [ESC]            | Cancels editing a patron's record and returns to their overview page |
 
 # Bug reporting and developer contact
 This Firefox extension is developed by Lucas Schneider, a Page II at Madison Public Library, Central. If you run into any bugs, enter “about:addons” in the Firefox web address bar (without quotes) or "chrome://extensions" in Google Chrome, go to the options page for “MPL Koha Patch,” and disable the feature causing problems. If the problem does not persist after disabling the feature, send Lucas an email with a description of the bug.
