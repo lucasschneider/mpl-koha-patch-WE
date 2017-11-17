@@ -74,9 +74,9 @@ The following features may be turned on or off from the extension's preferences 
 
 | MPL | MID | SCLS |
 | --- | --- | --- |
-| <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/markdown-img/mpl-logo.png" width="64px" > | <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/markdown-img/mid-logo.png" width="64px" > |<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/markdown-img/scls-logo.png" width="64px" > |
+| <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/mpl-logo.png" width="64px" > | <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/mid-logo.png" width="64px" > |<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/scls-logo.png" width="64px" > |
 
-<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/markdown-img/scnShot-highlighted-logo.png" >
+<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-/scnShot-highlighted-logo.png" >
 
 Clicking on the toolbar icon will give you and additional set of helpful functions and bookmarks. Currently, the bookmarks are specific to Madison libraries, but future updates will enable you to set custom bookmark links. there are currently four tool links:
 
@@ -114,19 +114,19 @@ Additionally, selecting the checkbox for "Include notes for returned mail and ba
 ## Validate Madison addresses
 This option alerts staff with a dialog box whenever an unacceptable or restricted address has been entered in a patron record. This minimizes the number of limited use or unacceptable accounts being set up with full-access library cards. See examples below. A note on the patron’s account will be automatically generated.
 
-<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/markdown-img/scnShot-unacceptable-address.png" >
+<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/scnShot-unacceptable-address.png" >
 
-<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/markdown-img/scnShot-restricted-address.png" >
+<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/scnShot-restricted-address.png" >
 
 ## Autofill OPAC login number
 Because a patron's library card number is used for their OPAC username, this feature automatically enters
 the OPAC login when a barcode is scanned into the barcode field.
 ## Lookup "sort 1" (PSTAT)
-<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/markdown-img/scnShot-pstat-lookup.png" >
+<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/scnShot-pstat-lookup.png" >
 
 This feature will attempt to automatically enter the zipcode and PSTAT for any address. It is important to ensure that the street address, city, and state abbreviation are entered and correctly spelled. It starts with the most recent census data, and falls back on the 2010 census data. This will look up the census tract number for Madison address, and the county subdivision for addresses both within and outside SCLS. The cities of Middleton, Monona, and Sun Prairie and and parts of Verona select the PSTAT based on the patron’s aldermanic district. With future updates, the city of Verona  will be fully supported.
 
-<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/markdown-img/scnShot-geo-home-library.png" >
+<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/scnShot-geo-home-library.png" >
 
 You also have the option to find the SCLS location that is geographically closest to the patron’s address. You may search among the MPL locations, within one of the seven counties, or within SCLS as a whole. This is particularly useful for reciprocal library patrons or those who have recently moved.
 
