@@ -76,7 +76,7 @@ The following features may be turned on or off from the extension's preferences 
 | --- | --- | --- |
 | <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/mpl-logo.png" width="64px" > | <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/mid-logo.png" width="64px" > |<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/scls-logo.png" width="64px" > |
 
-<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-/scnShot-highlighted-logo.png" >
+<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/scnShot-highlighted-logo.png" >
 
 Clicking on the toolbar icon will give you and additional set of helpful functions and bookmarks. Currently, the bookmarks are specific to Madison libraries, but future updates will enable you to set custom bookmark links. there are currently four tool links:
 
