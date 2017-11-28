@@ -54,7 +54,8 @@
         "content/scripts/sortLibraries.js",
         "content/scripts/standardFormat.js",
         "content/scripts/sortItemCheckoutHistory.js",
-        "content/scripts/sortWaitingHolds.js"
+        "content/scripts/sortWaitingHolds.js",
+        "content/scripts/holdsShelfActionCDs.js"
       ]
     }
   ],

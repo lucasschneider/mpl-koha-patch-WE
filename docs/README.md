@@ -2,7 +2,7 @@
 
 | Current Version | Supported Browsers                 | Author          |
 | :-------------: | :--------------------------------: | :-------------: |
-| 20.0.7          | [Firefox][1]<br>[Google Chrome][2] | Lucas Schneider<br>Library Page II<br>MPL–Central |
+| 20.1.0          | [Firefox][1]<br>[Google Chrome][2] | Lucas Schneider<br>Library Page II<br>MPL–Central |
 
 The MPL Koha Patch is a WebExtension build for Firefox and Google Chrome which augments the display of LibLime Koha to make various tasks more convenient for library staff. While it is developed for use by member libraries of Wisconsin's South Central Library System, it is not supported by SCLS, but is an independent project by a Library Page at Madison Central Library.
 
@@ -19,6 +19,7 @@ This extension is ___not___ intended for use with the open source [Koha ILS](htt
 	* [Limit patron edit input fields](#limit-patron-edit-input-fields)
 	* [Item checkout history sort options](#item-checkout-history-sort-options)
 	* [Print patron's barcode number](#print-patrons-barcode-number)
+	* [Separate CDs in Holds Shelf Action List](#separate-cds-in-holds-shelf-action-list)
 	* [Text notification checkbox (by request only)](#text-notification-checkbox-by-request-only)
 * [Optional Features](#optional-features)
 	* [Select a display](#select-a-display)
@@ -54,6 +55,8 @@ If you are logged into Koha as one of the MPL libraries, this will even more gre
 This feature ensures that an item’s checkout history is sorted completely chronologically. By default, the table will be sorted by checkout date in descending order (i.e. most recent checkouts will appear at the top). You may choose to sort the items by checkout date, due date, or return date in either ascending or descending order. There is also a box to check if you wish to group the items by barcode number.
 ## Print patron's barcode number
 From a patron's checkout or details screen you may click a button to print their barcode number using the receipt printer. Go to the extension's preferences page to select one of two font sizes
+## Separate CDs in Holds Shelf Action List
+A checkbox has been added to the Holds Shelf Action page that enables staff to separate CD holds from all other holds at the bottom of the table, sorted alphabetically by the patron's last name.
 ## Text notification checkbox (by request only)
 This feature adds a checkbox to the patron edit page in Koha to more easily toggle SMS notifications on or off. The checkbox moves a patron's email address (if there is one) to the alternate contact section and prepends "T1-" to the primary phone number (which is assumed to be a cell phone number). Unchecking the box will reverse these changes.
 
