@@ -9,8 +9,6 @@ The MPL Koha Patch is a WebExtension build for Firefox and Google Chrome which a
 
 This extension is ___not___ intended for use with the open source [Koha ILS](https://koha-community.org),  originally created by New Zealand librarians.
 
-> Koha is a fully featured, scalable library management system. Development is sponsored by libraries of varying types and sizes, volunteers, and support companies worldwide.
-
 ## Table of Contents
 * [Inherent features of the extension](#inherent-features-of-the-extension)
 	* [Sorting lists of libraries in Koha](#sorting-lists-of-libraries-in-koha)
@@ -36,6 +34,7 @@ This extension is ___not___ intended for use with the open source [Koha ILS](htt
 	* [Disable dropbox mode](#disable-dropbox-mode)
 * [Keyboard Shortcuts](#keyboard-shortcuts)
 * [Bug reporting and developer contact](#bug-reporting-and-developer-contact)
+* [Disclaimer](#disclaimer)
 
 
 # Inherent features of the extension
@@ -157,6 +156,9 @@ This feature was requested by Monona library, which does not use dropbox mode. I
 This Firefox extension is developed by Lucas Schneider, a Page II at Madison Public Library, Central. If you run into any bugs, enter “about:addons” in the Firefox web address bar (without quotes) or "chrome://extensions" in Google Chrome, go to the options page for “MPL Koha Patch,” and disable the feature causing problems. If the problem does not persist after disabling the feature, send Lucas an email with a description of the bug.
 
 You can email Lucas comments, questions, or feature requests at [lschneider@madisonpubliclibrary.org][3]
+
+# Disclaimer
+This extension is neither supported nor endorsed by LibLime or SCLS. It is independently developed by Lucas Schneider, a Library Page at MPL-Central. Please use the extension only at the discretion of your circulation or departmental supervisor.
 
 [1]:  javascript:void(InstallTrigger.install({'MPL Koha Patch':'https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/releases/currXPI/mpl-koha-patch.xpi'}));
 [2]:  https://chrome.google.com/webstore/detail/mpl-koha-patch/ojghlgghnljabcikeiipjadgblclkgpi
