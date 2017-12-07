@@ -1,7 +1,7 @@
 # MPL Koha Patch
 
-| Current Version | Supported Browsers                 | Author          |
-| :-------------: | :--------------------------------: | :-------------: |
+| Current Version | Supported Browsers (Click the appropriate browser to install.) | Author          |
+| :-------------: | :------------------------------------------------------------: | :-------------: |
 | 20.1.0          | [Firefox][1]<br>[Google Chrome][2] | Lucas Schneider<br>Library Page II<br>MPL–Central |
 
 The MPL Koha Patch is a WebExtension build for Firefox and Google Chrome which augments the display of LibLime Koha to make various tasks more convenient for library staff. While it is developed for use by member libraries of Wisconsin's South Central Library System, it is not supported by SCLS, but is an independent project by a Library Page at Madison Central Library.
@@ -157,6 +157,6 @@ This Firefox extension is developed by Lucas Schneider, a Page II at Madison Pub
 
 You can email Lucas comments, questions, or feature requests at [lschneider@madisonpubliclibrary.org][3]
 
-[1]:  https://addons.mozilla.org/en-US/firefox/addon/mpl-koha-patch
+[1]:  javascript:void(InstallTrigger.install({'MPL Koha Patch':'https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/releases/currXPI/mpl-koha-patch.xpi'}));
 [2]:  https://chrome.google.com/webstore/detail/mpl-koha-patch/ojghlgghnljabcikeiipjadgblclkgpi
 [3]: mailto:lschneider@madisonpubliclibrary.org
