@@ -23,24 +23,8 @@
           <h2 id="project_tagline">{{ site.description | default: site.github.project_tagline }}</h2>
           
           <section id="install-latest">
-            <a id="install-link" href="#">Install the lastest version of <strong>MPL Koha Patch</strong>.</a>
-            <script type="text/javascript">
-              var installExtension = function(e) {
-                e.preventDefault();
-                
-                // This URL must be a full url.
-                var manifestUrl = 'https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/manifest.webapp';
-                var req = navigator.mozApps.installPackage(manifestUrl);
-                req.onsuccess = function() {
-                  alert(this.result.origin);
-                };
-                req.onerror = function() {
-                  alert(this.error.name);
-                };
-              }
-              
-              document.getElementById('install-link').addEventListener('click', installExtension);
-            </script>
+            <a id="install-link" href="javascript:void(InstallTrigger.install({'MPL Koha Patch':'https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/releases/mpl-koha-patch-20.1.0.xpi
+'}));">Install the lastest version of <strong>MPL Koha Patch</strong>.</a>
           </section>
             
 
