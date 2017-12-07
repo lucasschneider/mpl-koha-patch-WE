@@ -1,0 +1,14 @@
+{
+  "addons": {
+    "3338f72b-be88-4c0b-98ec-d24eeef851b4@jetpack": {
+      "updates": [
+        { "version": "20.0.7",
+          "update_link": "https://github.com/lucasschneider/mpl-koha-patch-WE/blob/master/releases/mpl-koha-patch-20.0.7.zip?raw=true",
+          "applications": {
+            "gecko": { "strict_min_version": "48" }
+	  }
+	}
+      ]
+    }
+  }
+}
