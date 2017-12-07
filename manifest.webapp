@@ -1,0 +1,14 @@
+{
+  "name": "MPL Koha Patch",
+  "package_path": "https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/releases/mpl-koha-patch-20.1.0.xpi",
+  "version": "20.1.0",
+  "size": 147846,
+  "release_notes": "Added button to separate CDs from other items in Holds Shelf Action List.",
+  "icons": {
+    "16": "https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/content/img/mpl-icon-16.png",
+    "32": "https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/content/img/mpl-icon-32.png",
+    "48": "https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/content/img/mpl-icon-48.png",
+    "64": "https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/content/img/mpl-icon-64.png",
+    "128": "https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/content/img/mpl-icon-128.png"
+  }
+}
