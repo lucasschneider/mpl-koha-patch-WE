@@ -8,7 +8,7 @@
     <meta name="description" content="{{ site.title | default: site.github.repository_name }} : {{ site.description | default: site.github.project_tagline }}">
 
     <link rel="stylesheet" type="text/css" media="screen" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
-
+    
 {% seo %}
   </head>
 
@@ -21,6 +21,28 @@
 
           <h1 id="project_title">{{ site.title | default: site.github.repository_name }}</h1>
           <h2 id="project_tagline">{{ site.description | default: site.github.project_tagline }}</h2>
+          
+          <section id="install-latest">
+            <a id="install-link" href="#">Install the lastest version of <strong>MPL Koha Patch</strong>.</a>
+            <script type="text/javascript">
+              var installExtension = function(e) {
+                e.preventDefault();
+                
+                // This URL must be a full url.
+                var manifestUrl = 'http://my-server.com/my-app-directory/manifest.webapp';
+                var req = navigator.mozApps.installPackage(manifestUrl);
+                req.onsuccess = function() {
+                  alert(this.result.origin);
+                };
+                req.onerror = function() {
+                  alert(this.error.name);
+                };
+              }
+              
+              document.getElementById('install-link').addEventListener('click', installExtension);
+            </script>
+          </section>
+            
 
           {% if site.show_downloads %}
             <section id="downloads">
