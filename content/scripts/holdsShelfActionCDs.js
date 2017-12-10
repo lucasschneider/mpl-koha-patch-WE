@@ -12,7 +12,7 @@ var box = document.createElement('input'),
   cdArray = [],
   otherArray = [];
   
-  if (origTable && table && table.textContent.trim() !== "No results found.") {
+  if (origTable) {
     origHead = origTable.tHead.children[0];
     origBody = origTable.tBodies[0];
     
@@ -74,7 +74,7 @@ var box = document.createElement('input'),
 if (/\/cgi-bin\/koha\/reports\/holdsaction\.pl/.test(location.pathname)) {
   parentWrapper = !!parentWrapper ? parentWrapper.children[0] : null;
 
-  if (!tableNotLoaded) {
+  if (!tableNotLoaded && table && table.textContent.trim() !== "No results found.") {
     box.type = "checkbox";
     box.checked = false;
     box.style.verticalAlign = "middle";
