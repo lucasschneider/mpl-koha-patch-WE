@@ -5,13 +5,14 @@ var box = document.createElement('input'),
   labelText = document.createElement('span'),
   parentWrapper = document.getElementById('yui-main'),
   tableNotLoaded = document.getElementById('outputscreen'),
+  table = document.getElementById('myf'),
   origTable = document.getElementById("mytab"),
   origHead,
   origBody,
   cdArray = [],
   otherArray = [];
   
-  if (origTable) {
+  if (origTable && table && table.textContent.trim() !== "No results found.") {
     origHead = origTable.tHead.children[0];
     origBody = origTable.tBodies[0];
     
