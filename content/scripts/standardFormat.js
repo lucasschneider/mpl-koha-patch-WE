@@ -78,9 +78,9 @@ HTMLInputElement.prototype.correctTextCase = function () {
   }
 }
 
-HTMLInputElement.prototype.aptToNum = function () {
+/* HTMLInputElement.prototype.aptToNum = function () {
   this.value = this.value.replace(/( apt\.? #? ?| unit #? ?| # )/i, " #").replace(/\./g, '');
-}
+} */
 
 HTMLInputElement.prototype.parseMadisonAddress = function () {
   if (/madison(,? wi(sconsin)?)?|mad/i.test(this.value)) {
@@ -99,7 +99,7 @@ if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberen
   }
   
   /*** "APT " -> "#" ***/
-  if (address) {
+  /* if (address) {
     address.aptToNum();
     address.addEventListener('blur', HTMLInputElement.prototype.aptToNum);
   }
@@ -112,7 +112,7 @@ if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberen
   if (altAddress) {
     altAddress.aptToNum();
     altAddress.addEventListener('blur', HTMLInputElement.prototype.aptToNum);
-  }
+  } */
 
   /*** Parse Madison Addresses ***/
   if (city) {
