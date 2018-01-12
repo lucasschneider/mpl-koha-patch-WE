@@ -868,6 +868,13 @@ function handleMessages(request, sender, sendResponse) {
         }); 
       });
       break;
+    case "printProblemForm":
+      browser.tabs.create({
+        active: false,
+        url: browser.runtime.getURL("../problemItemForm/printProblemForm.html" + request.urlSearch)
+      }).then((tab) => {
+        setTimeout(() => {browser.tabs.remove(tab.id)}, 1000);
+      });
   }
 }
 

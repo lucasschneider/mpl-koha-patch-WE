@@ -13,3 +13,9 @@ document.getElementById('PSTAT2').addEventListener('click', function() {
 document.getElementById('calendarAnnouncements').addEventListener('click', function() {
   browser.runtime.sendMessage({key: "calendarAnnouncements"});
 });
+
+document.getElementById('problemItem').addEventListener('click', function() {
+  browser.tabs.create({
+    url: browser.runtime.getURL("../problemItemForm/problemItemForm.html")
+  });
+});
