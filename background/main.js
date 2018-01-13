@@ -875,6 +875,28 @@ function handleMessages(request, sender, sendResponse) {
       }).then((tab) => {
         setTimeout(() => {browser.tabs.remove(tab.id)}, 1000);
       });
+      break;
+    case "getPatronData":
+      browser.tabs.create({
+        active: false,
+        url: browser.runtime.getURL("https://scls-staff.kohalibrary.com/cgi-bin/koha/circ/circulation.pl?findborrower=" + request.patronBarcode)
+      }).then((tab) => {
+          browser.tabs.executeScript(tab.id,{
+            file: "problemItemForm/getPatronData.js"
+          });
+      });
+      break;
+    case "returnPatronData":
+      var querying = browser.tabs.query({currentWindow: true, active: true});
+      querying.then((tabs)=>{
+        for (let tab of tabs) {
+          browser.tabs.sendMessage(tab.id,{
+            "patronName": request.patronName,
+            "patronPhone": request.patronPhone
+          });
+        }
+      });
+      break;
   }
 }
 
