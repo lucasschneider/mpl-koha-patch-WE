@@ -47,16 +47,16 @@ section div span {
   text-align: justify;
 }
 
+.hide {
+  display: none;
+}
+
 #spacer {
   margin-top: 0.75in;
 }
 
 @media print {
   @page {
-    margin: 0.5cm;
-  }
-  
-  #dontCheckIn {
-    display: none;
+    margin:  0.4cm;
   }
 }

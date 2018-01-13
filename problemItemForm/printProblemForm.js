@@ -9,10 +9,22 @@ for (var i = 0; i < fieldsTmp.length; i++) {
 }
 
 for (var i = 0; i < fields.length; i++) {
-  var target = document.getElementById(decodeURIComponent(fields[i][0]));
+  var key = decodeURIComponent(fields[i][0]),
+    value = decodeURIComponent(fields[i][1]),
+    element = document.getElementById(key);
 
-  if (target) {
-    target.textContent = decodeURIComponent(fields[i][1]);
+  if (element) {
+    if (key == "ckiBySorter") {
+      if (value === "on") {
+        element.classList.remove("hide");
+      }
+    } else {
+      if (/cCode|holds|copies|use|patronPhone/.test(key) && value == "") {
+        document.getElementById(key+"Wrap").classList.add("hide");
+      } else {
+        element.textContent = decodeURIComponent(value);
+      }
+    }
   }
 }
 

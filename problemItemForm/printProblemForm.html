@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" type="text/css" href="printProblemForm.css" />
-    <title>Problem Item Form</title>
+    <title>[printing] Problem Item Form</title>
   </head>
   <body>
     <section id="title">
@@ -20,7 +20,6 @@
     </section>
     <section>
       <div id="typeWrap">Type: <span id="type"></span></div>
-      <div id="idWrap">Identified by: <span id="idBy"></span></div>
     </section>
     <section class="boxed" id="detailsWrap">
       <div>Details:&nbsp;<span id="details"></span></div>
@@ -33,10 +32,12 @@
       <div>Patron information:</div>
       <span id="patron"></span><br />
       <div>BC: <span id="patronBarcode"></span></div>
-      <div>PH: <span id="patronPhone"></span></div>
+      <div id="patronPhoneWrap">PH: <span id="patronPhone"></span></div>
     </section>
     <section>
+      <div id="idWrap">Problem identified and/or received by: <span id="idBy"></span></div>
       <div id="receivedViaWrap">Item received via: <span id="receivedVia"></span></div>
+      <div id="ckiBySorter" class="hide">&#10004; Item was checked in by an automatic sorter</div>
     </section>
     <section>
       <div id="cCodeWrap">Collection Code: <span id="cCode"></span></div>
@@ -49,8 +50,7 @@
       <div id="staffInitWrap">Staff Init.: <span id="staffInit"></span></div>
       <div id="contactByWrap">Contacted Via: <span id="contactedVia"></span></div>
     </section>
-    <div id="spacer">.</div>-
-    
+    <div id="spacer">.</div>
     <script type="text/javascript" src="printProblemForm.js"></script>
   </body>
 </html>

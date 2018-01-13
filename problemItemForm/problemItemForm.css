@@ -41,7 +41,7 @@ section > select {
   margin-bottom: 10px;
 }
 
-h3 {
+h3  {
   background: #D25D28;
   color: #ffffff;
   text-shadow: 2px 2px #000000;
@@ -56,8 +56,39 @@ h3:last-of-type {
   margin-bottom: 0;
 }
 
+select,
 button {
   cursor: pointer;
+}
+
+.required {
+  vertical-align: super;
+  font-weight: bold;
+  color: #d02323;
+}
+
+.optional {
+  border: 2px solid #70A43F;
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.optional div {
+  margin-bottom: 10px;
+}
+
+.optional div:last-of-type {
+  margin-bottom: 0;
+}
+
+.optionalLabel {
+  border: 2px solid #70A43F;
+  background: #70A43F;
+  color: #ffffff;
+  text-shadow: 1px 1px #000000;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 3px;
 }
 
 .invalidInput {
@@ -68,6 +99,11 @@ button {
 
 #to, #from {
   text-transform: uppercase;
+}
+
+#ckiBySorterLabel {
+  font-weight: bold;
+  cursor: pointer;
 }
 
 #printForm {

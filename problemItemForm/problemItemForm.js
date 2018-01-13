@@ -85,6 +85,7 @@ if (printForm) printForm.addEventListener("click", function() {
     type = document.getElementById("problem"),
     idBy = document.getElementById("idBy"),
     receivedVia = document.getElementById("receivedBy"),
+    ckiBySorter = document.getElementById("ckiBySorter"),
     details = document.getElementById("details"),
     itemTitle = document.getElementById("itemTitle"),
     itemBarcode = document.getElementById("itemBarcode"),
@@ -98,28 +99,33 @@ if (printForm) printForm.addEventListener("click", function() {
     notified = document.getElementById("dateNotified"),
     staffInit = document.getElementById("notifiedBy"),
     contactedVia = document.getElementById("contactedVia");
-
-  var submitData = browser.runtime.sendMessage({
-    key: "printProblemForm",
-    urlSearch: encodeURI("?to=" + to.value +
-      "&date=" + formatDateForDisplay(date.value) +
-      "&from=" + from.value +
-      "&staffName=" + staffName.value +
-      "&type=" + type.value +
-      "&idBy=" + idBy.value +
-      "&receivedVia=" + receivedVia.value +
-      "&details=" + details.value +
-      "&itemTitle=" + itemTitle.value +
-      "&itemBarcode=" + itemBarcode.value +
-      "&cCode=" + cCode.value +
-      "&holds=" + holds.value +
-      "&copies=" + copies.value +
-      "&use=" + use.value +
-      "&patron=" + patron.value +
-      "&patronBarcode=" + patronBarcode.value +
-      "&patronPhone=" + patronPhone.value +
-      "&notified=" + formatDateForDisplay(notified.value) +
-      "&staffInit=" + staffInit.value +
-      "&contactedVia=" + contactedVia.value)
-  });
+  
+  if (to.value == "" | date.value == "" | from.value == "" | staffName.value == "" | type.value == "" | idBy.value == "" |receivedVia.value == "" | details.value == "" | itemTitle.value == "" | itemBarcode.value == "" | patron.value == "" | patronBarcode.value == "") {
+    alert("Please check that all required fields have been filled in.");
+  } else {
+    var submitData = browser.runtime.sendMessage({
+      key: "printProblemForm",
+      urlSearch: encodeURI("?to=" + to.value +
+        "&date=" + formatDateForDisplay(date.value) +
+        "&from=" + from.value +
+        "&staffName=" + staffName.value +
+        "&type=" + type.value +
+        "&idBy=" + idBy.value +
+        "&receivedVia=" + receivedVia.value +
+        "&ckiBySorter=" + ckiBySorter.value +
+        "&details=" + details.value +
+        "&itemTitle=" + itemTitle.value +
+        "&itemBarcode=" + itemBarcode.value +
+        "&cCode=" + cCode.value +
+        "&holds=" + holds.value +
+        "&copies=" + copies.value +
+        "&use=" + use.value +
+        "&patron=" + patron.value +
+        "&patronBarcode=" + patronBarcode.value +
+        "&patronPhone=" + patronPhone.value +
+        "&notified=" + formatDateForDisplay(notified.value) +
+        "&staffInit=" + staffInit.value +
+        "&contactedVia=" + contactedVia.value)
+    });
+  }
 });

@@ -13,7 +13,7 @@
     <h3>Routing Information</h3>
     <section id="routingInfo">
       <div>
-        <b>Route to:</b>
+        <b>Route to:</b><span class="required">*</span>
         <input list="libCodes" id="to" />
         <datalist id="libCodes">
           <option value="ACL">Adams County Library (ACL)</option>
@@ -78,21 +78,22 @@
         </datalist>
       </div>
       <div>
-        <b>Date: </b><input id="date" type="date">
+        <b>Date:</b><span class="required">*</span>
+        <input id="date" type="date">
       </div>
       <div>
-        <b>From: </b>
+        <b>From:</b><span class="required">*</span>
         <input list="libCodes" name="from" id="from" />
       </div>
       <div>
-        <b>Initials: </b>
+        <b>Staff Name:</b><span class="required">*</span>
         <input id="staffInit" type="text">
       </div>
     </section>
     <h3>Problem Details</h3>
     <section>
       <div>
-        <b>Select problem type:</b><br>
+        <b>Select problem type:</b><span class="required">*</span><br>
         <select id="problem">
           <option value=""></option>
           <option value="Damaged Item">Damaged Item</option>
@@ -101,7 +102,7 @@
         </select>
       </div>
       <div>
-        <b>Identified by:</b><br>
+        <b>Problem identified and/or reported by:</b><span class="required">*</span><br>
         <select id="idBy">
           <option value=""></option>
           <option value="Staff">Staff</option>
@@ -109,7 +110,7 @@
         </select>
       </div>
       <div>
-        <b>Item received via:</b><br>
+        <b>Item received via:</b><span class="required">*</span><br>
         <select id="receivedBy">
           <option value=""></option>
           <option value="Counter/Book Drop">Counter/Book Drop</option>
@@ -118,51 +119,57 @@
         </select>
       </div>
       <div>
-        <b>Details:</b><br>
+        <label id="ckiBySorterLabel" for="ckiBySorter"><input type="checkbox" id="ckiBySorter"> Checked in by sorter?</label>
+      </div>
+      <div>
+        <b>Details (please be specific):</b><span class="required">*</span><br>
         <textarea id="details" rows="3" cols="50"></textarea>
       </div>
     </section>
     <h3>Item Details</h3>
     <section>
       <div>
-        <b>Title: </b>
+        <b>Title:</b><span class="required">*</span>
         <input id="itemTitle" type="text">
       </div>
       <div>
-        <b>Barcode: </b>
+        <b>Barcode:</b><span class="required">*</span>
         <input id="itemBarcode" type="text" maxlength="14">
         <!--<button id="getItemData">Get Item Details</button>-->
       </div>
-      <div>
-        <b>Collection Code: </b>
-        <input id="cCode" type="text">
-      </div>
-      <div>
-        <b>Holds: </b>
-        <input id="holds" type="text" placeholder="The # of holds">
-      </div>
-      <div>
-        <b>Copies: </b>
-        <input id="copies" type="text" placeholder="The # of available copies">
-      </div>
-      <div>
-        <b>Use: </b>
-        <input id="use" type="text" placeholder="The total # of circs">
-      </div>
+      <fieldset class="optional">
+        <legend class="optionalLabel">Optional</legend>
+        <div>
+          <b>Collection Code:</b>
+          <input id="cCode" type="text">
+        </div>
+        <div>
+          <b>Holds:</b>
+          <input id="holds" type="text" placeholder="The # of holds">
+        </div>
+        <div>
+          <b>Copies:</b>
+          <input id="copies" type="text" placeholder="The # of available copies">
+        </div>
+        <div>
+          <b>Use:</b>
+          <input id="use" type="text" placeholder="The total # of circs">
+        </div>
+      </fieldset>
     </section>
     <h3>Patron Information</h3>
     <section>
       <div>
-        <b>Name: </b>
+        <b>Name:</b><span class="required">*</span>
         <input id="name" type="text">
       </div>
       <div>
-        <b>Patron Barcode: </b>
+        <b>Patron Barcode:</b><span class="required">*</span>
         <input id="patronBarcode" type="text" maxlength="14">
         <button id="getPatronData">Get Patron Name and Phone Number</button>
       </div>
       <div>
-        <b>Phone Number: </b>
+        <b>Phone Number:</b>
         <input id="phone" type="text">
       </div>
     </section>
