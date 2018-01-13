@@ -883,6 +883,8 @@ function handleMessages(request, sender, sendResponse) {
       }).then((tab) => {
           browser.tabs.executeScript(tab.id,{
             file: "problemItemForm/getPatronData.js"
+          }).then(() => {
+            setTimeout(() => {browser.tabs.remove(tab.id)}, 2000);
           });
       });
       break;
