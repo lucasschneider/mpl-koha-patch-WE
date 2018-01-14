@@ -889,13 +889,22 @@ function handleMessages(request, sender, sendResponse) {
       });
       break;
     case "returnPatronData":
+    case "failedPatronData":
       var querying = browser.tabs.query({currentWindow: true, active: true});
       querying.then((tabs)=>{
         for (let tab of tabs) {
-          browser.tabs.sendMessage(tab.id,{
-            "patronName": request.patronName,
-            "patronPhone": request.patronPhone
-          });
+          if (request.key === "returnPatronData") {
+            browser.tabs.sendMessage(tab.id,{
+              "key": "returnPatronData",
+              "patronName": request.patronName,
+              "patronPhone": request.patronPhone,
+              "patronEmail": request.patronEmail
+            });
+          } else { // Failed
+            browser.tabs.sendMessage(tab.id,{
+              "key": "failedPatronData"
+            });
+          }
         }
       });
       break;

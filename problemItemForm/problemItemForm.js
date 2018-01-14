@@ -64,8 +64,17 @@ if (getPatronData) getPatronData.addEventListener("click", function() {
 });
 
 browser.runtime.onMessage.addListener(request => {
-  document.getElementById("name").value = request.patronName;
-  document.getElementById("phone").value = request.patronPhone;
+  if (request.key === "returnPatronData") {
+    document.getElementById("patronDataErrMsg").style.display = "none";
+    document.getElementById("name").value = request.patronName;
+    document.getElementById("phone").value = !!request.patronPhone ? request.patronPhone : "";
+    document.getElementById("email").value = !!request.patronEmail ? request.patronEmail : "";
+  } else { //Failed request
+    document.getElementById("patronDataErrMsg").style.display = "";
+    document.getElementById("name").value = "";
+    document.getElementById("phone").value = "";
+    document.getElementById("email").value = "";
+  }
 });
 
 function formatDateForDisplay(date) {
@@ -96,9 +105,12 @@ if (printForm) printForm.addEventListener("click", function() {
     patron = document.getElementById("name"),
     patronBarcode = document.getElementById("patronBarcode"),
     patronPhone = document.getElementById("phone"),
+    patronEmail = document.getElementById("email"),
     notified = document.getElementById("dateNotified"),
     staffInit = document.getElementById("notifiedBy"),
     contactedVia = document.getElementById("contactedVia");
+    
+  var emailParts = patronEmail
   
   if (to.value == "" | date.value == "" | from.value == "" | staffName.value == "" | type.value == "" | idBy.value == "" |receivedVia.value == "" | details.value == "" | itemTitle.value == "" | itemBarcode.value == "" | patron.value == "" | patronBarcode.value == "") {
     alert("Please check that all required fields have been filled in.");
@@ -112,7 +124,7 @@ if (printForm) printForm.addEventListener("click", function() {
         "&type=" + type.value +
         "&idBy=" + idBy.value +
         "&receivedVia=" + receivedVia.value +
-        "&ckiBySorter=" + ckiBySorter.value +
+        "&ckiBySorter=" + ckiBySorter.checked.toString() +
         "&details=" + details.value +
         "&itemTitle=" + itemTitle.value +
         "&itemBarcode=" + itemBarcode.value +
@@ -123,6 +135,7 @@ if (printForm) printForm.addEventListener("click", function() {
         "&patron=" + patron.value +
         "&patronBarcode=" + patronBarcode.value +
         "&patronPhone=" + patronPhone.value +
+        "&patronEmail=" + patronEmail.value +
         "&notified=" + formatDateForDisplay(notified.value) +
         "&staffInit=" + staffInit.value +
         "&contactedVia=" + contactedVia.value)

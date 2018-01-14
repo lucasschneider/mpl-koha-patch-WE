@@ -15,11 +15,11 @@ for (var i = 0; i < fields.length; i++) {
 
   if (element) {
     if (key == "ckiBySorter") {
-      if (value === "on") {
+      if (value === "true") {
         element.classList.remove("hide");
       }
     } else {
-      if (/cCode|holds|copies|use|patronPhone/.test(key) && value == "") {
+      if (/cCode|holds|copies|use|patronPhone|patronEmail/.test(key) && value == "") {
         document.getElementById(key+"Wrap").classList.add("hide");
       } else {
         element.textContent = decodeURIComponent(value);

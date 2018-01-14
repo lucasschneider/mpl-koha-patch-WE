@@ -166,12 +166,20 @@
       <div>
         <b>Patron Barcode:</b><span class="required">*</span>
         <input id="patronBarcode" type="text" maxlength="14">
-        <button id="getPatronData">Get Patron Name and Phone Number</button>
+        <button id="getPatronData">Get patron data from barcode</button>
+        <span id="patronDataErrMsg" style="display: none;">[Could not retreive data with given barcode.]</span>
       </div>
-      <div>
-        <b>Phone Number:</b>
-        <input id="phone" type="text">
-      </div>
+      <fieldset class="optional">
+        <legend class="optionalLabel">Optional</legend>
+        <div>
+          <b>Phone Number:</b>
+          <input id="phone" type="tel">
+        </div>
+        <div>
+          <b>Email:</b>
+          <input id="email" type="email">
+        </div>
+      </fieldset>    
     </section>
     <h3>Patron Notified?</h3>
     <section>
