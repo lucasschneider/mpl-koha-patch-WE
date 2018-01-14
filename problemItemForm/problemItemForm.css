@@ -106,7 +106,8 @@ button {
   cursor: pointer;
 }
 
-#patronDataErrMsg {
+#patronDataErrMsg,
+#itemDataErrMsg {
   color: #d02323;
   font-weight: bold;
 }

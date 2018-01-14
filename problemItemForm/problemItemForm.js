@@ -17,14 +17,7 @@ var getItemData = document.getElementById("getItemData"),
   getPatronData = document.getElementById("getPatronData"),
   printForm = document.getElementById("printForm");
 
-// Trigger getPatronData() when enter is pressed in patronBarcode input
-patronBarcode.addEventListener("keyup", event => {
-  if (event.key !== "Enter") return;
-  document.getElementById("getPatronData").click();
-  event.preventDefault();
-});
-
-/*// Trigger getItemData() when enter is pressed in itemBarcode input
+// Trigger getItemData() when enter is pressed in itemBarcode input
 itemBarcode.addEventListener("keyup", event => {
   if (event.key !== "Enter") return;
   document.getElementById("getItemData").click();
@@ -38,12 +31,23 @@ if (getItemData) getItemData.addEventListener("click", function () {
     if (itemBarcode.classList.contains("invalidInput")) {
       itemBarcode.classList.remove("invalidInput");
     }
+    browser.runtime.sendMessage({
+      "key": "getItemData",
+      "itemBarcode": itemBarcode.value
+    });
   } else {
     if (!itemBarcode.classList.contains("invalidInput")) {
       itemBarcode.classList.add("invalidInput");
     }
   }
-});*/
+});
+
+// Trigger getPatronData() when enter is pressed in patronBarcode input
+patronBarcode.addEventListener("keyup", event => {
+  if (event.key !== "Enter") return;
+  document.getElementById("getPatronData").click();
+  event.preventDefault();
+});
 
 if (getPatronData) getPatronData.addEventListener("click", function() {
   var patronBarcode = document.getElementById("patronBarcode");
