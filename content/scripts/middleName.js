@@ -24,11 +24,11 @@ HTMLInputElement.prototype.parseName = function () {
   }
 }
 
-var firstName = document.getElementById('firstname'),
-  initials = document.getElementById('initials');
-if (firstName) {
-  firstName.parseName();
-  firstName.addEventListener('blur', HTMLInputElement.prototype.parseName);
+if (/memberentry\.pl/.test(location.toString())) {
+  var firstName = document.getElementById('firstname'),
+    initials = document.getElementById('initials');
+  if (firstName) {
+    firstName.parseName();
+    firstName.addEventListener('blur', HTMLInputElement.prototype.parseName);
+  }
 }
-
-

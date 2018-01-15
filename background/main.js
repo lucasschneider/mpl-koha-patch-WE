@@ -876,16 +876,79 @@ function handleMessages(request, sender, sendResponse) {
         setTimeout(() => {browser.tabs.remove(tab.id)}, 1000);
       });
       break;
+    case "prepareItemData":
+      browser.tabs.create({
+        active: false,
+        url: browser.runtime.getURL("https://scls-staff.kohalibrary.com/cgi-bin/koha/circ/circulation-home.pl?mkpItemBarcode=" + request.itemBarcode + "#tabs-catalog_search")
+      }).then((tab) => {
+        browser.tabs.executeScript(tab.id,{
+          file: "problemItemForm/prepareItemData.js"
+        }).then(() => {
+          setTimeout(() => {
+            browser.tabs.executeScript(tab.id, {
+              file: "problemItemForm/getItemData.js"
+            });
+          }, 3000);
+           setTimeout(() => { browser.tabs.remove(tab.id) }, 8000);
+        });
+      });
+      break;
+    case "returnItemData":
+    case "failedItemData":
+      var querying = browser.tabs.query({currentWindow: true, active: true});
+      querying.then((tabs)=>{
+        for (let tab of tabs) {
+          if (request.key === "returnItemData") {
+            browser.tabs.sendMessage(tab.id,{
+              "key": "returnItemData",
+              "bibNum": request.bibNum,
+              "itemNum": request.itemNum,
+              "itemTitle": request.itemTitle,
+              "copies": request.copies,
+              "cCode": request.cCode
+            });
+            
+            //Get Holds Data
+            browser.tabs.create({
+              active: false,
+              url: "https://scls-staff.kohalibrary.com/cgi-bin/koha/catalogue/detail.pl?biblionumber=" + request.bibNum
+            }).then((holdsTab) => {
+              browser.tabs.executeScript(holdsTab.id,{
+                file: "problemItemForm/getItemHolds.js"
+              }).then(() => {
+                setTimeout(() => { browser.tabs.remove(holdsTab.id);}, 2700);
+              });
+            });
+            
+            //Get Use Data
+            browser.tabs.create({
+              active: false,
+              url: "https://scls-staff.kohalibrary.com/cgi-bin/koha/catalogue/issuehistory.pl?biblionumber=" + request.bibNum + "&itemBarcode=" + request.itemBarcode
+            }).then((useTab) => {
+              browser.tabs.executeScript(useTab.id,{
+                file: "problemItemForm/getItemUse.js"
+              }).then(() => {
+                setTimeout(() => { browser.tabs.remove(useTab.id);}, 3000);
+              });
+            });
+          } else { // Failed
+            browser.tabs.sendMessage(tab.id,{
+              "key": "failedItemData"
+            });
+          }
+        }
+      });
+      break;
     case "getPatronData":
       browser.tabs.create({
         active: false,
         url: browser.runtime.getURL("https://scls-staff.kohalibrary.com/cgi-bin/koha/circ/circulation.pl?findborrower=" + request.patronBarcode)
       }).then((tab) => {
-          browser.tabs.executeScript(tab.id,{
-            file: "problemItemForm/getPatronData.js"
-          }).then(() => {
-            setTimeout(() => {browser.tabs.remove(tab.id)}, 2000);
-          });
+        browser.tabs.executeScript(tab.id,{
+          file: "problemItemForm/getPatronData.js"
+        }).then(() => {
+          setTimeout(() => {browser.tabs.remove(tab.id)}, 2500);
+        });
       });
       break;
     case "returnPatronData":
@@ -908,16 +971,40 @@ function handleMessages(request, sender, sendResponse) {
         }
       });
       break;
-    case "getItemData":
-      browser.tabs.create({
-        active: false,
-        url: browser.runtime.getURL("https://scls-staff.kohalibrary.com/cgi-bin/koha/catalogue/search.pl?mkpItemBarcode=" + request.patronBarcode)
-      }).then((tab) => {
-          browser.tabs.executeScript(tab.id,{
-            file: "problemItemForm/getItemData.js"
-          }).then(() => {
-            //setTimeout(() => {browser.tabs.remove(tab.id)}, 2000);
-          });
+    case "returnItemHolds":
+    case "failedItemHolds":
+      var querying = browser.tabs.query({currentWindow: true, active: true});
+      querying.then((tabs)=>{
+        for (let tab of tabs) {
+          if (request.key === "returnItemHolds") {
+            browser.tabs.sendMessage(tab.id,{
+              "key": "returnItemHolds",
+              "holds": request.holds
+            });
+          } else { // Failed
+            browser.tabs.sendMessage(tab.id,{
+              "key": "failedItemHolds"
+            });
+          }
+        }
+      });
+      break;
+    case "returnItemUse":
+    case "failedItemUse":
+      var querying = browser.tabs.query({currentWindow: true, active: true});
+      querying.then((tabs)=>{
+        for (let tab of tabs) {
+          if (request.key === "returnItemUse") {
+            browser.tabs.sendMessage(tab.id,{
+              "key": "returnItemUse",
+              "use": request.use
+            });
+          } else { // Failed
+            browser.tabs.sendMessage(tab.id,{
+              "key": "failedItemUse"
+            });
+          }
+        }
       });
       break;
   }

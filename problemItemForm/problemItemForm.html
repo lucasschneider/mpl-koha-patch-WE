@@ -135,8 +135,8 @@
       <div>
         <b>Barcode:</b><span class="required">*</span>
         <input id="itemBarcode" type="text" maxlength="14">
-        <button id="getItemData">Get Item Details</button>
-        span id="itemDataErrMsg" style="display: none;">[Could not retreive data with given barcode.]</span>
+        <button id="prepareItemData">Get Item Details</button>
+        <div id="itemDataErrMsg" style="display: none;">[Could not retrieve data with given barcode.]</div>
       </div>
       <fieldset class="optional">
         <legend class="optionalLabel">Optional</legend>
@@ -168,7 +168,7 @@
         <b>Patron Barcode:</b><span class="required">*</span>
         <input id="patronBarcode" type="text" maxlength="14">
         <button id="getPatronData">Get patron data from barcode</button>
-        <span id="patronDataErrMsg" style="display: none;">[Could not retreive data with given barcode.]</span>
+        <div id="patronDataErrMsg" style="display: none;">[Could not retrieve data with given barcode.]</div>
       </div>
       <fieldset class="optional">
         <legend class="optionalLabel">Optional</legend>

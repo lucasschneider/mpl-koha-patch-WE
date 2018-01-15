@@ -1,20 +1,79 @@
-﻿var urlFieldsTmp = location.search.substr(1).split('&'),
-  urlFields = []
-  itemBarcode = null;
+var fileMatchArr = /[a-zA-Z]*\.pl/.exec(location.toString());
 
-//Extract all search key-vals from the URI into arrays
-for (var i = 0; i < urlFieldsTmp.length; i++) {
-  urlFields[i] = urlFieldsTmp[i].split('=');
-}
-
-//Extract the item barcode
-for (var i = 0; i < urlFields.length; i++) {
-  if (urlFields[i][0] == "mkpItemBarcode") {
-    itemBarcode = urlFields[i][1];
+if (fileMatchArr.length > 0) {
+  switch (fileMatchArr[0]) {
+    case "moredetail.pl":
+      var biblionumberMatchArr = /biblionumber=[0-9]*/.exec(location.toString()),
+        itemnumberMatchArr = /itemnumber=[0-9]*/.exec(location.toString()),
+        detailsWrap = document.getElementById('catalogue_detail_biblio'),
+        copiesWrap = document.querySelector('#catalogue_detail_biblio ol li:last-of-type'),
+        cCodeCell = document.querySelector('.yui-g .listgroup:first-of-type .bibliodetails tbody tr:nth-child(3) td:last-of-type'),
+        itemBarcodeWrap,
+        itemBarcode,
+        title,
+        copies,
+        cCode,
+        bibNum,
+        itemNum;
+        
+      if (biblionumberMatchArr.length > 0 && itemnumberMatchArr.length > 0) {
+        bibNum = biblionumberMatchArr[0].match(/\d+/)[0];
+        itemNum = itemnumberMatchArr[0].match(/\d+/)[0];
+        
+        if (itemNum) {
+          itemBarcodeWrap = /[0-9]{14}/.exec(document.getElementById("item"+itemNum).textContent);
+          
+          if (itemBarcodeWrap) {
+            itemBarcode = itemBarcodeWrap[0];
+          }
+        }
+      }
+        
+      if (detailsWrap) {
+        title = detailsWrap.children[0].textContent.trim();
+      }
+        
+      if (copiesWrap) {
+        copies = copiesWrap.textContent.match(/\d+/)[0];
+      }
+        
+      if (cCodeCell) {
+        cCode = cCodeCell.textContent.trim();     
+      }
+        
+      //Clean title for books
+      if (cCode && title) {
+        if (/books/i.test(cCode)) {
+          var lastChar = "";
+          
+          while (lastChar !== "/") {
+            lastChar = title.substr(-1);
+            title = title.substr(0,title.length-1);
+          }
+          
+          title = title.trim();
+        }
+      }
+        
+      if (bibNum && itemNum && title && copies && cCode) {
+        browser.runtime.sendMessage({
+          "key": "returnItemData",
+          "bibNum": bibNum,
+          "itemNum": itemNum,
+          "itemBarcode": itemBarcode,
+          "itemTitle": title,
+          "copies": copies,
+          "cCode": cCode
+        });
+      } else {
+        browser.runtime.sendMessage({
+          "key": "failedItemData"
+        });
+      }
+      break; 
   }
-}
-
-//If we successfully extracted the item barcode
-if (itemBarcode) {
-  
+} else {
+  browser.runtime.sendMessage({
+    "key": "failedItemData"
+  });
 }

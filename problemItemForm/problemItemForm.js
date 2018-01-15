@@ -12,19 +12,19 @@ if (day.length == 1) {
 
 document.getElementById('date').value = d.getFullYear() + "-" + month + "-" + day;
 
-var getItemData = document.getElementById("getItemData"),
+var prepareItemData = document.getElementById("prepareItemData"),
   patronBarcode = document.getElementById("patronBarcode"),
   getPatronData = document.getElementById("getPatronData"),
   printForm = document.getElementById("printForm");
 
-// Trigger getItemData() when enter is pressed in itemBarcode input
+// Trigger prepareItemData() when enter is pressed in itemBarcode input
 itemBarcode.addEventListener("keyup", event => {
   if (event.key !== "Enter") return;
-  document.getElementById("getItemData").click();
+  document.getElementById("prepareItemData").click();
   event.preventDefault();
 });
 
-if (getItemData) getItemData.addEventListener("click", function () {
+if (prepareItemData) prepareItemData.addEventListener("click", function () {
   var itemBarcode = document.getElementById("itemBarcode");
   
   if (/^3[0-9]{13}$/.test(itemBarcode.value)) {
@@ -32,7 +32,7 @@ if (getItemData) getItemData.addEventListener("click", function () {
       itemBarcode.classList.remove("invalidInput");
     }
     browser.runtime.sendMessage({
-      "key": "getItemData",
+      "key": "prepareItemData",
       "itemBarcode": itemBarcode.value
     });
   } else {
@@ -68,12 +68,29 @@ if (getPatronData) getPatronData.addEventListener("click", function() {
 });
 
 browser.runtime.onMessage.addListener(request => {
-  if (request.key === "returnPatronData") {
+  if (request.key === "returnItemData") {
+    document.getElementById("itemDataErrMsg").style.display = "none";
+    document.getElementById("itemTitle").value = request.itemTitle;
+    document.getElementById("cCode").value = request.cCode;
+    document.getElementById("copies").value = request.copies;
+  } else if (request.key === "failedItem") {
+    document.getElementById("itemDataErrMsg").style.display = "";
+    document.getElementById("itemTitle").value = "";
+    document.getElementById("cCode").value = "";
+    document.getElementById("copies").value = "";
+  } else if (request.key === "returnItemHolds") {
+    document.getElementById("holds").value = request.holds;
+  } else if (request.key === "failedItemHolds") {
+    document.getElementById("holds").value = "";
+  } else if (request.key === "returnItemUse") {
+    document.getElementById("use").value = request.use;
+  } else if (request.key === "failedItemUse") {
+  } else if (request.key === "returnPatronData") {
     document.getElementById("patronDataErrMsg").style.display = "none";
     document.getElementById("name").value = request.patronName;
     document.getElementById("phone").value = !!request.patronPhone ? request.patronPhone : "";
     document.getElementById("email").value = !!request.patronEmail ? request.patronEmail : "";
-  } else { //Failed request
+  } else if (request.key === "failedPatronData") {
     document.getElementById("patronDataErrMsg").style.display = "";
     document.getElementById("name").value = "";
     document.getElementById("phone").value = "";
