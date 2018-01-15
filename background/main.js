@@ -888,8 +888,8 @@ function handleMessages(request, sender, sendResponse) {
             browser.tabs.executeScript(tab.id, {
               file: "problemItemForm/getItemData.js"
             });
-          }, 3000);
-           setTimeout(() => { browser.tabs.remove(tab.id) }, 8000);
+          }, 7000);
+          setTimeout(() => { browser.tabs.remove(tab.id) }, 8000);
         });
       });
       break;
@@ -925,11 +925,13 @@ function handleMessages(request, sender, sendResponse) {
               active: false,
               url: "https://scls-staff.kohalibrary.com/cgi-bin/koha/catalogue/issuehistory.pl?biblionumber=" + request.bibNum + "&itemBarcode=" + request.itemBarcode
             }).then((useTab) => {
-              browser.tabs.executeScript(useTab.id,{
-                file: "problemItemForm/getItemUse.js"
-              }).then(() => {
-                setTimeout(() => { browser.tabs.remove(useTab.id);}, 3000);
-              });
+              setTimeout(() => {
+                browser.tabs.executeScript(useTab.id,{
+                  file: "problemItemForm/getItemUse.js"
+                }).then(() => {
+                  setTimeout(() => { browser.tabs.remove(useTab.id);}, 3000);
+                });
+              }, 500);
             });
           } else { // Failed
             browser.tabs.sendMessage(tab.id,{

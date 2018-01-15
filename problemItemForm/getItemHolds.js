@@ -16,6 +16,7 @@ if (holdsNotice) {
   }
 } else {
   browser.runtime.sendMessage({
-    "key": "failedItemHolds"
+    "key": "returnItemHolds",
+    "holds": 0
   });
 }
