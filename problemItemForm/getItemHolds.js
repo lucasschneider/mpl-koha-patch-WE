@@ -1,5 +1,8 @@
 var holdsNotice = document.querySelector(".dialogue.alert b"),
-  numHolds;
+  numHolds,
+  title = document.querySelector("#catalogue_detail_biblio h1");
+  
+if (title) title = title.textContent.replace(/\/ ?$/, '').trim();
 
 if (holdsNotice) {
   numHolds = holdsNotice.textContent.match(/\d+/)[0];
@@ -7,7 +10,8 @@ if (holdsNotice) {
   if (numHolds) {
     browser.runtime.sendMessage({
       "key": "returnItemHolds",
-      "holds": numHolds
+      "holds": numHolds,
+      "itemTitle": title
     });
   } else {
     browser.runtime.sendMessage({

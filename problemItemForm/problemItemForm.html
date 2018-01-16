@@ -137,6 +137,10 @@
         <input id="itemBarcode" type="text" maxlength="14">
         <button id="prepareItemData">Get Item Details</button>
         <div id="itemDataErrMsg" style="display: none;">[Could not retrieve data with given barcode.]</div>
+        <ul id="itemDataNote">
+          <li>Please also up to 15 seconds to gather item data.</li>
+          <li>Navigation away from this page may disrupt data retrieval.</li>
+        </ul>
       </div>
       <fieldset class="optional">
         <legend class="optionalLabel">Optional</legend>
@@ -203,6 +207,36 @@
       </div>
     </section>
     <h3 id="printForm">Print Report</h3>
+    <h3 id="instructions" name="instructions" style="display: none;">Problem Item Procedures</h3>
+    <section id="nonDefectNonHold" style="display: none;">
+      <h4>Damaged Item or Parts Missing via Counter/Book Drop or Transit Return</h4>
+      <ol>
+        <li><b>Do not check item in!</b></li>
+        <li>Add a damaged or parts missing message to patron's checkout screen.</li>
+        <li>If parts missing, contact patron and retain item for 3 days, then proceed to step 3.</li>
+        <li>Route item and form to owning library for follow up, or follow local library procedure.</li>
+      </ol>
+    </section>
+    <section id="nonDefectHold" style="display: none;">
+      <h4>Damaged Item or Parts Missing via Transit Hold</h4>
+      <ol>
+        <li><b>Do not check item in!</b></li>
+        <li>Go into item record and select <b>Edit Holds</b></li>
+        <li>Change patron's hold priority from "In Transit" to 1 and click <b>Update Hold</b></li>
+        <li>Change <b>Other Item Status</b> on item screen to <b>Defect Reported</b>.</li>
+        <li>Route item and form to owning library for follow-up, or follow local library procedure.</li>
+      </ol>
+    </section>
+    </section>
+    <section id="defect" style="display: none;">
+      <h4>Defect Reported</h4>
+      <ol>
+        <li>After filling out the above information, check item in.</li>
+        <li>If a hold is activated, click <b>Ignore</b>.</li>
+        <li>Change <b>Other Item Status</b> to <b>Defect Reported</b>.</li>
+        <li>Route item with form to owning library, or follow local library procedure.</li>
+      </ol>
+    </section>
     <script type="text/javascript" src="problemItemForm.js"></script>
   </body>
 </html>

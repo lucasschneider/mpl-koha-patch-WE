@@ -1,4 +1,6 @@
 html {
+  margin: 0;
+  padding: 0;
   background: #77797c;
 }    
 
@@ -123,4 +125,14 @@ button {
 
 #printForm:hover:after {
   content: " ―";
+}
+
+#instructions {
+  text-align: center;
+  background: #70A43F;
+  margin-bottom: 0;
+}
+
+#instructions section {
+  padding-bottom: 1em;
 }

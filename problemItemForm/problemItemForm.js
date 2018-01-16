@@ -25,7 +25,18 @@ itemBarcode.addEventListener("keyup", event => {
 });
 
 if (prepareItemData) prepareItemData.addEventListener("click", function () {
-  var itemBarcode = document.getElementById("itemBarcode");
+  var itemTitle = document.getElementById("itemTitle"),
+    itemBarcode = document.getElementById("itemBarcode"),
+    cCode = document.getElementById("cCode"),
+    holds = document.getElementById("holds"),
+    copies = document.getElementById("copies"),
+    use = document.getElementById("use");
+    
+  itemTitle.value = "";
+  cCode.value = "";
+  holds.value = "";
+  copies.value = "";
+  use.value = "";
   
   if (/^3[0-9]{13}$/.test(itemBarcode.value)) {
     if (itemBarcode.classList.contains("invalidInput")) {
@@ -50,7 +61,14 @@ patronBarcode.addEventListener("keyup", event => {
 });
 
 if (getPatronData) getPatronData.addEventListener("click", function() {
-  var patronBarcode = document.getElementById("patronBarcode");
+  var patronBarcode = document.getElementById("patronBarcode"),
+    name = document.getElementById("name"),
+    phone = document.getElementById("phone"),
+    email = document.getElementById("email");
+  
+  name.value = "";
+  phone.value = "";
+  email.value = "";
   
   if (/^2[0-9]{13}$/.test(patronBarcode.value)) {
     if (patronBarcode.classList.contains("invalidInput")) {
@@ -73,7 +91,7 @@ browser.runtime.onMessage.addListener(request => {
     document.getElementById("itemTitle").value = request.itemTitle;
     document.getElementById("cCode").value = request.cCode;
     document.getElementById("copies").value = request.copies;
-  } else if (request.key === "failedItem") {
+  } else if (request.key === "failedItemData") {
     document.getElementById("itemDataErrMsg").style.display = "";
     document.getElementById("itemTitle").value = "";
     document.getElementById("cCode").value = "";
@@ -136,6 +154,22 @@ if (printForm) printForm.addEventListener("click", function() {
   if (to.value == "" | date.value == "" | from.value == "" | staffName.value == "" | type.value == "" | idBy.value == "" |receivedVia.value == "" | details.value == "" | itemTitle.value == "" | itemBarcode.value == "" | patron.value == "" | patronBarcode.value == "") {
     alert("Please check that all required fields have been filled in.");
   } else {
+    window.location.hash = "instructions";
+    document.getElementById("instructions").style.display = "";
+    
+    switch(type.value) {
+      case "Defect Reported":
+        document.getElementById("defect").style.display = "";
+        break;
+      default:
+        if (receivedVia.value === "Transit Hold") {
+          document.getElementById("nonDefectHold").style.display = "";
+        } else {
+          document.getElementById("nonDefectNonHold").style.display = "";
+        }
+        break;    
+    } 
+    
     var submitData = browser.runtime.sendMessage({
       key: "printProblemForm",
       urlSearch: encodeURI("?to=" + to.value +

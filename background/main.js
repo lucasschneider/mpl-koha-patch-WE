@@ -913,11 +913,13 @@ function handleMessages(request, sender, sendResponse) {
               active: false,
               url: "https://scls-staff.kohalibrary.com/cgi-bin/koha/catalogue/detail.pl?biblionumber=" + request.bibNum
             }).then((holdsTab) => {
-              browser.tabs.executeScript(holdsTab.id,{
-                file: "problemItemForm/getItemHolds.js"
-              }).then(() => {
-                setTimeout(() => { browser.tabs.remove(holdsTab.id);}, 2700);
-              });
+              setTimeout(() => {
+                browser.tabs.executeScript(holdsTab.id,{
+                  file: "problemItemForm/getItemHolds.js"
+                }).then(() => {
+                  setTimeout(() => { browser.tabs.remove(holdsTab.id); }, 1000);
+                });
+              }, 7000);
             });
             
             //Get Use Data
@@ -929,9 +931,9 @@ function handleMessages(request, sender, sendResponse) {
                 browser.tabs.executeScript(useTab.id,{
                   file: "problemItemForm/getItemUse.js"
                 }).then(() => {
-                  setTimeout(() => { browser.tabs.remove(useTab.id);}, 3000);
-                });
-              }, 500);
+                  setTimeout(() => { browser.tabs.remove(useTab.id);}, 1000);
+                }); 
+              }, 7000);
             });
           } else { // Failed
             browser.tabs.sendMessage(tab.id,{
@@ -981,7 +983,8 @@ function handleMessages(request, sender, sendResponse) {
           if (request.key === "returnItemHolds") {
             browser.tabs.sendMessage(tab.id,{
               "key": "returnItemHolds",
-              "holds": request.holds
+              "holds": request.holds,
+              "itemTitle": request.itemTitle
             });
           } else { // Failed
             browser.tabs.sendMessage(tab.id,{
