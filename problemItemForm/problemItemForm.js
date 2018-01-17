@@ -98,6 +98,7 @@ browser.runtime.onMessage.addListener(request => {
     document.getElementById("copies").value = "";
   } else if (request.key === "returnItemHolds") {
     document.getElementById("holds").value = request.holds;
+    if (request.itemTitle) document.getElementById("itemTitle").value = request.itemTitle;
   } else if (request.key === "failedItemHolds") {
     document.getElementById("holds").value = "";
   } else if (request.key === "returnItemUse") {
@@ -147,28 +148,39 @@ if (printForm) printForm.addEventListener("click", function() {
     patronEmail = document.getElementById("email"),
     notified = document.getElementById("dateNotified"),
     staffInit = document.getElementById("notifiedBy"),
-    contactedVia = document.getElementById("contactedVia");
+    contactedVia = document.getElementById("contactedVia"),
+    instructions = document.getElementById("instructions"),
+    nonDefectNonHold = document.getElementById("nonDefectNonHold"),
+    nonDefectHold = document.getElementById("nonDefectHold"),
+    defect = document.getElementById("defect");
     
   var emailParts = patronEmail
   
   if (to.value == "" | date.value == "" | from.value == "" | staffName.value == "" | type.value == "" | idBy.value == "" |receivedVia.value == "" | details.value == "" | itemTitle.value == "" | itemBarcode.value == "" | patron.value == "" | patronBarcode.value == "") {
     alert("Please check that all required fields have been filled in.");
   } else {
-    window.location.hash = "instructions";
-    document.getElementById("instructions").style.display = "";
+    instructions.style.display = "";
     
     switch(type.value) {
       case "Defect Reported":
-        document.getElementById("defect").style.display = "";
+          nonDefectNonHold.style.display = "none";
+          nonDefectHold.style.display = "none";
+          defect.style.display = "";
         break;
       default:
         if (receivedVia.value === "Transit Hold") {
-          document.getElementById("nonDefectHold").style.display = "";
+          nonDefectNonHold.style.display = "none";
+          nonDefectHold.style.display = "";
+          defect.style.display = "none";
         } else {
-          document.getElementById("nonDefectNonHold").style.display = "";
+          nonDefectNonHold.style.display = "";
+          nonDefectHold.style.display = "none";
+          defect.style.display = "none";
         }
         break;    
-    } 
+    }
+    
+    window.location.hash = "instructions";
     
     var submitData = browser.runtime.sendMessage({
       key: "printProblemForm",

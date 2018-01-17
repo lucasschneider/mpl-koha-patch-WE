@@ -21,6 +21,7 @@ if (holdsNotice) {
 } else {
   browser.runtime.sendMessage({
     "key": "returnItemHolds",
-    "holds": 0
+    "holds": 0,
+    "itemTitle": title
   });
 }

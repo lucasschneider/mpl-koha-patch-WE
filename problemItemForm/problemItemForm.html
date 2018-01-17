@@ -140,6 +140,7 @@
         <ul id="itemDataNote">
           <li>Please also up to 15 seconds to gather item data.</li>
           <li>Navigation away from this page may disrupt data retrieval.</li>
+          <li>"Use" is determined by the number of times the barcode appears in the Checkout History table.</li>
         </ul>
       </div>
       <fieldset class="optional">
@@ -208,7 +209,7 @@
     </section>
     <h3 id="printForm">Print Report</h3>
     <h3 id="instructions" name="instructions" style="display: none;">Problem Item Procedures</h3>
-    <section id="nonDefectNonHold" style="display: none;">
+    <section id="nonDefectNonHold" class="instructions" style="display: none;">
       <h4>Damaged Item or Parts Missing via Counter/Book Drop or Transit Return</h4>
       <ol>
         <li><b>Do not check item in!</b></li>
@@ -217,7 +218,7 @@
         <li>Route item and form to owning library for follow up, or follow local library procedure.</li>
       </ol>
     </section>
-    <section id="nonDefectHold" style="display: none;">
+    <section id="nonDefectHold" class="instructions" style="display: none;">
       <h4>Damaged Item or Parts Missing via Transit Hold</h4>
       <ol>
         <li><b>Do not check item in!</b></li>
@@ -228,7 +229,7 @@
       </ol>
     </section>
     </section>
-    <section id="defect" style="display: none;">
+    <section id="defect" class="instructions" style="display: none;">
       <h4>Defect Reported</h4>
       <ol>
         <li>After filling out the above information, check item in.</li>
