@@ -22,6 +22,8 @@ HTMLInputElement.prototype.parseName = function () {
       initials.value = "";
     }
   }
+  
+  return false;
 }
 
 if (/memberentry\.pl/.test(location.toString())) {

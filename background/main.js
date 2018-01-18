@@ -120,7 +120,7 @@ var d = new Date(),
     //["VES","6550+Virginia+St,+Vesper,+WI+54489"] ** NON LINK LIBRARY ***
   ],
   geocoderAPI,
-  match = null,
+  match,
   matchAddr,
   county,
   countySub,
@@ -157,7 +157,7 @@ function handleUpdated(details) {
     
       if (!res.hasOwnProperty('lookupPSTAT') || (res.hasOwnProperty('lookupPSTAT') && res.lookupPSTAT)) {
         browser.tabs.executeScript(details.tabId,{
-          file: "content/scripts/selectPSTAT.js"
+          file: "content/scripts/selectPSTAT2.js"
         });
       }
     
@@ -204,25 +204,62 @@ browser.webNavigation.onCompleted.addListener(handleUpdated);
 function handleMessages(request, sender, sendResponse) {
   switch(request.key) {
     case "queryGeocoder":
-      console.log("start queryGeocoder");
-      if (request.isSecondPass) {
+      browser.tabs.create({
+        active: false,
+        url: "https://factfinder.census.gov/faces/nav/jsf/pages/searchresults.xhtml"+"?addr="+request.URIencodedAddress+"&city="+request.city
+      }).then((tab) => {
+        browser.tabs.executeScript(tab.id,{
+          file: "content/scripts/scrapFactFinder.js"
+        }).then(() => {
+          //setTimeout(() => {browser.tabs.remove(tab.id)}, 8000);
+        });
+      });        
+    /*  if (request.isSecondPass) {
         geocoderAPI = "https://geocoding.geo.census.gov/geocoder/geographies/address?street="+request.URIencodedAddress+"&city="+request.city+"&state=wi&benchmark=Public_AR_Census2010&vintage=Census2010_Census2010&layers=Counties,Census Tracts,County+Subdivisions,2010+Census+ZIP+Code+Tabulation+Areas&format=json";
       } else {
         geocoderAPI = "https://geocoding.geo.census.gov/geocoder/geographies/address?street="+request.URIencodedAddress+"&city="+request.city+"&state=wi&benchmark=Public_AR_Current&vintage=Current_Current&layers=Counties,Census Tracts,County+Subdivisions,2010+Census+ZIP+Code+Tabulation+Areas&format=json"
       }
       $.getJSON(geocoderAPI).done(function(response) {
         if (response && response.result) {
-          match = response.result;
+          var match = response.result;
           if (match) {
             match = match.addressMatches;
             if (match && match.length > 0) {
               match = match[0];
-              if (match && match !== '') {
+              if (match) {
                 matchAddr = match.matchedAddress.split(',')[0].toUpperCase();
                 county = match.geographies.Counties[0].BASENAME;
                 countySub = match.geographies[ 'County Subdivisions' ][0].NAME;
                 censusTract = match.geographies[ 'Census Tracts' ][0].BASENAME;
                 zip = match[ 'addressComponents' ].zip;
+                
+                console.log("Received...");
+                console.log({
+                      "key": "receivedGeocoderQuery",
+                      "matchAddr": matchAddr,
+                      "county": county,
+                      "countySub": countySub,
+                      "censusTract": censusTract,
+                      "zip": zip
+                    });
+                
+                if (matchAddr && county && countySub && censusTract && zip) {
+                  browser.tabs.query({
+                    currentWindow: true,
+                    active: true
+                  }).then((tabs) => {
+                    for (let tab of tabs) {
+                      browser.tabs.sendMessage(tab.id, {
+                        key: "receivedGeocoderQuery",
+                        matchAddr: matchAddr,
+                        county: county,
+                        countySub: countySub,
+                        censusTract: censusTract,
+                        zip: zip
+                      });
+                    }
+                  });
+                }
                 
                 function onError(error) {
                   console.error(`Error: ${error}`);
@@ -269,11 +306,11 @@ function handleMessages(request, sender, sendResponse) {
               browser.tabs.query({
                 currentWindow: true,
                 active: true
-              }).then(sendGeocoderResponse).catch(onError)
+              }).then(sendGeocoderResponse).catch(onError);
             }
           }
         }
-      });
+      });*/
       break;
     case "findNearestLib":
       var patronAddr = request.matchAddr4DistQuery,
