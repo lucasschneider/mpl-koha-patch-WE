@@ -26,10 +26,62 @@ setTimeout(() => {
                city.value = queryCity;
                state.value = "Wisconsin";
                submit.click();
+               
+               // Scrap relevant data after the page probably had enough time to load
+               setTimeout(() => {
+                 var tableRows = document.querySelectorAll('#geoaddrresulttable table tbody tr'),
+                   matchAddrParts,
+                   matchAddr,
+                   county,
+                   countySub,
+                   censusTract,
+                   zip;
+                 
+                 if (tableRows.length > 0) {
+                   matchAddrParts = document.querySelector('#addressSearch_msg .bd b');
+                   if (matchAddrParts) {
+                     matchAddrParts = matchAddrParts.textContent.split(", ");
+                     if (matchAddrParts.length > 1) {
+                       matchAddr = matchAddrParts[0];
+                     }
+                   }
+
+                   for (var i = 0; i < tableRows.length; i++) {
+                     if (tableRows[i].children.length > 1) {
+                       if (tableRows[i].children[1].textContent.trim() == "County") {
+                         county = tableRows[i].children[0].textContent.trim();
+                         if (county) county = county.split(', ')[0].split(' ')[0];
+                       } else if (tableRows[i].children[1].textContent.trim() == "County Subdivision") {
+                         countySub = tableRows[i].children[0].textContent.trim();
+                         if (countySub) countySub = countySub.split(', ')[0];
+                       } else if (tableRows[i].children[1].textContent.trim() == "Census Tract") {
+                         censusTract = tableRows[i].children[0].textContent.trim();
+                         if (censusTract) censusTract = /[0-9]+\.[0-9]+|[0-9]+/.exec(censusTract);
+                         if (censusTract) censusTract = censusTract[0];
+                       } else if (tableRows[i].children[1].textContent.trim() == "5-Digit ZIP Code") {
+                         zip = tableRows[i].children[0].textContent.trim();
+                         if (zip) zip = /[0-9]{5}/.exec(zip);
+                         if (zip) zip = zip[0];
+                       }
+                     }
+                   }
+                   
+                   browser.runtime.sendMessage({
+                     "key": "returnFactFinderData",
+                     "matchAddr": matchAddr,
+                     "county": county,
+                     "countySub": countySub,
+                     "censusTract": censusTract,
+                     "zip": zip
+                   });
+                 } else {
+                   sendFailMsg();    
+                 }
+               }, 6500);
              } else {
                sendFailMsg();
              }
-         }, 300);
+         }, 500);
        } else {
          sendFailMsg();
       }

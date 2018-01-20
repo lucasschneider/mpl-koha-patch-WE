@@ -16,7 +16,7 @@ var addrElt = document.getElementById('address'),
   cityEltAltContact = document.getElementById('altcontactaddress3'),
   selectList = document.getElementsByName('sort1'),
   noticeElt = document.createElement('div'),
-  resultElt = document.createElement('span');
+  timerElt = document.createElement('span');
   
 // Set selectList to reference the element
 selectList = (selectList.length > 0) ? selectList[0] : null;
@@ -25,7 +25,7 @@ selectList = (selectList.length > 0) ? selectList[0] : null;
 // and place them underneath the address field
 noticeElt.id = 'tractNotice';
 noticeElt.setAttribute('style', 'margin-top:.2em;margin-left:118px;font-style:italic;color:#c00;');
-resultElt.setAttribute('id', 'tractResult');
+timerElt.setAttribute('id', 'timerElt');
 
 if (addrElt) {
   addrElt.parentElement.appendChild(noticeElt);
@@ -125,7 +125,7 @@ function parseMadisonWI(cityElt) {
   * matchAddr:  The matching address returned by the Geocoder
   */
 function selectPSTAT(value, matchAddr) {
-  if (selectList && value && resultElt && matchAddr) {
+  if (selectList && value && matchAddr) {
     if (value == "D-X-SUN" || value == "X-UND") {
 	  // Select the proper undetermined code if no value is
 	  // currently in the select list
@@ -134,8 +134,8 @@ function selectPSTAT(value, matchAddr) {
       }
     } else {
       selectList.value = value;
-      resultElt.setAttribute('style', 'display:inline-block;color:#00c000;');
-      resultElt.textContent = ' [MATCH: ' + matchAddr + ']';
+      noticeElt.style.color = "#00c000;";
+      noticeElt.textContent = ' [MATCH: ' + matchAddr + ']';
     }
   }
 }
@@ -196,9 +196,19 @@ function queryPSTAT(secondPass, secondaryAddrQuery) {
     
   if (targetAddr.value !== "" && targetCity.value !== "" && selectList) {
     // Generate loading message
-    noticeElt.textContent = "Searching for sort value and zipcode... ";
-    resultElt.textContent = '';
-    noticeElt.appendChild(resultElt);
+    noticeElt.textContent = "Searching, please wait: ";
+    timerElt.textContent = '16';
+    noticeElt.appendChild(timerElt);
+    
+    var timerListener = self.setInterval(() => {timer()}, 1000);
+    function timer() {
+      if (!isNaN(timerElt.textContent) && parseInt(timerElt.textContent) > 1) {
+        timerElt.textContent = parseInt(timerElt.textContent)-1;
+      } else if (!/MATCH/.test(noticeElt)) {
+       clearInterval(timerListener);
+       noticeElt.textContent = "[FAILED] Please search for PSTAT manually." ;
+      }
+    }
     
     // Send Geocoder Query
     browser.runtime.sendMessage({
@@ -208,23 +218,6 @@ function queryPSTAT(secondPass, secondaryAddrQuery) {
       city: pullCity(targetCity.value),
       isSecondPass: secondPass
     });
-    
-    console.log("Sending...");
-    console.log({
-      key: "queryGeocoder",
-      URIencodedAddress: cleanAddr(targetAddr),
-      address: targetAddr.value,
-      city: pullCity(targetCity.value),
-      isSecondPass: secondPass
-    });
-    
-    // Display warning if no data is retrieved after 12 seconds.
-    setTimeout(() => {
-      if (resultElt && resultElt.textContent === '') {
-        resultElt.setAttribute('style', 'display:block;color:#a5a500;');
-        resultElt.textContent = '[NOTE: Server slow to respond—please enter zipcode and sort field manually]';
-      }
-    }, 12000);
   }
 }
 /*** FUNCTIONS : END ***/
@@ -265,7 +258,7 @@ if (cityEltAltContact) {
 /*** RUNTIME MESSAGE LISTENERS : START ***/
 
 browser.runtime.onMessage.addListener(message => {
-  if (message && message.key === "receivedGeocoderQuery") {
+  if (message && message.key === "returnFactFinderData") {
     console.log({
       "key": "receivedGeocoderQuery",
       "matchAddr": message.matchAddr,
@@ -274,6 +267,8 @@ browser.runtime.onMessage.addListener(message => {
       "censusTract": message.censusTract,
       "zip": message.zip
     });
+    
+    selectPSTAT("D-"+censusTract, matchAddr)
   }
 });
 

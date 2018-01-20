@@ -211,7 +211,7 @@ function handleMessages(request, sender, sendResponse) {
         browser.tabs.executeScript(tab.id,{
           file: "content/scripts/scrapFactFinder.js"
         }).then(() => {
-          //setTimeout(() => {browser.tabs.remove(tab.id)}, 8000);
+          setTimeout(() => {browser.tabs.remove(tab.id)}, 15000);
         });
       });        
     /*  if (request.isSecondPass) {
@@ -311,6 +311,20 @@ function handleMessages(request, sender, sendResponse) {
           }
         }
       });*/
+      break;
+    case "returnFactFinderData":
+      browser.tabs.query({ currentWindow: true, active: true}).then((tabs) => {
+        for (let tab of tabs) {
+          browser.tabs.sendMessage(tab.id, {
+            "key": "returnFactFinderData",
+            "matchAddr": request.matchAddr,
+            "county": request.county,
+            "countySub": request.countySub,
+            "censusTract": request.censusTract,
+            "zip": request.zip
+          });
+        }
+      });
       break;
     case "findNearestLib":
       var patronAddr = request.matchAddr4DistQuery,
