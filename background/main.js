@@ -203,22 +203,21 @@ browser.webNavigation.onCompleted.addListener(handleUpdated);
 // Handle messages form content pages
 function handleMessages(request, sender, sendResponse) {
   switch(request.key) {
+    /**
+     * Here, we query the Census website for data simultaneously in two different
+     * ways:
+     * 
+     * 1) A JSON request is made using the Census Geocoder API.
+     * 2) An American FactFinder tab is silently opened, a search is performed based on the
+     *    address, and the results table is scrapped for data.
+     *
+     * The data from whichever method returns (positively) first, is used. The page-scrapping
+     * method was added due to the often unreliability of the Geocoder.
+     */
     case "queryGeocoder":
-      browser.tabs.create({
-        active: false,
-        url: "https://factfinder.census.gov/faces/nav/jsf/pages/searchresults.xhtml"+"?addr="+request.URIencodedAddress+"&city="+request.city
-      }).then((tab) => {
-        browser.tabs.executeScript(tab.id,{
-          file: "content/scripts/scrapFactFinder.js"
-        }).then(() => {
-          setTimeout(() => {browser.tabs.remove(tab.id)}, 15000);
-        });
-      });        
-    /*  if (request.isSecondPass) {
-        geocoderAPI = "https://geocoding.geo.census.gov/geocoder/geographies/address?street="+request.URIencodedAddress+"&city="+request.city+"&state=wi&benchmark=Public_AR_Census2010&vintage=Census2010_Census2010&layers=Counties,Census Tracts,County+Subdivisions,2010+Census+ZIP+Code+Tabulation+Areas&format=json";
-      } else {
-        geocoderAPI = "https://geocoding.geo.census.gov/geocoder/geographies/address?street="+request.URIencodedAddress+"&city="+request.city+"&state=wi&benchmark=Public_AR_Current&vintage=Current_Current&layers=Counties,Census Tracts,County+Subdivisions,2010+Census+ZIP+Code+Tabulation+Areas&format=json"
-      }
+      // Method 1: Census Geocoder
+      var geocoderAPI = "https://geocoding.geo.census.gov/geocoder/geographies/address?street=" + request.URIencodedAddress + "&city=" + request.city + "&state=wi&benchmark=Public_AR_Current&vintage=Current_Current&layers=Counties,Census Tracts,County+Subdivisions,2010+Census+ZIP+Code+Tabulation+Areas&format=json";
+      
       $.getJSON(geocoderAPI).done(function(response) {
         if (response && response.result) {
           var match = response.result;
@@ -233,90 +232,43 @@ function handleMessages(request, sender, sendResponse) {
                 censusTract = match.geographies[ 'Census Tracts' ][0].BASENAME;
                 zip = match[ 'addressComponents' ].zip;
                 
-                console.log("Received...");
-                console.log({
-                      "key": "receivedGeocoderQuery",
-                      "matchAddr": matchAddr,
-                      "county": county,
-                      "countySub": countySub,
-                      "censusTract": censusTract,
-                      "zip": zip
-                    });
-                
-                if (matchAddr && county && countySub && censusTract && zip) {
-                  browser.tabs.query({
-                    currentWindow: true,
-                    active: true
-                  }).then((tabs) => {
+                if (matchAddr && county && countySub && zip) {
+                  browser.tabs.query({ currentWindow: true, active: true}).then((tabs) => {
                     for (let tab of tabs) {
                       browser.tabs.sendMessage(tab.id, {
-                        key: "receivedGeocoderQuery",
-                        matchAddr: matchAddr,
-                        county: county,
-                        countySub: countySub,
-                        censusTract: censusTract,
-                        zip: zip
+                        "key": "returnCensusData",
+                        "matchAddr": matchAddr,
+                        "county": county,
+                        "countySub": countySub,
+                        "censusTract": censusTract,
+                        "zip": zip
                       });
                     }
                   });
                 }
-                
-                function onError(error) {
-                  console.error(`Error: ${error}`);
-                }
-                
-                function sendGeocoderResponse(tabs) {
-                  for (let tab of tabs) {
-                    browser.tabs.sendMessage(tab.id, {
-                      key: "receivedGeocoderQuery",
-                      hasData: true,
-                      matchAddr: matchAddr,
-                      county: county,
-                      countySub: countySub,
-                      censusTract: censusTract,
-                      zip: zip
-                    });
-                  }
-                }
-                
-                browser.tabs.query({
-                  currentWindow: true,
-                  active: true
-                }).then(sendGeocoderResponse).catch(onError);
               }
-            } else {
-              // If no matched address found...
-              
-              function onError(error) {
-                console.error(`Error: ${error}`);
-              }
-
-              function sendGeocoderResponse(tabs) {
-                for (let tab of tabs) {
-                  browser.tabs.sendMessage(tab.id, {
-                    key: "requestMadExceptions",
-                    addrVal: request.address,
-                    lib: "Mad",
-                    tract: "",
-                    zip: ""
-                  });
-                }
-              }
-
-              browser.tabs.query({
-                currentWindow: true,
-                active: true
-              }).then(sendGeocoderResponse).catch(onError);
             }
           }
         }
-      });*/
+      });
+
+      // Method 2: American FactFinder page scrapping
+      browser.tabs.create({
+        active: false,
+        url: "https://factfinder.census.gov/faces/nav/jsf/pages/searchresults.xhtml"+"?addr="+request.URIencodedAddress+"&city="+request.city
+      }).then((tab) => {
+        browser.tabs.executeScript(tab.id,{
+          file: "content/scripts/scrapFactFinder.js"
+        }).then(() => {
+          setTimeout(() => {browser.tabs.remove(tab.id)}, 15000);
+        });
+      });        
       break;
-    case "returnFactFinderData":
+    case "returnCensusData":
       browser.tabs.query({ currentWindow: true, active: true}).then((tabs) => {
         for (let tab of tabs) {
           browser.tabs.sendMessage(tab.id, {
-            "key": "returnFactFinderData",
+            "key": "returnCensusData",
             "matchAddr": request.matchAddr,
             "county": request.county,
             "countySub": request.countySub,

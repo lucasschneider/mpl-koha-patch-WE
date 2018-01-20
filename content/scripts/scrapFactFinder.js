@@ -42,7 +42,7 @@ setTimeout(() => {
                    if (matchAddrParts) {
                      matchAddrParts = matchAddrParts.textContent.split(", ");
                      if (matchAddrParts.length > 1) {
-                       matchAddr = matchAddrParts[0];
+                       matchAddr = matchAddrParts[0].toUpperCase();
                      }
                    }
 
@@ -65,9 +65,9 @@ setTimeout(() => {
                        }
                      }
                    }
-                   
+
                    browser.runtime.sendMessage({
-                     "key": "returnFactFinderData",
+                     "key": "returnCensusData",
                      "matchAddr": matchAddr,
                      "county": county,
                      "countySub": countySub,

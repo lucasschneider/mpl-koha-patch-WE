@@ -14,6 +14,8 @@ var addrElt = document.getElementById('address'),
   cityElt = document.getElementById('city'),
   cityEltAlt = document.getElementById('B_city'),
   cityEltAltContact = document.getElementById('altcontactaddress3'),
+  zipElt = document.getElementById('zipcode'),
+  zipEltAlt = document.getElementById('B_zipcode'),
   selectList = document.getElementsByName('sort1'),
   noticeElt = document.createElement('div'),
   timerElt = document.createElement('span');
@@ -42,39 +44,39 @@ if (addrElt) {
   * addrElt: The html input field containing an address
   */
 function cleanAddr(addrElt) {
-  var i, addrParts, addrTrim;
-  if (addrElt !== null) {
-    addrParts = addrElt.value.toLowerCase().replace(/ cn?ty /i, ' co ').split(" ");
-  }
-  addrTrim = '';
-  for (i = 0; i < addrParts.length; i++) {
-    switch (addrParts[i]) {
-      case "n":
-        addrParts[i] = "north";
-        break;
-      case "e":
-        addrParts[i] = "east";
-        break;
-      case "s":
-        addrParts[i] = "south";
-        break;
-      case "w":
-        addrParts[i] = "west";
-        break;
-      default:
-        break;
+  var address = "",
+    addrParts;
+  if (addrElt) {
+     address = addrElt.value.trim().toLowerCase()
+      .replace(/\./, '')
+      .replace(/ cn?ty /i, ' co ')
+      .replace(/ n /i, ' north ')
+      .replace(/ s /i, ' south ')
+      .replace(/ e /i, ' east ')
+      .replace(/ w /i, ' west ');
+      
+    addrParts = address.split(" ");
+    
+    if (/^\#?[0-9]+$/.test(addrParts[addrParts.length-1])) {
+      addrParts.pop();
+    } else if (addrParts.length > 2 && 
+        /^(\#|apt|bldg|fl(oor)?|ste|unit|r(oo)?m|dept)$/.test(addrParts[addrParts.length-2]) &&
+        /^[0-9]+$/.test(addrParts[addrParts.length-1])) {
+      addrParts.pop();
+      addrParts.pop();
     }
-    if (i === 0) {
-      addrTrim += encodeURIComponent(addrParts[i]);
-    } else if (i === addrParts.length - 1) {
-      if (!/\#?[0-9]+/.test(addrParts[i])) {
-        addrTrim += "%20" + encodeURIComponent(addrParts[i]);
+    
+    address = "";
+    for (var i = 0; i < addrParts.length; i++) {
+      if (i === 0) {
+        address += addrParts[i];
+      } else {
+        address += "%20" + addrParts[i];
       }
-    } else {
-      addrTrim += "%20" + encodeURIComponent(addrParts[i]);
     }
   }
-  return addrTrim;
+
+  return address.replace(/\#/, '');
 }
 
 /**
@@ -127,14 +129,14 @@ function parseMadisonWI(cityElt) {
 function selectPSTAT(value, matchAddr) {
   if (selectList && value && matchAddr) {
     if (value == "D-X-SUN" || value == "X-UND") {
-	  // Select the proper undetermined code if no value is
-	  // currently in the select list
+	    // Select the proper undetermined code if no value is
+	    // currently in the select list
       if (selectList.value == '') {
         selectList.value = value;
       }
     } else {
       selectList.value = value;
-      noticeElt.style.color = "#00c000;";
+      noticeElt.style.color = "#00c000";
       noticeElt.textContent = ' [MATCH: ' + matchAddr + ']';
     }
   }
@@ -196,6 +198,7 @@ function queryPSTAT(secondPass, secondaryAddrQuery) {
     
   if (targetAddr.value !== "" && targetCity.value !== "" && selectList) {
     // Generate loading message
+    noticeElt.style.color = "#c00c00";
     noticeElt.textContent = "Searching, please wait: ";
     timerElt.textContent = '16';
     noticeElt.appendChild(timerElt);
@@ -204,7 +207,7 @@ function queryPSTAT(secondPass, secondaryAddrQuery) {
     function timer() {
       if (!isNaN(timerElt.textContent) && parseInt(timerElt.textContent) > 1) {
         timerElt.textContent = parseInt(timerElt.textContent)-1;
-      } else if (!/MATCH/.test(noticeElt)) {
+      } else if (!/MATCH/.test(noticeElt.textContent)) {
        clearInterval(timerListener);
        noticeElt.textContent = "[FAILED] Please search for PSTAT manually." ;
       }
@@ -258,17 +261,18 @@ if (cityEltAltContact) {
 /*** RUNTIME MESSAGE LISTENERS : START ***/
 
 browser.runtime.onMessage.addListener(message => {
-  if (message && message.key === "returnFactFinderData") {
-    console.log({
-      "key": "receivedGeocoderQuery",
-      "matchAddr": message.matchAddr,
-      "county": message.county,
-      "countySub": message.countySub,
-      "censusTract": message.censusTract,
-      "zip": message.zip
-    });
-    
-    selectPSTAT("D-"+censusTract, matchAddr)
+  if (message && message.key === "returnCensusData") {
+    console.log(message.county + "|" + message.censusTract);
+    switch(message.county) {
+      case "Dane":
+        switch (message.countySub) {
+          case "Madison city":
+            if (message.censusTract) selectPSTAT("D-"+message.censusTract, message.matchAddr);
+            zipElt.value = message.zip;
+            break;
+        }
+      break;
+    }
   }
 });
 
