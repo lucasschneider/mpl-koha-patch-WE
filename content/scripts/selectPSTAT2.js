@@ -286,10 +286,36 @@ browser.runtime.onMessage.addListener(message => {
         break;
       case "Dane":
         switch (message.countySub) {
+          case "Blooming Grove town":
+            sortCode = "D-BG-T";
+            break;
+          case "Cottage Grove town":
+            sortCode = "D-CG-T";
+            break;
+          case "Cottage Grove village":
+            sortCode = "D-CG-V";
+            break;
+          case "Fitchburg city":
+            sortCode = "D-FIT-T";
+            break;
           case "Madison city":
             if (message.censusTract) {
               sortCode = "D-" + message.censusTract;
             }
+            break;
+          case "Madison town":
+            sortCode = "D-MAD-T";
+            break;
+          case "Middleton city":
+            break;
+          case "Middleton town":
+            sortCode = "D-MID-T";
+            break;
+          case "Monona city":
+            break;
+          case "Sun Prairie city":
+            break;
+          case "Verona city":
             break;
         }
       break;
@@ -514,11 +540,11 @@ browser.runtime.onMessage.addListener(message => {
           case "Abbotsford city":
             sortCode = "CL-ABB-C";
             break;
-          case: "Colby city":
+          case "Colby city":
             sortCode = "CL-COL-C";
             break;
           case "Dorchester village":
-            sortCode = "CL-DOR-T":
+            sortCode = "CL-DOR-T";
             break;
           case "Unity village":
             sortCode = "CL-UNI-V";

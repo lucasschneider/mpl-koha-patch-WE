@@ -200,12 +200,11 @@ function handleUpdated(details) {
 
 browser.webNavigation.onCompleted.addListener(handleUpdated);
 
-// Handle messages form content pages
+// Handle messages from content pages
 function handleMessages(request, sender, sendResponse) {
   switch(request.key) {
     /**
-     * Here, we query the Census website for data simultaneously in two different
-     * ways:
+     * Query the Census website for data simultaneously in two different ways:
      * 
      * 1) A JSON request is made using the Census Geocoder API.
      * 2) An American FactFinder tab is silently opened, a search is performed based on the
@@ -229,7 +228,11 @@ function handleMessages(request, sender, sendResponse) {
                 matchAddr = match.matchedAddress.split(',')[0].toUpperCase();
                 county = match.geographies.Counties[0].BASENAME;
                 countySub = match.geographies[ 'County Subdivisions' ][0].NAME;
-                censusTract = match.geographies[ 'Census Tracts' ][0].BASENAME;
+                
+                censusTract = match.geographies[ 'Census Tracts' ];
+                if (censusTract) censusTract = censusTract[0];
+                if (censusTract) censusTract = censusTract.BASENAME;    
+                
                 zip = match[ 'addressComponents' ].zip;
                 
                 if (matchAddr && county && countySub && zip) {
