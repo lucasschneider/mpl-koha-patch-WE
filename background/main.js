@@ -793,11 +793,10 @@ function handleMessages(request, sender, sendResponse) {
       pstatURL += "?val=all&regex=true";
       
       $.getJSON(pstatURL).done(function(response) {
-        var value = !!request.tract ? "D-" + request.tract : "",
-          zip = !!request.zip ? request.zip : "";
+        var value, zip;
         for (var i = 0; i < response.length; i++) {
           var regex = new RegExp(response[i].regex, "i");
-          if (regex.test(request.addrVal)) {
+          if (regex.test(request.matchAddr)) {
             value = response[i].value;
             if (response[i].zip) {
               zip = response[i].zip;
@@ -821,7 +820,8 @@ function handleMessages(request, sender, sendResponse) {
             } else if (value && /m(id|oo)|ver|sun/i.test(request.lib)) {
               browser.tabs.sendMessage(tab.id, {
                 key: "received" + request.lib + "PSTAT",
-                value: value
+                value: value,
+                matchAddr: request.matchAddr
               });
             } else {
               browser.tabs.sendMessage(tab.id, {
