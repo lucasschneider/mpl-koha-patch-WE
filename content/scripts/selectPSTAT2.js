@@ -1859,7 +1859,7 @@ browser.runtime.onMessage.addListener(message => {
               sortCode = "CL-COL-C";
               break;
             case "Dorchester village":
-              sortCode = "CL-DOR-T";
+              sortCode = "CL-DOR-V";
               break;
             case "Unity village":
               sortCode = "CL-UNI-V";
@@ -2075,15 +2075,147 @@ browser.runtime.onMessage.addListener(message => {
           break;
         case "Green Lake":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Berlin town":
+              sortCode = "GL-BER-T";
+              break;
+            case "Brooklyn town":
+              sortCode = "GL-BRO-T";
+              break;
+            case "Green Lake city":
+              sortCode = "GL-GLK-C";
+              break;
+            case "Green Lake town":
+              sortCode = "GL-GLK-T";
+              break;
+            case "Kingston town":
+              sortCode = "GL-KIN-T";
+              break;
+            case "Kingston village":
+              sortCode = "GL-KIN-V";
+              break;
+            case "Mackford town":
+              sortCode = "GL-MAC-T";
+              break;
+            case "Manchester town":
+              sortCode = "GL-MAN-T";
+              break;
+            case "Markesan city":
+              sortCode = "GL-MKN-C";
+              break;
+            case "Marquette town":
+              sortCode = "GL-MRQ-T";
+              break;
+            case "Marquette village":
+              sortCode = "GL-MRQ-V";
+              break;
+            case "Princeton city":
+              sortCode = "GL-PRI-C";
+              break;
+            case "Princeton town":
+              sortCode = "GL-PRI-T";
+              break;
+            case "Seneca town":
+              sortCode = "GL-SEN-T";
+              break;
+            case "St. Marie town":
+              sortCode = "GL-STM-T";
+              break;
+            // Green Lake + Waushara counties
+            case "Berlin city":
+              sortCode = "GL-BER-C";
               break;
           }
           break;
         case "Iowa":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Arena town":
+              sortCode = "IO-ART-T";
+              break;
+            case "Arena village":
+              sortCode = "IO-ARE-V";
+              break;
+            case "Avoca village":
+              sortCode = "IO-AVO-V";
+              break;
+            case "Barneveld village":
+              sortCode = "IO-BAR-V";
+              break;
+            case "Brigham town":
+              sortCode = "IO-BRI-T";
+              break;
+            case "Clyde town":
+              sortCode = "IO-CLY-T";
+              break;
+            case "Cobb village":
+              sortCode = "IO-COB-T";
+              break;
+            case "Dodgeville city":
+              sortCode = "IO-DGV-C";
+              break;
+            case "Dodgeville town":
+              sortCode = "IO-DGV-T";
+              break;
+            case "Eden town":
+              sortCode = "IO-EDN-T";
+              break;
+            case "Highland town":
+              sortCode = "IO-HGH-T";
+              break;
+            case "Highland village":
+              sortCode = "IO-HGH-V";
+              break;
+            case "Hollandale village":
+              sortCode = "IO-HOL-V";
+              break;
+            case "Linden town":
+              sortCode = "IO-LIN-T";
+              break;
+            case "Linden village":
+              sortCode = "IO-LIN-V";
+              break;
+            case "Mifflin town":
+              sortCode = "IO-MIF-T";
+              break;
+            case "Mineral Point city":
+              sortCode = "IO-MNP-C";
+              break;
+            case "Mineral Point town":
+              sortCode = "IO-MNP-T";
+              break;
+            case "Moscow town":
+              sortCode = "IO-MOS-T";
+              break;
+            case "Pulaski town":
+              sortCode = "IO-PUL-T";
+              break;
+            case "Rewey village":
+              sortCode = "IO-REW-V";
+              break;
+            case "Ridgeway town":
+              sortCode = "IO-RDG-T";
+              break;
+            case "Ridgeway village":
+              sortCode = "IO-RDG-V";
+              break;
+            case "Waldwick town":
+              sortCode = "IO-WAL-T";
+              break;
+            case "Wyoming town":
+              sortCode = "IO-WYO-T";
+              break;
+            // Iowa + Grant counties
+            case "Livingston village":
+              sortCode = "IO-LIV-V";
+              break;
+            case "Montfort village":
+              sortCode = "IO-MON-V";
+              break;
+            case "Muscoda village":
+              sortCode = "IO-MUS-V";
+              break;
+            // Iowa + Lafayette counties
+            case "Blanchardville village":
+              sortCode = "IO-BLA-V";
               break;
           }
           break;
@@ -2096,22 +2228,266 @@ browser.runtime.onMessage.addListener(message => {
           break;
         case "Jackson":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Adams town":
+              sortCode = "JK-ADA-T";
+              break;
+            case "Albion town":
+              sortCode = "JK-ALB-T";
+              break;
+            case "Alma Center village":
+              sortCode = "JK-ACT-T";
+              break;
+            case "Alma town":
+              sortCode = "JK-ALM-T";
+              break;
+            case "Bear Bluff town":
+              sortCode = "JK-BBF-T";
+              break;
+            case "Black River Falls city":
+              sortCode = "JK-BRF-C";
+              break;
+            case "Brockway town":
+              sortCode = "JK-BRO-T";
+              break;
+            case "City Point town":
+              sortCode = "JK-CPT-T";
+              break;
+            case "Cleveland town":
+              sortCode = "JK-CLE-T";
+              break;
+            case "Curran town":
+              sortCode = "JK-CUR-T";
+              break;
+            case "Franklin town":
+              sortCode = "JK-FRA-T";
+              break;
+            case "Garden Valley town":
+              sortCode = "JK-GVA-T";
+              break;
+            case "Garfield town":
+              sortCode = "JK-GAR-T";
+              break;
+            case "Hixton town":
+              sortCode = "JK-HIX-T";
+              break;
+            case "Hixton village":
+              sortCode = "JK-HIX-V";
+              break;
+            case "Irving town":
+              sortCode = "JK-IRV-T";
+              break;
+            case "Knapp town":
+              sortCode = "JK-KNA-T";
+              break;
+            case "Komensky town":
+              sortCode = "JK-KOM-T";
+              break;
+            case "Manchester town":
+              sortCode = "JK-MAN-T";
+              break;
+            case "Melrose town":
+              sortCode = "JK-MEL-T";
+              break;
+            case "Melrose village":
+              sortCode = "JK-MEL-V";
+              break;
+            case "Merrillan village":
+              sortCode = "JK-MER-V";
+              break;
+            case "Millston town":
+              sortCode = "JK-MIL-T";
+              break;
+            case "North Bend town":
+              sortCode = "JK-NBD-T";
+              break;
+            case "Northfield town":
+              sortCode = "JK-NOR-T";
+              break;
+            case "Springfield town":
+              sortCode = "JK-SPR-T";
+              break;
+            case "Taylor village":
+              sortCode = "JK-TAY-V";
               break;
           }
           break;
         case "Jefferson":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Aztalan town":
+              sortCode = "JF-AZT-T";
+              break;
+            case "Cold Spring town":
+              sortCode = "JF-COS-T";
+              break;
+            case "Concord town":
+              sortCode = "JF-CON-T";
+              break;
+            case "Farmington town":
+              sortCode = "JF-FAR-T";
+              break;
+            case "Fort Atkinson city":
+              sortCode = "JF-FTA-C";
+              break;
+            case "Hebron town":
+              sortCode = "JF-HEB-T";
+              break;
+            case "Ixonia town":
+              sortCode = "JF-IXO-T";
+              break;
+            case "Jefferson city":
+              sortCode = "JF-JEF-C";
+              break;
+            case "Jefferson town":
+              sortCode = "JF-JEF-T";
+              break;
+            case "Johnson Creek village":
+              sortCode = "JF-JOC-V";
+              break;
+            case "Koshkonong town":
+              sortCode = "JF-KOS-T";
+              break;
+            case "Lake Mills city":
+              sortCode = "JF-LKM-C";
+              break;
+            case "Lake Mills town":
+              sortCode = "JF-LKM-T";
+              break;
+            case "Milford town":
+              sortCode = "JF-MIL-T";
+              break;
+            case "Oakland town":
+              sortCode = "JF-OAK-T";
+              break;
+            case "Palmyra town":
+              sortCode = "JF-PAL-T";
+              break;
+            case "Palmyra village":
+              sortCode = "JF-PAL-V";
+              break;
+            case "Sullivan town":
+              sortCode = "JF-SUL-T";
+              break;
+            case "Sullivan village":
+              sortCode = "JF-SUL-V";
+              break;
+            case "Sumner town":
+              sortCode = "JF-SUM-T";
+              break;
+            case "Waterloo city":
+              sortCode = "JF-WTL-C";
+              break;
+            case "Waterloo town":
+              sortCode = "JF-WTL-T";
+              break;
+            case "Watertown town":
+              sortCode = "JF-WAT-T";
+              break;
+            // Jefferson + Dane counties
+            case "Cambridge village":
+              sortCode = "JF-CAM-V";
+              break;
+            // Jefferson + Dodge counties
+            case "Watertown city":
+              sortCode = "JF-WAT-C";
+              break;
+            // Jefferson + Walworth counties
+            case "Whitewater city":
+              sortCode = "JF-WHI-C";
+              break;
+            // Jefferson + Waukesha counties
+            case "Lac La Belle village":
+              sortCode = "JF-LLB-V";
               break;
           }
           break;
         case "Juneau":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Armenia town":
+              sortCode = "JU-ARM-T";
+              break;
+            case "Camp Douglas village":
+              sortCode = "JU-CAD-V";
+              break;
+            case "Clearfield town":
+              sortCode = "JU-CLR-T";
+              break;
+            case "Cutler town":
+              sortCode = "JU-CUT-T";
+              break;
+            case "Elroy city":
+              sortCode = "JU-ELR-C";
+              break;
+            case "Finley town":
+              sortCode = "JU-FIN-T";
+              break;
+            case "Fountain town":
+              sortCode = "JU-FOU-T";
+              break;
+            case "Germantown town":
+              sortCode = "JU-GER-T";
+              break;
+            case "Hustler village":
+              sortCode = "JU-HUS-V";
+              break;
+            case "Kildare town":
+              sortCode = "JU-KIL-T";
+              break;
+            case "Kingston town":
+              sortCode = "JU-KNG-T";
+              break;
+            case "Lemonweir town":
+              sortCode = "JU-LEM-T";
+              break;
+            case "Lindina town":
+              sortCode = "JU-LIN-T";
+              break;
+            case "Lisbon town":
+              sortCode = "JU-LIS-T";
+              break;
+            case "Lyndon Station village":
+              sortCode = "JU-LST-V";
+              break;
+            case "Lyndon town":
+              sortCode = "JU-LYN-T";
+              break;
+            case "Marion town":
+              sortCode = "JU-MAR-T";
+              break;
+            case "Mauston city":
+              sortCode = "JU-MAU-C";
+              break;
+            case "Necedah town":
+              sortCode = "JU-NEC-T";
+              break;
+            case "Necedah village":
+              sortCode = "JU-NEC-V";
+              break;
+            case "New Lisbon city":
+              sortCode = "JU-NLI-C";
+              break;
+            case "Orange town":
+              sortCode = "JU-ORA-T";
+              break;
+            case "Plymouth town":
+              sortCode = "JU-PLY-T";
+              break;
+            case "Seven Mile Creek town":
+              sortCode = "JU-7MC-T";
+              break;
+            case "Summit town":
+              sortCode = "JU-SUM-T";
+              break;
+            case "Union Center village":
+              sortCode = "JU-UNC-V";
+              break;
+            case "Wisconsin Dells city":
+              sortCode = "JU-WID-C";
+              break;
+            case "Wonewoc town":
+              sortCode = "JU-WON-T";
+              break;
+            case "Wonewoc village":
+              sortCode = "JU-WON-V";
               break;
           }
           break;
@@ -2138,8 +2514,91 @@ browser.runtime.onMessage.addListener(message => {
           break;
         case "Lafayette":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Argyle town":
+              sortCode = "LF-ARG-T";
+              break;
+            case "Argyle village":
+              sortCode = "LF-ARG-V";
+              break;
+            case "Belmont town":
+              sortCode = "LF-BEL-T";
+              break;
+            case "Belmont village":
+              sortCode = "LF-BEL-V";
+              break;
+            case "Benton town":
+              sortCode = "LF-BEN-T";
+              break;
+            case "Benton village":
+              sortCode = "LF-BEN-V";
+              break;
+            case "Blanchard town":
+              sortCode = "LF-BLA-T";
+              break;
+            case "Darlington city":
+              sortCode = "LF-DAR-C";
+              break;
+            case "Darlington town":
+              sortCode = "LF-DAR-T";
+              break;
+            case "Elk Grove town":
+              sortCode = "LF-ELK-T";
+              break;
+            case "Fayette town":
+              sortCode = "LF-FAY-T";
+              break;
+            case "Gratiot town":
+              sortCode = "LF-GRA-T";
+              break;
+            case "Gratiot village":
+              sortCode = "LF-GRA-V";
+              break;
+            case "Kendall town":
+              sortCode = "LF-KEN-T";
+              break;
+            case "Lamont town":
+              sortCode = "LF-LAM-T";
+              break;
+            case "Monticello town":
+              sortCode = "LF-MON-T";
+              break;
+            case "New Diggings town":
+              sortCode = "LF-NDG-T";
+              break;
+            case "Seymour town":
+              sortCode = "LF-SEY-T";
+              break;
+            case "Shullsburg city":
+              sortCode = "LF-SHU-C";
+              break;
+            case "Shullsburg town":
+              sortCode = "LF-SHU-T";
+              break;
+            case "South Wayne village":
+              sortCode = "LF-SWY-V";
+              break;
+            case "Wayne town":
+              sortCode = "LF-WYN-T";
+              break;
+            case "White Oak Springs town":
+              sortCode = "LF-WOS-T";
+              break;
+            case "Willow Springs town":
+              sortCode = "LF-WSP-T";
+              break;
+            case "Wiota town":
+              sortCode = "LF-WIO-T";
+              break;
+            // Lafayette + Grant counties
+            case "Cuba City village":
+              sortCode = "LF-CUB-V";
+              break;
+            case "Hazel Green village":
+              sortCode = "LF-HZG-V";
+              break;
+            // Lafayette + Iowa counties
+            case "Blanchardville village":
+              sortCode = "LF-BLA-V";
               break;
           }
           break;
@@ -2166,6 +2625,189 @@ browser.runtime.onMessage.addListener(message => {
           break;
         case "Marathon":
           switch (message.countySub) {
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
             case "":
               sortCode = "";
               break;
