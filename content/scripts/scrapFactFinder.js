@@ -49,8 +49,16 @@ setTimeout(() => {
                    for (var i = 0; i < tableRows.length; i++) {
                      if (tableRows[i].children.length > 1) {
                        if (tableRows[i].children[1].textContent.trim() == "County") {
+                         var countyParts;
                          county = tableRows[i].children[0].textContent.trim();
-                         if (county) county = county.split(', ')[0].split(' ')[0];
+                         if (county) countyParts = county.split(', ')[0].split(' ');
+                         for (var j = 0; j < countyParts.length - 1; j++) {
+                           if (j == 0) {
+                             county = countyParts[j];
+                           } else {
+                             county += " " + countyParts[j];
+                           }
+                         }
                        } else if (tableRows[i].children[1].textContent.trim() == "County Subdivision") {
                          countySub = tableRows[i].children[0].textContent.trim();
                          if (countySub) countySub = countySub.split(', ')[0];

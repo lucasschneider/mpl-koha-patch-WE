@@ -1,20 +1,26 @@
-document.getElementById('paymentPlan').addEventListener('click', function() {
+var paymentPlan = document.getElementById('paymentPlan'),
+  lostcard = document.getElementById('lostCard'),
+  PSTAT2 = document.getElementById('PSTAT2'),
+  calendarAnnouncements = document.getElementById('calendarAnnouncements'),
+  problemItem = document.getElementById('problemItem');
+
+if (paymentPlan) paymentPlan.addEventListener('click', function() {
   browser.runtime.sendMessage({key: "addNote"});
 });
 
-document.getElementById('lostCard').addEventListener('click', function() {
+if (lostcard) lostcard.addEventListener('click', function() {
   browser.runtime.sendMessage({key: "addLostCardNote"});
 });
 
-document.getElementById('PSTAT2').addEventListener('click', function() {
+if (PSTAT2) PSTAT2.addEventListener('click', function() {
   browser.runtime.sendMessage({key: "addr2PSTAT"});
 });
 
-document.getElementById('calendarAnnouncements').addEventListener('click', function() {
+if (calendarAnnouncements) calendarAnnouncements.addEventListener('click', function() {
   browser.runtime.sendMessage({key: "calendarAnnouncements"});
 });
 
-document.getElementById('problemItem').addEventListener('click', function() {
+if (problemItem) problemItem.addEventListener('click', function() {
   browser.tabs.create({
     url: browser.runtime.getURL("../problemItemForm/problemItemForm.html")
   });

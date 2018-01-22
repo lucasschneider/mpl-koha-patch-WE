@@ -134,7 +134,7 @@ setIcon();
 // Load preference-selected function files
 function handleUpdated(details) {
   if (details.frameId == 0) { // 0 indicates the navigation happens in the tab content window;
-                            // A positive value indicates navigation in a subframe.
+                              // A positive value indicates navigation in a subframe.
 
     browser.storage.sync.get().then((res) => {
       if (!res.hasOwnProperty('patronMsg') || (res.hasOwnProperty('patronMsg') && res.patronMsg)) {

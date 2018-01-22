@@ -361,6 +361,9 @@ browser.runtime.onMessage.addListener(message => {
             case "Caledonia town":
               sortCode = "C-CAL-T";
               break;
+            case "Cambria village":
+              sortCode = "C-CAM-V";
+              break;
             case "Columbus city":
               sortCode = "C-COL-C";
               break;
@@ -382,93 +385,153 @@ browser.runtime.onMessage.addListener(message => {
             case "Fall River village":
               sortCode = "C-FR-V";
               break;
-            case "Friesland":
-              sortCode = "";
+            case "Friesland village":
+              sortCode = "C-FRI-V";
               break;
-            case "":
-              sortCode = "";
+            case "Fort Winnebago town":
+              sortCode = "C-FW-T";
               break;
-            case "":
-              sortCode = "";
+            case "Hampden town":
+              sortCode = "C-HAM-T";
               break;
-            case "":
-              sortCode = "";
+            case "Leeds town":
+              sortCode = "C-LEE-T";
               break;
-            case "":
-              sortCode = "";
+            case "Lewiston town":
+              sortCode = "C-LEW-T";
               break;
-            case "":
-              sortCode = "";
+            case "Lodi city":
+              sortCode = "C-LOD-C";
               break;
-            case "":
-              sortCode = "";
+            case "Lodi town":
+              sortCode = "C-LOD-T";
               break;
-            case "":
-              sortCode = "";
+            case "Lowville town":
+              sortCode = "C-LOW-T";
               break;
-            case "":
-              sortCode = "";
+            case "Marcellon town":
+              sortCode = "C-MARC-T";
               break;
-            case "":
-              sortCode = "";
+            case "Newport town":
+              sortCode = "C-NEW-T";
               break;
-            case "":
-              sortCode = "";
+            case "Otsego town":
+              sortCode = "C-OTS-T";
               break;
-            case "":
-              sortCode = "";
+            case "Pacific town":
+              sortCode = "C-PAC-T";
               break;
-            case "":
-              sortCode = "";
+            case "Pardeeville village":
+              sortCode = "C-PAR-V";
               break;
-            case "":
-              sortCode = "";
+            case "Portage city":
+              sortCode = "C-POR-C";
               break;
-            case "":
-              sortCode = "";
+            case "Poynette village":
+              sortCode = "C-POY-V";
               break;
-            case "":
-              sortCode = "";
+            case "Randolph town":
+              sortCode = "C-RAN-T";
               break;
-            case "":
-              sortCode = "";
+            case "Randolph village":
+              sortCode = "C-RAN-VC";
               break;
-            case "":
-              sortCode = "";
+            case "Rio village":
+              sortCode = "C-RIO-V";
               break;
-            case "":
-              sortCode = "";
+            case "Scott town":
+              sortCode = "C-SCO-T";
               break;
-            case "":
-              sortCode = "";
+            case "Springvale town":
+              sortCode = "C-SPV-T";
               break;
-            case "":
-              sortCode = "";
+            case "Wisconsin Dells city":
+              sortCode = "C-WD-CC";
               break;
-            case "":
-              sortCode = "";
+            case "West Point town":
+              sortCode = "C-WP-T";
               break;
-            case "":
-              sortCode = "";
+            case "Wyocena town":
+              sortCode = "C-WYO-T";
               break;
-            case "":
-              sortCode = "";
-              break;
-            case "":
-              sortCode = "";
+            case "Wyocena village":
+              sortCode = "C-WYO-V";
               break;
           }
           break;
         case "Dane":
           switch (message.countySub) {
+            case "Albion town":
+              sortCode = "D-ALB-T";
+              break;
+            case "Black Earth town":
+              sortCode = "D-BE-T";
+              break;
+            case "Black Earth village":
+              sortCode = "D-BE-V";
+              break;
+            case "Belleville village":
+              sortCode = "D-BEL-VD";
+              break;
+            case "Berry town":
+              sortCode = "D-BERR-T";
+              break;
             case "Blooming Grove town":
               sortCode = "D-BG-T";
+              break;
+            case "Blue Mounds town":
+              sortCode = "D-BM-T";
+              break;
+            case "Blue Mounds village":
+              sortCode = "D-BM-V";
+              break;
+            case "Bristol town":
+              sortCode = "D-BRI-T";
+              break;
+            case "Brooklyn village":
+              sortCode = "D-BRO-VD";
+              break;
+            case "Burke town":
+              sortCode = "D-BUR-T";
+              break;
+            case "Cambridge village":
+              sortCode = "D-CAM-VD";
               break;
             case "Cottage Grove town":
               sortCode = "D-CG-T";
               break;
             case "Cottage Grove village":
               sortCode = "D-CG-V";
+              break;
+            case "Christiana town":
+              sortCode = "D-CHR-T";
+              break;
+            case "Cross Plains town":
+              sortCode = "D-CP-T";
+              break;
+            case "Cross Plains village":
+              sortCode = "D-CP-V";
+              break;
+            case "Dane town":
+              sortCode = "D-DAN-T";
+              break;
+            case "Dane village":
+              sortCode = "D-DAN-V";
+              break;
+            case "Deerfield town":
+              sortCode = "D-DEE-T";
+              break;
+            case "Deerfield village":
+              sortCode = "D-DEE-V";
+              break;
+            case "DeForest village":
+              sortCode = "D-DF-V";
+              break;
+            case "Dunkirk town":
+              sortCode = "D-DUNK-T";
+              break;
+            case "Dunn town":
+              sortCode = "D-DUNN-T";
               break;
             case "Fitchburg city":
               sortCode = "D-FIT-T";
@@ -480,6 +543,27 @@ browser.runtime.onMessage.addListener(message => {
               break;
             case "Madison town":
               sortCode = "D-MAD-T";
+              break;
+            case "Marshall village":
+              sortCode = "D-MARS-V";
+              break;
+            case "Mazomanie town":
+              sortCode = "D-MAZ-T";
+              break;
+            case "Mazomanie village":
+              sortCode = "D-MAZ-V";
+              break;
+            case "Maple Bluff village":
+              sortCode = "D-MB-V";
+              break;
+            case "McFarland village":
+              sortCode = "D-MCF-V";
+              break;
+            case "Medina town":
+              sortCode = "D-MED-T";
+              break;
+            case "Mount Horeb village":
+              sortCode = "D-MH-V";
               break;
             case "Middleton city":
               browser.runtime.sendMessage({
@@ -498,12 +582,57 @@ browser.runtime.onMessage.addListener(message => {
                 lib: "Moo"
               });
               break;
+            case "Montrose town":
+              sortCode = "D-MONT-T";
+              break;
+            case "Oregon town":
+              sortCode = "D-ORE-T";
+              break;
+            case "Oregon village":
+              sortCode = "D-ORE-V";
+              break;
+            case "Perry town":
+              sortCode = "D-PER-T";
+              break;
+            case "Primrose town":
+              sortCode = "D-PRI-T";
+              break;
+            case "Pleasant Springs town":
+              sortCode = "D-PS-T";
+              break;
+            case "Rockdale village":
+              sortCode = "D-ROC-V";
+              break;
+            case "Roxbury town":
+              sortCode = "D-ROX-T";
+              break;
+            case "Rutland town":
+              sortCode = "D-RUT-T";
+              break;
+            case "Shorewood Hills village":
+              sortCode = "D-SH-V";
+              break;
             case "Sun Prairie city":
               browser.runtime.sendMessage({
                 key: "getPstatByDist",
                 matchAddr: message.matchAddr,
                 lib: "Sun"
               });
+              break;
+            case "Sun Prairie town":
+              sortCode = "D-SP-T";
+              break;
+            case "Springdale town":
+              sortCode = "D-SPD-T";
+              break;
+            case "Springfield town":
+              sortCode = "D-SPF-T";
+              break;
+            case "Stoughton city":
+              sortCode = "D-STO-C1";
+              break;
+            case "Vermont town":
+              sortCode = "D-VERM-T";
               break;
             case "Verona city":
               browser.runtime.sendMessage({
@@ -512,33 +641,410 @@ browser.runtime.onMessage.addListener(message => {
                 lib: "Ver"
               });
               break;
+            case "Verona town":
+              sortCode = "D-VERO-T";
+              break;
+            case "Vienna town":
+              sortCode = "D-VIE-T";
+              break;
+            case "Waunakee village":
+              sortCode = "D-WAU-V";
+              break;
+            case "Westport town":
+              sortCode = "D-WESP-T";
+              break;
+            case "Windsor village":
+              sortCode = "D-WIN-T";
+              break;
+            case "York town":
+              sortCode = "D-YOR-TD";
+              break;
           }
         break;
         case "Green":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Adams town":
+              sortCode = "G-ADA-T";
+              break;
+            case "Albany town":
+              sortCode = "G-ALB-T2";
+              break;
+            case "Albany village":
+              sortCode = "G-ALB-V";
+              break;
+            case "Belleville village":
+              sortCode = "G-BEL-VG";
+              break;
+            case "Brooklyn town":
+              sortCode = "G-BRO-T";
+              break;
+            case "Brooklyn village":
+              sortCode = "G-BRO-VG";
+              break;
+            case "Brodhead city":
+              sortCode = "G-BROD-C";
+              break;
+            case "Browntown village": // Don't use G-BROW-V per SCLS PSTAT spreadsheet
+            case "Clarno town": // Don't use G-CLA-T per SCLS PSTAT spreadsheet
+            case "Monroe city": // Don't use G-MONR-C per SCLS PSTAT spreadsheet
+              sortCode = "G-MRO-SD";
+              break;
+            case "Cadiz town":
+              sortCode = "G-CAD-T";
+              break;
+            case "Decatur town":
+              sortCode = "G-DEC-T";
+              break;
+            case "Exeter town":
+              sortCode = "G-EXE-T";
+              break;
+            case "Jefferson town":
+              sortCode = "G-JEF-T";
+              break;
+            case "Jordan town":
+              sortCode = "G-JOR-T";
+              break;
+            case "Monroe town":
+              sortCode = "G-MONR-T";
+              break;
+            case "Monticello village":
+              sortCode = "G-MONT-V";
+              break;
+            case "Mount Pleasant town":
+              sortCode = "G-MP-T";
+              break;
+            case "New Glarus town":
+              sortCode = "G-NG-T";
+              break;
+            case "New Glarus village":
+              sortCode = "G-NG-V";
+              break;
+            case "Spring Grove town":
+              sortCode = "G-SGO-T";
+              break;
+            case "Sylvester town":
+              sortCode = "G-SYL-T";
+              break;
+            case "Washington town":
+              sortCode = "G-WAS-TG";
+              break;
+            case "York town":
+              sortCode = "G-YOR-TG";
               break;
           }
           break;
         case "Portage":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Alban town":
+              sortCode = "P-ALB-T";
+              break;
+            case "Almond town":
+              sortCode = "P-ALM-T";
+              break;
+            case "Almond village":
+              sortCode = "P-ALM-V";
+              break;
+            case "Amherst town":
+              sortCode = "P-AMH-T";
+              break;
+            case "Amherst village":
+              sortCode = "P-AMH-V";
+              break;
+            case "Amherst Junction village":
+              sortCode = "P-AMJ-V";
+              break;
+            case "Belmont town":
+              sortCode = "P-BEL-T";
+              break;
+            case "Buena Vista town":
+              sortCode = "P-BUV-T";
+              break;
+            case "Carson town":
+              sortCode = "P-CAR-T";
+              break;
+            case "Dewey town":
+              sortCode = "P-DEW-T";
+              break;
+            case "Eau PLeine town":
+              sortCode = "P-EPL-T";
+              break;
+            case "Grant town":
+              sortCode = "P-GRT-T";
+              break;
+            case "Hull town":
+              sortCode = "P-HUL-T";
+              break;
+            case "Junction City village":
+              sortCode = "P-JNC-V";
+              break;
+            case "Lanark town":
+              sortCode = "P-LAN-T";
+              break;
+            case "Linwood town":
+              sortCode = "P-LIN-T";
+              break;
+            case "Nelsonville village":
+              sortCode = "P-NEL-V";
+              break;
+            case "New Hope town":
+              sortCode = "P-NHP-T";
+              break;
+            case "Pine Grove town":
+              sortCode = "P-PIN-T";
+              break;
+            case "Park Ridge village":
+              sortCode = "P-PKR-V";
+              break;
+            case "Plover town":
+              sortCode = "P-PLO-T";
+              break;
+            case "Plover village":
+              sortCode = "P-PLO-V";
+              break;
+            case "Rosholt village":
+              sortCode = "P-ROS-V";
+              break;
+            case "Sharon town":
+              sortCode = "P-SHA-T";
+              break;
+            case "Stockton town":
+              sortCode = "P-STO-T";
+              break;
+            case "Stevens Point city":
+              sortCode = "P-STP-C";
+              break;
+            case "Whiting village":
+              sortCode = "P-WHI-V";
               break;
           }
           break;
         case "Sauk":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Baraboo city":
+              sortCode = "S-BAR-C1";
+              break;
+            case "Baraboo town":
+              sortCode = "S-BAR-T";
+              break;
+            case "Bear Creek town":
+              sortCode = "S-BC-T";
+              break;
+            case "Cazenovia village":
+              sortCode = "S-CAZ-V";
+              break;
+            case "Dellona town":
+              sortCode = "S-DELL-T";
+              break;
+            case "Delton town":
+              sortCode = "S-DELT-T";
+              break;
+            case "Excelsior town":
+              sortCode = "S-EXC-T";
+              break;
+            case "Fairfield town":
+              sortCode = "S-FAI-T";
+              break;
+            case "Franklin town":
+              sortCode = "S-FRA-T";
+              break;
+            case "Freedom town":
+              sortCode = "S-FRE-T";
+              break;
+            case "Greenfield town":
+              sortCode = "S-GRE-T";
+              break;
+            case "Honey Creek town":
+              sortCode = "S-HC-T";
+              break;
+            case "Hillpoint village":
+              sortCode = "S-HILL-V";
+              break;
+            case "Ironton town":
+              sortCode = "S-IRO-T";
+              break;
+            case "Ironton village":
+              sortCode = "S-IRO-V";
+              break;
+            case "Lake Delton village":
+              sortCode = "S-LD-V";
+              break;
+            case "Loganville village":
+              sortCode = "S-LOG-V";
+              break;
+            case "Lime Ridge village":
+              sortCode = "S-LR-V";
+              break;
+            case "La Valle town":
+              sortCode = "S-LV-T";
+              break;
+            case "La Valle village":
+              sortCode = "S-LV-V";
+              break;
+            case "Merrimac town":
+              sortCode = "S-MER-T";
+              break;
+            case "Merrimac village":
+              sortCode = "S-MER-V";
+              break;
+            case "North Freedom village":
+              sortCode = "S-NF-V";
+              break;
+            case "Prairie du Sac town":
+              sortCode = "S-PDS-T";
+              break;
+            case "Prairie du Sac village":
+              sortCode = "S-PDS-V";
+              break;
+            case "Plain village":
+              sortCode = "S-PLA-V";
+              break;
+            case "Reedsburg city":
+              sortCode = "S-REE-C";
+              break;
+            case "Reedsburg town":
+              sortCode = "S-REE-T";
+              break;
+            case "Rock Springs village":
+              sortCode = "S-RS-V";
+              break;
+            case "Sauk City village":
+              sortCode = "S-SC-V";
+              break;
+            case "Spring Green town":
+              sortCode = "S-SGE-T";
+              break;
+            case "Spring Green village":
+              sortCode = "S-SGE-V";
+              break;
+            case "Sumpter town":
+              sortCode = "S-SUM-T";
+              break;
+            case "Troy town":
+              sortCode = "S-TRO-T";
+              break;
+            case "Washington town":
+              sortCode = "S-WAS-TS";
+              break;
+            case "West Baraboo village":
+              sortCode = "S-WB-V";
+              break;
+            case "Wisconsin Dells city":
+              sortCode = "S-WD-CS";
+              break;
+            case "Westfield town":
+              sortCode = "S-WESF-T";
+              break;
+            case "Winfield town":
+              sortCode = "S-WIN-T2";
+              break;
+            case "Woodland town":
+              sortCode = "S-WOO-T";
               break;
           }
           break;
         case "Wood":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Arpin town":
+              sortCode = "W-ARP-T";
+              break;
+            case "Arpin village":
+              sortCode = "W-ARP-V";
+              break;
+            case "Auburndale town":
+              sortCode = "W-AUB-T";
+              break;
+            case "Auburndale village":
+              sortCode = "W-AUB-V";
+              break;
+            case "Biron village":
+              sortCode = "W-BIR-V";
+              break;
+            case "Cameron town":
+              sortCode = "W-CAM-T";
+              break;
+            case "Cary town":
+              sortCode = "W-CAR-T";
+              break;
+            case "Cranmoor town":
+              sortCode = "W-CRAN-T";
+              break;
+            case "Dexter town":
+              sortCode = "W-DEX-T";
+              break;
+            case "Grand Rapids town":
+              sortCode = "W-GRAP-T";
+              break;
+            case "Hansen town":
+              sortCode = "W-HAN-T";
+              break;
+            case "Hewitt village":
+              sortCode = "W-HEW-V";
+              break;
+            case "Hiles town":
+              sortCode = "W-HIL-T";
+              break;
+            case "Lincoln town":
+              sortCode = "W-LIN-T";
+              break;
+            case "Marshfield city":
+              sortCode = "W-MAR-C";
+              break;
+            case "Marshfield town":
+              sortCode = "W-MAR-T";
+              break;
+            case "Milladore town":
+              sortCode = "W-MILL-T";
+              break;
+            case "Milladore village":
+              sortCode = "W-MILL-V";
+              break;
+            case "Nekoosa city":
+              sortCode = "W-NEK-C";
+              break;
+            case "Port Edwards town":
+              sortCode = "W-PE-T";
+              break;
+            case "Port Edwards village":
+              sortCode = "W-PE-V";
+              break;
+            case "Pittsville city":
+              sortCode = "W-PIT-C";
+              break;
+            case "Richfield town":
+              sortCode = "W-RCH-T";
+              break;
+            case "Remington town":
+              sortCode = "W-REM-T";
+              break;
+            case "Rock town":
+              sortCode = "W-ROC-T";
+              break;
+            case "Rudolph town":
+              sortCode = "W-RUD-T";
+              break;
+            case "Rudolph village":
+              sortCode = "W-RUD-V";
+              break;
+            case "Saratoga town":
+              sortCode = "W-SARA-T";
+              break;
+            case "Seneca town":
+              sortCode = "W-SENE-T";
+              break;
+            case "Sherry town":
+              sortCode = "W-SHR-T";
+              break;
+            case "Sigel town":
+              sortCode = "W-SIG-T";
+              break;
+            case "Vesper village":
+              sortCode = "W-VESP-V";
+              break;
+            case "Wisconsin Rapids city":
+              sortCode = "W-WSRP-C";
+              break;
+            case "Wood town":
+              sortCode = "W-WOD-T";
               break;
           }
           break;
@@ -573,8 +1079,7 @@ browser.runtime.onMessage.addListener(message => {
               sortCode = "O-ALS-ORF-C";
               break;
             default:
-              result.setAttribute('style', 'display:inline-block;color:#c00;');
-              result.textContent = '[FAILED: Manually select sort option "Rock County" with or w/out library.]';
+              showMsg('[FAILED: Manually select sort option "Rock County" with or w/out library.]');
               break;
           }
           break;
@@ -618,8 +1123,7 @@ browser.runtime.onMessage.addListener(message => {
 
           /*** MILWAUKEE COUNTY FEDERATED LIBRARY SYSTEM ***/
         case "Milwaukee":
-          result.setAttribute('style', 'display:inline-block;color:#c00;');
-          result.textContent = '[FAILED: Do NOT issue a library card to Milwaukee County patrons.]';
+          showMsg('[FAILED: Do NOT issue a library card to Milwaukee County patrons.]');
           break;
 
           /*** MID-WISCONSIN FEDERATED LIBRARY SYSTEM ***/
@@ -756,8 +1260,7 @@ browser.runtime.onMessage.addListener(message => {
               sortCode = "O-MWFLS-WIL";
               break;
             default:
-              result.setAttribute('style', 'display:inline-block;color:#c00;');
-              result.textContent = '[FAILED: Manually select sort option "Dodge County" with or w/out library.]';
+              showMsg('[FAILED: Manually select sort option "Dodge County" with or w/out library.]');
               break;
           }
           break;
@@ -849,8 +1352,7 @@ browser.runtime.onMessage.addListener(message => {
               sortCode = "O-MWFLS-WW";
               break;
             default:
-              result.setAttribute('style', 'display:inline-block;color:#c00;');
-              result.textContent = '[FAILED: Manually select sort option "Jefferson County" with or w/out library.]';
+              showMsg('[FAILED: Manually select sort option "Jefferson County" with or w/out library.]');
               break;
           }
           break;
@@ -888,8 +1390,7 @@ browser.runtime.onMessage.addListener(message => {
           sortCode = "O-OWLS";
           break;
         case "Waupaca":
-          result.setAttribute('style', 'display:inline-block;color:#c00;');
-          result.textContent = '[FAILED: Manually select sort option "Waupaca County" with or w/out library.]';
+          showMsg('[FAILED: Manually select sort option "Waupaca County" with or w/out library.]');
           break;
 
           /*** SOUTH WEST LIBRARY SYSTEM ***/
@@ -954,8 +1455,7 @@ browser.runtime.onMessage.addListener(message => {
               sortCode = "O-SWLS-WYT";
               break;
             default:
-              result.setAttribute('style', 'display:inline-block;color:#c00;');
-              result.textContent = '[FAILED: Manually select sort option "Iowa County" with or w/out library.]';
+              showMsg('[FAILED: Manually select sort option "Iowa County" with or w/out library.]');
               break;
           }
           break;
@@ -966,8 +1466,7 @@ browser.runtime.onMessage.addListener(message => {
               sortCode = "O-SWLS-BLA";
               break;
             default:
-              result.setAttribute('style', 'display:inline-block;color:#c00;');
-              result.textContent = '[FAILED: Manually select sort option "Lafayette County" with or w/out library.]';
+              showMsg('[FAILED: Manually select sort option "Lafayette County" with or w/out library.]');
               break;
           }
           break;
@@ -1002,8 +1501,7 @@ browser.runtime.onMessage.addListener(message => {
               sortCode = "O-SWLS-WIT";
               break;
             default:
-              result.setAttribute('style', 'display:inline-block;color:#c00;');
-              result.textContent = '[FAILED: Manually select sort option "Richland County" with or w/out library.]';
+              showMsg('[FAILED: Manually select sort option "Richland County" with or w/out library.]');
               break;
           }
           break;
@@ -1046,8 +1544,7 @@ browser.runtime.onMessage.addListener(message => {
               sortCode = "O-WLS-PRC";
               break;
             default:
-              result.setAttribute('style', 'display:inline-block;color:#c00;');
-              result.textContent = '[FAILED: Manually select sort option "Green Lake County" with or w/out library.]';
+              showMsg('[FAILED: Manually select sort option "Green Lake County" with or w/out library.]');
               break;
           }
           break;
@@ -1088,15 +1585,13 @@ browser.runtime.onMessage.addListener(message => {
               sortCode = "O-WLS-WSFV";
               break;
             default:
-              result.setAttribute('style', 'display:inline-block;color:#c00;');
-              result.textContent = '[FAILED: Manually select sort option "Marquette County" with or w/out library.]';
+              showMsg('[FAILED: Manually select sort option "Marquette County" with or w/out library.]');
               break;
           }
           break;
           // Has with/without library option
         case "Waushara":
-          result.setAttribute('style', 'display:inline-block;color:#c00;');
-          result.textContent = '[FAILED: Manually select sort option "Waushara County" with or w/out library.]';
+          showMsg('[FAILED: Manually select sort option "Waushara County" with or w/out library.]');
           break;
         case "Fond du Lac":
         case "Winnebago":
@@ -1132,20 +1627,17 @@ browser.runtime.onMessage.addListener(message => {
               sortCode = "O-WRLS-WWV";
               break;
             default:
-              result.setAttribute('style', 'display:inline-block;color:#c00;');
-              result.textContent = '[FAILED: Manually select sort option "Juneau County" with or w/out library.]';
+              showMsg('[FAILED: Manually select sort option "Juneau County" with or w/out library.]');
               break;
           }
           break;
           // Has with/without library option
         case "Jackson":
-          result.setAttribute('style', 'display:inline-block;color:#c00;');
-          result.textContent = '[FAILED: Manually select sort option "Jackson County" with or w/out library.]';
+          showMsg('[FAILED: Manually select sort option "Jackson County" with or w/out library.]');
           break;
           // Has with/without library option
         case "Vernon":
-          result.setAttribute('style', 'display:inline-block;color:#c00;');
-          result.textContent = '[FAILED: Manually select sort option "Vernon County" with or w/out library.]';
+          showMsg('[FAILED: Manually select sort option "Vernon County" with or w/out library.]');
           break;
         case "Buffalo":
         case "La Crosse":
@@ -1160,8 +1652,7 @@ browser.runtime.onMessage.addListener(message => {
           break;
           // Has with/without library option
         case "Clark":
-          result.setAttribute('style', 'display:inline-block;color:#c00;');
-          result.textContent = '[FAILED: Manually select sort option "Clark County" with or w/out library.]';
+          showMsg('[FAILED: Manually select sort option "Clark County" with or w/out library.]');
           break;
         case "Forest":
         case "Langlade":
@@ -1702,7 +2193,7 @@ browser.runtime.onMessage.addListener(message => {
           }
           break;
         case "Milwaukee":
-          errorMsg = "[FAILED] Library cards MAY NOT be issued to Milwaukee County residents.";
+          showMsg("[FAILED] Library cards MAY NOT be issued to Milwaukee County residents.");
           break;
         case "Monroe":
           switch (message.countySub) {
