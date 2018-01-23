@@ -2965,159 +2965,166 @@ browser.runtime.onMessage.addListener(message => {
           break;
         case "Richland":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Akan town":
+              sortCode = "RI-AKA-T";
               break;
-            case "":
-              sortCode = "";
+            case "Bloom town":
+              sortCode = "RI-BLO-T";
               break;
-            case "":
-              sortCode = "";
+            case "Boaz village":
+              sortCode = "RI-BOA-V";
               break;
-            case "":
-              sortCode = "";
+            case "Buena Vista town":
+              sortCode = "RI-BUV-T";
               break;
-            case "":
-              sortCode = "";
+            case "Dayton town":
+              sortCode = "RI-DAY-T";
               break;
-            case "":
-              sortCode = "";
+            case "Eagle town":
+              sortCode = "RI-EAG-T";
               break;
-            case "":
-              sortCode = "";
+            case "Forest town":
+              sortCode = "RI-FOR-T";
               break;
-            case "":
-              sortCode = "";
+            case "Henrietta town":
+              sortCode = "RI-HEN-T";
               break;
-            case "":
-              sortCode = "";
+            case "Ithaca town":
+              sortCode = "RI-ITH-T";
               break;
-            case "":
-              sortCode = "";
+            case "Lone Rock village":
+              sortCode = "RI-LOR-V";
               break;
-            case "":
-              sortCode = "";
+            case "Marshall town":
+              sortCode = "RI-MAR-T";
               break;
-            case "":
-              sortCode = "";
+            case "Orion town":
+              sortCode = "RI-ORI-T";
               break;
-            case "":
-              sortCode = "";
+            case "Richland Center city":
+              sortCode = "RI-RCC-C";
               break;
-            case "":
-              sortCode = "";
+            case "Richland town":
+              sortCode = "RI-RIC-T";
               break;
-            case "":
-              sortCode = "";
+            case "Richwood town":
+              sortCode = "RI-RCH-T";
               break;
-            case "":
-              sortCode = "";
+            case "Rockbridge town":
+              sortCode = "RI-ROC-T";
               break;
-            case "":
-              sortCode = "";
+            case "Sylvan town":
+              sortCode = "RI-SYL-T";
               break;
-            case "":
-              sortCode = "";
+            case "Westford town":
+              sortCode = "RI-WES-T";
               break;
-            case "":
-              sortCode = "";
+            case "Willow town":
+              sortCode = "RI-WIL-T";
               break;
-            case "":
-              sortCode = "";
+            case "Yuba village":
+              sortCode = "RI-YUB-V";
               break;
-            case "":
-              sortCode = "";
+            // Richland + Sauk counties
+            case "Cazenovia village":
+              sortCode = "RI-CAZ-V";
+              break;
+            // Richland + Vernon counties
+            case "Viola village":
+              sortCode = "RI-VIO-V";
               break;
           }
           break;
         case "Rock":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Avon town":
+              sortCode = "RO-AVON-T";
               break;
-            case "":
-              sortCode = "";
+            case "Beloit city":
+              sortCode = "RO-BEL-C";
               break;
-            case "":
-              sortCode = "";
+            case "Beloit town":
+              sortCode = "RO-BEL-T";
               break;
-            case "":
-              sortCode = "";
+            case "Bradford town":
+              sortCode = "RO-BRA-T";
               break;
-            case "":
-              sortCode = "";
+            case "Center town":
+              sortCode = "RO-CEN-T";
               break;
-            case "":
-              sortCode = "";
+            case "Clinton town":
+              sortCode = "RO-CLI-T";
               break;
-            case "":
-              sortCode = "";
+            case "Clinton village":
+              sortCode = "RO-CLI-V";
               break;
-            case "":
-              sortCode = "";
+            case "Evansville city":
+              sortCode = "RO-EVA-C";
               break;
-            case "":
-              sortCode = "";
+            case "Footville village":
+              sortCode = "RO-FOO-V";
               break;
-            case "":
-              sortCode = "";
+            case "Fulton village":
+              sortCode = "RO-FUL-V";
               break;
-            case "":
-              sortCode = "";
+            case "Harmony town":
+              sortCode = "RO-HAR-T";
               break;
-            case "":
-              sortCode = "";
+            case "Janesville city":
+              sortCode = "RO-JAN-C";
               break;
-            case "":
-              sortCode = "";
+            case "Janesville town":
+              sortCode = "RO-JAN-T";
               break;
-            case "":
-              sortCode = "";
+            case "Johnstown town":
+              sortCode = "RO-JOH-T";
               break;
-            case "":
-              sortCode = "";
+            case "La Prairie town":
+              sortCode = "RO-LAP-T";
               break;
-            case "":
-              sortCode = "";
+            case "Lima town":
+              sortCode = "RO-LIM-T";
               break;
-            case "":
-              sortCode = "";
+            case "Magnolia town":
+              sortCode = "RO-MAG-T";
               break;
-            case "":
-              sortCode = "";
+            case "Milton city":
+              sortCode = "RO-MIL-C";
               break;
-            case "":
-              sortCode = "";
+            case "Milton town":
+              sortCode = "RO-MIL-T";
               break;
-            case "":
-              sortCode = "";
+            case "Newark town":
+              sortCode = "RO-NEW-T";
               break;
-            case "":
-              sortCode = "";
+            case "Orfordville village":
+              sortCode = "RO-ORF-V";
               break;
-            case "":
-              sortCode = "";
+            case "Plymouth town":
+              sortCode = "RO-PLY-T";
               break;
-            case "":
-              sortCode = "";
+            case "Porter town":
+              sortCode = "RO-POR-T";
               break;
-            case "":
-              sortCode = "";
+            case "Rock town":
+              sortCode = "RO-ROC-T";
               break;
-            case "":
-              sortCode = "";
+            case "Spring Valley town":
+              sortCode = "RO-SPV-T";
               break;
-            case "":
-              sortCode = "";
+            case "Turtle town":
+              sortCode = "RO-TUR-T";
               break;
-            case "":
-              sortCode = "";
+            case "Union town":
+              sortCode = "RO-UNI-T";
               break;
-            case "":
-              sortCode = "";
+            // Rock + Dane counties
+            case "Edgerton city":
+              sortCode = "RO-EDG-C";
               break;
-            case "":
-              sortCode = "";
+            // Rock + Green counties
+            case "Brodhead city":
+              sortCode = "RO-BRD-C";
               break;
           }
           break;
@@ -3137,119 +3144,122 @@ browser.runtime.onMessage.addListener(message => {
           break;
         case "Shawano":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Almon town":
+              sortCode = "SH-ALM-T";
               break;
-            case "":
-              sortCode = "";
+            case "Angelica town":
+              sortCode = "SH-ANG-T";
               break;
-            case "":
-              sortCode = "";
+            case "Aniwa town":
+              sortCode = "SH-ANI-T";
               break;
-            case "":
-              sortCode = "";
+            case "Aniwa village":
+              sortCode = "SH-ANI-V";
               break;
-            case "":
-              sortCode = "";
+            case "Bartelme town":
+              sortCode = "SH-BAT-T";
               break;
-            case "":
-              sortCode = "";
+            case "Belle Plaine town":
+              sortCode = "SH-BPL-T";
               break;
-            case "":
-              sortCode = "";
+            case "Birnamwood town":
+              sortCode = "SH-BIR-T";
               break;
-            case "":
-              sortCode = "";
+            case "Bonduel village":
+              sortCode = "SH-BON-V";
               break;
-            case "":
-              sortCode = "";
+            case "Bowler village":
+              sortCode = "SH-BOW-V";
               break;
-            case "":
-              sortCode = "";
+            case "Cecil village":
+              sortCode = "SH-CEC-V";
               break;
-            case "":
-              sortCode = "";
+            case "Eland village":
+              sortCode = "SH-ELA-V";
               break;
-            case "":
-              sortCode = "";
+            case "Fairbanks town":
+              sortCode = "SH-FRB-T";
               break;
-            case "":
-              sortCode = "";
+            case "Germania town":
+              sortCode = "SH-GER-T";
               break;
-            case "":
-              sortCode = "";
+            case "Grant town":
+              sortCode = "SH-GNT-T";
               break;
-            case "":
-              sortCode = "";
+            case "Green Valley town":
+              sortCode = "SH-GVY-V";
               break;
-            case "":
-              sortCode = "";
+            case "Gresham village":
+              sortCode = "SH-GRE-V";
               break;
-            case "":
-              sortCode = "";
+            case "Hartland town":
+              sortCode = "SH-HAR-T";
               break;
-            case "":
-              sortCode = "";
+            case "Herman town":
+              sortCode = "SH-HER-T";
               break;
-            case "":
-              sortCode = "";
+            case "Hutchins town":
+              sortCode = "SH-HUT-T";
               break;
-            case "":
-              sortCode = "";
+            case "Lessor town":
+              sortCode = "SH-LES-T";
               break;
-            case "":
-              sortCode = "";
+            case "Maple Grove town":
+              sortCode = "SH-MGR-T";
               break;
-            case "":
-              sortCode = "";
+            case "Mattoon village":
+              sortCode = "SH-MAT-V";
               break;
-            case "":
-              sortCode = "";
+            case "Morris town":
+              sortCode = "SH-MOR-T";
               break;
-            case "":
-              sortCode = "";
+            case "Navarino town":
+              sortCode = "SH-NAV-T";
               break;
-            case "":
-              sortCode = "";
+            case "Pella town":
+              sortCode = "SH-PEL-T";
               break;
-            case "":
-              sortCode = "";
+            case "Red Springs town":
+              sortCode = "SH-RSP-T";
               break;
-            case "":
-              sortCode = "";
+            case "Richmond town":
+              sortCode = "SH-RCH-T";
               break;
-            case "":
-              sortCode = "";
+            case "Seneca town":
+              sortCode = "SH-SEN-T";
               break;
-            case "":
-              sortCode = "";
+            case "Shawano city":
+              sortCode = "SH-SHW-C";
               break;
-            case "":
-              sortCode = "";
+            case "Tigerton village":
+              sortCode = "SH-TIG-V";
               break;
-            case "":
-              sortCode = "";
+            case "Washington town":
+              sortCode = "SH-WSH-T";
               break;
-            case "":
-              sortCode = "";
+            case "Waukechon town":
+              sortCode = "SH-WKN-T";
               break;
-            case "":
-              sortCode = "";
+            case "Wescott town":
+              sortCode = "SH-WES-T";
               break;
-            case "":
-              sortCode = "";
+            case "Wittenberg town":
+              sortCode = "SH-WIT-T";
               break;
-            case "":
-              sortCode = "";
+            case "Wittenberg village":
+              sortCode = "SH-WIT-V";
               break;
-            case "":
-              sortCode = "";
+            // Shawano + Marathon counties
+            case "Birnamwood village":
+              sortCode = "SH-BIR-V";
               break;
-            case "":
-              sortCode = "";
+            // Shawano + Oconto + Brown counties
+            case "Pulaski village":
+              sortCode = "SH-PUL-V";
               break;
-            case "":
-              sortCode = "";
+            // Shawano + Waupaca counties
+            case "Marion city":
+              sortCode = "SH-MAR-C";
               break;
           }
           break;
@@ -3283,104 +3293,106 @@ browser.runtime.onMessage.addListener(message => {
           break;
         case "Vernon":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Bergen town":
+              sortCode = "VE-BRG-T";
               break;
-            case "":
-              sortCode = "";
+            case "Chaseburg village":
+              sortCode = "VE-CHA-V";
               break;
-            case "":
-              sortCode = "";
+            case "Christiana town":
+              sortCode = "VE-CHR-T";
               break;
-            case "":
-              sortCode = "";
+            case "Clinton town":
+              sortCode = "VE-CLI-T";
               break;
-            case "":
-              sortCode = "";
+            case "Coon Valley village":
+              sortCode = "VE-CVY-V";
               break;
-            case "":
-              sortCode = "";
+            case "Coon town":
+              sortCode = "VE-COO-T";
               break;
-            case "":
-              sortCode = "";
+            case "Forest town":
+              sortCode = "VE-FOR-T";
               break;
-            case "":
-              sortCode = "";
+            case "Franklin town":
+              sortCode = "VE-FRA-T";
               break;
-            case "":
-              sortCode = "";
+            case "Genoa town":
+              sortCode = "VE-GEN-T";
               break;
-            case "":
-              sortCode = "";
+            case "Genoa village":
+              sortCode = "VE-GEN-V";
               break;
-            case "":
-              sortCode = "";
+            case "Greenwood town":
+              sortCode = "VE-GRE-T";
               break;
-            case "":
-              sortCode = "";
+            case "Hamburg town":
+              sortCode = "VE-HAM-T";
               break;
-            case "":
-              sortCode = "";
+            case "Harmony town":
+              sortCode = "VE-HAR-T";
               break;
-            case "":
-              sortCode = "";
+            case "Hillsboro city":
+              sortCode = "VE-HIL-C";
               break;
-            case "":
-              sortCode = "";
+            case "Hillsboro town":
+              sortCode = "VE-HIL-T";
               break;
-            case "":
-              sortCode = "";
+            case "Jefferson town":
+              sortCode = "VE-JEF-T";
               break;
-            case "":
-              sortCode = "";
+            case "Kickapoo town":
+              sortCode = "VE-KIK-T";
               break;
-            case "":
-              sortCode = "";
+            case "La Farge village":
+              sortCode = "VE-LAF-V";
               break;
-            case "":
-              sortCode = "";
+            case "Liberty town":
+              sortCode = "VE-LIB-T";
               break;
-            case "":
-              sortCode = "";
+            case "Ontario village":
+              sortCode = "VE-ONT-V";
               break;
-            case "":
-              sortCode = "";
+            case "Readstown village":
+              sortCode = "VE-REA-V";
               break;
-            case "":
-              sortCode = "";
+            case "Stark town":
+              sortCode = "VE-STK-T";
               break;
-            case "":
-              sortCode = "";
+            case "Sterling town":
+              sortCode = "VE-STE-T";
               break;
-            case "":
-              sortCode = "";
+            case "Stoddard village":
+              sortCode = "VE-STO-V";
               break;
-            case "":
-              sortCode = "";
+            case "Union town":
+              sortCode = "VE-UNI-T";
               break;
-            case "":
-              sortCode = "";
+            case "Viroqua city":
+              sortCode = "VE-VIR-C";
               break;
-            case "":
-              sortCode = "";
+            case "Viroqua town":
+              sortCode = "VE-VIR-T";
               break;
-            case "":
-              sortCode = "";
+            case "Webster town":
+              sortCode = "VE-WEB-T";
               break;
-            case "":
-              sortCode = "";
+            case "Westby city":
+              sortCode = "VE-WES-C";
               break;
-            case "":
-              sortCode = "";
+            case "Wheatland town":
+              sortCode = "VE-WHE-T";
               break;
-            case "":
-              sortCode = "";
+            case "Whitetown town":
+              sortCode = "VE-WHI-T";
               break;
-            case "":
-              sortCode = "";
+            // Vernon + Crawford counties
+            case "De Soto village":
+              sortCode = "VE-DSO-V";
               break;
-            case "":
-              sortCode = "";
+            // Vernon + Richland counties
+            case "Viola village":
+              sortCode = "VE-VIO-V";
               break;
           }
           break;
@@ -3421,59 +3433,59 @@ browser.runtime.onMessage.addListener(message => {
           break;
         case "Waupaca":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Bear Creek town":
+              sortCode = "WP-BCR-T";
               break;
-            case "":
-              sortCode = "";
+            case "Big Falls village":
+              sortCode = "WP-BIF-V";
               break;
-            case "":
-              sortCode = "";
+            case "Caledonia town":
+              sortCode = "WP-CAL-T";
               break;
-            case "":
-              sortCode = "";
+            case "Clintonville city":
+              sortCode = "WP-CLI-C";
               break;
-            case "":
-              sortCode = "";
+            case "Dayton town":
+              sortCode = "WP-DAY-T";
               break;
-            case "":
-              sortCode = "";
+            case "Dupont town":
+              sortCode = "WP-DUP-T";
               break;
-            case "":
-              sortCode = "";
+            case "Embarrass village":
+              sortCode = "WP-EMB-V";
               break;
-            case "":
-              sortCode = "";
+            case "Farmington town":
+              sortCode = "WP-FAR-T";
               break;
-            case "":
-              sortCode = "";
+            case "Fremont town":
+              sortCode = "WP-FRE-T";
               break;
-            case "":
-              sortCode = "";
+            case "Fremont village":
+              sortCode = "WP-FRE-V";
               break;
-            case "":
-              sortCode = "";
+            case "Harrison town":
+              sortCode = "WP-HAR-T";
               break;
-            case "":
-              sortCode = "";
+            case "Helvetia town":
+              sortCode = "WP-HEL-T";
               break;
-            case "":
-              sortCode = "";
+            case "Iola town":
+              sortCode = "WP-IOL-T";
               break;
-            case "":
-              sortCode = "";
+            case "Iola village":
+              sortCode = "WP-IOL-V";
               break;
-            case "":
-              sortCode = "";
+            case "Larrabee town":
+              sortCode = "WP-LAR-T";
               break;
-            case "":
-              sortCode = "";
+            case "Lebanon town":
+              sortCode = "WP-LEB-T";
               break;
-            case "":
-              sortCode = "";
+            case "Lind town":
+              sortCode = "WP-LIN-T";
               break;
-            case "":
-              sortCode = "";
+            case "Little Wolf town":
+              sortCode = "WP-LWO-T";
               break;
             case "":
               sortCode = "";
