@@ -2625,191 +2625,193 @@ browser.runtime.onMessage.addListener(message => {
           break;
         case "Marathon":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Athens village":
+              sortCode = "MN-ATH-V";
               break;
-            case "":
-              sortCode = "";
+            case "Bergen town":
+              sortCode = "MN-BRG-T";
               break;
-            case "":
-              sortCode = "";
+            case "Berlin town":
+              sortCode = "MN-BER-T";
               break;
-            case "":
-              sortCode = "";
+            case "Bern town":
+              sortCode = "MN-BRN-T";
               break;
-            case "":
-              sortCode = "";
+            case "Bevent town":
+              sortCode = "MN-BEV-T";
               break;
-            case "":
-              sortCode = "";
+            case "Brighton town":
+              sortCode = "MN-BRI-T";
               break;
-            case "":
-              sortCode = "";
+            case "Brokaw village":
+              sortCode = "MN-BRO-V";
               break;
-            case "":
-              sortCode = "";
+            case "Cassel town":
+              sortCode = "MN-CAS-T";
               break;
-            case "":
-              sortCode = "";
+            case "Cleveland town":
+              sortCode = "MN-CLE-T";
               break;
-            case "":
-              sortCode = "";
+            case "Day town":
+              sortCode = "MN-DAY-T";
               break;
-            case "":
-              sortCode = "";
+            case "Easton town":
+              sortCode = "MN-EAS-T";
               break;
-            case "":
-              sortCode = "";
+            case "Eau Pleine town":
+              sortCode = "MN-EAU-T";
               break;
-            case "":
-              sortCode = "";
+            case "Edgar village":
+              sortCode = "MN-EDG-V";
               break;
-            case "":
-              sortCode = "";
+            case "Elderon town":
+              sortCode = "MN-ELD-T";
               break;
-            case "":
-              sortCode = "";
+            case "Elderon village":
+              sortCode = "MN-ELD-V";
               break;
-            case "":
-              sortCode = "";
+            case "Emmet town":
+              sortCode = "MN-EMM-T";
               break;
-            case "":
-              sortCode = "";
+            case "Fenwood village":
+              sortCode = "MN-FEN-V";
               break;
-            case "":
-              sortCode = "";
+            case "Frankfort town":
+              sortCode = "MN-FRK-T";
               break;
-            case "":
-              sortCode = "";
+            case "Franzen town":
+              sortCode = "MN-FRZ-T";
               break;
-            case "":
-              sortCode = "";
+            case "Green Valley town":
+              sortCode = "MN-GRV-T";
               break;
-            case "":
-              sortCode = "";
+            case "Guenther town":
+              sortCode = "MN-GUE-T";
               break;
-            case "":
-              sortCode = "";
+            case "Halsey town":
+              sortCode = "MN-HAL-T";
               break;
-            case "":
-              sortCode = "";
+            case "Hamburg town":
+              sortCode = "MN-HAM-T";
               break;
-            case "":
-              sortCode = "";
+            case "Harrison town":
+              sortCode = "MN-HAR-T";
               break;
-            case "":
-              sortCode = "";
+            case "Hatley village":
+              sortCode = "MN-HAT-V";
               break;
-            case "":
-              sortCode = "";
+            case "Hewitt town":
+              sortCode = "MN-HEW-T";
               break;
-            case "":
-              sortCode = "";
+            case "Holton town":
+              sortCode = "MN-HOL-T";
               break;
-            case "":
-              sortCode = "";
+            case "Hull town":
+              sortCode = "MN-HUL-T";
               break;
-            case "":
-              sortCode = "";
+            case "Johnson town":
+              sortCode = "MN-JOH-T";
               break;
-            case "":
-              sortCode = "";
+            case "Knowlton town":
+              sortCode = "MN-KNW-T";
               break;
-            case "":
-              sortCode = "";
+            case "Kronenwetter village":
+              sortCode = "MN-KNN-V";
               break;
-            case "":
-              sortCode = "";
+            case "Maine town":
+              sortCode = "MN-MAI-T";
               break;
-            case "":
-              sortCode = "";
+            case "Marathon City village":
+              sortCode = "MN-MAR-V";
               break;
-            case "":
-              sortCode = "";
+            case "Marathon town":
+              sortCode = "MN-MAR-T";
               break;
-            case "":
-              sortCode = "";
+            case "Marshfield city":
+              sortCode = "MN-MFD-C";
               break;
-            case "":
-              sortCode = "";
+            case "McMillan town":
+              sortCode = "MN-MCM-T";
               break;
-            case "":
-              sortCode = "";
+            case "Mosinee city":
+              sortCode = "MN-MOS-C";
               break;
-            case "":
-              sortCode = "";
+            case "Mosinee town":
+              sortCode = "MN-MOS-T";
               break;
-            case "":
-              sortCode = "";
+            case "Norrie town":
+              sortCode = "MN-NOR-T";
               break;
-            case "":
-              sortCode = "";
+            case "Plover town":
+              sortCode = "MN-PLO-T";
               break;
-            case "":
-              sortCode = "";
+            case "Reid town":
+              sortCode = "MN-REI-T";
               break;
-            case "":
-              sortCode = "";
+            case "Rib Falls town":
+              sortCode = "MN-RIB-T";
               break;
-            case "":
-              sortCode = "";
+            case "Rib Mountain town":
+              sortCode = "MN-RBM-T";
               break;
-            case "":
-              sortCode = "";
+            case "Rietbrock town":
+              sortCode = "MN-RTB-T";
               break;
-            case "":
-              sortCode = "";
+            case "Ringle town":
+              sortCode = "MN-RIN-T";
               break;
-            case "":
-              sortCode = "";
+            case "Rothschild village":
+              sortCode = "MN-ROT-V";
               break;
-            case "":
-              sortCode = "";
+            case "Schofield city":
+              sortCode = "MN-SCH-C";
               break;
-            case "":
-              sortCode = "";
+            case "Spencer town":
+              sortCode = "MN-SPE-T";
               break;
-            case "":
-              sortCode = "";
+            case "Spencer village":
+              sortCode = "MN-SPE-V";
               break;
-            case "":
-              sortCode = "";
+            case "Stettin town":
+              sortCode = "MN-STE-T";
               break;
-            case "":
-              sortCode = "";
+            case "Stratford village":
+              sortCode = "MN-STR-V";
               break;
-            case "":
-              sortCode = "";
+            case "Texas town":
+              sortCode = "MN-TEX-T";
               break;
-            case "":
-              sortCode = "";
+            case "Wausau city":
+              sortCode = "MN-WAU-C";
               break;
-            case "":
-              sortCode = "";
+            case "Wausau town":
+              sortCode = "MN-WAU-T";
               break;
-            case "":
-              sortCode = "";
+            case "Weston town":
+              sortCode = "MN-WES-T";
               break;
-            case "":
-              sortCode = "";
+            case "Weston village":
+              sortCode = "MN-WES-V";
               break;
-            case "":
-              sortCode = "";
+            case "Wien town":
+              sortCode = "MN-WIE-T";
               break;
-            case "":
-              sortCode = "";
+            // Marathon + Clark counties
+            case "Abbotsford city":
+              sortCode = "MN-ABB-C";
               break;
-            case "":
-              sortCode = "";
+            case "Colby city":
+              sortCode = "MN-COL-C";
               break;
-            case "":
-              sortCode = "";
+            case "Dorchester village":
+              sortCode = "MN-DOR-V";
               break;
-            case "":
-              sortCode = "";
+            case "Unity village":
+              sortCode = "MN-UNI-V";
               break;
-            case "":
-              sortCode = "";
+            // Marathon + Shawano counties
+            case "Birnamwood village":
+              sortCode = "MN-BIR-V";
               break;
           }
           break;
@@ -2822,8 +2824,62 @@ browser.runtime.onMessage.addListener(message => {
           break;
         case "Marquette":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Buffalo town":
+              sortCode = "MQ-BUF-T";
+              break;
+            case "Crystal Lake town":
+              sortCode = "MQ-CRL-T";
+              break;
+            case "Douglas town":
+              sortCode = "MQ-DGS-T";
+              break;
+            case "Endeavor village":
+              sortCode = "MQ-END-V";
+              break;
+            case "Harris town":
+              sortCode = "MQ-HAR-T";
+              break;
+            case "Mecan town":
+              sortCode = "MQ-MEC-T";
+              break;
+            case "Montello city":
+              sortCode = "MQ-MON-C";
+              break;
+            case "Montello town":
+              sortCode = "MQ-MON-T";
+              break;
+            case "Moundville town":
+              sortCode = "MQ-MND-T";
+              break;
+            case "Neshkoro town":
+              sortCode = "MQ-NES-T";
+              break;
+            case "Neshkoro village":
+              sortCode = "MQ-NES-V";
+              break;
+            case "Newton town":
+              sortCode = "MQ-NEW-T";
+              break;
+            case "Oxford town":
+              sortCode = "MQ-OXF-T";
+              break;
+            case "Oxford village":
+              sortCode = "MQ-OXf-V";
+              break;
+            case "Packwaukee town":
+              sortCode = "MQ-PCK-T";
+              break;
+            case "Shields town":
+              sortCode = "MQ-SHI-T";
+              break;
+            case "Springfield town":
+              sortCode = "MQ-SPR-T";
+              break;
+            case "Westfield town":
+              sortCode = "MQ-WST-T";
+              break;
+            case "Westfield village":
+              sortCode = "MQ-WST-V";
               break;
           }
           break;
@@ -2912,10 +2968,154 @@ browser.runtime.onMessage.addListener(message => {
             case "":
               sortCode = "";
               break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
           }
           break;
         case "Rock":
           switch (message.countySub) {
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
             case "":
               sortCode = "";
               break;
@@ -2937,6 +3137,117 @@ browser.runtime.onMessage.addListener(message => {
           break;
         case "Shawano":
           switch (message.countySub) {
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
             case "":
               sortCode = "";
               break;
@@ -2972,6 +3283,102 @@ browser.runtime.onMessage.addListener(message => {
           break;
         case "Vernon":
           switch (message.countySub) {
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
             case "":
               sortCode = "";
               break;
@@ -3017,10 +3424,187 @@ browser.runtime.onMessage.addListener(message => {
             case "":
               sortCode = "";
               break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
           }
           break;
         case "Waushara":
           switch (message.countySub) {
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
+            case "":
+              sortCode = "";
+              break;
             case "":
               sortCode = "";
               break;
