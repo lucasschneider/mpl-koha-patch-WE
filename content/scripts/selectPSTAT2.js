@@ -1666,31 +1666,71 @@ browser.runtime.onMessage.addListener(message => {
         // Other Counties
         case "Ashland":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "La Pointe town":
+            case "Mellen city":
+            case "Ashland city": // Ashland + Bayfield counties
+            //TODO: Add Odanah tribal lands
+              sortCode = "AS-LIB";
+              break;
+            case "Agenda town":
+            case "Ashland town":
+            case "Butternut town":
+            case "Chippewa town":
+            case "Gingles town":
+            case "Gordon town":
+            case "Jacobs town":
+            case "Marengo town":
+            case "Morse town":
+            case "Peeksville town":
+            case "Sanborn town":
+            case "Shanagolden town":
+            case "White River town":
+              sprtCode = "AS-NOLIB";
               break;
           }
           break;
         case "Barron":
-          switch (message.countySub) {
-            case "":
-              sortCode = "";
-              break;
-          }
+          sortCode = "BA-LIB";
           break;
         case "Bayfield":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Bayfield city":
+            case "Cable town":
+            case "Drummond town":
+            case "Iron River town":
+            case "Washburn city":
+            case "Ashland city": // Bayfield + Ashland counties
+            //TODO: Add Bayfield tribal lands
+              sortCode = "BY-LIB";
+              break;
+            case "Barksdale town":
+            case "Barnes town":
+            case "Bayfield town":
+            case "Bayview town":
+            case "Bell town":
+            case "Clover town":
+            case "Delta town":
+            case "Eileen town":
+            case "Grand View town":
+            case "Hughes town":
+            case "Kelly town":
+            case "Keystone town":
+            case "Lincoln town":
+            case "Mason town":
+            case "Mason village":
+            case "Namakagon town":
+            case "Orienta town":
+            case "Oulu town":
+            case "Pilsen town":
+            case "Port Wing town":
+            case "Russell town":
+            case "Tripp town":
+              sortCode = "BY-NOLIB";
               break;
           }
           break;
         case "Brown":
-          switch (message.countySub) {
-            case "":
-              sortCode = "";
-              break;
-          }
+          sortCode = "BR-LIB";
           break;
         case "Buffalo":
           switch (message.countySub) {
@@ -3487,138 +3527,138 @@ browser.runtime.onMessage.addListener(message => {
             case "Little Wolf town":
               sortCode = "WP-LWO-T";
               break;
-            case "":
-              sortCode = "";
+            case "Manawa city":
+              sortCode = "WP-MAN-C";
               break;
-            case "":
-              sortCode = "";
+            case "Matteson town":
+              sortCode = "WP-MAT-T";
               break;
-            case "":
-              sortCode = "";
+            case "Mukwa town":
+              sortCode = "WP-MUK-T";
               break;
-            case "":
-              sortCode = "";
+            case "Ogdensburg village":
+              sortCode = "WP-OGD-V";
               break;
-            case "":
-              sortCode = "";
+            case "Royalton town":
+              sortCode = "WP-ROY-T";
               break;
-            case "":
-              sortCode = "";
+            case "Scandinavia town":
+              sortCode = "WP-SCA-T";
               break;
-            case "":
-              sortCode = "";
+            case "Scandinavia village":
+              sortCode = "WP-SCA-V";
               break;
-            case "":
-              sortCode = "";
+            case "St. Lawrence town":
+              sortCode = "WP-STL-T";
               break;
-            case "":
-              sortCode = "";
+            case "Union town":
+              sortCode = "WP-UNI-T";
               break;
-            case "":
-              sortCode = "";
+            case "Waupaca city":
+              sortCode = "WP-WAU_C";
               break;
-            case "":
-              sortCode = "";
+            case "Waupaca town":
+              sortCode = "WP-WAU-T";
               break;
-            case "":
-              sortCode = "";
+            case "Weyauwega city":
+              sortCode = "WP-WEY-C";
               break;
-            case "":
-              sortCode = "";
+            case "Weyauwega town":
+              sortCode = "WP-WEY-T";
               break;
-            case "":
-              sortCode = "";
+            case "Wyoming town":
+              sortCode = "WP-WYO-T";
               break;
-            case "":
-              sortCode = "";
+            // Waupaca + Outagamie counties
+            case "New London city":
+              sortCode = "WP-NLO-C";
               break;
-            case "":
-              sortCode = "";
+            // Waupaca + Shawano counties
+            case "Marion city":
+              sortCode = "WP-MAR-C";
               break;
           }
           break;
         case "Waushara":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Aurora town":
+              sortCode = "WS-AUR-T";
               break;
-            case "":
-              sortCode = "";
+            case "Bloomfield town":
+              sortCode = "WS-BLO-T";
               break;
-            case "":
-              sortCode = "";
+            case "Coloma town":
+              sortCode = "WS-COL-T";
               break;
-            case "":
-              sortCode = "";
+            case "Coloma village":
+              sortCode = "WS-COL-V";
               break;
-            case "":
-              sortCode = "";
+            case "Dakota town":
+              sortCode = "WS-DAK-T";
               break;
-            case "":
-              sortCode = "";
+            case "Deerfield town":
+              sortCode = "WS-DEE-E";
               break;
-            case "":
-              sortCode = "";
+            case "Hancock town":
+              sortCode = "WS-HAN-T";
               break;
-            case "":
-              sortCode = "";
+            case "Hancock village":
+              sortCode = "WS-HAN-V";
               break;
-            case "":
-              sortCode = "";
+            case "Leon town":
+              sortCode = "WS-LEO-T";
               break;
-            case "":
-              sortCode = "";
+            case "Lohrville village":
+              sortCode = "WS-LOH-V";
               break;
-            case "":
-              sortCode = "";
+            case "Marion town":
+              sortCode = "WS-MAR-T";
               break;
-            case "":
-              sortCode = "";
+            case "Mount Morris town":
+              sortCode = "WS-MMO-T";
               break;
-            case "":
-              sortCode = "";
+            case "Oasis town":
+              sortCode = "WS-OAS-T";
               break;
-            case "":
-              sortCode = "";
+            case "Plainfield town":
+              sortCode = "WS-PLA-T";
               break;
-            case "":
-              sortCode = "";
+            case "Plainfield village":
+              sortCode = "WS-PLA-V";
               break;
-            case "":
-              sortCode = "";
+            case "Poy Sippi town":
+              sortCode = "WS-PSI-T";
               break;
-            case "":
-              sortCode = "";
+            case "Redgranite village":
+              sortCode = "WS-RED-V";
               break;
-            case "":
-              sortCode = "";
+            case "Richford town":
+              sortCode = "WS-RIC-T";
               break;
-            case "":
-              sortCode = "";
+            case "Rose town":
+              sortCode = "WS-ROS-T";
               break;
-            case "":
-              sortCode = "";
+            case "Saxeville town":
+              sortCode = "WS-SAX-T";
               break;
-            case "":
-              sortCode = "";
+            case "Springwater town":
+              sortCode = "WS-SPR-T";
               break;
-            case "":
-              sortCode = "";
+            case "Warren town":
+              sortCode = "WS-WAR-T";
               break;
-            case "":
-              sortCode = "";
+            case "Wautoma city":
+              sortCode = "WS-WAU-C";
               break;
-            case "":
-              sortCode = "";
+            case "Wautoma town":
+              sortCode = "WS-WAU-T";
               break;
-            case "":
-              sortCode = "";
+            case "Wild Rose village":
+              sortCode = "WS-WRO-V";
               break;
-            case "":
-              sortCode = "";
-              break;
-            case "":
-              sortCode = "";
+            // Waushara + Green Lake counties
+            case "Berlin city":
+              sortCode = "WS-BER-C";
               break;
           }
           break;
