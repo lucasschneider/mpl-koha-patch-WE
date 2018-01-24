@@ -215,7 +215,8 @@ function handleMessages(request, sender, sendResponse) {
      */
     case "queryGeocoder":
       // Method 1: Census Geocoder
-      var geocoderAPI = "https://geocoding.geo.census.gov/geocoder/geographies/address?street=" + request.URIencodedAddress + "&city=" + request.city + "&state=wi&benchmark=Public_AR_Current&vintage=Current_Current&layers=Counties,Census Tracts,County+Subdivisions,2010+Census+ZIP+Code+Tabulation+Areas&format=json";
+      var geocoderAPI = "https://geocoding.geo.census.gov/geocoder/geographies/address?street=" + request.URIencodedAddress + "&city=" + request.city + "&state=wi&benchmark=Public_AR_Current&vintage=Current_Current&layers=Counties,Census Tracts,County+Subdivisions,2010+Census+ZIP+Code+Tabulation+Areas&format=json",
+        factFinderTabId;
       
       $.getJSON(geocoderAPI).done(function(response) {
         if (response && response.result) {
@@ -248,6 +249,9 @@ function handleMessages(request, sender, sendResponse) {
                       });
                     }
                   });
+                  
+                  // Remove the FactFinder Tab
+                  if (factFinderTabId) browser.tabs.remove(factFinderTabId);
                 }
               }
             }
@@ -260,6 +264,7 @@ function handleMessages(request, sender, sendResponse) {
         active: false,
         url: "https://factfinder.census.gov/faces/nav/jsf/pages/searchresults.xhtml"+"?addr="+request.URIencodedAddress+"&city="+request.city
       }).then((tab) => {
+        factFinderTabId = tab.id;
         browser.tabs.executeScript(tab.id,{
           file: "content/scripts/scrapFactFinder.js"
         }).then(() => {
@@ -854,9 +859,6 @@ function handleMessages(request, sender, sendResponse) {
       var querying = browser.tabs.query({currentWindow: true, active: true});
       querying.then((tabs)=>{
         for (let tab of tabs) {
-          browser.tabs.executeScript(tab.id,{
-            code: "x=document.createElement('span');x.id='querySecondaryPSTAT';x.style.display='none';document.body.appendChild(x);"
-          });
           if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberentry\.pl.*/.test(tab.url)) {
             browser.tabs.sendMessage(tab.id,{key: "querySecondaryPSTAT"});
           } else {

@@ -85,7 +85,7 @@ setTimeout(() => {
                  } else {
                    sendFailMsg();    
                  }
-               }, 6500);
+               }, 7500);
              } else {
                sendFailMsg();
              }

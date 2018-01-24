@@ -175,39 +175,21 @@ function showMsg(msg, color) {
   * for everywhere else.
   */
 function queryPSTAT() {
-   queryPSTAT(false, false);
+   queryPSTAT(false);
 }
-
 /**
   * This is the main function used to send a data query to the US
   * Census Geocoder. The data returned determines the way in which
   * the PSTAT is selected (i.e. Census Tract Number for MPL, Voting
   * district for SUN, MOO, MID, and VER, or the County Subdivision
   * for everywhere else.
-  *
-  * secondPass: if true, the query should be
-  * performed with the previous term's census data
-  */
-function queryPSTAT(secondPass) {
-  queryPSTAT(secondPass, false);
-}
-
-/**
-  * This is the main function used to send a data query to the US
-  * Census Geocoder. The data returned determines the way in which
-  * the PSTAT is selected (i.e. Census Tract Number for MPL, Voting
-  * district for SUN, MOO, MID, and VER, or the County Subdivision
-  * for everywhere else.
-  *
-  * secondPass: if true, the query should be
-  * performed with the previous term's census data
   *
   * secondaryAddrQuery: if true, the query should
   * be performed with the alternate address field rather than the
   * primary address field.
   *
   */
-function queryPSTAT(secondPass, secondaryAddrQuery) {
+function queryPSTAT(secondaryAddrQuery) {
   var targetAddr = secondaryAddrQuery ? addrEltAlt : addrElt,
     targetCity = secondaryAddrQuery ? cityEltAlt : cityElt;
     
@@ -236,8 +218,7 @@ function queryPSTAT(secondPass, secondaryAddrQuery) {
       key: "queryGeocoder",
       URIencodedAddress: cleanAddr(targetAddr),
       address: targetAddr.value,
-      city: pullCity(targetCity.value),
-      isSecondPass: secondPass
+      city: pullCity(targetCity.value)
     });
   }
 }
@@ -1048,627 +1029,13 @@ browser.runtime.onMessage.addListener(message => {
               break;
           }
           break;
-          
-        // REMOVE THE SECTION BELOW WHEN THE PSTAT CHANGES GO LIVE //
-        /*** ARROWHEAD LIBRARY SYSTEM ***/
-        case "Rock":
-          // Has with/without library option
-          switch (message.countySub) {
-            case "Beloit city":
-              sortCode = "O-ALS-BEL-C";
-              break;
-            case "Brodhead city":
-              sortCode = "O-ALS-BRD-C";
-              break;
-            case "Clinton village":
-              sortCode = "O-ALS-CLI-V";
-              break;
-            case "Edgerton city":
-              sortCode = "O-ALS-EDG-C";
-              break;
-            case "Evansville city":
-              sortCode = "O-ALS-EVA-C";
-              break;
-            case "Janesville city":
-              sortCode = "O-ALS-JAN-C";
-              break;
-            case "Milton city":
-              sortCode = "O-ALS-MIL-C";
-              break;
-            case "Orfordville city":
-              sortCode = "O-ALS-ORF-C";
-              break;
-            default:
-              showMsg('[FAILED: Manually select sort option "Rock County" with or w/out library.]');
-              break;
-          }
-          break;
-
-          /*** EASTERN SHORES LIBRARY SYSTEM ***/
-        case "Ozaukee":
-        case "Sheboygan":
-          sortCode = "O-ESLS";
-          break;
-
-          /*** INDIANHEAD FEDERATED LIBRARY SYSTEM ***/
-        case "Barron":
-        case "Chippewa":
-        case "Dunn":
-        case "Eau Claire":
-        case "Pepin":
-        case "Pierce":
-        case "Polk":
-        case "Prince":
-        case "Rusk":
-        case "St Croix":
-          sortCode = "O-IFLS";
-          break;
-
-          /*** KENOSHA COUNTY LIBRARY SYSTEM ***/
-        case "Kenosha":
-          sortCode = "O-KCLS";
-          break;
-
-          /*** LAKESHORES LIBRARY SYSTEM ***/
-        case "Racine":
-        case "Walworth":
-          sortCode = "O-LLS";
-          break;
-
-          /*** MANITOWOC-CALUMET LIBRARY SYSTEM ***/
-        case "Calumet":
-        case "Manitowoc":
-          sortCode = "O-MCLS";
-          break;
-
-          /*** MILWAUKEE COUNTY FEDERATED LIBRARY SYSTEM ***/
-        case "Milwaukee":
-          showMsg('[FAILED: Do NOT issue a library card to Milwaukee County patrons.]');
-          break;
-
-          /*** MID-WISCONSIN FEDERATED LIBRARY SYSTEM ***/
-        case "Dodge":
-          // Has with/without library option
-          switch (message.countySub) {
-            case "Ashippun town":
-              sortCode = "O-MWFLS-ASH";
-              break;
-            case "Beaver Dam city":
-              sortCode = "O-MWFLS-BVC";
-              break;
-            case "Beaver Dam town":
-              sortCode = "O-MWFLS-BVT";
-              break;
-            case "Brownsville village":
-              sortCode = "O-MWFLS-BRV";
-              break;
-            case "Burnett town":
-              sortCode = "O-MWFLS-BRT";
-              break;
-            case "Calamus town":
-              sortCode = "O-MWFLS-CALT";
-              break;
-            case "Chester town":
-              sortCode = "O-MWFLS-CHE";
-              break;
-            case "Clyman town":
-              sortCode = "O-MWFLS-CLYT";
-              break;
-            case "Clyman village":
-              sortCode = "O-MWFLS-CLYV";
-              break;
-            case "Elba town":
-              sortCode = "O-MWFLS-ELBT";
-              break;
-            case "Emmet town":
-              sortCode = "O-MWFLS-EMM";
-              break;
-            case "Fox Lake city":
-              sortCode = "O-MWFLS-FXC";
-              break;
-            case "Fox Lake town":
-              sortCode = "O-MWFLS-FXT";
-              break;
-            case "Hartford city":
-              sortCode = "O-MWFLS-HAR";
-              break;
-            case "Herman town":
-              sortCode = "O-MWFLS-HRT";
-              break;
-            case "Horicon city":
-              sortCode = "O-MWFLS-HORC";
-              break;
-            case "Hubbard town":
-              sortCode = "O-MWFLS-HBT";
-              break;
-            case "Hustisford town":
-              sortCode = "O-MWFLS-HUST";
-              break;
-            case "Hustisford village":
-              sortCode = "O-MWFLS-HUSV";
-              break;
-            case "Iron Ridge village":
-              sortCode = "O-MWFLS-IRV";
-              break;
-            case "Juneau city":
-              sortCode = "O-MWFLS-JUNC";
-              break;
-            case "Kekoskee village":
-              sortCode = "O-MWFLS-KEK";
-              break;
-            case "Lebanon town":
-              sortCode = "O-MWFLS-LBT";
-              break;
-            case "Leroy town":
-              sortCode = "O-MWFLS-LER";
-              break;
-            case "Lomira town":
-              sortCode = "O-MWFLS-LOMT";
-              break;
-            case "Lomira village":
-              sortCode = "O-MWFLS-LOMV";
-              break;
-            case "Lowell town":
-              sortCode = "O-MWFLS-LOWT";
-              break;
-            case "Lowell village":
-              sortCode = "O-MWFLS-LOWV";
-              break;
-            case "Mayville city":
-              sortCode = "O-MWFLS-MYC";
-              break;
-            case "Neosho village":
-              sortCode = "O-MWFLS-NEO";
-              break;
-            case "Oak Grove town":
-              sortCode = "O-MWFLS-OGT";
-              break;
-            case "Portland town":
-              sortCode = "O-MWFLS-PRT";
-              break;
-            case "Randolph village":
-              sortCode = "O-MWFLS-RANV";
-              break;
-            case "Reeseville village":
-              sortCode = "O-MWFLS-RESV";
-              break;
-            case "Rubicon town":
-              sortCode = "O-MWFLS-RUB";
-              break;
-            case "Shields town":
-              sortCode = "O-MWFLS-SHT";
-              break;
-            case "Theresa town":
-              sortCode = "O-MWFLS-THE";
-              break;
-            case "Theresa village":
-              sortCode = "O-MWFLS-THV";
-              break;
-            case "Trenton town":
-              sortCode = "O-MWFLS-TRE";
-              break;
-            case "Watertown city":
-              sortCode = "O-MWFLS-WD";
-              break;
-            case "Waupun city":
-              sortCode = "O-MWFLS-WP";
-              break;
-            case "Westford town":
-              sortCode = "O-MWFLS-WSTT";
-              break;
-            case "Williamstown town":
-              sortCode = "O-MWFLS-WIL";
-              break;
-            default:
-              showMsg('[FAILED: Manually select sort option "Dodge County" with or w/out library.]');
-              break;
-          }
-          break;
-        case "Jefferson":
-          // Has with/without library option
-          switch (message.countySub) {
-            case "Aztalan town":
-              sortCode = "O-MWFLS-AZT";
-              break;
-            case "Cambridge village":
-              sortCode = "O-MWFLS-CV";
-              break;
-            case "Cold Spring town":
-              sortCode = "O-MWFLS-CSP";
-              break;
-            case "Concord town":
-              sortCode = "O-MWFLS-CON";
-              break;
-            case "Farmington town":
-              sortCode = "O-MWFLS-FAR";
-              break;
-            case "Fort Atkinson city":
-              sortCode = "O-MWFLS-FC";
-              break;
-            case "Hebron Town":
-              sortCode = "O-MWFLS-HEB";
-              break;
-            case "Helenville town":
-              sortCode = "O-MWFLS-HLV";
-              break;
-            case "Ixonia town":
-              sortCode = "O-MWFLS-IXT";
-              break;
-            case "Jefferson city":
-              sortCode = "O-MWFLS-JC";
-              break;
-            case "Jefferson town":
-              sortCode = "O-MWFLS-JFT";
-              break;
-            case "Johnson Creek village":
-              sortCode = "O-MWFLS-JO";
-              break;
-            case "Koshkonong town":
-              sortCode = "O-MWFLS-KOS";
-              break;
-            case "Lac La Belle village":
-              sortCode = "O-MWFLS-LLB";
-              break;
-            case "Lake Mills city":
-              sortCode = "O-MWFLS-LC";
-              break;
-            case "Lake Mills town":
-              sortCode = "O-MWFLS-LT";
-              break;
-            case "Milford town":
-              sortCode = "O-MWFLS-MIL";
-              break;
-            case "Oakland town":
-              sortCode = "O-MWFLS-OT";
-              break;
-            case "Palmyra town":
-              sortCode = "O-MWFLS-PAL";
-              break;
-            case "Palmyra village":
-              sortCode = "O-MWFLS-PA";
-              break;
-            case "Sullivan town":
-              sortCode = "O-MWFLS-SLT";
-              break;
-            case "Sullivan village":
-              sortCode = "O-MWFLS-SLV";
-              break;
-            case "Sumner town":
-              sortCode = "O-MWFLS-ST";
-              break;
-            case "Waterloo city":
-              sortCode = "O-MWFLS-WC";
-              break;
-            case "Waterloo town":
-              sortCode = "O-MWFLS-WL";
-              break;
-            case "Watertown city":
-              sortCode = "O-MWFLS-WT";
-              break;
-            case "Watertown town":
-              sortCode = "O-MWFLS-WATT";
-              break;
-            case "Whitewater city":
-              sortCode = "O-MWFLS-WW";
-              break;
-            default:
-              showMsg('[FAILED: Manually select sort option "Jefferson County" with or w/out library.]');
-              break;
-          }
-          break;
-        case "Washington":
-          sortCode = "O-MWFLS";
-          break;
-
-          /*** NICOLET FEDERATED LIBRARY SYSTEM ***/
-        case "Brown":
-        case "Door":
-        case "Florence":
-        case "Kewaunee":
-        case "Marinette":
-        case "Menominee":
-        case "Oconto":
-        case "Shawano":
-          sortCode = "O-NFLS";
-          break;
-
-          /*** NORTHERN WATERS LIBRARY SYSTEM ***/
-        case "Ashland":
-        case "Bayfield":
-        case "Burnett":
-        case "Douglas":
-        case "Iron":
-        case "Sawyer":
-        case "Vilas":
-        case "Washburn":
-          sortCode = "O-NWLS";
-          break;
-
-          /*** OUTAGAMIE-WAUPACA LIBRARY SYSTEM ***/
-          // Has with/without library option
-        case "Outagamie":
-          sortCode = "O-OWLS";
-          break;
-        case "Waupaca":
-          showMsg('[FAILED: Manually select sort option "Waupaca County" with or w/out library.]');
-          break;
-
-          /*** SOUTH WEST LIBRARY SYSTEM ***/
-        case "Iowa":
-          // Has with/without library option
-          switch (message.countySub) {
-            case "Arena town":
-              sortCode = "O-SWLS-ART";
-              break;
-            case "Arena village":
-              sortCode = "O-SWLS-ARV";
-              break;
-            case "Avoca village":
-              sortCode = "O-SWLS-AVV";
-              break;
-            case "Barneveld village":
-              sortCode = "O-SWLS-BAV";
-              break;
-            case "Blanchardville village":
-              sortCode = "O-SWLS-BLA";
-              break;
-            case "Brigham town":
-              sortCode = "O-SWLS-BRT";
-              break;
-            case "Clyde town":
-              sortCode = "O-SWLS-CLT";
-              break;
-            case "Dodgeville City":
-              sortCode = "O-SWLS-DOC";
-              break;
-            case "Dodgeville town":
-              sortCode = "O-SWLS-DOT";
-              break;
-            case "Hollandale village":
-              sortCode = "O-SWLS-HOV";
-              break;
-            case "Highland town":
-              sortCode = "O-SWLS-HIT";
-              break;
-            case "Mineral Point city":
-              sortCode = "O-SWLS-MPC";
-              break;
-            case "Mineral Point town":
-              sortCode = "O-SWLS-MPT";
-              break;
-            case "Moscow town":
-              sortCode = "O-SWLS-MOT";
-              break;
-            case "Pulaksi town":
-              sortCode = "O-SWLS-PUT";
-              break;
-            case "Ridgeway town":
-              sortCode = "O-SWLS-RID";
-              break;
-            case "Ridgeway village":
-              sortCode = "O-SWLS-RIDV";
-              break;
-            case "Waldwick town":
-              sortCode = "O-SWLS-WLT";
-              break;
-            case "Wyoming town":
-              sortCode = "O-SWLS-WYT";
-              break;
-            default:
-              showMsg('[FAILED: Manually select sort option "Iowa County" with or w/out library.]');
-              break;
-          }
-          break;
-        case "Lafayette":
-          // Has with/without library option
-          switch (message.countySub) {
-            case "Blanchardville village":
-              sortCode = "O-SWLS-BLA";
-              break;
-            default:
-              showMsg('[FAILED: Manually select sort option "Lafayette County" with or w/out library.]');
-              break;
-          }
-          break;
-        case "Richland":
-          // Has with/without library option
-          switch (message.countySub) {
-            case "Buena Vista town":
-              sortCode = "O-WLS-BUFT";
-              break;
-            case "Cazenovia village":
-              sortCode = "O-SWLS-CAV";
-              break;
-            case "Ithaca town":
-              sortCode = "O-SWLS-ITT";
-              break;
-            case "Lone Rock village":
-              sortCode = "O-SWLS-LRV";
-              break;
-            case "Orion town":
-              sortCode = "O-SWLS-ORT";
-              break;
-            case "Richland Center city":
-              sortCode = "O-SWLS";
-              break;
-            case "Richland town":
-              sortCode = "O-SWLS-RIT";
-              break;
-            case "Westford town":
-              sortCode = "O-SWLS-WET";
-              break;
-            case "Willow town":
-              sortCode = "O-SWLS-WIT";
-              break;
-            default:
-              showMsg('[FAILED: Manually select sort option "Richland County" with or w/out library.]');
-              break;
-          }
-          break;
-        case "Crawford":
-        case "Grant":
-          sortCode = "O-SWLS";
-          break;
-
-          /*** WAUKESHA COUNTY FEDERATED LIBRARY SYSTEM ***/
-        case "Waukesha":
-          sortCode = "O-WCFLS";
-          break;
-
-          /*** WINNEFOX LIBRARY SYSTEM ***/
-        case "Green Lake":
-          // Has with/without library option
-          switch (message.countySub) {
-            case "Berlin city":
-              sortCode = "O-WLS-BLC";
-              break;
-            case "Green Lake city":
-              sortCode = "O-WLS-GLC";
-              break;
-            case "Kingston town":
-              sortCode = "O-WLS-KNGT";
-              break;
-            case "Kingston village":
-              sortCode = "O-WLS-KNGV";
-              break;
-            case "Mackford town":
-              sortCode = "O-WLS-MCKT";
-              break;
-            case "Manchester town":
-              sortCode = "O-WLS-MANT";
-              break;
-            case "Markesan city":
-              sortCode = "O-WLS-MKC";
-              break;
-            case "Princeton city":
-              sortCode = "O-WLS-PRC";
-              break;
-            default:
-              showMsg('[FAILED: Manually select sort option "Green Lake County" with or w/out library.]');
-              break;
-          }
-          break;
-        case "Marquette":
-          // Has with/without library option
-          switch (message.countySub) {
-            case "Buffalo town":
-              sortCode = "O-WLS-BUFT";
-              break;
-            case "Douglas town":
-              sortCode = "O-WLS-DUGT";
-              break;
-            case "Endeavor village":
-              sortCode = "O-WLS-ENV";
-              break;
-            case "Montello city":
-              sortCode = "O-WLS-MONV";
-              break;
-            case "Montello town":
-              sortCode = "O-WLS-MONT";
-              break;
-            case "Moundville town":
-              sortCode = "O-WLS-MOUT";
-              break;
-            case "Neshkoro village":
-              sortCode = "O-WLS-NSKV";
-              break;
-            case "Oxford town":
-              sortCode = "O-WLS-OXT";
-              break;
-            case "Oxford village":
-              sortCode = "O-WLS-OXV";
-              break;
-            case "Packwaukee town":
-              sortCode = "O-WLS-PCKT";
-              break;
-            case "Westfield village":
-              sortCode = "O-WLS-WSFV";
-              break;
-            default:
-              showMsg('[FAILED: Manually select sort option "Marquette County" with or w/out library.]');
-              break;
-          }
-          break;
-          // Has with/without library option
-        case "Waushara":
-          showMsg('[FAILED: Manually select sort option "Waushara County" with or w/out library.]');
-          break;
-        case "Fond du Lac":
-        case "Winnebago":
-          sortCode = "O-WLS";
-          break;
-
-          /*** WINDING RIVERS LIBRARY SYSTEM ***/
-        case "Juneau":
-          // Has with/without library option
-          switch (message.countySub) {
-            case "Elroy city":
-              sortCode = "O-WRLS-ELC";
-              break;
-            case "Kildare town":
-              sortCode = "O-WRLS-KILDT";
-              break;
-            case "Lyndon town":
-              sortCode = "O-WRLS-LYNT";
-              break;
-            case "Mauston city":
-              sortCode = "O-WRLS-MAUC";
-              break;
-            case "Necedah Village":
-              sortCode = "O-WRLS-NECV";
-              break;
-            case "New Lisbon city":
-              sortCode = "O-WRLS-NLC";
-              break;
-            case "Seven Mile Creek town":
-              sortCode = "O-WRLS-7MCT";
-              break;
-            case "Wonewoc village":
-              sortCode = "O-WRLS-WWV";
-              break;
-            default:
-              showMsg('[FAILED: Manually select sort option "Juneau County" with or w/out library.]');
-              break;
-          }
-          break;
-          // Has with/without library option
-        case "Jackson":
-          showMsg('[FAILED: Manually select sort option "Jackson County" with or w/out library.]');
-          break;
-          // Has with/without library option
-        case "Vernon":
-          showMsg('[FAILED: Manually select sort option "Vernon County" with or w/out library.]');
-          break;
-        case "Buffalo":
-        case "La Crosse":
-        case "Monroe":
-        case "Trempealeau":
-          sortCode = "O-WRLS";
-          break;
-
-          /*** WISCONSIN VALLEY LIBRARY SYSTEM ***/
-        case "Marathon":
-          sortCode = "O-WVLS-MNLI";
-          break;
-          // Has with/without library option
-        case "Clark":
-          showMsg('[FAILED: Manually select sort option "Clark County" with or w/out library.]');
-          break;
-        case "Forest":
-        case "Langlade":
-        case "Lincoln":
-        case "Oneida":
-        case "Taylor":
-          sortCode = "O-WVLS";
-          break;
-        // REMOVE THE SECTION ABOVE WHEN THE PSTAT CHANGES GO LIVE //
         
         // Other Counties
         case "Ashland":
           switch (message.countySub) {
             case "La Pointe town":
             case "Mellen city":
-            case "Ashland city": // Ashland + Bayfield counties
+            case "Ashland city":
             //TODO: Add Odanah tribal lands
               sortCode = "AS-LIB";
               break;
@@ -1699,7 +1066,7 @@ browser.runtime.onMessage.addListener(message => {
             case "Drummond town":
             case "Iron River town":
             case "Washburn city":
-            case "Ashland city": // Bayfield + Ashland counties
+            case "Ashland city":
             //TODO: Add Bayfield tribal lands
               sortCode = "BY-LIB";
               break;
@@ -1734,30 +1101,91 @@ browser.runtime.onMessage.addListener(message => {
           break;
         case "Buffalo":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Alma city":
+            case "Mondovi city":
+              sortCode = "BU-NOLIB";
               break;
+			case "Alma town":
+			case "Belvidere town":
+			case "Buffalo city":
+			case "Buffalo town":
+			case "Canton town":
+			case "Cochrane village":
+			case "Cross town":
+			case "Dover town":
+			case "Fountain City city":
+			case "Gilmanton town":
+			case "Glencoe town":
+			case "Lincoln town":
+			case "Maxville town":
+			case "Milton town":
+			case "Modena town":
+			case "Mondovi town":
+			case "Montana town":
+			case "Naples town":
+			case "Nelson town":
+			case "Nelson village":
+			case "Waumandee town":
+			  break;
           }
           break;
         case "Burnett":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Grantsburg village":
+            case "Webster village":
+              sortCode = "BT-LIB";
               break;
+            case "Anderson town":
+            case "Blaine town":
+            case "Daniels town":
+            case "Dewey town":
+            case "Grantsburg town":
+            case "Jackson town":
+            case "La Follette town":
+            case "Lincoln town":
+            case "Meenon town":
+            case "Oakland town":
+            case "Roosevelt town":
+            case "Rusk town":
+            case "Sand Lake town":
+            case "Scott town":
+            case "Siren town":
+            case "Siren village":
+            case "Swiss town":
+            case "Trade Lake town":
+            case "Union town":
+            case "Webb Lake town":
+            case "West Marshland town":
+            case "Wood River town":
+			  break;
           }
           break;
         case "Calumet":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Appleton city":
+            case "Brillion city":
+            case "Chilton city":
+            case "Menasha city":
+            case "New Holstein city":
+              sortCode = "CA-LIB";
               break;
+			default:
+			  sortCode = "CA-NOLIB";
+			  break;
           }
           break;
         case "Chippewa":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Bloomer city":
+            case "Cadott village":
+            case "Chippewa Falls city":
+            case "Cornell city":
+            case "Stanley city":
+              sortCode = "CH-LIB";
               break;
+			default:
+			  sortCode = "CH-NOLIB";
+			  break;
           }
           break;
         case "Clark":
@@ -1908,9 +1336,14 @@ browser.runtime.onMessage.addListener(message => {
           break;
         case "Crawford":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Gays Mills village":
+            case "Prairie du Chien city":
+            case "Soldiers Grove village":
+              sortCode = "CR-LIB";
               break;
+			default:
+			  sortCode = "CR-NOLIB";
+			  break;
           }
           break;
         case "Dodge":
@@ -2058,59 +1491,93 @@ browser.runtime.onMessage.addListener(message => {
           }
           break;
         case "Door":
-          switch (message.countySub) {
-            case "":
-              sortCode = "";
-              break;
-          }
+          sortCode = "DO-LIB";
           break;
         case "Douglas":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Solon Springs town":
+            case "Superior city":
+              sortCode = "DS-LIB";
               break;
+            default:
+			        sortCode = "DS-NOLIB";
+			        break;
           }
           break;
         case "Dunn":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Boyceville village":
+            case "Colfax town":
+            case "Menomonie city":
+            case "Sand Creek town":
+              sortCode = "DU-LIB";
               break;
+			      default:
+			        sortCode = "DU-NOLIB";
+			        break;
           }
           break;
         case "Eau Claire":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Altoona city":
+            case "Augusta city":
+            case "Eau Claire city":
+            case "Fairchild town":
+            case "Fall Creek village":
+              sortCode = "EC-LIB";
               break;
+      			default:
+		      	  sortCode = "EC-NOLIB";
+			        break;
           }
           break;
         case "Florence":
-          switch (message.countySub) {
-            case "":
-              sortCode = "";
-              break;
-          }
+          sortCode = "FL-LIB";
           break;
         case "Fond du Lac":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Brandon village":
+            case "Campbellsport village":
+            case "Fond du Lac city":
+            case "North Fond du Lac village":
+            case "Oakfield town":
+            case "Ripon city":
+            case "Waupun city":
+              sortCode = "FO-LIB";
               break;
+		      	default:
+		      	  sortCode = "FO-NOLIB";
           }
           break;
         case "Forest":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Crandon city":
+            case "Laona town":
+            case "Wabeno town":
+              sortCode = "FR-LIB";
               break;
+		      	default:
+		      	  sortCode = "FR-NOLIB";
+	      		  break;
           }
           break;
         case "Grant":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Bloomington town":
+            case "Boscobel city":
+            case "Cassville town":
+            case "Cuba city":
+            case "Dickeyville village":
+            case "Fennimore city":
+            case "Hazel Green town":
+            case "Lancaster city":
+            case "Livingston village":
+            case "Montfort village":
+            case "Muscoda village":
+              sortCode = "GR-LIB";
               break;
+			      default:
+			        sortCode = "GR-NOLIB";
           }
           break;
         case "Green Lake":
@@ -2261,9 +1728,14 @@ browser.runtime.onMessage.addListener(message => {
           break;
         case "Iron":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Hurley city":
+            case "Mercer town":
+            case "Montreal city":
+              sortCode = "IR-LIB";
               break;
+		      	default:
+		      	  sortCode = "IR-NOLIB";
+			  break;
           }
           break;
         case "Jackson":
@@ -2533,24 +2005,28 @@ browser.runtime.onMessage.addListener(message => {
           break;
         case "Kenosha":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Paddock Lake village":
+            case "Randall town":
+              sortCode = "KE-NOLIB";
               break;
+		        default:
+			        sortCode = "KE-LIB";
+			        break;
           }
           break;
         case "Kewaunee":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Algoma city":
+            case "Kewaunee city":
+              sortCode = "KW-LIB";
+              break;
+            default:
+              sortCode = "KW-NOLIB";
               break;
           }
           break;
         case "La Crosse":
-          switch (message.countySub) {
-            case "":
-              sortCode = "";
-              break;
-          }
+          sortCode = "LC-LIB";
           break;
         case "Lafayette":
           switch (message.countySub) {
@@ -2644,23 +2120,35 @@ browser.runtime.onMessage.addListener(message => {
           break;
         case "Langlade":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Antigo city":
+            case "Elcho town":
+            case "White Lake village":
+              sortCode = "LN-LIB";
               break;
+            default:
+              sortCode = "LN-NOLIB";
           }
           break;
         case "Lincoln":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Merrill city":
+            case "Tomahawk city":
+              sortCode = "LI-LIB";
+              break;
+            default:
+              sortCode = "LI-NOLIB";
               break;
           }
           break;
         case "Manitowoc":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Kiel city":
+            case "Manitowoc city":
+            case "Two Rivers city":
+              sortCode = "MA-LIB";
               break;
+            default:
+              sortCode = "MA-NOLIB";
           }
           break;
         case "Marathon":
@@ -2856,11 +2344,7 @@ browser.runtime.onMessage.addListener(message => {
           }
           break;
         case "Marinette":
-          switch (message.countySub) {
-            case "":
-              sortCode = "";
-              break;
-          }
+          sortCode = "MT-LIB";
           break;
         case "Marquette":
           switch (message.countySub) {
@@ -2924,82 +2408,119 @@ browser.runtime.onMessage.addListener(message => {
           }
           break;
         case "Menominee":
-          switch (message.countySub) {
-            case "":
-              sortCode = "";
-              break;
-          }
+          sortCode = "ME-LIB";
           break;
         case "Milwaukee":
-          showMsg("[FAILED] Library cards MAY NOT be issued to Milwaukee County residents.");
+          sortCode = "MI-LIB";
           break;
         case "Monroe":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Cashton village":
+            case "Kendall village":
+            case "Norwalk village":
+            case "Sparta city":
+            case "Sparta town":
+            case "Wilton town":
+              sortCode = "MO-LIB";
               break;
+            default:
+              sortCode = "MO-NOLIB";
           }
           break;
         case "Oconto":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Bagley town":
+            case "Breed town":
+            case "Gillett town":
+            case "How town":
+            case "Lakewood town":
+            case "Lena town":
+            case "Maple Valley town":
+            case "Oconto Falls city":
+            case "Oconto city":
+            case "Suring village":
+              sortCode = "OC-LIB";
+              break;
+            default:
+              sortCode = "OC-NOLIB";
               break;
           }
           break;
         case "Oneida":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Crescent town":
+            case "Minocqua town":
+            case "Newbold town":
+            case "Pelican town":
+            case "Pine Lake town":
+            case "Rhinelander city":
+            case "Three Lakes town":
+              sortCode = "ON-LIB";
               break;
+            default:
+              sortCode = "ON-NOLIB";
           }
           break;
         case "Outagamie":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Appleton city":
+            case "Black Creek town":
+            case "Hortonville village":
+            case "Kaukauna city":
+            case "Kimberly village":
+            case "Little Chute village":
+            case "New London city":
+            case "Seymour city":
+            case "Shiocton village":
+              sortCode = "OU-LIB";
+              break;
+            default:
+              sortCode = "OU-NOLIB";
               break;
           }
           break;
         case "Ozaukee":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Bayside village":
+            case "Belgium town":
+            case "Belgium village":
+            case "Fredonia town":
+            case "Fredonia village":
+            case "Newburg village":
+              sortCode = "OZ-NOLIB";
+              break;
+            default:
+              sortCode = "OZ-LIB";
               break;
           }
           break;
         case "Pepin":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Durand city":
+            case "Pepin town":
+              sortCode = "PE-LIB";
               break;
+            default:
+              sortCode = "PE-NOLIB";
           }
           break;
         case "Pierce":
-          switch (message.countySub) {
-            case "":
-              sortCode = "";
-              break;
-          }
+          sortCode = "PI-LIB";
           break;
         case "Polk":
-          switch (message.countySub) {
-            case "":
-              sortCode = "";
-              break;
-          }
+          sortCode = "PO-LIB";
           break;
         case "Price":
-          switch (message.countySub) {
-            case "":
-              sortCode = "";
-              break;
-          }
+          sortCode = "PR-LIB";
           break;
         case "Racine":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Burlington city":
+            case "Racine city":
+            case "Rochester village":
+            case "Union Grove village":
+            case "Waterford town":
+              sortCode = "RA-LIB";
               break;
           }
           break;
@@ -3170,16 +2691,26 @@ browser.runtime.onMessage.addListener(message => {
           break;
         case "Rusk":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Bruce village":
+            case "Hawkins town":
+            case "Ladysmith city":
+              sortCode = "RU-LIB";
               break;
+            default:
+              sortCode = "RU-NOLIB";
           }
           break;
         case "Sawyer":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Hayward city":
+            case "Winter town":
+            case "Winter village":
+            //TODO: Include Hayward tribal land
+              sortCode = "SA-LIB";
               break;
+            default:
+              sortCode = "SA-NOLIB";
+             break;
           }
           break;
         case "Shawano":
@@ -3305,29 +2836,70 @@ browser.runtime.onMessage.addListener(message => {
           break;
         case "Sheboygan":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Adell village":
+            case "Cedar Grove village":
+            case "Elkhart Lake village":
+            case "Kohler village":
+            case "Oostburg village":
+            case "Plymouth city":
+            case "Random Lake village":
+            case "Scott town":
+            case "Sheboygan Falls city":
+            case "Sheboygan city":
+            case "Sherman town":
+              sortCode = "SA-LIB";
               break;
+            default:
+              sortCode = "SA-NOLIB";
           }
           break;
         case "St. Croix":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Baldwin town":
+            case "Deer Park village":
+            case "Glenwood City city":
+            case "Hammond town":
+            case "Hudson city":
+            case "New Richmond city":
+            case "Roberts village":
+            case "Somerset town":
+            case "Woodville village":
+              sortCode = "SC-LIB";
+              break;
+            default:
+              sortCode = "SC-NOLIB";
               break;
           }
           break;
         case "Taylor":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Gilman village":
+            case "Medford city":
+            case "Rib Lake town":
+            case "Stetsonville village":
+            case "Westboro town":
+              sortCode = "TA-LIB";
+              break;
+            default:
+              sortCode = "TA-NOLIB";
               break;
           }
           break;
         case "Trempealeau":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Arcadia city":
+            case "Blair city":
+            case "Ettrick town":
+            case "Galesville city":
+            case "Independence city":
+            case "Osseo city":
+            case "Strum village":
+            case "Trempealeau town":
+            case "Whitehall city":
+              sortCode = "TR-LIB";
+              break;
+            default:
+              sortCode = "TR-NOLIB";
               break;
           }
           break;
@@ -3438,36 +3010,82 @@ browser.runtime.onMessage.addListener(message => {
           break;
         case "Vilas":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Arbor Vitae":
+              sortCode = "VI-NOLIB";
               break;
+            default:
+              sortCode = "VI-LIB";
           }
           break;
         case "Walworth":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Darien town":
+            case "Delavan city":
+            case "East Troy town":
+            case "Elkhorn city":
+            case "Fontana on Geneva Lake village":
+            case "Genoa City village":
+            case "Lake Geneva city":
+            case "Sharon town":
+            case "Walworth town":
+            case "Williams Bay village":
+              sortCode = "WA-LIB";
+              break;
+            default:
+              sortCode = "WA-NOLIB";
               break;
           }
           break;
         case "Washburn":
           break;
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Shell Lake city":
+            case "Spooner city":
+              sortCode = "WB-LIB";
               break;
+            default:
+              sortCode = "WB-NOLIB";
           }
         case "Washington":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Germantown town":
+            case "Hartford city":
+            case "Kewaskum town":
+            case "Milwaukee city":
+            case "Slinger village":
+            case "West Bend city":
+              sortCode = "WG-LIB";
+              break;
+            default:
+              sortCode = "WG-NOLIB";
               break;
           }
           break;
         case "Waukesha":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Big Bend village":
+            case "Brookfield city":
+            case "Butler village":
+            case "Delafield city":
+            case "Eagle town":
+            case "Eagle village":
+            case "Elm Grove village":
+            case "Hartland village":
+            case "Lisbon town":
+            case "Menomonee Falls village":
+            case "Merton town":
+            case "Milwaukee city":
+            case "Mukwonago town":
+            case "Muskego city":
+            case "New Berlin city":
+            case "Oconomowoc city":
+            case "Pewaukee city":
+            case "Sussex village":
+            case "Waukesha city":
+              sortCode = "WK-LIB";
+              break;
+            default:
+              sortCode = "WK-NOLIB";
               break;
           }
           break;
@@ -3664,8 +3282,15 @@ browser.runtime.onMessage.addListener(message => {
           break;
         case "Winnebago":
           switch (message.countySub) {
-            case "":
-              sortCode = "";
+            case "Menasha city":
+            case "Neenah city":
+            case "Omro city":
+            case "Oshkosh city":
+            case "Winneconne town":
+              sortCode = "WI-LIB";
+              break;
+            default:
+              sortCode = "WI-NOLIB";
               break;
           }
           break;
@@ -3690,6 +3315,10 @@ browser.runtime.onMessage.addListener(message => {
     case "receivedSunPSTAT":
     case "receivedVerPSTAT":
       selectPSTAT(message.value, message.matchAddr);
+      break;
+    case "querySecondaryPSTAT":
+      break;
+    case "querySecondaryPSTATFail":
       break;
   }
 });
