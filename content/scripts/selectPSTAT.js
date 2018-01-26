@@ -706,11 +706,7 @@ browser.runtime.onMessage.addListener(message => {
               sortCode = "D-MID-T";
               break;
             case "Monona city":
-              browser.runtime.sendMessage({
-                key: "getPstatByDist",
-                matchAddr: message.matchAddr,
-                lib: "Moo"
-              });
+              sortCode = "D-MON-C1";
               break;
             case "Montrose town":
               sortCode = "D-MONT-T";
