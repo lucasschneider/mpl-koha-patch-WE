@@ -157,7 +157,7 @@ function handleUpdated(details) {
     
       if (!res.hasOwnProperty('lookupPSTAT') || (res.hasOwnProperty('lookupPSTAT') && res.lookupPSTAT)) {
         browser.tabs.executeScript(details.tabId,{
-          file: "content/scripts/selectPSTAT2.js"
+          file: "content/scripts/selectPSTAT.js"
         });
       }
     
