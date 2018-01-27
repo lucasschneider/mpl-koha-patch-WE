@@ -27,6 +27,7 @@ var addrElt = document.getElementById('address'),
   
   // The following variables are used in generating the geographically closest
   // library location to the patron.
+  mapRegionList,
   matchAddr4DistQuery,
   branchList = document.getElementById('branchcode'),
   nearestMPL = document.createElement('span'),
@@ -191,73 +192,76 @@ function selectPSTAT(value, matchAddr) {
         document.getElementById('nearestMPL').style = "display: inline-block;cursor:pointer;color:#00c;text-decoration:underline;margin-left:118px;";
       };
 
-      var mapRegionList = document.createElement('select');
-      mapRegionList.id = "mapRegionList";
-      mapRegionList.style = "margin-left: 25px;";
+      
+      if (!mapRegionList) {
+        mapRegionList = document.createElement('select');
+        mapRegionList.id = "mapRegionList";
+        mapRegionList.style = "margin-left: 25px;";
 
-      var madison = document.createElement('option');
-      madison.textContent = "Madison";
-      madison.value = "MPL";
-      madison.selected = true;
-      mapRegionList.appendChild(madison);
+        var madison = document.createElement('option');
+        madison.textContent = "Madison";
+        madison.value = "MPL";
+        madison.selected = true;
+        mapRegionList.appendChild(madison);
 
-      var counties = document.createElement('optgroup');
-      counties.label = "Counties";
+        var counties = document.createElement('optgroup');
+        counties.label = "Counties";
 
-      var adams = document.createElement('option');
-      adams.textContent = "Adams County";
-      adams.value = "ADAMS";
-      counties.appendChild(adams);
+        var adams = document.createElement('option');
+        adams.textContent = "Adams County";
+        adams.value = "ADAMS";
+        counties.appendChild(adams);
 
-      var columbia = document.createElement('option');
-      columbia.textContent = "Columbia County";
-      columbia.value = "COLUMBIA";
-      counties.appendChild(columbia);
+        var columbia = document.createElement('option');
+        columbia.textContent = "Columbia County";
+        columbia.value = "COLUMBIA";
+        counties.appendChild(columbia);
 
-      var dane = document.createElement('option');
-      dane.textContent = "Dane County";
-      dane.value = "DANE";
-      counties.appendChild(dane);
+        var dane = document.createElement('option');
+        dane.textContent = "Dane County";
+        dane.value = "DANE";
+        counties.appendChild(dane);
 
-      var green = document.createElement('option');
-      green.textContent = "Green County";
-      green.value = "GREEN";
-      counties.appendChild(green);
+        var green = document.createElement('option');
+        green.textContent = "Green County";
+        green.value = "GREEN";
+        counties.appendChild(green);
 
-      var portage = document.createElement('option');
-      portage.textContent = "Portage County";
-      portage.value = "PORTAGE";
-      counties.appendChild(portage);
+        var portage = document.createElement('option');
+        portage.textContent = "Portage County";
+        portage.value = "PORTAGE";
+        counties.appendChild(portage);
 
-      var sauk = document.createElement('option');
-      sauk.textContent = "Sauk County";
-      sauk.value = "SAUK";
-      counties.appendChild(sauk);
+        var sauk = document.createElement('option');
+        sauk.textContent = "Sauk County";
+        sauk.value = "SAUK";
+        counties.appendChild(sauk);
 
-      var wood = document.createElement('option');
-      wood.textContent = "Wood County";
-      wood.value = "WOOD";
-      counties.appendChild(wood);
+        var wood = document.createElement('option');
+        wood.textContent = "Wood County";
+        wood.value = "WOOD";
+        counties.appendChild(wood);
 
-      mapRegionList.appendChild(counties);
+        mapRegionList.appendChild(counties);
 
-      var scls = document.createElement('option');
-      scls.textContent = "SCLS (Excludes MSB)";
-      scls.value = "SCLS";
-      mapRegionList.appendChild(scls);
+        var scls = document.createElement('option');
+        scls.textContent = "SCLS (Excludes MSB)";
+        scls.value = "SCLS";
+        mapRegionList.appendChild(scls);
 
-      nearestMPL.onclick = function() {
-        var selected = document.getElementById('mapRegionList').selectedOptions[0].value;
-        
-        browser.runtime.sendMessage({
-          key: "findNearestLib",
-          matchAddr4DistQuery: matchAddr4DistQuery,
-          selected: selected
-        });
-      };
+        nearestMPL.onclick = function() {
+          var selected = document.getElementById('mapRegionList').selectedOptions[0].value;
+          
+          browser.runtime.sendMessage({
+            key: "findNearestLib",
+            matchAddr4DistQuery: matchAddr4DistQuery,
+            selected: selected
+          });
+        };
 
-      branchList.parentElement.appendChild(nearestMPL);
-      branchList.parentElement.appendChild(mapRegionList);
+        branchList.parentElement.appendChild(nearestMPL);
+        branchList.parentElement.appendChild(mapRegionList);
+      }
     }
   }
 }
