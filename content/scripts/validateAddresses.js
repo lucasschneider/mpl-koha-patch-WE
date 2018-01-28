@@ -15,8 +15,11 @@ var addr = document.getElementById('address'),
   initial,
   wasLU = false,
   wasNotifiedToDel = false;
-     
-     
+
+if (cc.length > 0) {
+  cc = cc[0];
+}
+
 // Define address object
 var Address = function(addrRegEx, addr, place) {
     // addrRegEx formatted to be inserted as a regex literal
@@ -80,7 +83,6 @@ function deleteMsgNotice() {
 /** Compare a patron's address to the list of unacceptable and
  * restricted addresses */
 function parseBadAddr() {
-  if (cc) cc = cc[0];
   if (addr && city && cityRegEx.test(city.value) && bn) {
     addrVal = addr2 !== null && (addr2.value !== null && addr2.value !== "") ? addr.value + " " + addr2.value : addr.value;    
     browser.runtime.sendMessage({
