@@ -35,7 +35,8 @@ setTimeout(() => {
                    county,
                    countySub,
                    censusTract,
-                   zip;
+                   zip,
+                   zcta5;
                  
                  if (tableRows.length > 0) {
                    matchAddrParts = document.querySelector('#addressSearch_msg .bd b');
@@ -70,9 +71,21 @@ setTimeout(() => {
                          zip = tableRows[i].children[0].textContent.trim();
                          if (zip) zip = /[0-9]{5}/.exec(zip);
                          if (zip) zip = zip[0];
+                       } else if (tableRows[i].children[1].textContent.trim() == "5-Digit ZCTA") {
+                         zcta5 = tableRows[i].children[0].textContent.trim();
+                        if (zcta5) zcta5 = /[0-9]{5}/.exec(zcta5);
+                        if (zcta5) zcta5 = zcta5[0];
                        }
                      }
                    }
+
+                   // Set the zipcode equal to the ZCTA5 value if a zipcode was not found.
+                   if (!zip && zcta5) {
+                     zip = zcta5;
+                   }
+
+                   // Return an empty string if no zipcode of ZCTA was found
+                   if (!zip) zip = "";
 
                    browser.runtime.sendMessage({
                      "key": "returnCensusData",

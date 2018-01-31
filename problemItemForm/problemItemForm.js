@@ -120,7 +120,7 @@ browser.runtime.onMessage.addListener(request => {
 function formatDateForDisplay(date) {
   if (date && date !== "") {
     var d = new Date(date);
-    return (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
+    return (d.getUTCMonth()+1) + "/" + d.getUTCDate() + "/" + d.getUTCFullYear();
   } else {
     return "";
   }

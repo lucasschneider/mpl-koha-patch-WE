@@ -88,7 +88,7 @@ function cleanAddr(addrElt) {
       
     addrParts = address.split(" ");
     
-    if (/^\#?[0-9]+$/.test(addrParts[addrParts.length-1])) {
+    if (/^(\#|apt|bldg|fl(oor)?|ste|unit|r(oo)?m|dept)[0-9]+$/.test(addrParts[addrParts.length-1])) {
       addrParts.pop();
     } else if (addrParts.length > 2 && 
         /^(\#|apt|bldg|fl(oor)?|ste|unit|r(oo)?m|dept)$/.test(addrParts[addrParts.length-2]) &&
