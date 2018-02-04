@@ -206,6 +206,63 @@ function handleUpdated(details) {
 
 browser.webNavigation.onCompleted.addListener(handleUpdated);
 
+// Create and handle context menu item for problem item form
+browser.contextMenus.create({
+    id: "start-pi-form",
+    title: "Use Barcode in Problem Item Form",
+    contexts: ["link", "selection"]
+});
+browser.contextMenus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === "start-pi-form") {
+    var barcode;
+    
+    function sendErrorMsg(msg) {
+      browser.tabs.query({ currentWindow: true, active: true}).then((tabs) => {
+        for (let tab of tabs) {
+          browser.tabs.executeScript(tab.id, {
+            code: "alert('" + msg + "');"
+          });
+        }
+      });
+    }
+  
+    // Populate barcode based on the particular context type
+    if (info.selectionText) {
+      barcode = info.selectionText;
+      console.log(barcode);
+    } else if (info.linkText) { // Only works in Firefox 58.*
+      barcode = info.linkText;
+    } else {
+      sendErrorMsg("ERROR: Failed to extract text data.");
+      return;
+    }
+
+    if (barcode.match(/[0-9]{14}/g).length === 1) {
+      barcode = /[0-9]{14}/.exec(barcode);
+      
+      if (barcode) barcode = barcode[0];
+      
+      switch(barcode.substr(0,1)) {
+        case "2":
+          browser.tabs.create({
+            url: browser.runtime.getURL("../problemItemForm/problemItemForm.html") + "?patron=" + barcode
+          });
+          break;
+        case "3":
+          browser.tabs.create({
+            url: browser.runtime.getURL("../problemItemForm/problemItemForm.html") + "?item=" + barcode
+          });
+          break;
+        default:
+          sendErrorMsg("ERROR: Unable to determine barcode type.");
+          break;
+      }
+    } else {
+      sendErrorMsg("ERROR: Exactly one barcode must be selected.");
+    }
+  }
+});
+
 // Handle messages from content pages
 function handleMessages(request, sender, sendResponse) {
   switch (request.key) {
