@@ -16,13 +16,11 @@ HTMLInputElement.prototype.parseName = function () {
   if (!/^[ 	]+/.test(this.value) && initials) {
     names = this.value.split(' ');
     len = names.length;
-    if (len > 1 && names[1] && /[A-Za-z]/.test(names[1][0])) {
+    if (len > 1 && names[1] && /[A-Za-z]/.test(names[1][0]) && initials.value === "") {
       initials.value = names[1][0].toUpperCase();
-    } else {
-      initials.value = "";
     }
   }
-  
+
   return false;
 }
 

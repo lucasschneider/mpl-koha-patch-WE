@@ -237,29 +237,33 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
       return;
     }
 
-    if (barcode.match(/[0-9]{14}/g).length === 1) {
-      barcode = /[0-9]{14}/.exec(barcode);
+	if (barcode.match(/[0-9]{14}/g)) {
+      if (barcode.match(/[0-9]{14}/g).length === 1) {
+        barcode = /[0-9]{14}/.exec(barcode);
       
-      if (barcode) barcode = barcode[0];
+        if (barcode) barcode = barcode[0];
       
-      switch(barcode.substr(0,1)) {
-        case "2":
-          browser.tabs.create({
-            url: browser.runtime.getURL("../problemItemForm/problemItemForm.html") + "?patron=" + barcode
-          });
-          break;
-        case "3":
-          browser.tabs.create({
-            url: browser.runtime.getURL("../problemItemForm/problemItemForm.html") + "?item=" + barcode
-          });
-          break;
-        default:
-          sendErrorMsg("ERROR: Unable to determine barcode type.");
-          break;
+        switch(barcode.substr(0,1)) {
+          case "2":
+            browser.tabs.create({
+              url: browser.runtime.getURL("../problemItemForm/problemItemForm.html") + "?patron=" + barcode
+            });
+            break;
+          case "3":
+            browser.tabs.create({
+              url: browser.runtime.getURL("../problemItemForm/problemItemForm.html") + "?item=" + barcode
+            });
+            break;
+          default:
+            sendErrorMsg("ERROR: Unable to determine barcode type.");
+            break;
+        }
+      } else {
+        sendErrorMsg("ERROR: Multiple barcodes found in selection.");
       }
-    } else {
-      sendErrorMsg("ERROR: Exactly one barcode must be selected.");
-    }
+	} else {
+	  sendErrorMsg("ERROR: Barcode not found in selection or link.");
+	}
   }
 });
 
