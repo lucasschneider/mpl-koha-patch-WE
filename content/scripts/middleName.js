@@ -6,7 +6,7 @@ HTMLInputElement.prototype.parseName = function () {
     names,
     len;
   // Strip commas and periods from string
-  this.value = this.value.replace(/[\.,]/g, '');
+  this.value = this.value.replace(/,/g, '');
   // Move suffix "JR" or "SR" to end of last name
   if (/ (S|J)R$/i.test(this.value)) {
     var suffix = this.value.substr(this.value.length-3, this.value.length);
