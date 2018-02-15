@@ -133,7 +133,8 @@ var d = new Date(),
   censusTract,
   zip,
   closestLib = "",
-  value = "";
+  value = "",
+  problemItemFormTID; // The tab ID for the most recent instance of teh problem item form
 
 setIcon();
 
@@ -208,16 +209,19 @@ browser.webNavigation.onCompleted.addListener(handleUpdated);
 
 // Create and handle context menu item for problem item form
 browser.contextMenus.create({
-    id: "start-pi-form",
-    title: "Use Barcode in Problem Item Form",
-    contexts: ["link", "selection"]
+  id: "start-pi-form",
+  title: "Use Barcode in Problem Item Form",
+  contexts: ["link", "selection"]
 });
 browser.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === "start-pi-form") {
     var barcode;
-    
+
     function sendErrorMsg(msg) {
-      browser.tabs.query({ currentWindow: true, active: true}).then((tabs) => {
+      browser.tabs.query({
+        currentWindow: true,
+        active: true
+      }).then((tabs) => {
         for (let tab of tabs) {
           browser.tabs.executeScript(tab.id, {
             code: "alert('" + msg + "');"
@@ -225,7 +229,7 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
         }
       });
     }
-  
+
     // Populate barcode based on the particular context type
     if (info.selectionText) {
       barcode = info.selectionText;
@@ -237,13 +241,13 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
       return;
     }
 
-	if (barcode.match(/[0-9]{14}/g)) {
+    if (barcode.match(/[0-9]{14}/g)) {
       if (barcode.match(/[0-9]{14}/g).length === 1) {
         barcode = /[0-9]{14}/.exec(barcode);
-      
+
         if (barcode) barcode = barcode[0];
-      
-        switch(barcode.substr(0,1)) {
+
+        switch (barcode.substr(0, 1)) {
           case "2":
             browser.tabs.create({
               url: browser.runtime.getURL("../problemItemForm/problemItemForm.html") + "?patron=" + barcode
@@ -261,9 +265,9 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
       } else {
         sendErrorMsg("ERROR: Multiple barcodes found in selection.");
       }
-	} else {
-	  sendErrorMsg("ERROR: Barcode not found in selection or link.");
-	}
+    } else {
+      sendErrorMsg("ERROR: Barcode not found in selection or link.");
+    }
   }
 });
 
@@ -293,7 +297,7 @@ function handleMessages(request, sender, sendResponse) {
         zip;
 
       $.getJSON(countyURL).done(function(countyResponse) {
-        if (countyResponse && countyResponse.result) {
+        if (countyResponse && countyResponse.result && countyResponse.result.addressMatches.length > 0) {
           try {
             matchAddr = countyResponse.result.addressMatches[0].matchedAddress.split(',')[0].toUpperCase();
             county = countyResponse.result.addressMatches[0].geographies['Counties'][0].BASENAME;
@@ -302,17 +306,20 @@ function handleMessages(request, sender, sendResponse) {
             $.getJSON(countySubdivisionURL).done(function(countySubResponse) {
               if (countySubResponse && countySubResponse.result) {
                 try {
-                  countySub = countySubResponse.result.addressMatches[0].geographies[ 'County Subdivisions' ][0].NAME;
-                  
+                  countySub = countySubResponse.result.addressMatches[0].geographies['County Subdivisions'][0].NAME;
+
                   $.getJSON(censusTractURL).done(function(tractResponse) {
                     if (tractResponse && tractResponse.result) {
                       try {
-                        censusTract = tractResponse.result.addressMatches[0].geographies[ 'Census Tracts' ];
+                        censusTract = tractResponse.result.addressMatches[0].geographies['Census Tracts'];
                         censusTract = (censusTract) ? censusTract[0] : null;
                         censusTract = (censusTract) ? censusTract.BASENAME : null;
 
                         if (matchAddr && county && countySub && censusTract && zip) {
-                          browser.tabs.query({ currentWindow: true, active: true}).then((tabs) => {
+                          browser.tabs.query({
+                            currentWindow: true,
+                            active: true
+                          }).then((tabs) => {
                             for (let tab of tabs) {
                               browser.tabs.sendMessage(tab.id, {
                                 "key": "returnCensusData",
@@ -324,7 +331,7 @@ function handleMessages(request, sender, sendResponse) {
                               });
                             }
                           });
-                  
+
                           // Remove the FactFinder Tab
                           if (factFinderTabId) browser.tabs.remove(factFinderTabId);
                         } else {
@@ -335,18 +342,34 @@ function handleMessages(request, sender, sendResponse) {
                       }
                     }
                   });
-                
-			          } catch (countySubErr) {
+                } catch (countySubErr) {
                   console.debug(countySubErr);
-		    	      }
+                }
               }
             });
-            
+
           } catch (countyErr) {
             console.debug(countyErr);
           }
 
           if (matchAddr && county && countySub && censusTract && zip) {}
+        } else {
+          // Send empty response
+          browser.tabs.query({
+            currentWindow: true,
+            active: true
+          }).then((tabs) => {
+            for (let tab of tabs) {
+              browser.tabs.sendMessage(tab.id, {
+                "key": "returnCensusData",
+                "matchAddr": null,
+                "county": null,
+                "countySub": null,
+                "censusTract": null,
+                "zip": null
+              });
+            }
+          });
         }
       });
 

@@ -1,21 +1,24 @@
 ﻿"use strict";
 
 /**
-  * This script is used to look up the proper PSTAT (sort1) value
-  * for a patron's record based on their address, using the US
-  * Census Geocoder
-  */
+ * This script is used to look up the proper PSTAT (sort1) value
+ * for a patron's record based on their address, using the US
+ * Census Geocoder
+ */
 
 /*** INITIALIZATION : START ***/
-  
+
 // Declare global variables
 var addrElt = document.getElementById('address'),
   addrEltAlt = document.getElementById('B_address'),
+  targetAddr,
   cityElt = document.getElementById('city'),
   cityEltAlt = document.getElementById('B_city'),
   cityEltAltContact = document.getElementById('altcontactaddress3'),
+  targetCity,
   zipElt = document.getElementById('zipcode'),
   zipEltAlt = document.getElementById('B_zipcode'),
+  targetZip,
   selectList = document.getElementsByName('sort1'),
   noticeElt = document.createElement('div'),
   noticeEltAlt = document.createElement('div'),
@@ -24,7 +27,7 @@ var addrElt = document.getElementById('address'),
   timerListener,
   timerListenerAlt,
   useSecondaryElt = false,
-  
+
   // The following variables are used in generating the geographically closest
   // library location to the patron.
   mapRegionList,
@@ -35,14 +38,14 @@ var addrElt = document.getElementById('address'),
   mapRegionListOld = document.getElementById('mapRegionList'),
   lnBreak1 = document.createElement('br'),
   lnBreak2 = document.createElement('br');
-  
+
 // Give ids to br elements so we only add them once
 lnBreak1.id = "nearestMPLbreak1";
 lnBreak2.id = "nearestMPLbreak2";
 
 // Set selectList to reference the element
 selectList = (selectList.length > 0) ? selectList[0] : null;
-  
+
 // Initialize the notice and result messages for communicating success/failure
 // and place them underneath the address field
 
@@ -68,35 +71,35 @@ if (addrElt) {
 /*** FUNCTIONS : START ***/
 
 /**
-  * This function takes the address from an input field
-  * and returns a plaintext address that can more easily
-  * be interpreted by the Census Geocoder
-  * 
-  * addrElt: The html input field containing an address
-  */
+ * This function takes the address from an input field
+ * and returns a plaintext address that can more easily
+ * be interpreted by the Census Geocoder
+ * 
+ * addrElt: The html input field containing an address
+ */
 function cleanAddr(addrElt) {
   var address = "",
     addrParts;
   if (addrElt) {
-     address = addrElt.value.trim().toLowerCase()
+    address = addrElt.value.trim().toLowerCase()
       .replace(/\./, '')
       .replace(/ cn?ty /i, ' co ')
       .replace(/ n /i, ' north ')
       .replace(/ s /i, ' south ')
       .replace(/ e /i, ' east ')
       .replace(/ w /i, ' west ');
-      
+
     addrParts = address.split(" ");
-    
-    if (/^(\#|apt|bldg|fl(oor)?|ste|unit|r(oo)?m|dept)[0-9]+$/.test(addrParts[addrParts.length-1])) {
+
+    if (/^(\#|apt|bldg|fl(oor)?|ste|unit|r(oo)?m|dept)[0-9]+$/.test(addrParts[addrParts.length - 1])) {
       addrParts.pop();
-    } else if (addrParts.length > 2 && 
-        /^(\#|apt|bldg|fl(oor)?|ste|unit|r(oo)?m|dept)$/.test(addrParts[addrParts.length-2]) &&
-        /^[0-9]+$/.test(addrParts[addrParts.length-1])) {
+    } else if (addrParts.length > 2 &&
+      /^(\#|apt|bldg|fl(oor)?|ste|unit|r(oo)?m|dept)$/.test(addrParts[addrParts.length - 2]) &&
+      /^[0-9]+$/.test(addrParts[addrParts.length - 1])) {
       addrParts.pop();
       addrParts.pop();
     }
-    
+
     address = "";
     for (var i = 0; i < addrParts.length; i++) {
       if (i === 0) {
@@ -111,14 +114,14 @@ function cleanAddr(addrElt) {
 }
 
 /**
-  * This function extracts the city from an input field
-  * containing both the city and state abbreviation
-  * by stripping non-alphabetic characters and removing
-  * the last string separated by a space
-  *
-  * cityElt: The html input field containing a city and
-  *          state abbreviation.
-  */
+ * This function extracts the city from an input field
+ * containing both the city and state abbreviation
+ * by stripping non-alphabetic characters and removing
+ * the last string separated by a space
+ *
+ * cityElt: The html input field containing a city and
+ *          state abbreviation.
+ */
 function pullCity(cityElt) {
   var city = '',
     ctyArr,
@@ -137,10 +140,10 @@ function pullCity(cityElt) {
 }
 
 /**
-  * This function forces the city/state html input field
-  * to display Madison as "MADISON WI" and allows users to
-  * enter "mad" as a shortcut for "MADISON WI"
-  */
+ * This function forces the city/state html input field
+ * to display Madison as "MADISON WI" and allows users to
+ * enter "mad" as a shortcut for "MADISON WI"
+ */
 function parseMadisonWI(cityElt) {
   if (/madison(,? wi(sconsin)?)?|mad/i.test(cityElt.value)) {
     cityElt.value = "MADISON WI";
@@ -149,19 +152,19 @@ function parseMadisonWI(cityElt) {
 }
 
 /**
-  * This funciton selects the PSTAT value based on the provided
-  * he value of the PSTAT option, and the matching address
-  * returned by the Geocoder.
-  *
-  * value:      The plaintext PSTAT value that would match the
-  *             target option in the select list
-  * matchAddr:  The matching address returned by the Geocoder
-  */
+ * This funciton selects the PSTAT value based on the provided
+ * he value of the PSTAT option, and the matching address
+ * returned by the Geocoder.
+ *
+ * value:      The plaintext PSTAT value that would match the
+ *             target option in the select list
+ * matchAddr:  The matching address returned by the Geocoder
+ */
 function selectPSTAT(value, matchAddr) {
   if (selectList && value && matchAddr) {
     if (value == "D-X-SUN" || value == "X-UND") {
-	    // Select the proper undetermined code if no value is
-	    // currently in the select list
+      // Select the proper undetermined code if no value is
+      // currently in the select list
       if (selectList.value == '') {
         selectList.value = value;
       }
@@ -174,10 +177,10 @@ function selectPSTAT(value, matchAddr) {
         noticeElt.style.color = "#00c000";
         noticeElt.textContent = ' [MATCH: ' + matchAddr + ']';
       }
-      
+
       // Add option to select geographically closest library location
-      matchAddr4DistQuery = matchAddr.replace(/ /g,'+');
-      
+      matchAddr4DistQuery = matchAddr.replace(/ /g, '+');
+
       if (!document.getElementById('nearestMPLbreak1') && !document.getElementById('nearestMPLbreak2')) {
         branchList.parentElement.appendChild(lnBreak1);
         branchList.parentElement.appendChild(lnBreak2);
@@ -192,7 +195,6 @@ function selectPSTAT(value, matchAddr) {
         document.getElementById('nearestMPL').style = "display: inline-block;cursor:pointer;color:#00c;text-decoration:underline;margin-left:118px;";
       };
 
-      
       if (!mapRegionList) {
         mapRegionList = document.createElement('select');
         mapRegionList.id = "mapRegionList";
@@ -251,7 +253,7 @@ function selectPSTAT(value, matchAddr) {
 
         nearestMPL.onclick = function() {
           var selected = document.getElementById('mapRegionList').selectedOptions[0].value;
-          
+
           browser.runtime.sendMessage({
             key: "findNearestLib",
             matchAddr4DistQuery: matchAddr4DistQuery,
@@ -267,9 +269,9 @@ function selectPSTAT(value, matchAddr) {
 }
 
 /**
-  * This function selects the "Undetermined" PSTAT value for a
-  * patron's library record.
-  */
+ * This function selects the "Undetermined" PSTAT value for a
+ * patron's library record.
+ */
 function selectUND() {
   if (addrElt && selectList && selectList.value === '') {
     selectList.value = "X-UND";
@@ -277,13 +279,13 @@ function selectUND() {
 }
 
 /**
-  * This function returns a custom message in lieu of printing the
-  * generic [FAILED] notice.
-  */
+ * This function returns a custom message in lieu of printing the
+ * generic [FAILED] notice.
+ */
 function showMsg(msg) {
   showMsg(msg, "#c00c00");
 }
-  
+
 function showMsg(msg, color) {
   if (useSecondaryElt) {
     clearInterval(timerListenerAlt);
@@ -297,35 +299,34 @@ function showMsg(msg, color) {
 }
 
 /**
-  * This is the main function used to send a data query to the US
-  * Census Geocoder. The data returned determines the way in which
-  * the PSTAT is selected (i.e. Census Tract Number for MPL, Voting
-  * district for SUN, MOO, MID, and VER, or the County Subdivision
-  * for everywhere else.
-  */
+ * This is the main function used to send a data query to the US
+ * Census Geocoder. The data returned determines the way in which
+ * the PSTAT is selected (i.e. Census Tract Number for MPL, Voting
+ * district for SUN, MOO, MID, and VER, or the County Subdivision
+ * for everywhere else.
+ */
 function queryPSTAT() {
-   queryPSTAT(false);
+  queryPSTAT(false);
 }
 /**
-  * This is the main function used to send a data query to the US
-  * Census Geocoder. The data returned determines the way in which
-  * the PSTAT is selected (i.e. Census Tract Number for MPL, Voting
-  * district for SUN, MOO, MID, and VER, or the County Subdivision
-  * for everywhere else.
-  *
-  * secondaryAddrQuery: if true, the query should
-  * be performed with the alternate address field rather than the
-  * primary address field.
-  *
-  */
+ * This is the main function used to send a data query to the US
+ * Census Geocoder. The data returned determines the way in which
+ * the PSTAT is selected (i.e. Census Tract Number for MPL, Voting
+ * district for SUN, MOO, MID, and VER, or the County Subdivision
+ * for everywhere else.
+ *
+ * secondaryAddrQuery: if true, the query should
+ * be performed with the alternate address field rather than the
+ * primary address field.
+ *
+ */
 function queryPSTAT(secondaryAddrQuery) {
   // Set global vars
-  useSecondaryElt = !!secondaryAddrQuery ? true : false;
-  
-  // Set local vars
-  var targetAddr = secondaryAddrQuery ? addrEltAlt : addrElt,
-    targetCity = secondaryAddrQuery ? cityEltAlt : cityElt;
-    
+  useSecondaryElt = secondaryAddrQuery ? true : false;
+  targetAddr = secondaryAddrQuery ? addrEltAlt : addrElt;
+  targetCity = secondaryAddrQuery ? cityEltAlt : cityElt;
+  targetZip = secondaryAddrQuery ? zipEltAlt : zipElt;
+
   if (targetAddr.value !== "" && targetCity.value !== "" && selectList) {
     // Generate loading message
     if (useSecondaryElt) {
@@ -333,12 +334,15 @@ function queryPSTAT(secondaryAddrQuery) {
       noticeEltAlt.textContent = "Searching, please wait: ";
       timerEltAlt.textContent = '16';
       noticeEltAlt.appendChild(timerEltAlt);
-    
+
       clearInterval(timerListenerAlt);
-      timerListenerAlt = self.setInterval(() => {timer()}, 1000);
+      timerListenerAlt = self.setInterval(() => {
+        timer()
+      }, 1000);
+
       function timer() {
         if (!isNaN(timerEltAlt.textContent) && parseInt(timerEltAlt.textContent) > 1) {
-          timerEltAlt.textContent = parseInt(timerEltAlt.textContent)-1;
+          timerEltAlt.textContent = parseInt(timerEltAlt.textContent) - 1;
         } else {
           clearInterval(timerListenerAlt);
           if (!/MATCH/.test(noticeEltAlt.textContent)) {
@@ -351,12 +355,15 @@ function queryPSTAT(secondaryAddrQuery) {
       noticeElt.textContent = "Searching, please wait: ";
       timerElt.textContent = '16';
       noticeElt.appendChild(timerElt);
-    
+
       clearInterval(timerListener);
-      timerListener = self.setInterval(() => {timer()}, 1000);
+      timerListener = self.setInterval(() => {
+        timer()
+      }, 1000);
+
       function timer() {
         if (!isNaN(timerElt.textContent) && parseInt(timerElt.textContent) > 1) {
-          timerElt.textContent = parseInt(timerElt.textContent)-1;
+          timerElt.textContent = parseInt(timerElt.textContent) - 1;
         } else {
           clearInterval(timerListener);
           if (!/MATCH/.test(noticeElt.textContent)) {
@@ -365,7 +372,7 @@ function queryPSTAT(secondaryAddrQuery) {
         }
       }
     }
-    
+
     // Send Geocoder Query
     browser.runtime.sendMessage({
       key: "queryGeocoder",
@@ -380,17 +387,17 @@ function queryPSTAT(secondaryAddrQuery) {
 /*** EVENT LISTENERS : START ***/
 // Query PSTAT if the address and city fields contain values
 if (addrElt && cityElt) {
-  
+
   addrElt.addEventListener('blur', function() {
     if (addrElt.value && cityElt.value) {
-	    parseMadisonWI(cityElt);
+      parseMadisonWI(cityElt);
       queryPSTAT();
     }
   });
 
   // Parse the city value for "MADISON WI"
   cityElt.addEventListener('blur', function() {
-	  parseMadisonWI(cityElt);
+    parseMadisonWI(cityElt);
     queryPSTAT();
   });
 }
@@ -416,9 +423,9 @@ browser.runtime.onMessage.addListener(message => {
   switch (message.key) {
     case "returnCensusData":
       var sortCode,
-        errorMsg;    
+        errorMsg;
       // Set PSTAT value
-      switch(message.county) {
+      switch (message.county) {
         // SCLS Counties
         case "Adams":
           switch (message.countySub) {
@@ -790,7 +797,7 @@ browser.runtime.onMessage.addListener(message => {
               sortCode = "D-YOR-TD";
               break;
           }
-        break;
+          break;
         case "Green":
           switch (message.countySub) {
             case "Adams town":
@@ -1178,14 +1185,14 @@ browser.runtime.onMessage.addListener(message => {
               break;
           }
           break;
-        
-        // Other Counties
+
+          // Other Counties
         case "Ashland":
           switch (message.countySub) {
             case "La Pointe town":
             case "Mellen city":
             case "Ashland city":
-            //TODO: Add Odanah tribal lands
+              //TODO: Add Odanah tribal lands
               sortCode = "AS-LIB";
               break;
             case "Agenda town":
@@ -1216,7 +1223,7 @@ browser.runtime.onMessage.addListener(message => {
             case "Iron River town":
             case "Washburn city":
             case "Ashland city":
-            //TODO: Add Bayfield tribal lands
+              //TODO: Add Bayfield tribal lands
               sortCode = "BY-LIB";
               break;
             case "Barksdale town":
@@ -1254,28 +1261,28 @@ browser.runtime.onMessage.addListener(message => {
             case "Mondovi city":
               sortCode = "BU-NOLIB";
               break;
-			case "Alma town":
-			case "Belvidere town":
-			case "Buffalo city":
-			case "Buffalo town":
-			case "Canton town":
-			case "Cochrane village":
-			case "Cross town":
-			case "Dover town":
-			case "Fountain City city":
-			case "Gilmanton town":
-			case "Glencoe town":
-			case "Lincoln town":
-			case "Maxville town":
-			case "Milton town":
-			case "Modena town":
-			case "Mondovi town":
-			case "Montana town":
-			case "Naples town":
-			case "Nelson town":
-			case "Nelson village":
-			case "Waumandee town":
-			  break;
+            case "Alma town":
+            case "Belvidere town":
+            case "Buffalo city":
+            case "Buffalo town":
+            case "Canton town":
+            case "Cochrane village":
+            case "Cross town":
+            case "Dover town":
+            case "Fountain City city":
+            case "Gilmanton town":
+            case "Glencoe town":
+            case "Lincoln town":
+            case "Maxville town":
+            case "Milton town":
+            case "Modena town":
+            case "Mondovi town":
+            case "Montana town":
+            case "Naples town":
+            case "Nelson town":
+            case "Nelson village":
+            case "Waumandee town":
+              break;
           }
           break;
         case "Burnett":
@@ -1306,7 +1313,7 @@ browser.runtime.onMessage.addListener(message => {
             case "Webb Lake town":
             case "West Marshland town":
             case "Wood River town":
-			  break;
+              break;
           }
           break;
         case "Calumet":
@@ -1318,9 +1325,9 @@ browser.runtime.onMessage.addListener(message => {
             case "New Holstein city":
               sortCode = "CA-LIB";
               break;
-			default:
-			  sortCode = "CA-NOLIB";
-			  break;
+            default:
+              sortCode = "CA-NOLIB";
+              break;
           }
           break;
         case "Chippewa":
@@ -1332,9 +1339,9 @@ browser.runtime.onMessage.addListener(message => {
             case "Stanley city":
               sortCode = "CH-LIB";
               break;
-			default:
-			  sortCode = "CH-NOLIB";
-			  break;
+            default:
+              sortCode = "CH-NOLIB";
+              break;
           }
           break;
         case "Clark":
@@ -1463,12 +1470,12 @@ browser.runtime.onMessage.addListener(message => {
               sortCode = "CL-YOR-T";
               break;
 
-            // Clark + Chippewa County
+              // Clark + Chippewa County
             case "Stanley city":
               sortCode = "CL-STA-C";
               break;
-            
-            // Clark + Marathon County
+
+              // Clark + Marathon County
             case "Abbotsford city":
               sortCode = "CL-ABB-C";
               break;
@@ -1490,9 +1497,9 @@ browser.runtime.onMessage.addListener(message => {
             case "Soldiers Grove village":
               sortCode = "CR-LIB";
               break;
-			default:
-			  sortCode = "CR-NOLIB";
-			  break;
+            default:
+              sortCode = "CR-NOLIB";
+              break;
           }
           break;
         case "Dodge":
@@ -1614,26 +1621,26 @@ browser.runtime.onMessage.addListener(message => {
             case "Williamstown town":
               sortCode = "DG-WIL-T";
               break;
-             
-            // Dodge + Columbia counties
+
+              // Dodge + Columbia counties
             case "Columbus city":
               sortCode = "DG-COL-C";
               break;
             case "Randolph village":
               sortCode = "DG-RAN-V";
               break;
-            
-            // Dodge + Fond du Lac counties
+
+              // Dodge + Fond du Lac counties
             case "Waupun city":
               sortCode = "DG-WAU-C";
               break;
-            
-            // Dodge + Jefferson counties
+
+              // Dodge + Jefferson counties
             case "Watertown city":
               sortCode = "DG-WAT-C";
               break;
-            
-            // Dodge + Washington counties
+
+              // Dodge + Washington counties
             case "Hartford city":
               sortCode = "DG-HAR-T";
               break;
@@ -1649,8 +1656,8 @@ browser.runtime.onMessage.addListener(message => {
               sortCode = "DS-LIB";
               break;
             default:
-			        sortCode = "DS-NOLIB";
-			        break;
+              sortCode = "DS-NOLIB";
+              break;
           }
           break;
         case "Dunn":
@@ -1661,9 +1668,9 @@ browser.runtime.onMessage.addListener(message => {
             case "Sand Creek town":
               sortCode = "DU-LIB";
               break;
-			      default:
-			        sortCode = "DU-NOLIB";
-			        break;
+            default:
+              sortCode = "DU-NOLIB";
+              break;
           }
           break;
         case "Eau Claire":
@@ -1675,9 +1682,9 @@ browser.runtime.onMessage.addListener(message => {
             case "Fall Creek village":
               sortCode = "EC-LIB";
               break;
-      			default:
-		      	  sortCode = "EC-NOLIB";
-			        break;
+            default:
+              sortCode = "EC-NOLIB";
+              break;
           }
           break;
         case "Florence":
@@ -1694,8 +1701,8 @@ browser.runtime.onMessage.addListener(message => {
             case "Waupun city":
               sortCode = "FO-LIB";
               break;
-		      	default:
-		      	  sortCode = "FO-NOLIB";
+            default:
+              sortCode = "FO-NOLIB";
           }
           break;
         case "Forest":
@@ -1705,9 +1712,9 @@ browser.runtime.onMessage.addListener(message => {
             case "Wabeno town":
               sortCode = "FR-LIB";
               break;
-		      	default:
-		      	  sortCode = "FR-NOLIB";
-	      		  break;
+            default:
+              sortCode = "FR-NOLIB";
+              break;
           }
           break;
         case "Grant":
@@ -1725,8 +1732,8 @@ browser.runtime.onMessage.addListener(message => {
             case "Muscoda village":
               sortCode = "GR-LIB";
               break;
-			      default:
-			        sortCode = "GR-NOLIB";
+            default:
+              sortCode = "GR-NOLIB";
           }
           break;
         case "Green Lake":
@@ -1776,7 +1783,7 @@ browser.runtime.onMessage.addListener(message => {
             case "St. Marie town":
               sortCode = "GL-STM-T";
               break;
-            // Green Lake + Waushara counties
+              // Green Lake + Waushara counties
             case "Berlin city":
               sortCode = "GL-BER-C";
               break;
@@ -1859,7 +1866,7 @@ browser.runtime.onMessage.addListener(message => {
             case "Wyoming town":
               sortCode = "IO-WYO-T";
               break;
-            // Iowa + Grant counties
+              // Iowa + Grant counties
             case "Livingston village":
               sortCode = "IO-LIV-V";
               break;
@@ -1869,7 +1876,7 @@ browser.runtime.onMessage.addListener(message => {
             case "Muscoda village":
               sortCode = "IO-MUS-V";
               break;
-            // Iowa + Lafayette counties
+              // Iowa + Lafayette counties
             case "Blanchardville village":
               sortCode = "IO-BLA-V";
               break;
@@ -1882,9 +1889,9 @@ browser.runtime.onMessage.addListener(message => {
             case "Montreal city":
               sortCode = "IR-LIB";
               break;
-		      	default:
-		      	  sortCode = "IR-NOLIB";
-			  break;
+            default:
+              sortCode = "IR-NOLIB";
+              break;
           }
           break;
         case "Jackson":
@@ -2043,19 +2050,19 @@ browser.runtime.onMessage.addListener(message => {
             case "Watertown town":
               sortCode = "JF-WAT-T";
               break;
-            // Jefferson + Dane counties
+              // Jefferson + Dane counties
             case "Cambridge village":
               sortCode = "JF-CAM-V";
               break;
-            // Jefferson + Dodge counties
+              // Jefferson + Dodge counties
             case "Watertown city":
               sortCode = "JF-WAT-C";
               break;
-            // Jefferson + Walworth counties
+              // Jefferson + Walworth counties
             case "Whitewater city":
               sortCode = "JF-WHI-C";
               break;
-            // Jefferson + Waukesha counties
+              // Jefferson + Waukesha counties
             case "Lac La Belle village":
               sortCode = "JF-LLB-V";
               break;
@@ -2158,9 +2165,9 @@ browser.runtime.onMessage.addListener(message => {
             case "Randall town":
               sortCode = "KE-NOLIB";
               break;
-		        default:
-			        sortCode = "KE-LIB";
-			        break;
+            default:
+              sortCode = "KE-LIB";
+              break;
           }
           break;
         case "Kewaunee":
@@ -2254,14 +2261,14 @@ browser.runtime.onMessage.addListener(message => {
             case "Wiota town":
               sortCode = "LF-WIO-T";
               break;
-            // Lafayette + Grant counties
+              // Lafayette + Grant counties
             case "Cuba City village":
               sortCode = "LF-CUB-V";
               break;
             case "Hazel Green village":
               sortCode = "LF-HZG-V";
               break;
-            // Lafayette + Iowa counties
+              // Lafayette + Iowa counties
             case "Blanchardville village":
               sortCode = "LF-BLA-V";
               break;
@@ -2473,7 +2480,7 @@ browser.runtime.onMessage.addListener(message => {
             case "Wien town":
               sortCode = "MN-WIE-T";
               break;
-            // Marathon + Clark counties
+              // Marathon + Clark counties
             case "Abbotsford city":
               sortCode = "MN-ABB-C";
               break;
@@ -2486,7 +2493,7 @@ browser.runtime.onMessage.addListener(message => {
             case "Unity village":
               sortCode = "MN-UNI-V";
               break;
-            // Marathon + Shawano counties
+              // Marathon + Shawano counties
             case "Birnamwood village":
               sortCode = "MN-BIR-V";
               break;
@@ -2735,11 +2742,11 @@ browser.runtime.onMessage.addListener(message => {
             case "Yuba village":
               sortCode = "RI-YUB-V";
               break;
-            // Richland + Sauk counties
+              // Richland + Sauk counties
             case "Cazenovia village":
               sortCode = "RI-CAZ-V";
               break;
-            // Richland + Vernon counties
+              // Richland + Vernon counties
             case "Viola village":
               sortCode = "RI-VIO-V";
               break;
@@ -2828,11 +2835,11 @@ browser.runtime.onMessage.addListener(message => {
             case "Union town":
               sortCode = "RO-UNI-T";
               break;
-            // Rock + Dane counties
+              // Rock + Dane counties
             case "Edgerton city":
               sortCode = "RO-EDG-C";
               break;
-            // Rock + Green counties
+              // Rock + Green counties
             case "Brodhead city":
               sortCode = "RO-BRD-C";
               break;
@@ -2854,12 +2861,12 @@ browser.runtime.onMessage.addListener(message => {
             case "Hayward city":
             case "Winter town":
             case "Winter village":
-            //TODO: Include Hayward tribal land
+              //TODO: Include Hayward tribal land
               sortCode = "SA-LIB";
               break;
             default:
               sortCode = "SA-NOLIB";
-             break;
+              break;
           }
           break;
         case "Shawano":
@@ -2969,15 +2976,15 @@ browser.runtime.onMessage.addListener(message => {
             case "Wittenberg village":
               sortCode = "SH-WIT-V";
               break;
-            // Shawano + Marathon counties
+              // Shawano + Marathon counties
             case "Birnamwood village":
               sortCode = "SH-BIR-V";
               break;
-            // Shawano + Oconto + Brown counties
+              // Shawano + Oconto + Brown counties
             case "Pulaski village":
               sortCode = "SH-PUL-V";
               break;
-            // Shawano + Waupaca counties
+              // Shawano + Waupaca counties
             case "Marion city":
               sortCode = "SH-MAR-C";
               break;
@@ -3147,11 +3154,11 @@ browser.runtime.onMessage.addListener(message => {
             case "Whitetown town":
               sortCode = "VE-WHI-T";
               break;
-            // Vernon + Crawford counties
+              // Vernon + Crawford counties
             case "De Soto village":
               sortCode = "VE-DSO-V";
               break;
-            // Vernon + Richland counties
+              // Vernon + Richland counties
             case "Viola village":
               sortCode = "VE-VIO-V";
               break;
@@ -3336,11 +3343,11 @@ browser.runtime.onMessage.addListener(message => {
             case "Wyoming town":
               sortCode = "WP-WYO-T";
               break;
-            // Waupaca + Outagamie counties
+              // Waupaca + Outagamie counties
             case "New London city":
               sortCode = "WP-NLO-C";
               break;
-            // Waupaca + Shawano counties
+              // Waupaca + Shawano counties
             case "Marion city":
               sortCode = "WP-MAR-C";
               break;
@@ -3423,7 +3430,7 @@ browser.runtime.onMessage.addListener(message => {
             case "Wild Rose village":
               sortCode = "WS-WRO-V";
               break;
-            // Waushara + Green Lake counties
+              // Waushara + Green Lake counties
             case "Berlin city":
               sortCode = "WS-BER-C";
               break;
@@ -3443,12 +3450,23 @@ browser.runtime.onMessage.addListener(message => {
               break;
           }
           break;
+          // If no data was returned, test against the Madison exceptional addresses
+        default:
+          if (/madison wi/i.test(targetCity.value)) {
+            browser.runtime.sendMessage({
+              key: "getPstatByDist",
+              matchAddr: targetAddr.value,
+              lib: "Mad"
+            });
+          }
       }
-      
-      // Set zipcode
-      zipElt.value = message.zip;
-      
-      // Set PSTAT
+
+      // Set Zip code
+      if (message.zip) {
+        targetZip.value = message.zip;
+      }
+
+      // Set PSTAT 
       if (sortCode) {
         selectPSTAT(sortCode, message.matchAddr);
       } else {
@@ -3456,8 +3474,8 @@ browser.runtime.onMessage.addListener(message => {
       }
       break;
     case "receivedMAD":
-      selectPSTAT(message.value, message.matchAddr);
-      zipElt.value = message.zip;
+      selectPSTAT(message.value, targetAddr.value);
+      targetZip.value = message.zip;
       break;
     case "receivedMidPSTAT":
     case "receivedMooPSTAT":
