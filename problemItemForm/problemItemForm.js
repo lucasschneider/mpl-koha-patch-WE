@@ -203,8 +203,8 @@ if (printForm) printForm.addEventListener("click", function() {
         "&idBy=" + idBy.value +
         "&receivedVia=" + receivedVia.value +
         "&ckiBySorter=" + ckiBySorter.checked.toString() +
-        "&details=" + details.value +
-        "&itemTitle=" + itemTitle.value +
+        "&details=" + escape(details.value) +
+        "&itemTitle=" + escape(itemTitle.value) +
         "&itemBarcode=" + itemBarcode.value +
         "&cCode=" + cCode.value +
         "&holds=" + holds.value +
