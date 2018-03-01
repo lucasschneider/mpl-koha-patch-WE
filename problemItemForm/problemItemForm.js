@@ -107,12 +107,6 @@ browser.runtime.onMessage.addListener(message => {
     case "failedItemHolds":
       document.getElementById("holds").value = "";
       break;
-    case "returnItemUse":
-      document.getElementById("use").value = message.use;
-      break;
-    case "failedItemUse":
-      document.getElementById("use").value = "";
-      break;
     case "returnPatronData":
       document.getElementById("patronDataErrMsg").style.display = "none";
       document.getElementById("name").value = message.patronName;
@@ -228,10 +222,10 @@ if (location.search.length > 0) {
   if (data && data.length === 2) {
     if (data[0] === "item") {
       itemBarcode.value = data[1];
-      prepareItemData.click();
+      //prepareItemData.click();
     } else if (data[0] === "patron") {
       patronBarcode.value = data[1];
-      getPatronData.click();
+      //getPatronData.click();
     }
   }
 }
