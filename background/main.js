@@ -208,7 +208,7 @@ function handleUpdated(details) {
 browser.webNavigation.onCompleted.addListener(handleUpdated);
 
 // Create and handle context menu item for problem item form
-browser.contextMenus.create({
+/*browser.contextMenus.create({
   id: "start-pi-form",
   title: "Use Barcode in Problem Item Form",
   contexts: ["link", "selection"]
@@ -269,7 +269,7 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
       sendErrorMsg("ERROR: Barcode not found in selection or link.");
     }
   }
-});
+});*/
 
 // Handle messages from content pages
 function handleMessages(request, sender, sendResponse) {

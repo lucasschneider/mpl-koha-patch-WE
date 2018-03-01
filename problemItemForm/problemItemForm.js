@@ -222,10 +222,10 @@ if (location.search.length > 0) {
   if (data && data.length === 2) {
     if (data[0] === "item") {
       itemBarcode.value = data[1];
-      //prepareItemData.click();
+      prepareItemData.click();
     } else if (data[0] === "patron") {
       patronBarcode.value = data[1];
-      //getPatronData.click();
+      getPatronData.click();
     }
   }
 }
