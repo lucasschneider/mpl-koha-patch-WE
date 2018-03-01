@@ -39,6 +39,33 @@ This extension is ___not___ intended for use with the open source [Koha ILS](htt
 
 # Inherent features of the extension
 This extension comes with several features that cannot be disabled. This is because they are either known to be completely bug-free or because they standardize the formatting of data entry
+## Extension Dropdown Menu
+After installing the MPL Koha Patch you will notice an icon at the top right of the screen. By deault it will show the Madison Public Library logo, but this can be changed on the extension preferences page. There are a number of tools and links to frequently used websites (currenly they are MPL-centric, but there are plans to make them customizable in the future) that can be accessed from this dropdown panel.
+
+<dl>
+  <dt>Generate Problem Item Form:</dt>
+  <dd>Clicking this link will open a fillable SCLS Problem Item Form in a new tab. Both the patron and item data can be automatically retrieved from the barcode by clicking the button that appears after each respective field. IT is important to note the item's "Use" value is determined by the number of times the item barcode appears in the record's Checkout History Table. This value may be smaller than the actual item use which can only be determined if you're logged into Koha as the item's owning library. While the collected value can give you a general idea as to the item's use, it should not be used for determining things like whether a damaged item should be withdrawn.<br><br>When completed, the form may be sent to your receipt printer. Further instructions will appear after printing based on the type of problem (e.g. Damaged Item found in Book Drop, Parts Missing item that arrived via Transit Hold, etc.).<br><br>From any other page in Koha, there are two additional ways you can initiate the Problem Item Form. Any hyperlinked barcode number and any highlighted barcode number (i.e. selected text as when copy/pasting) may be right clicked and from the context menu you may select "Use Barcode in Problem Item Form." Not only will this open the problem form in a new tab, but it will also automatically start gathering either patron or item data based on the barcode that was selected.</dd>
+  <dt>Add Payment Plan Note:</dt>
+  <dd>This link will automatically generate the note for setting up an Madison Public Libary payment plan if you are currently editing a patron's record. A popup note will ask you to enter the initial balance on the patron's account, and the extension will fill in the rest.</dd>
+  <dt>Add lost library card note</dt>
+  <dd>This link will automatically generate both the circulation and OPAC notes to notify a patron that their library card was found. Just enter the name of your library location in the subsequent popup note, and the extension will fill in the rest. You must be currently editing a patron's record to use this tool.</dd>
+  <dt>Generate PSTAT from Secondary Address</dt>
+  <dd>When patron's have separate residential and mailing addresses, it is customary to enter the mailing address in the primary address fields, and their residential address in the alternate address fields. For statistical purposes, the "sort 1" (PSTAT) value should be based on the residential address and <b><i>not</i></b> the  mailing address. Since the PSTAT is normally automatically found using the primary address (assuming you have enabled this feature) this link is necessary to find the PSTAT when the mailing address and residential address are different. You must be currently editing a patron's record to use this tool.</dd>
+  <dt>Generate Calendar Announcements</dt>
+  <dd>This link is used to automatically select all of the necessary options when downloading upcoming event data for Madison Public Libraries. This link is only relevant to the Print-copy/Web Services Page who works at MPL-Central.</dd>
+</dl>
+
+Currently, the bookmark links available are as follows:
+
+1. Koha--Checkin
+2. Koha--Checkout
+3. American Fact Finder (for PSTAT lookup)
+4. Madison Public Library's Homepage
+5. MPL staff website
+6. MPL reference tools page
+
+In the next extension update, links 4-6 will be able to be custom set in the extension preferences.
+
 ## Sorting lists of libraries in Koha
 All lists of libraries in LibLime Koha are sorted alphabetically. This includes, but is not limited to, the "Library" list on the login screen, the list to select hold pickup locations, and the list to select a patron's home library.
 ## Generating dorm expiration dates
@@ -80,30 +107,6 @@ The following features may be turned on or off from the extension's preferences 
 | <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/mpl-logo.png" width="64px" > | <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/mid-logo.png" width="64px" > |<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/scls-logo.png" width="64px" > |
 
 <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/scnShot-highlighted-logo.png" >
-
-Clicking on the toolbar icon will give you and additional set of helpful functions and bookmarks. Currently, the bookmarks are specific to Madison libraries, but future updates will enable you to set custom bookmark links. there are currently four tool links:
-
-<dl>
-  <dt>Add Payment Plan Note:</dt>
-  <dd>This link will automatically generate the note for setting up an Madison Public Libary payment plan if you are currently editing a patron's record. A popup note will ask you to enter the initial balance on the patron's account, and the extension will fill in the rest.</dd>
-  <dt>Add lost library card note</dt>
-  <dd>This link will automatically generate both the circulation and OPAC notes to notify a patron that their library card was found. Just enter the name of your library location in the subsequent popup note, and the extension will fill in the rest. You must be currently editing a patron's record to use this tool.</dd>
-  <dt>Generate PSTAT from Secondary Address</dt>
-  <dd>When patron's have separate residential and mailing addresses, it is customary to enter the mailing address in the primary address fields, and their residential address in the alternate address fields. For statistical purposes, the "sort 1" (PSTAT) value should be based on the residential address and <b><i>not</i></b> the  mailing address. Since the PSTAT is normally automatically found using the primary address (assuming you have enabled this feature) this link is necessary to find the PSTAT when the mailing address and residential address are different. You must be currently editing a patron's record to use this tool.</dd>
-  <dt>Generate Calendar Announcements</dt>
-  <dd>This link is used to automatically select all of the necessary options when downloading upcoming event data for Madison Public Libraries. This link is only relevant to the Print-copy/Web Services Page who works at MPL-Central.</dd>
-</dl>
-
-Currently, the bookmark links available are as follows:
-
-1. Koha--Checkin
-2. Koha--Checkout
-3. American Fact Finder (for PSTAT lookup)
-4. Madison Public Library's Homepage
-5. MPL staff website
-6. MPL reference tools page
-
-In the next extension update, links 4-6 will be able to be custom set in the extension preferences.
 
 ## Additional patron messages
 This option removes the predefined patron message "Special Note" provided by LibLime Koha, which  is rarely or never used by MPL staff.
