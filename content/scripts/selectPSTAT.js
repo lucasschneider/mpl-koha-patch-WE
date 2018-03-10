@@ -286,11 +286,9 @@ if (isPatronEditScn) {
    * This function returns a custom message in lieu of printing the
    * generic [FAILED] notice.
    */
-  function showMsg(msg) {
-    showMsg(msg, "#c00c00");
-  }
-
-  function showMsg(msg, color) {
+  function showMsg(msg, c) {
+    var color = c ? c : "#c00c00";
+  
     if (useSecondaryElt) {
       clearInterval(timerListenerAlt);
       noticeEltAlt.style.color = color;
@@ -302,16 +300,6 @@ if (isPatronEditScn) {
     }
   }
 
-  /**
-   * This is the main function used to send a data query to the US
-   * Census Geocoder. The data returned determines the way in which
-   * the PSTAT is selected (i.e. Census Tract Number for MPL, Voting
-   * district for SUN, MOO, MID, and VER, or the County Subdivision
-   * for everywhere else.
-   */
-  function queryPSTAT() {
-    queryPSTAT(false);
-  }
   /**
    * This is the main function used to send a data query to the US
    * Census Geocoder. The data returned determines the way in which
@@ -395,14 +383,14 @@ if (isPatronEditScn) {
     addrElt.addEventListener('blur', function() {
       if (addrElt.value && cityElt.value) {
         parseMadisonWI(cityElt);
-        queryPSTAT();
+        queryPSTAT(false);
       }
     });
 
     // Parse the city value for "MADISON WI"
     cityElt.addEventListener('blur', function() {
       parseMadisonWI(cityElt);
-      queryPSTAT();
+      queryPSTAT(false);
     });
   }
 
