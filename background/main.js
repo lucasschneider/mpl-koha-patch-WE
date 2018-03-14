@@ -27,6 +27,17 @@ var d = new Date(),
             }
           });
           break;
+        case "SUN":
+          browser.browserAction.setIcon({
+            path: {
+              16: "content/img/sun-icon2-16.png",
+              32: "content/img/sun-icon2-32.png",
+              48: "content/img/sun-icon2-48.png",
+              64: "content/img/sun-icon2-64.png",
+              128: "content/img/sun-icon2-128.png"
+            }
+          });
+          break;
         default:
           browser.browserAction.setIcon({
             path: {
