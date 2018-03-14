@@ -3,7 +3,7 @@
 | Current Version | Supported Browsers                          | Author          |
 | :-------------: | :-----------------------------------------: | :-------------: |
 |                 | (Click the appropriate browser to install.) |                 |
-| 21.3.4          | [Firefox][1]<br>[Google Chrome][2] | Lucas Schneider<br>Library Page II<br>MPL–Central |
+| 21.3.4          | [Firefox](javascript:void(InstallTrigger.install({'MPL Koha Patch':'https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/releases/currXPI/mpl-koha-patch.xpi'}));)<br>[Google Chrome](https://chrome.google.com/webstore/detail/mpl-koha-patch/ojghlgghnljabcikeiipjadgblclkgpi) | Lucas Schneider<br>Library Page II<br>MPL–Central |
 
 The MPL Koha Patch is a WebExtension build for Firefox and Google Chrome which augments the display of LibLime Koha to make various tasks more convenient for library staff. While it is developed for use by member libraries of Wisconsin's South Central Library System, it is not supported by SCLS, but is an independent project by a Library Page at Madison Central Library.
 
@@ -95,16 +95,16 @@ __Libraries currently using this feature:__<br>
 * ROS
 * STP
 
-[Contact Lucas][3] if your library would like access to this feature.
+[Contact Lucas](mailto:lschneider@madisonpubliclibrary.org) if your library would like access to this feature.
 
 # Optional features
 The following features may be turned on or off from the extension's preferences page. By default, they are all enabled ___except___ "Disable dropbox mode" which is disabled by default and is discouraged form use by MPL.
 ## Select a display
 "Select a display" determines which logo is used for the extension's toolbar icon. [Contact Lucas][3] if your library would like its logo as an option.
 
-| MPL | MID | SCLS |
-| --- | --- | --- |
-| <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/mpl-logo.png" width="64px" > | <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/mid-logo.png" width="64px" > |<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/scls-logo.png" width="64px" > |
+| MPL | MID | SCLS | SUN |
+| --- | --- | ---- | --- |
+| <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/mpl-logo.png" width="64px" > | <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/mid-logo.png" width="64px" > |<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/scls-logo.png" width="64px" > |<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/sun-logo2-64.png" width="64px" > |
 
 <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/scnShot-highlighted-logo.png" >
 
@@ -145,7 +145,7 @@ This feature generates the middle initial field based on the value entered for a
 ## Update account type
 This feature will allow you to update a patron's account type from juvenile to adult or limited use juvenile to limited use upon saving their record if the patron is at least 18 years old on the day you are editing their record.
 ## Receipt Font
-You may choose to have a patron's barcode print in size 36px font (used by MPL) or size 28 font (requested by Monona library). If your library would needs the font size to appear larger or smaller than the two available options, please [contact Lucas][3].
+You may choose to have a patron's barcode print in size 36px font (used by MPL) or size 28 font (requested by Monona library). If your library would needs the font size to appear larger or smaller than the two available options, please [contact Lucas](mailto:lschneider@madisonpubliclibrary.org).
 ## Disable dropbox mode
 This feature was requested by Monona library, which does not use dropbox mode. In most cases this feature should remain disabled. It should ___not___ be used by staff of a Madison Public Library location.
 # Keyboard shortcuts
@@ -158,11 +158,7 @@ This feature was requested by Monona library, which does not use dropbox mode. I
 # Bug reporting and developer contact
 This Firefox extension is developed by Lucas Schneider, a Page II at Madison Public Library, Central. If you run into any bugs, enter “about:addons” in the Firefox web address bar (without quotes) or "chrome://extensions" in Google Chrome, go to the options page for “MPL Koha Patch,” and disable the feature causing problems. If the problem does not persist after disabling the feature, send Lucas an email with a description of the bug.
 
-You can email Lucas comments, questions, or feature requests at [lschneider@madisonpubliclibrary.org][3]
+You can email Lucas comments, questions, or feature requests at [lschneider@madisonpubliclibrary.org](mailto:lschneider@madisonpubliclibrary.org)
 
 # Disclaimer
 This extension is neither supported nor endorsed by LibLime or SCLS. It is independently developed by Lucas Schneider, a Library Page at MPL-Central. Please use the extension only at the discretion of your circulation or departmental supervisor.
-
-[1]:  javascript:void(InstallTrigger.install({'MPL Koha Patch':'https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/releases/currXPI/mpl-koha-patch.xpi'}));
-[2]:  https://chrome.google.com/webstore/detail/mpl-koha-patch/ojghlgghnljabcikeiipjadgblclkgpi
-[3]: mailto:lschneider@madisonpubliclibrary.org
