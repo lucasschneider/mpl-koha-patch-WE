@@ -3,7 +3,7 @@
 | Current Version | Supported Browsers                          | Author          |
 | :-------------: | :-----------------------------------------: | :-------------: |
 |                 | (Click the appropriate browser to install.) |                 |
-| 21.3.4          | [Firefox](javascript:void(InstallTrigger.install({'MPL Koha Patch':'https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/releases/currXPI/mpl-koha-patch.xpi'}));)<br>[Google Chrome](https://chrome.google.com/webstore/detail/mpl-koha-patch/ojghlgghnljabcikeiipjadgblclkgpi) | Lucas Schneider<br>Library Page II<br>MPL–Central |
+| 21.3.4          | [Firefox](<javascript:void(InstallTrigger.install({'MPL Koha Patch':'https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/releases/currXPI/mpl-koha-patch.xpi'}));>)<br>[Google Chrome](https://chrome.google.com/webstore/detail/mpl-koha-patch/ojghlgghnljabcikeiipjadgblclkgpi) | Lucas Schneider<br>Library Page II<br>MPL–Central |
 
 The MPL Koha Patch is a WebExtension build for Firefox and Google Chrome which augments the display of LibLime Koha to make various tasks more convenient for library staff. While it is developed for use by member libraries of Wisconsin's South Central Library System, it is not supported by SCLS, but is an independent project by a Library Page at Madison Central Library.
 
@@ -104,7 +104,7 @@ The following features may be turned on or off from the extension's preferences 
 
 | MPL | MID | SCLS | SUN |
 | --- | --- | ---- | --- |
-| <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/mpl-logo.png" width="64px" > | <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/mid-logo.png" width="64px" > |<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/scls-logo.png" width="64px" > |<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/sun-logo2-64.png" width="64px" > |
+| <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/mpl-logo.png" width="64px" > | <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/mid-logo.png" width="64px" > |<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/scls-logo.png" width="64px" > |<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/content/img/sun-logo2-64.png" width="64px" > |
 
 <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/scnShot-highlighted-logo.png" >
 
