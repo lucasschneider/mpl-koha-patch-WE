@@ -16,3 +16,16 @@ button {
 table td:first-child {
   padding-right: 1em;
 }
+
+#shortcutLinkTable td:first-child {
+  text-align: center;
+  font-weight: bold;
+}
+
+#shortcutLinkTable input {
+  cursor: text;
+  border: solid 2px #000;
+  border-radius: 5px;
+  padding: 2px;
+  width: 250px;
+}

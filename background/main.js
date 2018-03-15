@@ -157,59 +157,59 @@ function handleUpdated(details) {
     browser.storage.sync.get().then((res) => {
       if (!res.hasOwnProperty('patronMsg') || (res.hasOwnProperty('patronMsg') && res.patronMsg)) {
         browser.tabs.executeScript(details.tabId, {
-          file: "content/scripts/patronMessages.js"
+          file: "/content/scripts/patronMessages.js"
         });
       }
 
       if (!res.hasOwnProperty('validAddr') || (res.hasOwnProperty('validAddr') && res.validAddr)) {
         browser.tabs.executeScript(details.tabId, {
-          file: "content/scripts/validateAddresses.js"
+          file: "/content/scripts/validateAddresses.js"
         });
       }
 
       if (!res.hasOwnProperty('autoBarcode') || (res.hasOwnProperty('autoBarcode') && res.autoBarcode)) {
         browser.tabs.executeScript(details.tabId, {
-          file: "content/scripts/autofillUserId.js"
+          file: "/content/scripts/autofillUserId.js"
         });
       }
 
       if (!res.hasOwnProperty('lookupPSTAT') || (res.hasOwnProperty('lookupPSTAT') && res.lookupPSTAT)) {
         browser.tabs.executeScript(details.tabId, {
-          file: "content/scripts/selectPSTAT.js"
+          file: "/content/scripts/selectPSTAT.js"
         });
       }
 
       if (!res.hasOwnProperty('digestOnly') || (res.hasOwnProperty('digestOnly') && res.digestOnly)) {
         browser.tabs.executeScript(details.tabId, {
-          file: "content/scripts/forceDigest.js"
+          file: "/content/scripts/forceDigest.js"
         });
       }
 
       if (!res.hasOwnProperty('dueDateToggle') || (res.hasOwnProperty('dueDateToggle') && res.dueDateToggle)) {
         browser.tabs.executeScript(details.tabId, {
-          file: "content/scripts/restrictNotificationOptions.js"
+          file: "/content/scripts/restrictNotificationOptions.js"
         });
       }
 
       if (!res.hasOwnProperty('middleInitials') || (res.hasOwnProperty('middleInitials') && res.middleInitials)) {
         browser.tabs.executeScript(details.tabId, {
-          file: "content/scripts/middleName.js"
+          file: "/content/scripts/middleName.js"
         });
       }
 
       if (!res.hasOwnProperty('updateAccountType') || (res.hasOwnProperty('updateAccountType') && res.updateAccountType)) {
         browser.tabs.executeScript(details.tabId, {
-          file: "content/scripts/updateAccountType.js"
+          file: "/content/scripts/updateAccountType.js"
         });
       }
 
       if (res.hasOwnProperty('disableDropbox') && res.disableDropbox) {
         browser.tabs.executeScript(details.tabId, {
-          file: "content/scripts/disableDropbox.js"
+          file: "/content/scripts/disableDropbox.js"
         });
       } else if (day === 0) {
         browser.tabs.executeScript(details.tabId, {
-          file: "content/scripts/sundayDropbox.js"
+          file: "/content/scripts/sundayDropbox.js"
         });
       }
     });
@@ -391,7 +391,7 @@ function handleMessages(request, sender, sendResponse) {
       }).then((tab) => {
         factFinderTabId = tab.id;
         browser.tabs.executeScript(tab.id, {
-          file: "content/scripts/scrapFactFinder.js"
+          file: "/content/scripts/scrapFactFinder.js"
         }).then(() => {
           setTimeout(() => {
             browser.tabs.remove(tab.id)
@@ -1228,12 +1228,12 @@ function handleMessages(request, sender, sendResponse) {
       break;
     case "addNote":
       browser.tabs.executeScript({
-        file: "browserAction/scripts/addPaymentPlanNote.js"
+        file: "/browserAction/scripts/addPaymentPlanNote.js"
       });
       break;
     case "addLostCardNote":
       browser.tabs.executeScript({
-        file: "browserAction/scripts/addLostCardNote.js"
+        file: "/browserAction/scripts/addLostCardNote.js"
       });
       break;
     case "addr2PSTAT":
@@ -1260,7 +1260,7 @@ function handleMessages(request, sender, sendResponse) {
         url: "http://host.evanced.info/madison/evanced/eventspr.asp"
       }).then((tab) => {
         browser.tabs.executeScript({
-          file: "browserAction/scripts/calendarAnnouncements.js"
+          file: "/browserAction/scripts/calendarAnnouncements.js"
         });
       });
       break;
@@ -1280,11 +1280,11 @@ function handleMessages(request, sender, sendResponse) {
         url: browser.runtime.getURL("https://scls-staff.kohalibrary.com/cgi-bin/koha/circ/circulation-home.pl?mkpItemBarcode=" + request.itemBarcode + "#tabs-catalog_search")
       }).then((tab) => {
         browser.tabs.executeScript(tab.id, {
-          file: "problemItemForm/prepareItemData.js"
+          file: "/problemItemForm/prepareItemData.js"
         }).then(() => {
           setTimeout(() => {
             browser.tabs.executeScript(tab.id, {
-              file: "problemItemForm/getItemData.js"
+              file: "/problemItemForm/getItemData.js"
             });
           }, 7000);
           setTimeout(() => {
@@ -1318,7 +1318,7 @@ function handleMessages(request, sender, sendResponse) {
             }).then((holdsTab) => {
               setTimeout(() => {
                 browser.tabs.executeScript(holdsTab.id, {
-                  file: "problemItemForm/getItemHolds.js"
+                  file: "/problemItemForm/getItemHolds.js"
                 }).then(() => {
                   setTimeout(() => {
                     browser.tabs.remove(holdsTab.id);
@@ -1340,7 +1340,7 @@ function handleMessages(request, sender, sendResponse) {
         url: browser.runtime.getURL("https://scls-staff.kohalibrary.com/cgi-bin/koha/circ/circulation.pl?findborrower=" + request.patronBarcode)
       }).then((tab) => {
         browser.tabs.executeScript(tab.id, {
-          file: "problemItemForm/getPatronData.js"
+          file: "/problemItemForm/getPatronData.js"
         }).then(() => {
           setTimeout(() => {
             browser.tabs.remove(tab.id)

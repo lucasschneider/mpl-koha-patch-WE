@@ -10,7 +10,19 @@
     middleInitials: true,
     updateAccountType: true,
     receiptFont: "MPL",
-    disableDropbox: false
+    disableDropbox: false,
+    shortcutText1: "Koha—Checkin",
+    shortcutLink1: "http://scls-staff.kohalibrary.com/cgi-bin/koha/circ/returns.pl",
+    shortcutText2: "Koha—Checkout",
+    shortcutLink2: "http://scls-staff.kohalibrary.com/cgi-bin/koha/circ/circulation.pl",
+    shortcutText3: "American Fact Finder",
+    shortcutLink3: "http://factfinder.census.gov/faces/nav/jsf/pages/searchresults.xhtml?refresh=t",
+    shortcutText4: "MPL Home Page",
+    shortcutLink4: "http://madisonpubliclibrary.org",
+    shortcutText5: "MPLnet",
+    shortcutLink5: "http://www.mplnet.org",
+    shortcutText6: "MPL Reference Tools",
+    shortcutLink6: "http://www.madisonpubliclibrary.org/research/referenc2",
   });
   browser.runtime.sendMessage({key: "updateExtensionIcon"});
   restoreOptions();
@@ -60,6 +72,43 @@ function restoreOptions() {
   browser.storage.sync.get('disableDropbox').then((res) => {
     document.querySelector("#disableDropbox").checked = res.disableDropbox;
   });
+  
+  browser.storage.sync.get('shortcutText1').then((res) => {
+    document.getElementById("shortcutText1").value = res.shortcutText1;
+  });
+  browser.storage.sync.get('shortcutLink1').then((res) => {
+    document.getElementById("shortcutLink1").value = res.shortcutLink1;
+  });
+  browser.storage.sync.get('shortcutText2').then((res) => {
+    document.getElementById("shortcutText2").value = res.shortcutText2;
+  });
+  browser.storage.sync.get('shortcutLink2').then((res) => {
+    document.getElementById("shortcutLink2").value = res.shortcutLink2;
+  });
+  browser.storage.sync.get('shortcutText3').then((res) => {
+    document.getElementById("shortcutText3").value = res.shortcutText3;
+  });
+  browser.storage.sync.get('shortcutLink3').then((res) => {
+    document.getElementById("shortcutLink3").value = res.shortcutLink3;
+  });
+  browser.storage.sync.get('shortcutText4').then((res) => {
+    document.getElementById("shortcutText4").value = res.shortcutText4;
+  });
+  browser.storage.sync.get('shortcutLink4').then((res) => {
+    document.getElementById("shortcutLink4").value = res.shortcutLink4;
+  });
+  browser.storage.sync.get('shortcutText5').then((res) => {
+    document.getElementById("shortcutText5").value = res.shortcutText5;
+  });
+  browser.storage.sync.get('shortcutLink5').then((res) => {
+    document.getElementById("shortcutLink5").value = res.shortcutLink5;
+  });
+  browser.storage.sync.get('shortcutText6').then((res) => {
+    document.getElementById("shortcutText6").value = res.shortcutText6;
+  });
+  browser.storage.sync.get('shortcutLink6').then((res) => {
+    document.getElementById("shortcutLink6").value = res.shortcutLink6;
+  });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -74,7 +123,19 @@ document.addEventListener('DOMContentLoaded', function() {
         res.hasOwnProperty('middleInitials') &&
         res.hasOwnProperty('updateAccountType') &&
         res.hasOwnProperty('receiptFont') &&
-        res.hasOwnProperty('disableDropbox')) {
+        res.hasOwnProperty('disableDropbox') &&
+        res.hasOwnProperty('shortcutText1') &&
+        res.hasOwnProperty('shortcutLink1') &&
+        res.hasOwnProperty('shortcutText2') &&
+        res.hasOwnProperty('shortcutLink2') &&
+        res.hasOwnProperty('shortcutText3') &&
+        res.hasOwnProperty('shortcutLink3') &&
+        res.hasOwnProperty('shortcutText4') &&
+        res.hasOwnProperty('shortcutLink4') &&
+        res.hasOwnProperty('shortcutText5') &&
+        res.hasOwnProperty('shortcutLink5') &&
+        res.hasOwnProperty('shortcutText6') &&
+        res.hasOwnProperty('shortcutLink6')) {
       restoreOptions();
     } else {
       setDefaultOptions();
@@ -120,4 +181,41 @@ document.getElementById("receiptFont").addEventListener('change', function() {
 });
 document.getElementById("disableDropbox").addEventListener('click', function() {
    browser.storage.sync.set({disableDropbox: document.getElementById("disableDropbox").checked});
+});
+
+document.getElementById("shortcutText1").addEventListener('blur', function() {
+  browser.storage.sync.set({shortcutText1: document.getElementById("shortcutText1").value});
+});
+document.getElementById("shortcutLink1").addEventListener('blur', function() {
+  browser.storage.sync.set({shortcutLink1: document.getElementById("shortcutLink1").value});
+});
+document.getElementById("shortcutText2").addEventListener('blur', function() {
+  browser.storage.sync.set({shortcutText2: document.getElementById("shortcutText2").value});
+});
+document.getElementById("shortcutLink2").addEventListener('blur', function() {
+  browser.storage.sync.set({shortcutLink2: document.getElementById("shortcutLink2").value});
+});
+document.getElementById("shortcutText3").addEventListener('blur', function() {
+  browser.storage.sync.set({shortcutText3: document.getElementById("shortcutText3").value});
+});
+document.getElementById("shortcutLink3").addEventListener('blur', function() {
+  browser.storage.sync.set({shortcutLink3: document.getElementById("shortcutLink3").value});
+});
+document.getElementById("shortcutText4").addEventListener('blur', function() {
+  browser.storage.sync.set({shortcutText4: document.getElementById("shortcutText4").value});
+});
+document.getElementById("shortcutLink4").addEventListener('blur', function() {
+  browser.storage.sync.set({shortcutLink4: document.getElementById("shortcutLink4").value});
+});
+document.getElementById("shortcutText5").addEventListener('blur', function() {
+  browser.storage.sync.set({shortcutText5: document.getElementById("shortcutText5").value});
+});
+document.getElementById("shortcutLink5").addEventListener('blur', function() {
+  browser.storage.sync.set({shortcutLink5: document.getElementById("shortcutLink5").value});
+});
+document.getElementById("shortcutText6").addEventListener('blur', function() {
+  browser.storage.sync.set({shortcutText6: document.getElementById("shortcutText6").value});
+});
+document.getElementById("shortcutLink6").addEventListener('blur', function() {
+  browser.storage.sync.set({shortcutLink6: document.getElementById("shortcutLink6").value});
 });
