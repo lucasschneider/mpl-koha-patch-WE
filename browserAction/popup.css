@@ -1,5 +1,4 @@
 body {
-  margin: 1em;
   min-width: 300px;
 }
 
@@ -21,7 +20,7 @@ a:visited {
 }
 
 a:hover,
-div:hover {
+div > div:hover {
   color: #20b8da;
 }
 a,
@@ -29,4 +28,14 @@ a:hover,
 a:active,
 a:focus {
   outline: 0;
+}
+
+#mainWrapper {
+  margin: 1em;
+}
+
+#prefWrapper {
+  background: #CEDDE6;
+  text-align: right;
+  padding: 2px 10px 2px 0;
 }

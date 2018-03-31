@@ -8,7 +8,8 @@ var paymentPlan = document.getElementById('paymentPlan'),
   shortcut3 = document.getElementById('shortcut3'),
   shortcut4 = document.getElementById('shortcut4'),
   shortcut5 = document.getElementById('shortcut5'),
-  shortcut6 = document.getElementById('shortcut6');
+  shortcut6 = document.getElementById('shortcut6'),
+  prefs = document.getElementById('prefs');
 
 if (paymentPlan) paymentPlan.addEventListener('click', function() {
   browser.runtime.sendMessage({key: "addNote"});
@@ -30,6 +31,10 @@ if (problemItem) problemItem.addEventListener('click', function() {
   browser.tabs.create({
     url: browser.runtime.getURL("../problemItemForm/problemItemForm.html")
   });
+});
+
+if (prefs) prefs.addEventListener('click', function() {
+  browser.runtime.openOptionsPage();
 });
 
 /** Generate shortcut options **/
