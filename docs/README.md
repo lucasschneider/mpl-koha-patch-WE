@@ -3,7 +3,7 @@
 | Current Version | Supported Browsers                          | Author          |
 | :-------------: | :-----------------------------------------: | :-------------: |
 |                 | (Click the appropriate browser to install.) |                 |
-| 21.3.6          | [Firefox][1]<br>[Google Chrome](https://chrome.google.com/webstore/detail/mpl-koha-patch/ojghlgghnljabcikeiipjadgblclkgpi) | Lucas Schneider<br>Library Page II<br>MPL–Central |
+| 21.3.7          | [Firefox][1]<br>[Google Chrome](https://chrome.google.com/webstore/detail/mpl-koha-patch/ojghlgghnljabcikeiipjadgblclkgpi) | Lucas Schneider<br>Library Page II<br>MPL–Central |
 
 The MPL Koha Patch is a WebExtension built for Firefox and Google Chrome which augments the display of LibLime Koha to make various tasks more convenient for library staff. While it is developed for use by member libraries of Wisconsin's South Central Library System, it is not supported by SCLS, but is an independent project by a Library Page at Madison Central Library.
 
@@ -143,7 +143,7 @@ This feature forces staff to select either the "Due Date" or "Advance Notice" no
 ## Generate middle initials
 This feature generates the middle initial field based on the value entered for a patron's first name.
 ## Update account type
-This feature will allow you to update a patron's account type from juvenile to adult or limited use juvenile to limited use upon saving their record if the patron is at least 18 years old on the day you are editing their record.
+This feature will allow you to update a patron's account type from juvenile to adult or limited use juvenile to limited use upon saving their record if the patron is at least 16 years old on the day you are editing their record.
 ## Receipt Font
 You may choose to have a patron's barcode print in size 36px font (used by MPL) or size 28 font (requested by Monona library). If your library would needs the font size to appear larger or smaller than the two available options, please [contact Lucas](mailto:lschneider@madisonpubliclibrary.org).
 ## Disable dropbox mode

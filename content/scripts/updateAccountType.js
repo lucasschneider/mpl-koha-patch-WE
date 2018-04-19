@@ -27,7 +27,7 @@
 
   if (birthdayField && birthdayField.value && patronCategory && (patronCategory.value === 'LUJ' || patronCategory.value === 'JU')) {
     birthday = new Date(birthdayField.value);
-    if (saveButtonWrapper && calculateAge(birthday) >= 18) {
+    if (saveButtonWrapper && calculateAge(birthday) >= 16) {
       saveButtonWrapper.insertBefore(updateButton, saveButtonWrapper.children[0]);
     }
   }
