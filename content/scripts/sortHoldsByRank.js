@@ -78,7 +78,9 @@ if (onHoldTable) {
     // Sort in transit holds by date since, ASC
     transitHolds.sort(function(a, b) {
       if (new Date(a.children[rankColIdx].textContent.trim().match(/[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/)[0]) < new Date(b.children[rankColIdx].textContent.trim().match(/[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/)[0])) {
+        return -1;
       } else if (new Date(b.children[rankColIdx].textContent.trim().match(/[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/)[0]) < new Date(a.children[rankColIdx].textContent.trim().match(/[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/)[0])) {
+        return 1;
       } else if (a.children[titleColIdx].textContent.trim() < b.children[titleColIdx].textContent.trim()) {
         return -1;
       } else if (b.children[titleColIdx].textContent.trim() < a.children[titleColIdx].textContent.trim()) {
