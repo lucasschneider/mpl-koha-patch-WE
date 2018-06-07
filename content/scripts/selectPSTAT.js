@@ -3442,13 +3442,37 @@ if (isPatronEditScn) {
                 break;
             }
             break;
-            // If no data was returned, test against the Madison exceptional addresses
+            // If no data was returned, test against the Madison exceptional addresses, Middleton, Monona, Sun Prairie, and Verona
           default:
             if (/madison wi/i.test(targetCity.value)) {
               browser.runtime.sendMessage({
                 key: "getPstatByDist",
                 matchAddr: targetAddr.value,
                 lib: "Mad"
+              });
+            } else if (/middleton wi/i.test(targetCity.value)) {
+              browser.runtime.sendMessage({
+                key: "getPstatByDist",
+                matchAddr: targetAddr.value,
+                lib: "Mid"
+              });
+            } else if (/monona wi/i.test(targetCity.value)) {
+              browser.runtime.sendMessage({
+                key: "getPstatByDist",
+                matchAddr: targetAddr.value,
+                lib: "Moo"
+              });
+            } else if (/sun prairie wi/i.test(targetCity.value)) {
+              browser.runtime.sendMessage({
+                key: "getPstatByDist",
+                matchAddr: targetAddr.value,
+                lib: "Sun"
+              });
+            } else if (/verona wi/i.test(targetCity.value)) {
+              browser.runtime.sendMessage({
+                key: "getPstatByDist",
+                matchAddr: targetAddr.value,
+                lib: "Ver"
               });
             }
         }
