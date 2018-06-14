@@ -3456,12 +3456,6 @@ if (isPatronEditScn) {
                 matchAddr: targetAddr.value,
                 lib: "Mid"
               });
-            } else if (/monona wi/i.test(targetCity.value)) {
-              browser.runtime.sendMessage({
-                key: "getPstatByDist",
-                matchAddr: targetAddr.value,
-                lib: "Moo"
-              });
             } else if (/sun prairie wi/i.test(targetCity.value)) {
               browser.runtime.sendMessage({
                 key: "getPstatByDist",
@@ -3494,7 +3488,6 @@ if (isPatronEditScn) {
         targetZip.value = message.zip;
         break;
       case "receivedMidPSTAT":
-      case "receivedMooPSTAT":
       case "receivedSunPSTAT":
       case "receivedVerPSTAT":
         selectPSTAT(message.value, message.matchAddr);

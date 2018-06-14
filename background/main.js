@@ -310,19 +310,24 @@ function handleMessages(request, sender, sendResponse) {
       $.getJSON(countyURL).done(function(countyResponse) {
         if (countyResponse && countyResponse.result && countyResponse.result.addressMatches.length > 0) {
           try {
-            matchAddr = countyResponse.result.addressMatches[0].matchedAddress.split(',')[0].toUpperCase();
-            county = countyResponse.result.addressMatches[0].geographies['Counties'][0].BASENAME;
-            zip = countyResponse.result.addressMatches[0].addressComponents.zip;
+            // Select the last match if multiple are found
+            // I'm not sure if this works for all cases of multiple addresses,
+            // But it does for a particular address in Monona
+            lastAddrMatch = countyResponse.result.addressMatches.length - 1;
+
+            matchAddr = countyResponse.result.addressMatches[lastAddrMatch].matchedAddress.split(',')[0].toUpperCase();
+            county = countyResponse.result.addressMatches[lastAddrMatch].geographies['Counties'][0].BASENAME;
+            zip = countyResponse.result.addressMatches[lastAddrMatch].addressComponents.zip;
 
             $.getJSON(countySubdivisionURL).done(function(countySubResponse) {
               if (countySubResponse && countySubResponse.result) {
                 try {
-                  countySub = countySubResponse.result.addressMatches[0].geographies['County Subdivisions'][0].NAME;
+                  countySub = countySubResponse.result.addressMatches[lastAddrMatch].geographies['County Subdivisions'][0].NAME;
 
                   $.getJSON(censusTractURL).done(function(tractResponse) {
                     if (tractResponse && tractResponse.result) {
                       try {
-                        censusTract = tractResponse.result.addressMatches[0].geographies['Census Tracts'];
+                        censusTract = tractResponse.result.addressMatches[lastAddrMatch].geographies['Census Tracts'];
                         censusTract = (censusTract) ? censusTract[0] : null;
                         censusTract = (censusTract) ? censusTract.BASENAME : null;
 
@@ -1166,9 +1171,6 @@ function handleMessages(request, sender, sendResponse) {
         case "Mid":
           pstatURL += "mid";
           break;
-        case "Moo":
-          pstatURL += "moo";
-          break;
         case "Sun":
           pstatURL += "sun";
           break;
@@ -1203,7 +1205,7 @@ function handleMessages(request, sender, sendResponse) {
                 value: value,
                 zip: zip
               });
-            } else if (value && /m(id|oo)|ver|sun/i.test(request.lib)) {
+            } else if (value && /^(mid|ver|sun)$/i.test(request.lib)) {
               browser.tabs.sendMessage(tab.id, {
                 key: "received" + request.lib + "PSTAT",
                 value: value,
