@@ -11,6 +11,7 @@ if (isPatronEditScn) {
     bn = document.getElementById('borrowernotes'),
     cc = document.getElementsByClassName('categorycode'),
     field = document.getElementsByClassName('action'),
+    dob = document.getElementById('dateofbirth'),
     cityRegEx = /mad(ison([,]? wi.*)?)?|monona([,]? wi.*)?/i,
     fullAddrRegEx = new RegExp(),
     addrVal,
@@ -116,6 +117,20 @@ if (isPatronEditScn) {
               cc.value = "LUJ";
             } else if (cc.value === "LU" || cc.value === "LUJ") {
               wasLU = true;
+            } else if (cc.value === "WEB") {
+              if (dob && !!dob.value) {
+                dob = new Date(dob.value);
+                
+                if (((Date.now() - dob)/31556952000) >= 16) {
+                  wasLU = false;
+                  cc.value = "LU";
+                } else {
+                  wasLU = false;
+                  cc.value = "LUJ";
+                }
+              } else {
+                cc.value = prompt('Please enter LU if this is an adult account, or LUJ if this is a juvenile account.');
+              }
             }
           }
 
@@ -124,7 +139,7 @@ if (isPatronEditScn) {
             restoreSave();
           }
 
-          // Handle non-unacceptable bad addresses
+          // Handle acceptable bad addresses
           if (message.type === "restricted") {
             if (!(new RegExp("Patron's account is Limited Use due to temporary residence at " + message.name + " \\(" + message.address)).test(bn.value)) {
               initial = prompt("--- NOTE ---\nA library card issued to " + message.address + " (" +message.name + ") must be LIMITED USE.\n\nIn order to have the limited use restrictions removed from their account, a patron must first provide proof that they are living at a valid residential address.\n\nFor more info refer to the list of unacceptable addresses on the staff wiki:\nhttp://www.mplnet.org/system/files/UNACCEPTABLE%20ADDRESSES.pdf\n\nIf this is a new address, enter your initials and library code to confirm: (e.g. LS/MAD)");
