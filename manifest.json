@@ -50,15 +50,16 @@
       "js": [
         "thirdParty/browser-polyfill.min.js",
         "content/scripts/collegeExp.js",
+        "content/scripts/fastaddWarning.js",
         "content/scripts/fixSessionCkoDiv.js",
+        "content/scripts/holdsShelfActionCDs.js",
         "content/scripts/printBarcode.js",
-        "content/scripts/sortLibraries.js",
-        "content/scripts/standardFormat.js",
+        "content/scripts/sortHoldsByRank.js",
         "content/scripts/sortItemCheckoutHistory.js",
         "content/scripts/sortItemCopiesForHolds.js",
-        "content/scripts/sortHoldsByRank.js",
+        "content/scripts/sortLibraries.js",
         "content/scripts/sortWaitingHolds.js",
-        "content/scripts/holdsShelfActionCDs.js"
+        "content/scripts/standardFormat.js"
       ]
     }
   ],
