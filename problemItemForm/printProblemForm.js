@@ -16,7 +16,7 @@ for (var i = 0; i < fields.length; i++) {
         element.classList.remove("hide");
       }
     } else {
-      if (/cCode|holds|copies|use|patronPhone|patronEmail/.test(key) && value == "") {
+      if (/cCode|holds|copies|use|patronName|patronBarcode|patronPhone|patronEmail/.test(key) && value == "") {
         document.getElementById(key+"Wrap").classList.add("hide");
       } else {
         element.textContent = decodeURIComponent(value);

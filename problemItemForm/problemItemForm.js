@@ -110,6 +110,7 @@ browser.runtime.onMessage.addListener(message => {
     case "returnPatronData":
       document.getElementById("patronDataErrMsg").style.display = "none";
       document.getElementById("name").value = message.patronName;
+      document.getElementById("patronBarcode").value = message.patronBarcode;
       document.getElementById("phone").value = !!message.patronPhone ? message.patronPhone : "";
       document.getElementById("email").value = !!message.patronEmail ? message.patronEmail : "";
       break;
@@ -161,7 +162,7 @@ if (printForm) printForm.addEventListener("click", function() {
     
   var emailParts = patronEmail
   
-  if (to.value == "" | date.value == "" | from.value == "" | staffName.value == "" | type.value == "" | idBy.value == "" |receivedVia.value == "" | details.value == "" | itemTitle.value == "" | itemBarcode.value == "" | patron.value == "" | patronBarcode.value == "") {
+  if (to.value == "" | date.value == "" | from.value == "" | staffName.value == "" | type.value == "" | idBy.value == "" |receivedVia.value == "" | details.value == "" | itemTitle.value == "" | itemBarcode.value == "") {
     alert("Please check that all required fields have been filled in.");
   } else {
     instructions.style.display = "";

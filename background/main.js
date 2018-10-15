@@ -1349,6 +1349,20 @@ function handleMessages(request, sender, sendResponse) {
         });
       });
       break;
+    case "getPatronFromURL":
+      browser.tabs.create({
+        active: false,
+        url: browser.runtime.getURL("https://scls-staff.kohalibrary.com" + request.url)
+      }).then((tab) => {
+        browser.tabs.executeScript(tab.id, {
+          file: "/problemItemForm/getPatronData.js"
+        }).then(() => {
+          setTimeout(() => {
+            browser.tabs.remove(tab.id)
+          }, 2500);
+        });
+      });
+      break;
     case "returnPatronData":
     case "failedPatronData":
       var querying = browser.tabs.query({
@@ -1361,6 +1375,7 @@ function handleMessages(request, sender, sendResponse) {
             browser.tabs.sendMessage(tab.id, {
               "key": "returnPatronData",
               "patronName": request.patronName,
+              "patronBarcode": request.patronBarcode,
               "patronPhone": request.patronPhone,
               "patronEmail": request.patronEmail
             });
