@@ -5,6 +5,7 @@ var biblionumberMatchArr = /biblionumber=[0-9]*/.exec(location.toString()),
   cCodeCell = document.querySelector('.yui-g .listgroup:first-of-type .bibliodetails tbody tr:nth-child(3) td:last-of-type'),
   itemBarcodeWrap,
   itemBarcode,
+  itemStatus = document.querySelector(".bibliodetails .itemstatus"),
   title,
   copies,
   cCode,
@@ -14,6 +15,17 @@ var biblionumberMatchArr = /biblionumber=[0-9]*/.exec(location.toString()),
 if (biblionumberMatchArr.length > 0 && itemnumberMatchArr.length > 0) {
   bibNum = biblionumberMatchArr[0].match(/\d+/)[0];
   itemNum = itemnumberMatchArr[0].match(/\d+/)[0];
+  
+  if (itemStatus.children.length > 0) {
+    try {
+      browser.runtime.sendMessage({
+        "key": "getPatronFromURL",
+        "url": itemStatus.children[0].children[0].getAttribute("href")
+      });
+    } catch (e) {
+      console.log(e.message);
+    }
+  }
   
   if (itemNum) {
     itemBarcodeWrap = /[0-9]{14}/.exec(document.getElementById("item"+itemNum).textContent);

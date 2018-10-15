@@ -110,6 +110,7 @@ browser.runtime.onMessage.addListener(message => {
     case "returnPatronData":
       document.getElementById("patronDataErrMsg").style.display = "none";
       document.getElementById("name").value = message.patronName;
+      document.getElementById("patronBarcode").value = message.patronBarcode;
       document.getElementById("phone").value = !!message.patronPhone ? message.patronPhone : "";
       document.getElementById("email").value = !!message.patronEmail ? message.patronEmail : "";
       break;
