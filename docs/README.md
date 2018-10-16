@@ -20,6 +20,7 @@ This extension is ___not___ intended for use with the open source [Koha ILS](htt
 	* [Print patron's barcode number](#print-patrons-barcode-number)
 	* [Separate CDs in Holds Shelf Action List](#separate-cds-in-holds-shelf-action-list)
 	* [Text notification checkbox (by request only)](#text-notification-checkbox-by-request-only)
+	* [Fast Bib Add barcode warning](#fast-bib-add-barcode-warning)
 * [Optional Features](#optional-features)
 	* [Select a display](#select-a-display)
 	* [Additional patron messages](#additional-patron-messages)
@@ -38,13 +39,13 @@ This extension is ___not___ intended for use with the open source [Koha ILS](htt
 
 
 # Inherent features of the extension
-This extension comes with several features that cannot be disabled. This is because they are either known to be completely bug-free or because they standardize the formatting of data entry
+This extension comes with several features that cannot be disabled.
 ## Extension Dropdown Menu
 After installing the MPL Koha Patch you will notice an icon at the top right of the screen. By deault it will show the Madison Public Library logo, but this can be changed on the extension preferences page. There are a number of tools and links to frequently used websites (currenly they are MPL-centric, but there are plans to make them customizable in the future) that can be accessed from this dropdown panel.
 
 <dl>
   <dt>Generate Problem Item Form:</dt>
-  <dd>Clicking this link will open a fillable SCLS Problem Item Form in a new tab. Both the patron and item data can be automatically retrieved from the barcode by clicking the button that appears after each respective field. IT is important to note the item's "Use" value is determined by the number of times the item barcode appears in the record's Checkout History Table. This value may be smaller than the actual item use which can only be determined if you're logged into Koha as the item's owning library. While the collected value can give you a general idea as to the item's use, it should not be used for determining things like whether a damaged item should be withdrawn.<br><br>When completed, the form may be sent to your receipt printer. Further instructions will appear after printing based on the type of problem (e.g. Damaged Item found in Book Drop, Parts Missing item that arrived via Transit Hold, etc.).<br><br>From any other page in Koha, there are two additional ways you can initiate the Problem Item Form. Any hyperlinked barcode number and any highlighted barcode number (i.e. selected text as when copy/pasting) may be right clicked and from the context menu you may select "Use Barcode in Problem Item Form." Not only will this open the problem form in a new tab, but it will also automatically start gathering either patron or item data based on the barcode that was selected.</dd>
+  <dd>Clicking this link will open a fillable SCLS Problem Item Form in a new tab. Both the patron and item data can be automatically retrieved from the barcode by clicking the button that appears after each respective field. If the item is currently checked out, retrieving data from the item barcode will also automatically retrieve last patron data. Due to restrictions in accessing other library's item use data, use must be manually entered. <br><br>When completed, the form may be sent to your receipt printer. Further instructions will appear after printing based on the type of problem (e.g. Damaged Item found in Book Drop, Parts Missing item that arrived via Transit Hold, etc.).<br><br>From any other page in Koha, there are two additional ways you can initiate the Problem Item Form. Any hyperlinked barcode number and any highlighted barcode number (i.e. selected text as when copy/pasting) may be right clicked and from the context menu you may select "Use Barcode in Problem Item Form." Not only will this open the problem form in a new tab, but it will also automatically start gathering either patron or item data based on the barcode that was selected.</dd>
   <dt>Add Payment Plan Note:</dt>
   <dd>This link will automatically generate the note for setting up an Madison Public Libary payment plan if you are currently editing a patron's record. A popup note will ask you to enter the initial balance on the patron's account, and the extension will fill in the rest.</dd>
   <dt>Add lost library card note</dt>
@@ -55,7 +56,7 @@ After installing the MPL Koha Patch you will notice an icon at the top right of 
   <dd>This link is used to automatically select all of the necessary options when downloading upcoming event data for Madison Public Libraries. This link is only relevant to the Print-copy/Web Services Page who works at MPL-Central.</dd>
 </dl>
 
-Currently, the bookmark links available are as follows:
+Currently, the default bookmark links available are as follows:
 
 1. Koha--Checkin
 2. Koha--Checkout
@@ -64,7 +65,7 @@ Currently, the bookmark links available are as follows:
 5. MPL staff website
 6. MPL reference tools page
 
-In the next extension update, links 4-6 will be able to be custom set in the extension preferences.
+You may customize the bookmark links from the extension preferences page.
 
 ## Sorting lists of libraries in Koha
 All lists of libraries in LibLime Koha are sorted alphabetically. This includes, but is not limited to, the "Library" list on the login screen, the list to select hold pickup locations, and the list to select a patron's home library.
@@ -87,7 +88,7 @@ A checkbox has been added to the Holds Shelf Action page that enables staff to s
 ## Text notification checkbox (by request only)
 This feature adds a checkbox to the patron edit page in Koha to more easily toggle SMS notifications on or off. The checkbox moves a patron's email address (if there is one) to the alternate contact section and prepends "T1-" to the primary phone number (which is assumed to be a cell phone number). Unchecking the box will reverse these changes.
 
-Because this checkbox only moves data around on the patron edit form. A phone number (and, optionally, an email address) _must_ be entered before using the checkbox. Similarly, checking the box cannot 100% guarantee that the patron's data
+Because this checkbox only moves data around on the patron edit form. A phone number (and, optionally, an email address) _must_ be entered before using the checkbox. Similarly, checking the box cannot 100% guarantee that the patron's data is properly formatted for receiving text messages.
 
 __Libraries currently using this feature:__<br>
 * ALM
@@ -96,6 +97,8 @@ __Libraries currently using this feature:__<br>
 * STP
 
 [Contact Lucas](mailto:lschneider@madisonpubliclibrary.org) if your library would like access to this feature.
+## Fast Bib Add barcode warning
+If you try to checkout an item to a patron with a barcode that is not a 14-digit number starting with "3", a warning is displayed on the Fast Bib Add popup message warning that this is not a standard barcode number. This feature is designed to help prevent staff from creating fast-adds from raw RFID tags, which show as a 14 character string, usually starting with "E".
 
 # Optional features
 The following features may be turned on or off from the extension's preferences page. By default, they are all enabled ___except___ "Disable dropbox mode" which is disabled by default and is discouraged form use by MPL.
@@ -111,7 +114,7 @@ The following features may be turned on or off from the extension's preferences 
 ## Additional patron messages
 This option removes the predefined patron message "Special Note" provided by LibLime Koha, which  is rarely or never used by MPL staff.
 
-Additionally, this option adds predefined messages to the selection list which are frequently used, but not provided by LibLime Koha:
+This option adds predefined messages to the selection list which are frequently used, but not provided by LibLime Koha:
 
 * "Patron must have library card at next checkout."
 * "Patron has signed Laptop/iPad Loan Agreement form. Form on file."
@@ -130,7 +133,7 @@ the OPAC login when a barcode is scanned into the barcode field.
 ## Lookup "sort 1" (PSTAT)
 <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/scnShot-pstat-lookup.png" >
 
-This feature will attempt to automatically enter the zipcode and PSTAT for any address. It is important to ensure that the street address, city, and state abbreviation are entered and correctly spelled. It starts with the most recent census data, and falls back on the 2010 census data. This will look up the census tract number for Madison address, and the county subdivision for addresses both within and outside SCLS. The cities of Middleton, Monona, and Sun Prairie and and parts of Verona select the PSTAT based on the patron’s aldermanic district. With future updates, the city of Verona  will be fully supported.
+This feature will attempt to automatically enter the zipcode and PSTAT for any address. It is important to ensure that the street address, city, and state abbreviation are entered and correctly spelled. It starts with the most recent census data, and falls back on the 2010 census data. This will look up the census tract number for Madison address, and the county subdivision for addresses both within and outside SCLS. The cities of Middleton, Monona, Sun Prairie, and Verona select the PSTAT based on the patron’s aldermanic district.
 
 <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/scnShot-geo-home-library.png" >
 
@@ -161,6 +164,6 @@ This Firefox extension is developed by Lucas Schneider, a Page II at Madison Pub
 You can email Lucas comments, questions, or feature requests at [lschneider@madisonpubliclibrary.org](mailto:lschneider@madisonpubliclibrary.org)
 
 # Disclaimer
-This extension is neither supported nor endorsed by LibLime or SCLS. It is independently developed by Lucas Schneider, a Library Page at MPL-Central. Please use the extension only at the discretion of your circulation or departmental supervisor.
+This extension has been vetted for security by SCLS, however, it is neither supported nor endorsed by LibLime or SCLS. It is independently developed by Lucas Schneider, a Library Page at MPL-Central. Please use the extension only at the discretion of your circulation or departmental supervisor.
 
   [1]: javascript:void(InstallTrigger.install({'MPL Koha Patch':'https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/releases/currXPI/mpl-koha-patch.xpi'}));
