@@ -86,7 +86,7 @@ for (var i = 0; i < 7; i++) {
 }
 
 // Check all libraries
-for (var i = 0; i < 9; i++) {
+for (var i = 0; i < 10; i++) {
 	document.getElementsByName('Branch')[i].checked = true;
 }
 

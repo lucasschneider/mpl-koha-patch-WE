@@ -41,13 +41,13 @@ This extension is ___not___ intended for use with the open source [Koha ILS](htt
 # Inherent features of the extension
 This extension comes with several features that cannot be disabled.
 ## Extension Dropdown Menu
-After installing the MPL Koha Patch you will notice an icon at the top right of the screen. By deault it will show the Madison Public Library logo, but this can be changed on the extension preferences page. There are a number of tools and links to frequently used websites (currenly they are MPL-centric, but there are plans to make them customizable in the future) that can be accessed from this dropdown panel.
+After installing the MPL Koha Patch you will notice an icon at the top right of the screen. By default it will show the Madison Public Library logo, but this can be changed on the extension preferences page. There are a number of tools and links to frequently used websites that can be accessed from this dropdown panel.
 
 <dl>
   <dt>Generate Problem Item Form:</dt>
-  <dd>Clicking this link will open a fillable SCLS Problem Item Form in a new tab. Both the patron and item data can be automatically retrieved from the barcode by clicking the button that appears after each respective field. If the item is currently checked out, retrieving data from the item barcode will also automatically retrieve last patron data. Due to restrictions in accessing other library's item use data, use must be manually entered. <br><br>When completed, the form may be sent to your receipt printer. Further instructions will appear after printing based on the type of problem (e.g. Damaged Item found in Book Drop, Parts Missing item that arrived via Transit Hold, etc.).<br><br>From any other page in Koha, there are two additional ways you can initiate the Problem Item Form. Any hyperlinked barcode number and any highlighted barcode number (i.e. selected text as when copy/pasting) may be right clicked and from the context menu you may select "Use Barcode in Problem Item Form." Not only will this open the problem form in a new tab, but it will also automatically start gathering either patron or item data based on the barcode that was selected.</dd>
+  <dd>Clicking this link will open a fillable SCLS Problem Item Form in a new tab. Both the patron and item data can be automatically retrieved from the barcode by clicking the button that appears after each respective field. If the item is currently checked out, retrieving data from the item barcode will also automatically retrieve last patron data. Due to restrictions in accessing another library's item use data, use must be manually entered. <br><br>When completed, the form may be sent to your receipt printer. Further instructions will appear after printing based on the type of problem (e.g. Damaged Item found in Book Drop, Parts Missing item that arrived via Transit Hold, etc.).<br><br>From any other page in Koha, there are two additional ways you can initiate the Problem Item Form. Any hyperlinked barcode number and any highlighted barcode number (i.e. selected text as when copy/pasting) may be right clicked and from the context menu you may select "Use Barcode in Problem Item Form." Not only will this open the problem form in a new tab, but it will also automatically start gathering either patron or item data based on the barcode that was selected.</dd>
   <dt>Add Payment Plan Note:</dt>
-  <dd>This link will automatically generate the note for setting up an Madison Public Libary payment plan if you are currently editing a patron's record. A popup note will ask you to enter the initial balance on the patron's account, and the extension will fill in the rest.</dd>
+  <dd>This link will automatically generate the note for setting up a Madison Public Library payment plan if you are currently editing a patron's record. A popup note will ask you to enter the initial balance on the patron's account, and the extension will fill in the rest.</dd>
   <dt>Add lost library card note</dt>
   <dd>This link will automatically generate both the circulation and OPAC notes to notify a patron that their library card was found. Just enter the name of your library location in the subsequent popup note, and the extension will fill in the rest. You must be currently editing a patron's record to use this tool.</dd>
   <dt>Generate PSTAT from Secondary Address</dt>
@@ -72,13 +72,13 @@ All lists of libraries in LibLime Koha are sorted alphabetically. This includes,
 ## Generating dorm expiration dates
 This feature automatically sets any new patron’s library card expiration date to the end of the current academic school year (5/15) if they are living at a UW--Madison university dorm.
 ## Standardize patron entry formatting
-All text fields of a patrons record are forced to be uppercase except for the email address fields which are forced to be lowercase. The city and state format for the City of Madison is forcibly "MADISON WI" and library staff may enter "mad" as a shortcut for and "MADISON WI" address.
+All text fields of a patron's record are forced to be uppercase except for the email address fields which are forced to be lowercase. The city and state format for the City of Madison is forcibly "MADISON WI" and library staff may enter "mad" as a shortcut for a "MADISON WI" address.
 ## Bring 'Session Checkouts' list to top of screen
 This feature ensures that a patron's 'session checkouts' appears at the top of the screen regardless of how many waiting holds or special notes appear on the checkout screen.
 ## Limit patron edit input fields
 This feature disables many of the rarely used input fields which appear while editing a patron’s record. This encourages library staff to maintain a consistent system of data entry across patron accounts. This may be overridden to enable all input fields by checking the checkbox at the top of the patron edit page.
 
-If you are logged into Koha as one of the MPL libraries, this will even more greatly reduce the available input fields when creating a new web-use only account. Additionally, the address, PSTAT, and circulation note fields will be automatically filled in by MPL standards.
+If you are logged into Koha as one of the MPL libraries, this will even more greatly reduce the available input fields when creating a new web-use only account. Additionally, the address, PSTAT, and circulation note fields will be automatically filled in according to MPL and SCLS standards.
 ## Item checkout history sort options
 This feature ensures that an item’s checkout history is sorted completely chronologically. By default, the table will be sorted by checkout date in descending order (i.e. most recent checkouts will appear at the top). You may choose to sort the items by checkout date, due date, or return date in either ascending or descending order. There is also a box to check if you wish to group the items by barcode number.
 ## Print patron's barcode number
@@ -88,7 +88,7 @@ A checkbox has been added to the Holds Shelf Action page that enables staff to s
 ## Text notification checkbox (by request only)
 This feature adds a checkbox to the patron edit page in Koha to more easily toggle SMS notifications on or off. The checkbox moves a patron's email address (if there is one) to the alternate contact section and prepends "T1-" to the primary phone number (which is assumed to be a cell phone number). Unchecking the box will reverse these changes.
 
-Because this checkbox only moves data around on the patron edit form. A phone number (and, optionally, an email address) _must_ be entered before using the checkbox. Similarly, checking the box cannot 100% guarantee that the patron's data is properly formatted for receiving text messages.
+Because this checkbox only moves data around on the patron edit form, a phone number (and, optionally, an email address) _must_ be entered before using the checkbox. Similarly, checking the box cannot 100% guarantee that the patron's data is properly formatted for receiving text messages.
 
 __Libraries currently using this feature:__<br>
 * ALM
@@ -101,7 +101,7 @@ __Libraries currently using this feature:__<br>
 If you try to checkout an item to a patron with a barcode that is not a 14-digit number starting with "3", a warning is displayed on the Fast Bib Add popup message warning that this is not a standard barcode number. This feature is designed to help prevent staff from creating fast-adds from raw RFID tags, which show as a 14 character string, usually starting with "E".
 
 # Optional features
-The following features may be turned on or off from the extension's preferences page. By default, they are all enabled ___except___ "Disable dropbox mode" which is disabled by default and is discouraged form use by MPL.
+The following features may be turned on or off from the extension's preferences page. By default, they are all enabled ___except___ "Disable dropbox mode" which is disabled by default and is discouraged from use by MPL.
 ## Select a display
 "Select a display" determines which logo is used for the extension's toolbar icon. [Contact Lucas][3] if your library would like its logo as an option.
 
@@ -148,7 +148,7 @@ This feature generates the middle initial field based on the value entered for a
 ## Update account type
 This feature will allow you to update a patron's account type from juvenile to adult or limited use juvenile to limited use upon saving their record if the patron is at least 16 years old on the day you are editing their record.
 ## Receipt Font
-You may choose to have a patron's barcode print in size 36px font (used by MPL) or size 28 font (requested by Monona library). If your library would needs the font size to appear larger or smaller than the two available options, please [contact Lucas](mailto:lschneider@madisonpubliclibrary.org).
+You may choose to have a patron's barcode print in size 36px font (used by MPL) or size 28 font (requested by Monona library). If your library would like the font size to appear larger or smaller than the two available options, please [contact Lucas](mailto:lschneider@madisonpubliclibrary.org).
 ## Disable dropbox mode
 This feature was requested by Monona library, which does not use dropbox mode. In most cases this feature should remain disabled. It should ___not___ be used by staff of a Madison Public Library location.
 # Keyboard shortcuts
