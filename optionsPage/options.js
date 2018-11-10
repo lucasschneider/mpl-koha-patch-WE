@@ -10,7 +10,8 @@
     middleInitials: true,
     updateAccountType: true,
     receiptFont: "MPL",
-    disableDropbox: false,
+    sundayDropbox: true,
+    sundayDropboxPaused: false,
     shortcutText1: "Koha—Checkin",
     shortcutLink1: "http://scls-staff.kohalibrary.com/cgi-bin/koha/circ/returns.pl",
     shortcutText2: "Koha—Checkout",
@@ -69,8 +70,8 @@ function restoreOptions() {
     document.querySelector("#receiptFont").value = res.receiptFont;
   });
   
-  browser.storage.sync.get('disableDropbox').then((res) => {
-    document.querySelector("#disableDropbox").checked = res.disableDropbox;
+  browser.storage.sync.get('sundayDropbox').then((res) => {
+    document.querySelector("#sundayDropbox").checked = res.sundayDropbox;
   });
   
   browser.storage.sync.get('shortcutText1').then((res) => {
@@ -123,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
         res.hasOwnProperty('middleInitials') &&
         res.hasOwnProperty('updateAccountType') &&
         res.hasOwnProperty('receiptFont') &&
-        res.hasOwnProperty('disableDropbox') &&
+        res.hasOwnProperty('sundayDropbox') &&
         res.hasOwnProperty('shortcutText1') &&
         res.hasOwnProperty('shortcutLink1') &&
         res.hasOwnProperty('shortcutText2') &&
@@ -179,8 +180,8 @@ document.getElementById("updateAccountType").addEventListener('click', function(
 document.getElementById("receiptFont").addEventListener('change', function() {
    browser.storage.sync.set({receiptFont: document.getElementById("receiptFont").value});
 });
-document.getElementById("disableDropbox").addEventListener('click', function() {
-   browser.storage.sync.set({disableDropbox: document.getElementById("disableDropbox").checked});
+document.getElementById("sundayDropbox").addEventListener('click', function() {
+   browser.storage.sync.set({sundayDropbox: document.getElementById("sundayDropbox").checked});
 });
 
 document.getElementById("shortcutText1").addEventListener('blur', function() {

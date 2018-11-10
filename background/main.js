@@ -203,14 +203,18 @@ function handleUpdated(details) {
         });
       }
 
-      if (res.hasOwnProperty('disableDropbox') && res.disableDropbox) {
-        browser.tabs.executeScript(details.tabId, {
-          file: "/content/scripts/disableDropbox.js"
-        });
-      } else if (day === 0) {
-        browser.tabs.executeScript(details.tabId, {
-          file: "/content/scripts/sundayDropbox.js"
-        });
+      // If the Sunday dropbox option is enabled...
+      if (res.hasOwnProperty('sundayDropbox') && res.sundayDropbox && day === 0) {
+        // If sundayDropbox is not paused
+        if (res.hasOwnProperty('sundayDropboxPaused') && !res.sundayDropboxPaused) {
+          browser.tabs.executeScript(details.tabId, {
+            file: "/content/scripts/sundayDropbox.js"
+          });
+        }
+      } else {
+        if (res.hasOwnProperty('sundayDropboxPaused') && res.sundayDropboxPaused) {
+          browser.storage.sync.set({sundayDropboxPaused: false});
+        }
       }
     });
   }
@@ -1226,6 +1230,15 @@ function handleMessages(request, sender, sendResponse) {
       break;
     case "updateExtensionIcon":
       setIcon();
+      break;
+    case "pauseSundayDropbox":
+        browser.storage.sync.set({sundayDropboxPaused: true});
+      setTimeout(function(){
+        browser.storage.sync.set({sundayDropboxPaused: false});
+      }, 180000); // 3min
+      break;
+    case "resumeSundayDropbox":
+        browser.storage.sync.set({sundayDropboxPaused: false});
       break;
     case "addNote":
       browser.tabs.executeScript({
