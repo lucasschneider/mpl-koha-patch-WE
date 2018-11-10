@@ -1200,7 +1200,7 @@ if (isPatronEditScn) {
               case "Sanborn town":
               case "Shanagolden town":
               case "White River town":
-                sprtCode = "AS-NOLIB";
+                sortCode = "AS-NOLIB";
                 break;
             }
             break;
@@ -1274,6 +1274,7 @@ if (isPatronEditScn) {
               case "Nelson town":
               case "Nelson village":
               case "Waumandee town":
+                sortCode = "BU-NOLIB";
                 break;
             }
             break;
@@ -1305,6 +1306,7 @@ if (isPatronEditScn) {
               case "Webb Lake town":
               case "West Marshland town":
               case "Wood River town":
+                sortCode = "BT-NOLIB";
                 break;
             }
             break;
@@ -2536,7 +2538,7 @@ if (isPatronEditScn) {
                 sortCode = "MQ-OXF-T";
                 break;
               case "Oxford village":
-                sortCode = "MQ-OXf-V";
+                sortCode = "MQ-OXF-V";
                 break;
               case "Packwaukee town":
                 sortCode = "MQ-PCK-T";
