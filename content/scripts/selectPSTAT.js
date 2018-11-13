@@ -894,7 +894,7 @@ if (isPatronEditScn) {
               case "Dewey town":
                 sortCode = "P-DEW-T";
                 break;
-              case "Eau PLeine town":
+              case "Eau Pleine town":
                 sortCode = "P-EPL-T";
                 break;
               case "Grant town":
