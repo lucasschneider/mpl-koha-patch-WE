@@ -1786,7 +1786,7 @@ if (isPatronEditScn) {
           case "Iowa":
             switch (message.countySub) {
               case "Arena town":
-                sortCode = "IO-ART-T";
+                sortCode = "IO-ARE-T";
                 break;
               case "Arena village":
                 sortCode = "IO-ARE-V";
