@@ -427,7 +427,7 @@ function handleMessages(request, sender, sendResponse) {
     case "findNearestLib":
       var patronAddr = request.matchAddr4DistQuery,
         region = request.selected,
-        mapURL = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + request.matchAddr4DistQuery + "&destinations=";
+        mapURL = "https://maps.googleapis.com/maps/api/distancematrix/json?key=AIzaSyAAYcV9I6AAd4EQphC4Ynai5dmOScYBggA&origins=" + request.matchAddr4DistQuery + "&destinations=";
       switch (region) {
         case "MPL":
           for (var idx = 0; idx < 8; idx++) {
@@ -485,6 +485,7 @@ function handleMessages(request, sender, sendResponse) {
       }
       $.getJSON(mapURL).done(function(response) {
         if (response) {
+          console.log(response);
           var elements = response.rows[0].elements;
           if (elements) {
             switch (region) {
@@ -881,7 +882,7 @@ function handleMessages(request, sender, sendResponse) {
                   case MEAdist:
                     closestLib = "MEA";
                     break;
-                    //case MSBdist: closestLib = "MSB"; break; Arbitrarily exclude MSB to prevent API crash (only 55 elements seem to work)
+                  case MSBdist: closestLib = "MSB"; break;// Arbitrarily exclude MSB to prevent API crash (only 55 elements seem to work)
                   case PINdist:
                     closestLib = "PIN";
                     break;
