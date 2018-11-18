@@ -191,37 +191,6 @@ if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberen
     enableOpts.click();
   }
   
-  /*** Auto-complete web-use only fields ***/
-  if (categorycode) {
-    categorycode.addEventListener('change', function () {
-      
-      if (categorycode.value === "WEB") {
-        for (i = 0; i < unused4WebUse.length; i++) {
-          elt = document.getElementById(unused4WebUse[i]);
-          if (elt !== null) {
-            elt.disabled = true;
-            elt.style.backgroundColor = '#cecece';
-          }
-        }
-      } else if  (categorycode.value !== "WEB") {
-        for (i = 0; i < unused4WebUse.length; i++) {
-          elt = document.getElementById(unused4WebUse[i]);
-          if (elt !== null) {
-            elt.disabled = false;
-            elt.style.backgroundColor = '';
-          }
-        }
-      }
-    });
-    if (categorycode.value === "WEB" && /(mad|hpb|seq|smb|msb|pin|haw|lak|mea)/i.test(usr)) {
-      if (bn && bn.value === "") bn.value = "FOR INTERNET USE ONLY; NO CKO ALLOWED. jfk";
-      if (address && address.value === "") address.value = "NA";
-      if (city && city.value === "") city.value = "MADISON WI";
-      if (zip && zip.value === "") zip.value = "00088";
-      if (sortElts) sortElts.value = "D-17.04";
-    }
-  }
-  
   /* Add text notification checkbox ONLY for PCPLs */
   if (/(stp|plo|alm|ros)/.test(usr)) {
     var phoneElt = document.getElementById('phone'),
