@@ -813,7 +813,7 @@ function handleMessages(request, sender, sendResponse) {
                   HAWdist = elements[2].distance.value,
                   LAKdist = elements[3].distance.value,
                   MEAdist = elements[4].distance.value,
-                  //MSBdist = elements[5].distance.value, Arbitrarily exclude MSB to prevent API crash (only 55 elements seem to work)
+                  MSBdist = elements[5].distance.value,
                   PINdist = elements[5].distance.value,
                   SEQdist = elements[6].distance.value,
                   SMBdist = elements[7].distance.value,
@@ -882,7 +882,9 @@ function handleMessages(request, sender, sendResponse) {
                   case MEAdist:
                     closestLib = "MEA";
                     break;
-                  case MSBdist: closestLib = "MSB"; break;// Arbitrarily exclude MSB to prevent API crash (only 55 elements seem to work)
+                  case MSBdist:
+                    closestLib = "MSB";
+                    break;
                   case PINdist:
                     closestLib = "PIN";
                     break;
