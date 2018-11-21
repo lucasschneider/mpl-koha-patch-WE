@@ -128,11 +128,11 @@ var d = new Date(),
     ["SKC", "515+Water+St,+Sauk+City,+WI+53583"],
     ["SGR", "230+E+Monroe+St,+Spring+Green,+WI+53588"],
 
-    // WOOD  [54-65]
+    // WOOD  [54-56]
     ["ARP", "8091+County+E,+Arpin,+WI+54410"],
     ["MCM", "490+E+Grand+Ave,+Wisconsin+Rapids,+WI+54494"],
     //["MFD","211+E+Second+St,+Marshfield,+WI+54449"], ** NON LINK LIBRARY ***
-    //["NEK","100+Park+St,+Nekoosa,+WI+54457"], ** NON LINK LIBRARY ***
+    ["NEK","100+Park+St,+Nekoosa,+WI+54457"],
     //["PIT","5291+Third+Ave,+Pittsville,+WI+54466"], ** NON LINK LIBRARY ***
     //["VES","6550+Virginia+St,+Vesper,+WI+54489"] ** NON LINK LIBRARY ***
   ],
@@ -145,7 +145,7 @@ var d = new Date(),
   zip,
   closestLib = "",
   value = "",
-  problemItemFormTID; // The tab ID for the most recent instance of teh problem item form
+  problemItemFormTID; // The tab ID for the most recent instance of the problem item form
 
 setIcon();
 
@@ -469,16 +469,13 @@ function handleMessages(request, sender, sendResponse) {
           mapURL += libraryAddresses[53][1];
           break;
         case "WOOD":
-          mapURL += libraryAddresses[54][1] + "|" + libraryAddresses[55][1];
+          mapURL += libraryAddresses[54][1] + "|" + libraryAddresses[55][1] + "|" + libraryAddresses[56][1];
           break;
         case "SCLS":
-          for (var idx = 0; idx < 5; idx++) {
+          for (var idx = 0; idx < 56; idx++) {
             mapURL += libraryAddresses[idx][1] + "|";
           }
-          for (idx = 6; idx < 55; idx++) {
-            mapURL += libraryAddresses[idx][1] + "|";
-          }
-          mapURL += libraryAddresses[55][1];
+          mapURL += libraryAddresses[56][1];
           break;
         default:
           break;
@@ -795,13 +792,17 @@ function handleMessages(request, sender, sendResponse) {
               case "WOOD":
                 var ARPdist = elements[0].distance.value,
                   MCMdist = elements[1].distance.value,
-                  minDist = Math.min(ARPdist, MCMdist);
+                  NEKdist = elements[2].distance.value,
+                  minDist = Math.min(ARPdist, MCMdist, NEKdist);
                 switch (minDist) {
                   case ARPdist:
                     closestLib = "ARP";
                     break;
                   case MCMdist:
                     closestLib = "MCM";
+                    break;
+                  case NEKdist:
+                    closestLib = "NEK";
                     break;
                   default:
                     break;
@@ -814,57 +815,58 @@ function handleMessages(request, sender, sendResponse) {
                   LAKdist = elements[3].distance.value,
                   MEAdist = elements[4].distance.value,
                   MSBdist = elements[5].distance.value,
-                  PINdist = elements[5].distance.value,
-                  SEQdist = elements[6].distance.value,
-                  SMBdist = elements[7].distance.value,
-                  BLVdist = elements[8].distance.value,
-                  BERdist = elements[9].distance.value,
-                  CBRdist = elements[10].distance.value,
-                  CSPdist = elements[11].distance.value,
-                  DEEdist = elements[12].distance.value,
-                  DFTdist = elements[13].distance.value,
-                  FCHdist = elements[14].distance.value,
-                  MARdist = elements[15].distance.value,
-                  MAZdist = elements[16].distance.value,
-                  MCFdist = elements[17].distance.value,
-                  MIDdist = elements[18].distance.value,
-                  MOOdist = elements[19].distance.value,
-                  MTHdist = elements[20].distance.value,
-                  OREdist = elements[21].distance.value,
-                  STOdist = elements[22].distance.value,
-                  SUNdist = elements[23].distance.value,
-                  VERdist = elements[24].distance.value,
-                  WAUdist = elements[25].distance.value,
-                  ACLdist = elements[26].distance.value,
-                  ROMdist = elements[27].distance.value,
-                  CIAdist = elements[28].distance.value,
-                  COLdist = elements[29].distance.value,
-                  LDIdist = elements[30].distance.value,
-                  PARdist = elements[31].distance.value,
-                  PORdist = elements[32].distance.value,
-                  POYdist = elements[33].distance.value,
-                  RANdist = elements[34].distance.value,
-                  WIDdist = elements[35].distance.value,
-                  WYOdist = elements[36].distance.value,
-                  BRDdist = elements[37].distance.value,
-                  MROdist = elements[38].distance.value,
-                  NGLdist = elements[39].distance.value,
-                  ALMdist = elements[40].distance.value,
-                  PLOdist = elements[41].distance.value,
-                  ROSdist = elements[42].distance.value,
-                  STPdist = elements[43].distance.value,
-                  BARdist = elements[44].distance.value,
-                  LAVdist = elements[45].distance.value,
-                  NOFdist = elements[46].distance.value,
-                  PLAdist = elements[47].distance.value,
-                  PDSdist = elements[48].distance.value,
-                  REEdist = elements[49].distance.value,
-                  RKSdist = elements[50].distance.value,
-                  SKCdist = elements[51].distance.value,
-                  SGRdist = elements[52].distance.value,
-                  ARPdist = elements[53].distance.value,
-                  MCMdist = elements[54].distance.value,
-                  minDist = Math.min(HPBdist, MADdist, HAWdist, LAKdist, MEAdist, /*MSBdist, */ PINdist, SEQdist, SMBdist, BLVdist, BERdist, CBRdist, CSPdist, DEEdist, DFTdist, FCHdist, MARdist, MAZdist, MCFdist, MIDdist, MOOdist, MTHdist, OREdist, STOdist, SUNdist, VERdist, WAUdist, ACLdist, ROMdist, CIAdist, COLdist, LDIdist, PARdist, PORdist, POYdist, RANdist, WIDdist, WYOdist, BRDdist, MROdist, NGLdist, ALMdist, PLOdist, ROSdist, STPdist, BARdist, LAVdist, NOFdist, PLAdist, PDSdist, REEdist, RKSdist, SKCdist, SGRdist, ARPdist, MCMdist);
+                  PINdist = elements[6].distance.value,
+                  SEQdist = elements[7].distance.value,
+                  SMBdist = elements[8].distance.value,
+                  BLVdist = elements[9].distance.value,
+                  BERdist = elements[10].distance.value,
+                  CBRdist = elements[11].distance.value,
+                  CSPdist = elements[12].distance.value,
+                  DEEdist = elements[13].distance.value,
+                  DFTdist = elements[14].distance.value,
+                  FCHdist = elements[15].distance.value,
+                  MARdist = elements[16].distance.value,
+                  MAZdist = elements[17].distance.value,
+                  MCFdist = elements[18].distance.value,
+                  MIDdist = elements[19].distance.value,
+                  MOOdist = elements[20].distance.value,
+                  MTHdist = elements[21].distance.value,
+                  OREdist = elements[22].distance.value,
+                  STOdist = elements[23].distance.value,
+                  SUNdist = elements[24].distance.value,
+                  VERdist = elements[25].distance.value,
+                  WAUdist = elements[26].distance.value,
+                  ACLdist = elements[27].distance.value,
+                  ROMdist = elements[28].distance.value,
+                  CIAdist = elements[29].distance.value,
+                  COLdist = elements[30].distance.value,
+                  LDIdist = elements[31].distance.value,
+                  PARdist = elements[32].distance.value,
+                  PORdist = elements[33].distance.value,
+                  POYdist = elements[34].distance.value,
+                  RANdist = elements[35].distance.value,
+                  WIDdist = elements[36].distance.value,
+                  WYOdist = elements[37].distance.value,
+                  BRDdist = elements[38].distance.value,
+                  MROdist = elements[39].distance.value,
+                  NGLdist = elements[40].distance.value,
+                  ALMdist = elements[41].distance.value,
+                  PLOdist = elements[42].distance.value,
+                  ROSdist = elements[43].distance.value,
+                  STPdist = elements[44].distance.value,
+                  BARdist = elements[45].distance.value,
+                  LAVdist = elements[46].distance.value,
+                  NOFdist = elements[47].distance.value,
+                  PLAdist = elements[48].distance.value,
+                  PDSdist = elements[49].distance.value,
+                  REEdist = elements[50].distance.value,
+                  RKSdist = elements[51].distance.value,
+                  SKCdist = elements[52].distance.value,
+                  SGRdist = elements[53].distance.value,
+                  ARPdist = elements[54].distance.value,
+                  MCMdist = elements[55].distance.value,
+                  NEKdist = elements[56].distance.value,
+                  minDist = Math.min(HPBdist, MADdist, HAWdist, LAKdist, MEAdist, MSBdist, PINdist, SEQdist, SMBdist, BLVdist, BERdist, CBRdist, CSPdist, DEEdist, DFTdist, FCHdist, MARdist, MAZdist, MCFdist, MIDdist, MOOdist, MTHdist, OREdist, STOdist, SUNdist, VERdist, WAUdist, ACLdist, ROMdist, CIAdist, COLdist, LDIdist, PARdist, PORdist, POYdist, RANdist, WIDdist, WYOdist, BRDdist, MROdist, NGLdist, ALMdist, PLOdist, ROSdist, STPdist, BARdist, LAVdist, NOFdist, PLAdist, PDSdist, REEdist, RKSdist, SKCdist, SGRdist, ARPdist, MCMdist, NEKdist);
 
                 switch (minDist) {
                   case HPBdist:

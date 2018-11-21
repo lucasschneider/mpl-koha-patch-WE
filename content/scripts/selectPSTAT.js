@@ -38,7 +38,6 @@ if (isPatronEditScn) {
     matchAddr4DistQuery,
     branchList = document.getElementById('branchcode'),
     nearestMPL = document.createElement('span'),
-    nearestMPLold = document.getElementById('nearestMPL'),
     mapRegionListOld = document.getElementById('mapRegionList'),
     lnBreak1 = document.createElement('br'),
     lnBreak2 = document.createElement('br');
@@ -3518,8 +3517,6 @@ if (isPatronEditScn) {
             msg.remove();
           }
 
-          msg = document.createElement('span');
-          msg.id = "nearestMPL";
           msg.style = "display: inline-block;color:#00c000;margin-left:118px;";
           msg.textContent = "< Success! >";
           branchList.parentElement.appendChild(msg);

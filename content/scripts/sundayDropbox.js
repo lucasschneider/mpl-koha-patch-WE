@@ -1,5 +1,4 @@
-(function () {"use strict"; /*jslint browser:true regexp: true indent: 2 devel: true plusplus: true*/
-  /*global self*/
+(function () {
   var dropbox = document.getElementById('dropboxcheck');
   
   if (dropbox) {
@@ -13,4 +12,4 @@
       }
     });
   }
-}()); //end use strict
+}());
