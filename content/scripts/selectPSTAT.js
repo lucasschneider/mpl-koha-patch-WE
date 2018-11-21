@@ -38,7 +38,6 @@ if (isPatronEditScn) {
     matchAddr4DistQuery,
     branchList = document.getElementById('branchcode'),
     nearestMPL = document.createElement('span'),
-    mapRegionListOld = document.getElementById('mapRegionList'),
     lnBreak1 = document.createElement('br'),
     lnBreak2 = document.createElement('br');
 
@@ -182,7 +181,7 @@ if (isPatronEditScn) {
         }
 
         // Add option to select geographically closest library location
-        matchAddr4DistQuery = matchAddr.replace(/ /g, '+');
+        matchAddr4DistQuery = (matchAddr + '+' + cityElt.value.toLowerCase()).replace(/ /g, '+');
 
         if (!document.getElementById('nearestMPLbreak1') && !document.getElementById('nearestMPLbreak2')) {
           branchList.parentElement.appendChild(lnBreak1);
@@ -198,75 +197,73 @@ if (isPatronEditScn) {
           document.getElementById('nearestMPL').style = "display: inline-block;cursor:pointer;color:#00c;text-decoration:underline;margin-left:118px;";
         };
 
-        if (!mapRegionList) {
-          mapRegionList = document.createElement('select');
-          mapRegionList.id = "mapRegionList";
-          mapRegionList.style = "margin-left: 25px;";
+        mapRegionList = document.createElement('select');
+        mapRegionList.id = "mapRegionList";
+        mapRegionList.style = "margin-left: 25px;";
 
-          var madison = document.createElement('option');
-          madison.textContent = "Madison";
-          madison.value = "MPL";
-          madison.selected = true;
-          mapRegionList.appendChild(madison);
+        var madison = document.createElement('option');
+        madison.textContent = "Madison";
+        madison.value = "MPL";
+        madison.selected = true;
+        mapRegionList.appendChild(madison);
 
-          var counties = document.createElement('optgroup');
-          counties.label = "Counties";
+        var counties = document.createElement('optgroup');
+        counties.label = "Counties";
 
-          var adams = document.createElement('option');
-          adams.textContent = "Adams County";
-          adams.value = "ADAMS";
-          counties.appendChild(adams);
+        var adams = document.createElement('option');
+        adams.textContent = "Adams County";
+        adams.value = "ADAMS";
+        counties.appendChild(adams);
 
-          var columbia = document.createElement('option');
-          columbia.textContent = "Columbia County";
-          columbia.value = "COLUMBIA";
-          counties.appendChild(columbia);
+        var columbia = document.createElement('option');
+        columbia.textContent = "Columbia County";
+        columbia.value = "COLUMBIA";
+        counties.appendChild(columbia);
 
-          var dane = document.createElement('option');
-          dane.textContent = "Dane County";
-          dane.value = "DANE";
-          counties.appendChild(dane);
+        var dane = document.createElement('option');
+        dane.textContent = "Dane County";
+        dane.value = "DANE";
+        counties.appendChild(dane);
 
-          var green = document.createElement('option');
-          green.textContent = "Green County";
-          green.value = "GREEN";
-          counties.appendChild(green);
+        var green = document.createElement('option');
+        green.textContent = "Green County";
+        green.value = "GREEN";
+        counties.appendChild(green);
 
-          var portage = document.createElement('option');
-          portage.textContent = "Portage County";
-          portage.value = "PORTAGE";
-          counties.appendChild(portage);
+        var portage = document.createElement('option');
+        portage.textContent = "Portage County";
+        portage.value = "PORTAGE";
+        counties.appendChild(portage);
 
-          var sauk = document.createElement('option');
-          sauk.textContent = "Sauk County";
-          sauk.value = "SAUK";
-          counties.appendChild(sauk);
+        var sauk = document.createElement('option');
+        sauk.textContent = "Sauk County";
+        sauk.value = "SAUK";
+        counties.appendChild(sauk);
 
-          var wood = document.createElement('option');
-          wood.textContent = "Wood County";
-          wood.value = "WOOD";
-          counties.appendChild(wood);
+        var wood = document.createElement('option');
+        wood.textContent = "Wood County";
+        wood.value = "WOOD";
+        counties.appendChild(wood);
 
-          mapRegionList.appendChild(counties);
+        mapRegionList.appendChild(counties);
 
-          var scls = document.createElement('option');
-          scls.textContent = "SCLS (Excludes MSB)";
-          scls.value = "SCLS";
-          mapRegionList.appendChild(scls);
+        var scls = document.createElement('option');
+        scls.textContent = "SCLS";
+        scls.value = "SCLS";
+        mapRegionList.appendChild(scls);
 
-          nearestMPL.onclick = function() {
-            var selected = document.getElementById('mapRegionList').selectedOptions[0].value;
+        nearestMPL.onclick = function() {
+          var selected = document.getElementById('mapRegionList').selectedOptions[0].value;
 
-            browser.runtime.sendMessage({
-              key: "findNearestLib",
-              matchAddr4DistQuery: matchAddr4DistQuery,
-              selected: selected
-            });
-          };
+          browser.runtime.sendMessage({
+            key: "findNearestLib",
+            matchAddr4DistQuery: matchAddr4DistQuery,
+            selected: selected
+          });
+        };
 
-          branchList.parentElement.appendChild(nearestMPL);
-          branchList.parentElement.appendChild(mapRegionList);
-        }
+        branchList.parentElement.appendChild(nearestMPL);
+        branchList.parentElement.appendChild(mapRegionList);
       }
     }
   }
@@ -3537,10 +3534,8 @@ if (isPatronEditScn) {
             msg.remove();
           }
 
-          msg = document.createElement('span');
-          msg.id = "nearestMPL";
           msg.style = "display: inline-block;color:#c00;margin-left:118px;";
-          msg.textContent = "< Failed to retrieve map data >";
+          msg.textContent = "< ERROR: " + message.error + " >";
           branchList.parentElement.appendChild(msg);
         }
         break;

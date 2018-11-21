@@ -482,7 +482,23 @@ function handleMessages(request, sender, sendResponse) {
       }
       $.getJSON(mapURL).done(function(response) {
         if (response) {
-          console.log(response);
+          
+          // If error occurs
+          if (response.error_message) {
+            browser.tabs.query({
+              currentWindow: true,
+              active: true
+            }).then((tabs) => {
+              for (let tab of tabs) {
+                browser.tabs.sendMessage(tab.id, {
+                  key: "failedNearestLib",
+                  error: response.error_message
+                });
+              }
+            }).catch(onError);
+            return;
+          }
+          
           var elements = response.rows[0].elements;
           if (elements) {
             switch (region) {
@@ -1037,6 +1053,9 @@ function handleMessages(request, sender, sendResponse) {
                   case MCMdist:
                     closestLib = "MCM";
                     break;
+                  case NEKdist:
+                    closestLib = "NEK";
+                    break;
                   default:
                     break;
                 }
@@ -1088,7 +1107,7 @@ function handleMessages(request, sender, sendResponse) {
       });
       break;
     case "getDormData":
-      $.getJSON("http://mpl-koha-patch.lrschneider.com/dormAddr").done(function(response) {
+      $.getJSON("https://mpl-koha-patch.lrschneider.com/dormAddr").done(function(response) {
         var dormName;
 
         for (var i = 0; i < response.length; i++) {
@@ -1125,7 +1144,7 @@ function handleMessages(request, sender, sendResponse) {
       });
       break;
     case "getBadAddrs":
-      $.getJSON("http://mpl-koha-patch.lrschneider.com/badAddr").done(function(response) {
+      $.getJSON("https://mpl-koha-patch.lrschneider.com/badAddr").done(function(response) {
         var name,
           type,
           address,
@@ -1171,7 +1190,7 @@ function handleMessages(request, sender, sendResponse) {
       });
       break;
     case "getPstatByDist":
-      var pstatURL = "http://mpl-koha-patch.lrschneider.com/pstats/";
+      var pstatURL = "https://mpl-koha-patch.lrschneider.com/pstats/";
       switch (request.lib) {
         case "Mad":
           pstatURL += "madExceptions";
