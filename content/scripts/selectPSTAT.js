@@ -37,6 +37,7 @@ if (isPatronEditScn) {
     mapRegionList,
     matchAddr4DistQuery,
     branchList = document.getElementById('branchcode'),
+    mapRegionList = document.createElement('select'),
     nearestMPL = document.createElement('span'),
     lnBreak1 = document.createElement('br'),
     lnBreak2 = document.createElement('br');
@@ -197,7 +198,6 @@ if (isPatronEditScn) {
           document.getElementById('nearestMPL').style = "display: inline-block;cursor:pointer;color:#00c;text-decoration:underline;margin-left:118px;";
         };
 
-        mapRegionList = document.createElement('select');
         mapRegionList.id = "mapRegionList";
         mapRegionList.style = "margin-left: 25px;";
 
@@ -3510,10 +3510,6 @@ if (isPatronEditScn) {
             list.remove();
           }
 
-          if (msg) {
-            msg.remove();
-          }
-
           msg.style = "display: inline-block;color:#00c000;margin-left:118px;";
           msg.textContent = "< Success! >";
           branchList.parentElement.appendChild(msg);
@@ -3528,10 +3524,6 @@ if (isPatronEditScn) {
 
           if (list) {
             list.remove();
-          }
-
-          if (msg) {
-            msg.remove();
           }
 
           msg.style = "display: inline-block;color:#c00;margin-left:118px;";
