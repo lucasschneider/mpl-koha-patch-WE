@@ -2771,8 +2771,8 @@ if (isPatronEditScn) {
               case "Footville village":
                 sortCode = "RO-FOO-V";
                 break;
-              case "Fulton village":
-                sortCode = "RO-FUL-V";
+              case "Fulton town":
+                sortCode = "RO-FUL-T";
                 break;
               case "Harmony town":
                 sortCode = "RO-HAR-T";
