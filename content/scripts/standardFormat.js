@@ -18,7 +18,7 @@ var inputs = document.querySelectorAll("input[type=text]"),
     'altcontactaddress2',
     'sort2',
     'email6', // Item checkout notification
-    'email7', // Hold cancelled notification
+    'email7', // Hold canceled notification
     'email9', // Item lost notification
     'email5', // Item check-in notification
     // The following are the inputs for old dynix data
@@ -78,10 +78,6 @@ HTMLInputElement.prototype.correctTextCase = function () {
   }
 }
 
-/* HTMLInputElement.prototype.aptToNum = function () {
-  this.value = this.value.replace(/( apt\.? #? ?| unit #? ?| # )/i, " #").replace(/\./g, '');
-} */
-
 HTMLInputElement.prototype.parseMadisonAddress = function () {
   if (/madison(,? wi(sconsin)?)?|mad/i.test(this.value)) {
     this.value = "MADISON WI";
@@ -97,22 +93,6 @@ if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberen
       inputs[i].addEventListener('blur', HTMLInputElement.prototype.correctTextCase);
     }
   }
-  
-  /*** "APT " -> "#" ***/
-  /* if (address) {
-    address.aptToNum();
-    address.addEventListener('blur', HTMLInputElement.prototype.aptToNum);
-  }
-
-  if (bAddress) {
-    bAddress.aptToNum();
-    bAddress.addEventListener('blur', HTMLInputElement.prototype.aptToNum);
-  }
-
-  if (altAddress) {
-    altAddress.aptToNum();
-    altAddress.addEventListener('blur', HTMLInputElement.prototype.aptToNum);
-  } */
 
   /*** Parse Madison Addresses ***/
   if (city) {
@@ -189,6 +169,30 @@ if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberen
 
     // Trigger event : disable fields
     enableOpts.click();
+  }
+  
+  /* Toggle disabled Web-Use only fields */
+  if (categorycode && /(mad|hpb|seq|smb|msb|pin|haw|lak|mea)/i.test(usr)) {
+    categorycode.addEventListener('change', function () {
+
+      if (categorycode.value === "WEB") {
+        for (i = 0; i < unused4WebUse.length; i++) {
+          elt = document.getElementById(unused4WebUse[i]);
+          if (elt !== null) {
+            elt.disabled = true;
+            elt.style.backgroundColor = '#cecece';
+          }
+        }
+      } else if  (categorycode.value !== "WEB") {
+        for (i = 0; i < unused4WebUse.length; i++) {
+          elt = document.getElementById(unused4WebUse[i]);
+          if (elt !== null) {
+            elt.disabled = false;
+            elt.style.backgroundColor = '';
+          }
+        }
+      }
+    });
   }
   
   /* Add text notification checkbox ONLY for PCPLs */
