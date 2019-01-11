@@ -190,28 +190,30 @@ if (printForm) printForm.addEventListener("click", function() {
     
     var submitData = browser.runtime.sendMessage({
       key: "printProblemForm",
-      urlSearch: encodeURI("?to=" + to.value +
-        "&date=" + formatDateForDisplay(date.value) +
-        "&from=" + from.value +
-        "&staffName=" + staffName.value +
-        "&type=" + type.value +
-        "&idBy=" + idBy.value +
-        "&receivedVia=" + receivedVia.value +
-        "&ckiBySorter=" + ckiBySorter.checked.toString() +
-        "&details=" + escape(details.value) +
-        "&itemTitle=" + escape(itemTitle.value) +
-        "&itemBarcode=" + itemBarcode.value +
-        "&cCode=" + cCode.value +
-        "&holds=" + holds.value +
-        "&copies=" + copies.value +
-        "&use=" + use.value +
-        "&patron=" + patron.value +
-        "&patronBarcode=" + patronBarcode.value +
-        "&patronPhone=" + patronPhone.value +
-        "&patronEmail=" + patronEmail.value +
-        "&notified=" + formatDateForDisplay(notified.value) +
-        "&staffInit=" + staffInit.value +
-        "&contactedVia=" + contactedVia.value)
+      data: [
+        ["to", to.value],
+        ["date", formatDateForDisplay(date.value)],
+        ["from", from.value],
+        ["staffName", staffName.value],
+        ["type", type.value],
+        ["idBy", idBy.value],
+        ["receivedVia", receivedVia.value],
+        ["ckiBySorter", ckiBySorter.checked.toString()],
+        ["details", details.value],
+        ["itemTitle", itemTitle.value],
+        ["itemBarcode", itemBarcode.value],
+        ["cCode", cCode.value],
+        ["holds", holds.value],
+        ["copies", copies.value],
+        ["use", use.value],
+        ["patron", patron.value],
+        ["patronBarcode", patronBarcode.value],
+        ["patronPhone", patronPhone.value],
+        ["patronEmail", patronEmail.value],
+        ["notified", formatDateForDisplay(notified.value)],
+        ["staffInit", staffInit.value],
+        ["contactedVia", contactedVia.value]
+      ]
     });
   }
 });

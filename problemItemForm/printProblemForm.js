@@ -1,28 +1,21 @@
-var fieldsTmp = location.search.substr(1).split('&'),
-  fields = [];
-
-for (var i = 0; i < fieldsTmp.length; i++) {
-  fields[i] = fieldsTmp[i].split('=');
-}
-
-for (var i = 0; i < fields.length; i++) {
-  var key = decodeURIComponent(fields[i][0]),
-    value = decodeURIComponent(fields[i][1]),
-    element = document.getElementById(key);
-
-  if (element) {
-    if (key == "ckiBySorter") {
-      if (value === "true") {
-        element.classList.remove("hide");
-      }
-    } else {
-      if (/cCode|holds|copies|use|patronName|patronBarcode|patronPhone|patronEmail/.test(key) && value == "") {
-        document.getElementById(key+"Wrap").classList.add("hide");
-      } else {
-        element.textContent = decodeURIComponent(value);
+browser.runtime.onMessage.addListener(message => {
+  if (message.key === "printProblemForm" ) {
+    for (let d of message.data) {
+      var elt = document.getElementById(d[0]);
+      
+      if (elt) {
+        if (d[0] === "ckiBySorter" && d[1] === "true") {
+          elt.classList.remove("hide");
+        } else {
+          if (/cCode|holds|copies|use|patronName|patronBarcode|patronPhone|patronEmail/.test(d[0]) && d[1] == "") {
+            document.getElementById(d[0]+"Wrap").classList.add("hide");
+          } else {
+            elt.textContent = d[1];
+          }
+        }
       }
     }
+    
+    window.print();
   }
-}
-
-window.print();
+});

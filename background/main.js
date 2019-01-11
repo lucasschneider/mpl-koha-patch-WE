@@ -1305,10 +1305,14 @@ function handleMessages(request, sender, sendResponse) {
     case "printProblemForm":
       browser.tabs.create({
         active: false,
-        url: browser.runtime.getURL("../problemItemForm/printProblemForm.html" + request.urlSearch)
+        url: browser.runtime.getURL("../problemItemForm/printProblemForm.html")
       }).then((tab) => {
+        browser.tabs.sendMessage(tab.id, {
+          key: "printProblemForm",
+          data: request.data
+        });
         setTimeout(() => {
-          browser.tabs.remove(tab.id)
+          //browser.tabs.remove(tab.id)
         }, 1000);
       });
       break;
