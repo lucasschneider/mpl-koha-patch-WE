@@ -1,11 +1,9 @@
-"use strict";
-/*global self*/
 HTMLInputElement.prototype.parseName = function () {
   var surname = document.getElementById('surname'),
     initials = document.getElementById('initials'),
     names,
     len;
-  // Strip commas and periods from string
+  // Strip commas from string
   this.value = this.value.replace(/,/g, '');
   // Move suffix "JR" or "SR" to end of last name
   if (/ (S|J)R$/i.test(this.value)) {

@@ -3,7 +3,7 @@
 var msgSelect = document.getElementById('type'),
   initials = "";
 
-if(msgSelect != null) {
+if(msgSelect && msgSelect.options) {
   if (msgSelect.options[4].value === "Special Note") {
     msgSelect.remove(4);
   }

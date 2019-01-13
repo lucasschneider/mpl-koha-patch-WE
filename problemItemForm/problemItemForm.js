@@ -38,6 +38,10 @@ if (prepareItemData) prepareItemData.addEventListener("click", function () {
   copies.value = "";
   use.value = "";
   
+  if (itemBarcode.value.length === 8) {
+    itemBarcode.value = "390780" + itemBarcode.value;
+  }
+  
   if (/^3[0-9]{13}$/.test(itemBarcode.value)) {
     if (itemBarcode.classList.contains("invalidInput")) {
       itemBarcode.classList.remove("invalidInput");
@@ -68,6 +72,10 @@ if (getPatronData) getPatronData.addEventListener("click", function() {
   name.value = "";
   phone.value = "";
   email.value = "";
+  
+  if (patronBarcode.value.length === 8) {
+    patronBarcode.value = "290780" + patronBarcode.value;
+  }
   
   if (/^2[0-9]{13}$/.test(patronBarcode.value)) {
     if (patronBarcode.classList.contains("invalidInput")) {
@@ -188,9 +196,9 @@ if (printForm) printForm.addEventListener("click", function() {
     
     window.location.hash = "instructions";
     
-    var submitData = browser.runtime.sendMessage({
-      key: "printProblemForm",
-      data: [
+    browser.runtime.sendMessage({
+      "key": "printProblemForm",
+      "data": [
         ["to", to.value],
         ["date", formatDateForDisplay(date.value)],
         ["from", from.value],

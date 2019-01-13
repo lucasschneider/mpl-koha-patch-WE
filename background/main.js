@@ -144,13 +144,12 @@ var d = new Date(),
   censusTract,
   zip,
   closestLib = "",
-  value = "",
-  problemItemFormTID; // The tab ID for the most recent instance of the problem item form
+  value = "";
 
 setIcon();
 
 // Load preference-selected function files
-function handleUpdated(details) {
+browser.webNavigation.onCompleted.addListener(details => {
   if (details.frameId == 0) { // 0 indicates the navigation happens in the tab content window;
     // A positive value indicates navigation in a subframe.
 
@@ -218,9 +217,7 @@ function handleUpdated(details) {
       }
     });
   }
-}
-
-browser.webNavigation.onCompleted.addListener(handleUpdated);
+});
 
 // Create and handle context menu item for problem item form
 browser.contextMenus.create({
@@ -1296,7 +1293,7 @@ function handleMessages(request, sender, sendResponse) {
     case "calendarAnnouncements":
       browser.tabs.create({
         url: "http://host.evanced.info/madison/evanced/eventspr.asp"
-      }).then((tab) => {
+      }).then(tab => {
         browser.tabs.executeScript({
           file: "/browserAction/scripts/calendarAnnouncements.js"
         });
@@ -1306,14 +1303,17 @@ function handleMessages(request, sender, sendResponse) {
       browser.tabs.create({
         active: false,
         url: browser.runtime.getURL("../problemItemForm/printProblemForm.html")
-      }).then((tab) => {
-        browser.tabs.sendMessage(tab.id, {
-          key: "printProblemForm",
-          data: request.data
-        });
+      }).then(tab => {
         setTimeout(() => {
-          //browser.tabs.remove(tab.id)
-        }, 1000);
+          browser.tabs.sendMessage(tab.id, {
+            "key": "printProblemForm",
+            "data": request.data
+          });
+        
+          setTimeout(() => {
+            browser.tabs.remove(tab.id)
+          }, 1000);
+        }, 500);
       });
       break;
     case "prepareItemData":

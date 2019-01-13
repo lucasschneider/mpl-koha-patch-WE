@@ -1,3 +1,4 @@
+console.log("test");
 browser.runtime.onMessage.addListener(message => {
   if (message.key === "printProblemForm" ) {
     for (let d of message.data) {
