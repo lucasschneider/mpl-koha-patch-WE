@@ -1,4 +1,4 @@
-﻿function setDefaultOptions() {    
+function setDefaultOptions() {    
   browser.storage.sync.set({
     skin: "MAD",
     patronMsg: true,
@@ -23,7 +23,7 @@
     shortcutText5: "MPLnet",
     shortcutLink5: "http://www.mplnet.org",
     shortcutText6: "MPL Reference Tools",
-    shortcutLink6: "http://www.madisonpubliclibrary.org/research/referenc2",
+    shortcutLink6: "http://www.madisonpubliclibrary.org/research/referenc2"
   });
   browser.runtime.sendMessage({key: "updateExtensionIcon"});
   restoreOptions();
@@ -113,35 +113,7 @@ function restoreOptions() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  browser.storage.sync.get().then((res) => {
-    if (res.hasOwnProperty('skin') &&
-        res.hasOwnProperty('patronMsg') &&
-        res.hasOwnProperty('validAddr') &&
-        res.hasOwnProperty('autoBarcode') &&
-        res.hasOwnProperty('lookupPSTAT') &&
-        res.hasOwnProperty('digestOnly') &&
-        res.hasOwnProperty('dueDateToggle') &&
-        res.hasOwnProperty('middleInitials') &&
-        res.hasOwnProperty('updateAccountType') &&
-        res.hasOwnProperty('receiptFont') &&
-        res.hasOwnProperty('sundayDropbox') &&
-        res.hasOwnProperty('shortcutText1') &&
-        res.hasOwnProperty('shortcutLink1') &&
-        res.hasOwnProperty('shortcutText2') &&
-        res.hasOwnProperty('shortcutLink2') &&
-        res.hasOwnProperty('shortcutText3') &&
-        res.hasOwnProperty('shortcutLink3') &&
-        res.hasOwnProperty('shortcutText4') &&
-        res.hasOwnProperty('shortcutLink4') &&
-        res.hasOwnProperty('shortcutText5') &&
-        res.hasOwnProperty('shortcutLink5') &&
-        res.hasOwnProperty('shortcutText6') &&
-        res.hasOwnProperty('shortcutLink6')) {
-      restoreOptions();
-    } else {
-      setDefaultOptions();
-    }
-  });
+  restoreOptions();
 });
 
 // Listener for Set Default Options Button
@@ -153,37 +125,36 @@ document.getElementById("skin").addEventListener('change', function() {
     browser.runtime.sendMessage({key: "updateExtensionIcon"});
   });
 });
-document.getElementById("patronMsg").addEventListener('click', function() {
+document.getElementById("patronMsgSwitch").addEventListener('click', function() {
    browser.storage.sync.set({patronMsg: document.getElementById("patronMsg").checked});
 });
-document.getElementById("validAddr").addEventListener('click', function() {
+document.getElementById("validAddrSwitch").addEventListener('click', function() {
    browser.storage.sync.set({validAddr: document.getElementById("validAddr").checked});
 });
-document.getElementById("autoBarcode").addEventListener('click', function() {
+document.getElementById("autoBarcodeSwitch").addEventListener('click', function() {
    browser.storage.sync.set({autoBarcode: document.getElementById("autoBarcode").checked});
 });
-document.getElementById("lookupPSTAT").addEventListener('click', function() {
+document.getElementById("lookupPSTATSwitch").addEventListener('click', function() {
    browser.storage.sync.set({lookupPSTAT: document.getElementById("lookupPSTAT").checked});
 });
-document.getElementById("digestOnly").addEventListener('click', function() {
+document.getElementById("digestOnlySwitch").addEventListener('click', function() {
    browser.storage.sync.set({digestOnly: document.getElementById("digestOnly").checked});
 });
-document.getElementById("dueDateToggle").addEventListener('click', function() {
+document.getElementById("dueDateToggleSwitch").addEventListener('click', function() {
    browser.storage.sync.set({dueDateToggle: document.getElementById("dueDateToggle").checked});
 });
-document.getElementById("middleInitials").addEventListener('click', function() {
+document.getElementById("middleInitialsSwitch").addEventListener('click', function() {
    browser.storage.sync.set({middleInitials: document.getElementById("middleInitials").checked});
 });
-document.getElementById("updateAccountType").addEventListener('click', function() {
+document.getElementById("updateAccountTypeSwitch").addEventListener('click', function() {
    browser.storage.sync.set({updateAccountType: document.getElementById("updateAccountType").checked});
 });
 document.getElementById("receiptFont").addEventListener('change', function() {
    browser.storage.sync.set({receiptFont: document.getElementById("receiptFont").value});
 });
-document.getElementById("sundayDropbox").addEventListener('click', function() {
+document.getElementById("sundayDropboxSwitch").addEventListener('click', function() {
    browser.storage.sync.set({sundayDropbox: document.getElementById("sundayDropbox").checked});
 });
-
 document.getElementById("shortcutText1").addEventListener('blur', function() {
   browser.storage.sync.set({shortcutText1: document.getElementById("shortcutText1").value});
 });
