@@ -39,7 +39,7 @@ browser.storage.sync.get().then((res) => {
     browser.storage.sync.set({cdyms: true});
   }
   if (!res.hasOwnProperty("dbrafe")) {
-    browser.storage.sync.set({dbrafe: true});
+    browser.storage.sync.set({dbrafe: false});
   }
   if (!res.hasOwnProperty("dbraff")) {
     browser.storage.sync.set({dbraff: false});
