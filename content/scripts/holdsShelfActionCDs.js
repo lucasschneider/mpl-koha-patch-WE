@@ -1,5 +1,3 @@
-"use strict";
-
 var box = document.createElement('input'),
   boxLabel = document.createElement('label'),
   labelText = document.createElement('span'),
@@ -9,8 +7,17 @@ var box = document.createElement('input'),
   origTable = document.getElementById("mytab"),
   origHead,
   origBody,
+  avCodes = ["cdams", "cdamsid", "cdjms", "cdyms","dbrafe", "dbraff", "dbraid", "dbranf", "dbrarn", "dbratv", "dbrj", "dvdafe", "dvdaff", "dvdaid", "dvdanf", "dvdarn", "dvdatv", "dvdawl", "dvdjfe", "dvdjhl", "dvdjnf", "dvdjwl", "dvdyfe","vga", "vgj", "vgy", "soa", "soawl", "soj"],
+  codesToFilter = "",
   cdArray = [],
   otherArray = [];
+  
+ browser.storage.sync.get(avCodes).then((res) => {
+  for (var i = 0; i < avCodes.length; i++) {
+    if (res[avCodes[i]] === true) codesToFilter += avCodes[i] + "|";
+  }
+  
+  codesToFilter = new RegExp(codesToFilter.slice(0,-1),"i");
   
   if (origTable) {
     origHead = origTable.tHead.children[0];
@@ -28,7 +35,7 @@ var box = document.createElement('input'),
     
     // Populate separate arrays
     for (var i = 0; i < origBody.children.length; i++) {
-      if (/^CD[AJY]MS(ID)?/.test(origBody.children[i].children[2].textContent.trim().substring(0,7))) {
+      if (codesToFilter.test(origBody.children[i].children[2].textContent.trim().substring(0,7))) {
         cdArray.push(origBody.children[i]);
       } else {
         otherArray.push(origBody.children[i]);
@@ -71,26 +78,27 @@ var box = document.createElement('input'),
     }
   }
 
-if (/\/cgi-bin\/koha\/reports\/holdsaction\.pl/.test(location.pathname)) {
-  parentWrapper = !!parentWrapper ? parentWrapper.children[0] : null;
+  if (/\/cgi-bin\/koha\/reports\/holdsaction\.pl/.test(location.pathname)) {
+    parentWrapper = !!parentWrapper ? parentWrapper.children[0] : null;
 
-  if (!tableNotLoaded && table && table.textContent.trim() !== "No results found.") {
-    box.type = "checkbox";
-    box.checked = false;
-    box.style.verticalAlign = "middle";
-    box.style.cursor = "pointer";
-    box.style.margin = "0 1em 0 1.5em";
-    boxLabel.style.cursor = "pointer";
-    boxLabel.style.margin = "1em 0";
-    boxLabel.appendChild(box);
-    labelText.textContent = "Separate AV from other hold items. (Default: CDs only, may be customized in the extension preferences.)";
-    boxLabel.appendChild(labelText);
-    // Insert to breaks to space checkbox and text from table.
-    parentWrapper.insertBefore(document.createElement('br'), parentWrapper.children[1]);
-    parentWrapper.insertBefore(document.createElement('br'), parentWrapper.children[1]);
-    
-    parentWrapper.insertBefore(boxLabel, parentWrapper.children[1]);
-    
-    box.addEventListener('change', separateCDs);
+    if (!tableNotLoaded && table && table.textContent.trim() !== "No results found.") {
+      box.type = "checkbox";
+      box.checked = false;
+      box.style.verticalAlign = "middle";
+      box.style.cursor = "pointer";
+      box.style.margin = "0 1em 0 1.5em";
+      boxLabel.style.cursor = "pointer";
+      boxLabel.style.margin = "1em 0";
+      boxLabel.appendChild(box);
+      labelText.textContent = "Separate AV from other hold items. (Default: CDs only, may be customized in the extension preferences.)";
+      boxLabel.appendChild(labelText);
+      // Insert to breaks to space checkbox and text from table.
+      parentWrapper.insertBefore(document.createElement('br'), parentWrapper.children[1]);
+      parentWrapper.insertBefore(document.createElement('br'), parentWrapper.children[1]);
+      
+      parentWrapper.insertBefore(boxLabel, parentWrapper.children[1]);
+      
+      box.addEventListener('change', separateCDs);
+    }
   }
-}
+ });
