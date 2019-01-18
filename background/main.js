@@ -1095,7 +1095,7 @@ function handleMessages(request, sender, sendResponse) {
 
         browser.tabs.create({
           active: false,
-          url: "/printBarcode.html?barcode=" + request.data + "&lib=" + barcodeLib
+          url: "/printPatronBarcode/printBarcode.html?barcode=" + request.data + "&lib=" + barcodeLib
         }).then((tab) => {
           setTimeout(() => {
             browser.tabs.remove(tab.id)

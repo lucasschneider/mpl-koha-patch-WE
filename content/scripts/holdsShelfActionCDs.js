@@ -83,8 +83,12 @@ if (/\/cgi-bin\/koha\/reports\/holdsaction\.pl/.test(location.pathname)) {
     boxLabel.style.cursor = "pointer";
     boxLabel.style.margin = "1em 0";
     boxLabel.appendChild(box);
-    labelText.textContent = "Separate CDs from other hold items.";
+    labelText.textContent = "Separate AV from other hold items. (Default: CDs only, may be customized in the extension preferences.)";
     boxLabel.appendChild(labelText);
+    // Insert to breaks to space checkbox and text from table.
+    parentWrapper.insertBefore(document.createElement('br'), parentWrapper.children[1]);
+    parentWrapper.insertBefore(document.createElement('br'), parentWrapper.children[1]);
+    
     parentWrapper.insertBefore(boxLabel, parentWrapper.children[1]);
     
     box.addEventListener('change', separateCDs);
