@@ -1,65 +1,63 @@
 var skin = document.getElementById("skin"),
-    patronMsg = document.getElementById("patronMsg"),
-    validAddr = document.getElementById("validAddr"),
-    autoBarcode = document.getElementById("autoBarcode"),
-    lookupPSTAT = document.getElementById("lookupPSTAT"),
-    digestOnly = document.getElementById("digestOnly"),
-    dueDateToggle = document.getElementById("dueDateToggle"),
-    middleInitials = document.getElementById("middleInitials"),
-    updateAccountType = document.getElementById("updateAccountType"),
-    cdCodes = ["cdams", "cdamsid", "cdjms", "cdyms"],
-    cdams = document.getElementById("cdams"),
-    cdamsid = document.getElementById("cdamsid"),
-    cdjms = document.getElementById("cdjms"),
-    cdyms = document.getElementById("cdyms"),
-    dvdCodes = ["dbrafe", "dbraff", "dbraid", "dbranf", "dbrarn", "dbratv", "dbrj", "dvdafe", "dvdaff", "dvdaid", "dvdanf", "dvdarn", "dvdatv", "dvdawl", "dvdjfe", "dvdjhl", "dvdjnf", "dvdjwl", "dvdyfe"],
-    dbrafe = document.getElementById("dbrafe"),
-    dbraff = document.getElementById("dbraff"),
-    dbraid = document.getElementById("dbraid"),
-    dbranf = document.getElementById("dbranf"),
-    dbrarn = document.getElementById("dbrarn"),
-    dbratv = document.getElementById("dbratv"),
-    dbrj = document.getElementById("dbrj"),
-    dvdafe = document.getElementById("dvdafe"),
-    dvdaff = document.getElementById("dvdaff"),
-    dvdaid = document.getElementById("dvdaid"),
-    dvdanf = document.getElementById("dvdanf"),
-    dvdarn = document.getElementById("dvdarn"),
-    dvdatv = document.getElementById("dvdatv"),
-    dvdawl = document.getElementById("dvdawl"),
-    dvdjfe = document.getElementById("dvdjfe"),
-    dvdjhl = document.getElementById("dvdjhl"),
-    dvdjnf = document.getElementById("dvdjnf"),
-    dvdjwl = document.getElementById("dvdjwl"),
-    dvdyfe = document.getElementById("dvdyfe"),
-    otherCodes = ["vga", "vgj", "vgy", "soa", "soawl", "soj"],
-    vga = document.getElementById("vga"),
-    vgj = document.getElementById("vgj"),
-    vgy = document.getElementById("vgy"),
-    soa = document.getElementById("soa"),
-    soawl = document.getElementById("soawl"),
-    soj = document.getElementById("soj"),
-    sepAllCD = document.getElementById("sepAllCD"),
-    sepAllDVD = document.getElementById("sepAllDVD"),
-    sepOther = document.getElementById("sepOther"),
-    receiptFont = document.getElementById("receiptFont"),
-    sundayDropbox = document.getElementById("sundayDropbox"),
-    sundayDropboxPaused = document.getElementById("sundayDropboxPaused"),
-    shortcutText1 = document.getElementById("shortcutText1"),
-    shortcutLink1 = document.getElementById("shortcutLink1"),
-    shortcutText2 = document.getElementById("shortcutText2"),
-    shortcutLink2 = document.getElementById("shortcutLink2"),
-    shortcutText3 = document.getElementById("shortcutText3"),
-    shortcutLink3 = document.getElementById("shortcutLink3"),
-    shortcutText4 = document.getElementById("shortcutText4"),
-    shortcutLink4 = document.getElementById("shortcutLink4"),
-    shortcutText5 = document.getElementById("shortcutText5"),
-    shortcutLink5 = document.getElementById("shortcutLink5"),
-    shortcutText6 = document.getElementById("shortcutText6"),
-    shortcutLink6 = document.getElementById("shortcutLink6");
-
-function setDefaultOptions() {    
-  browser.storage.sync.set({
+  patronMsg = document.getElementById("patronMsg"),
+  validAddr = document.getElementById("validAddr"),
+  autoBarcode = document.getElementById("autoBarcode"),
+  lookupPSTAT = document.getElementById("lookupPSTAT"),
+  digestOnly = document.getElementById("digestOnly"),
+  dueDateToggle = document.getElementById("dueDateToggle"),
+  middleInitials = document.getElementById("middleInitials"),
+  updateAccountType = document.getElementById("updateAccountType"),
+  cdams = document.getElementById("cdams"),
+  cdamsid = document.getElementById("cdamsid"),
+  cdjms = document.getElementById("cdjms"),
+  cdyms = document.getElementById("cdyms"),
+  dbrafe = document.getElementById("dbrafe"),
+  dbraff = document.getElementById("dbraff"),
+  dbraid = document.getElementById("dbraid"),
+  dbranf = document.getElementById("dbranf"),
+  dbrarn = document.getElementById("dbrarn"),
+  dbratv = document.getElementById("dbratv"),
+  dbrj = document.getElementById("dbrj"),
+  dvdafe = document.getElementById("dvdafe"),
+  dvdaff = document.getElementById("dvdaff"),
+  dvdaid = document.getElementById("dvdaid"),
+  dvdanf = document.getElementById("dvdanf"),
+  dvdarn = document.getElementById("dvdarn"),
+  dvdatv = document.getElementById("dvdatv"),
+  dvdawl = document.getElementById("dvdawl"),
+  dvdjfe = document.getElementById("dvdjfe"),
+  dvdjhl = document.getElementById("dvdjhl"),
+  dvdjnf = document.getElementById("dvdjnf"),
+  dvdjwl = document.getElementById("dvdjwl"),
+  dvdyfe = document.getElementById("dvdyfe"),
+  vga = document.getElementById("vga"),
+  vgj = document.getElementById("vgj"),
+  vgy = document.getElementById("vgy"),
+  soa = document.getElementById("soa"),
+  soawl = document.getElementById("soawl"),
+  soj = document.getElementById("soj"),
+  sepAllCD = document.getElementById("sepAllCD"),
+  sepAllDVD = document.getElementById("sepAllDVD"),
+  sepOther = document.getElementById("sepOther"),
+  receiptFont = document.getElementById("receiptFont"),
+  sundayDropbox = document.getElementById("sundayDropbox"),
+  sundayDropboxPaused = document.getElementById("sundayDropboxPaused"),
+  shortcutText1 = document.getElementById("shortcutText1"),
+  shortcutLink1 = document.getElementById("shortcutLink1"),
+  shortcutText2 = document.getElementById("shortcutText2"),
+  shortcutLink2 = document.getElementById("shortcutLink2"),
+  shortcutText3 = document.getElementById("shortcutText3"),
+  shortcutLink3 = document.getElementById("shortcutLink3"),
+  shortcutText4 = document.getElementById("shortcutText4"),
+  shortcutLink4 = document.getElementById("shortcutLink4"),
+  shortcutText5 = document.getElementById("shortcutText5"),
+  shortcutLink5 = document.getElementById("shortcutLink5"),
+  shortcutText6 = document.getElementById("shortcutText6"),
+  shortcutLink6 = document.getElementById("shortcutLink6")
+  cdCodes = ["cdams", "cdamsid", "cdjms", "cdyms"],
+  dvdCodes = ["dbrafe", "dbraff", "dbraid", "dbranf", "dbrarn", "dbratv", "dbrj", "dvdafe", "dvdaff", "dvdaid", "dvdanf", "dvdarn", "dvdatv", "dvdawl", "dvdjfe", "dvdjhl", "dvdjnf", "dvdjwl", "dvdyfe"],
+  otherCodes = ["vga", "vgj", "vgy", "soa", "soawl", "soj"],
+  defaultOptions = {
     "skin": "MAD",
     "patronMsg": true,
     "validAddr": true,
@@ -69,38 +67,10 @@ function setDefaultOptions() {
     "dueDateToggle": true,
     "middleInitials": true,
     "updateAccountType": true,
-    "cdams": true,
-    "cdamsid": true,
-    "cdjms": true,
-    "cdyms": true,
-    "dbrafe": false,
-    "dbraff": false,
-    "dbraid": false,
-    "dbranf": false,
-    "dbrarn": false,
-    "dbratv": false,
-    "dbrj": false,
-    "dvdafe": false,
-    "dvdaff": false,
-    "dvdaid": false,
-    "dvdanf": false,
-    "dvdarn": false,
-    "dvdatv": false,
-    "dvdawl": false,
-    "dvdjfe": false,
-    "dvdjhl": false,
-    "dvdjnf": false,
-    "dvdjwl": false,
-    "dvdyfe": false,
-    "vga": false,
-    "vgj": false,
-    "vgy": false,
-    "soa": false,
-    "soawl": false,
-    "soj": false,
-    "sepAllCD": true,
-    "sepAllDVD": false,
-    "sepOther": false,
+    "cdams": true, "cdamsid": true, "cdjms": true, "cdyms": true,
+    "dbrafe": false, "dbraff": false, "dbraid": false, "dbranf": false, "dbrarn": false, "dbratv": false, "dbrj": false, "dvdafe": false, "dvdaff": false, "dvdaid": false, "dvdanf": false, "dvdarn": false, "dvdatv": false, "dvdawl": false, "dvdjfe": false, "dvdjhl": false, "dvdjnf": false, "dvdjwl": false, "dvdyfe": false,
+    "vga": false, "vgj": false, "vgy": false, "soa": false, "soawl": false, "soj": false,
+    "sepAllCD": true, "sepAllDVD": false, "sepOther": false,
     "receiptFont": "MPL",
     "sundayDropbox": true,
     "sundayDropboxPaused": false,
@@ -116,218 +86,70 @@ function setDefaultOptions() {
     "shortcutLink5": "http://www.mplnet.org",
     "shortcutText6": "MPL Reference Tools",
     "shortcutLink6": "http://www.madisonpubliclibrary.org/research/referenc2"
-  });
+  };
+
+function setDefaultOptions() {    
+  browser.storage.sync.set(defaultOptions);
   browser.runtime.sendMessage({key: "updateExtensionIcon"});
   restoreOptions();
 }
 
 function restoreOptions() {
-  browser.storage.sync.get('skin').then((res) => {
+  browser.storage.sync.get().then((res) => {
     skin.value = res.skin;
-  });
-  
-  browser.storage.sync.get('patronMsg').then((res) => {
     patronMsg.checked = res.patronMsg;
-  });
-  
-  browser.storage.sync.get('validAddr').then((res) => {
     validAddr.checked = res.validAddr;
-  });
-  
-  browser.storage.sync.get('autoBarcode').then((res) => {
     autoBarcode.checked = res.autoBarcode;
-  });
-  
-  browser.storage.sync.get('lookupPSTAT').then((res) => {
     lookupPSTAT.checked = res.lookupPSTAT;
-  });
-  
-  browser.storage.sync.get('digestOnly').then((res) => {
     digestOnly.checked = res.digestOnly;
-  });
-  
-  browser.storage.sync.get('dueDateToggle').then((res) => {
     dueDateToggle.checked = res.dueDateToggle;
-  });
-  
-  browser.storage.sync.get('middleInitials').then((res) => {
     middleInitials.checked = res.middleInitials;
-  });
-  
-  browser.storage.sync.get('updateAccountType').then((res) => {
     updateAccountType.checked = res.updateAccountType;
-  });
-  
-  browser.storage.sync.get('cdams').then((res) => {
     cdams.checked = res.cdams;
-  });
-  
-  browser.storage.sync.get('cdamsid').then((res) => {
     cdamsid.checked = res.cdamsid;
-  });
-  
-  browser.storage.sync.get('cdjms').then((res) => {
     cdjms.checked = res.cdjms;
-  });
-  
-  browser.storage.sync.get('cdyms').then((res) => {
     cdyms.checked = res.cdyms;
-  });
-  
-  browser.storage.sync.get('dbrafe').then((res) => {
     dbrafe.checked = res.dbrafe;
-  });
-  
-  browser.storage.sync.get('dbraff').then((res) => {
     dbraff.checked = res.dbraff;
-  });
-  
-  browser.storage.sync.get('dbraid').then((res) => {
     dbraid.checked = res.dbraid;
-  });
-  
-  browser.storage.sync.get('dbranf').then((res) => {
     dbranf.checked = res.dbranf;
-  });
-  
-  browser.storage.sync.get('dbrarn').then((res) => {
     dbrarn.checked = res.dbrarn;
-  });
-  
-  browser.storage.sync.get('dbratv').then((res) => {
     dbratv.checked = res.dbratv;
-  });
-  
-  browser.storage.sync.get('dbrj').then((res) => {
     dbrj.checked = res.dbrj;
-  });
-  
-  browser.storage.sync.get('dvdafe').then((res) => {
     dvdafe.checked = res.dvdafe;
-  });
-  
-  browser.storage.sync.get('dvdaff').then((res) => {
     dvdaff.checked = res.dvdaff;
-  });
-  
-  browser.storage.sync.get('dvdaid').then((res) => {
     dvdaid.checked = res.dvdaid;
-  });
-  
-  browser.storage.sync.get('dvdanf').then((res) => {
     dvdanf.checked = res.dvdanf;
-  });
-  
-  browser.storage.sync.get('dvdarn').then((res) => {
     dvdarn.checked = res.dvdarn;
-  });
-  
-  browser.storage.sync.get('dvdatv').then((res) => {
     dvdatv.checked = res.dvdatv;
-  });
-  
-  browser.storage.sync.get('dvdawl').then((res) => {
     dvdawl.checked = res.dvdawl;
-  });
-  
-  browser.storage.sync.get('dvdjfe').then((res) => {
     dvdjfe.checked = res.dvdjfe;
-  });
-  
-  browser.storage.sync.get('dvdjhl').then((res) => {
     dvdjhl.checked = res.dvdjhl;
-  });
-  
-  browser.storage.sync.get('dvdjnf').then((res) => {
     dvdjnf.checked = res.dvdjnf;
-  });
-  
-  browser.storage.sync.get('dvdjwl').then((res) => {
     dvdjwl.checked = res.dvdjwl;
-  });
-  
-  browser.storage.sync.get('dvdyfe').then((res) => {
     dvdyfe.checked = res.dvdyfe;
-  });
-  
-  browser.storage.sync.get('vga').then((res) => {
     vga.checked = res.vga;
-  });
-  
-  browser.storage.sync.get('vgj').then((res) => {
     vgj.checked = res.vgj;
-  });
-  
-  browser.storage.sync.get('vgy').then((res) => {
     vgy.checked = res.vgy;
-  });
-  
-  browser.storage.sync.get('soa').then((res) => {
     soa.checked = res.soa;
-  });
-  
-  browser.storage.sync.get('soawl').then((res) => {
     soawl.checked = res.soawl;
-  });
-  
-  browser.storage.sync.get('soj').then((res) => {
     soj.checked = res.soj;
-  });
-  
-  browser.storage.sync.get('sepAllCD').then((res) => {
     sepAllCD.checked = res.sepAllCD;
-  });
-  
-  browser.storage.sync.get('sepAllDVD').then((res) => {
     sepAllDVD.checked = res.sepAllDVD;
-  });
-  
-  browser.storage.sync.get('sepOther').then((res) => {
     sepOther.checked = res.sepOther;
-  });
-  
-  browser.storage.sync.get('receiptFont').then((res) => {
     receiptFont.value = res.receiptFont;
-  });
-  
-  browser.storage.sync.get('sundayDropbox').then((res) => {
     sundayDropbox.checked = res.sundayDropbox;
-  });
-  
-  browser.storage.sync.get('shortcutText1').then((res) => {
     shortcutText1.value = res.shortcutText1;
-  });
-  browser.storage.sync.get('shortcutLink1').then((res) => {
     shortcutLink1.value = res.shortcutLink1;
-  });
-  browser.storage.sync.get('shortcutText2').then((res) => {
     shortcutText2.value = res.shortcutText2;
-  });
-  browser.storage.sync.get('shortcutLink2').then((res) => {
     shortcutLink2.value = res.shortcutLink2;
-  });
-  browser.storage.sync.get('shortcutText3').then((res) => {
     shortcutText3.value = res.shortcutText3;
-  });
-  browser.storage.sync.get('shortcutLink3').then((res) => {
     shortcutLink3.value = res.shortcutLink3;
-  });
-  browser.storage.sync.get('shortcutText4').then((res) => {
     shortcutText4.value = res.shortcutText4;
-  });
-  browser.storage.sync.get('shortcutLink4').then((res) => {
     shortcutLink4.value = res.shortcutLink4;
-  });
-  browser.storage.sync.get('shortcutText5').then((res) => {
     shortcutText5.value = res.shortcutText5;
-  });
-  browser.storage.sync.get('shortcutLink5').then((res) => {
     shortcutLink5.value = res.shortcutLink5;
-  });
-  browser.storage.sync.get('shortcutText6').then((res) => {
     shortcutText6.value = res.shortcutText6;
-  });
-  browser.storage.sync.get('shortcutLink6').then((res) => {
     shortcutLink6.value = res.shortcutLink6;
   });
 }
