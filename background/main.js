@@ -1,4 +1,4 @@
-var d = new Date(),
+﻿var d = new Date(),
   day = d.getUTCDay(),
   setIcon = function() {
     browser.storage.sync.get('skin').then((res) => {

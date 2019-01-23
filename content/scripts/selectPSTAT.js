@@ -1,6 +1,4 @@
-﻿"use strict";
-
-/**
+﻿/**
  * This script is used to look up the proper PSTAT (sort1) value
  * for a patron's record based on their address, using the US
  * Census Geocoder
