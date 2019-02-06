@@ -30,3 +30,4 @@ if (/memberentry\.pl/.test(location.toString())) {
     firstName.addEventListener('blur', HTMLInputElement.prototype.parseName);
   }
 }
+undefined;

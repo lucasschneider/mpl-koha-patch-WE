@@ -18,7 +18,7 @@ if(msgSelect && msgSelect.options) {
     laptopAgreement.value = "Patron has signed Laptop/iPad Loan Agreement form. Form on file.";
     laptopAgreement.textContent = "Patron signed laptop agreement";
     msgSelect.insertBefore(laptopAgreement,msgSelect.options[2]);
-    
+
 	/* Margie doesn't want this as a predefined note as of June 5, 2017
     var lostPaymentNote = document.createElement('option');
     lostPaymentNote.value = "Check for $[X.XX] will be issued by Madison City Finance to [Owning Library] for [Item Title] ([barcode]). [Initials/Library]";
@@ -34,7 +34,7 @@ if(msgSelect && msgSelect.options) {
       document.getElementById('borrower_message').value += " (" + initials + ")";
     }
   }
- 
+
   var addNotesLabel = document.createElement('label');
   addNotesLabel.setAttribute('for','addNotes');
   addNotesLabel.setAttribute('style','display: inline-block;');
@@ -91,3 +91,4 @@ if(msgSelect && msgSelect.options) {
   fullEmail.textContent =  "Email box is full";
   badEmailGroup.appendChild(fullEmail);
 }
+undefined;

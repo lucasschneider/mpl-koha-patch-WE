@@ -1,11 +1,11 @@
 {
   "manifest_version": 2,
   "name": "MPL Koha Patch",
-  "version": "22.2.1",
+  "version": "22.3.0",
   "author": "Lucas Schneider",
   "description": "LibLime Koha ILS modifications targeted to the staff of Madison Public Library in Wisconsin's South Central Library System",
   "homepage_url": "http://lrschneider.com/mpl-koha-patch-WE",
-  
+
   "browser_specific_settings": {
     "gecko": {
       "id": "3338f72b-be88-4c0b-98ec-d24eeef851b4@jetpack",
@@ -34,7 +34,7 @@
     "default_popup": "browserAction/popup.html",
     "browser_style": true
   },
-  
+
   "background": {
       "scripts": [
         "thirdParty/browser-polyfill.js",

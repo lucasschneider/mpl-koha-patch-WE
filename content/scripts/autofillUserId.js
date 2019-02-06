@@ -1,5 +1,3 @@
-"use strict"
-
 /*** AUTOFILL OPAC LOGIN ***/
 var cardNum = document.getElementById('cardnumber');
 if (cardNum != null) {
@@ -15,3 +13,4 @@ if (cardNum != null) {
 	  }
   }
 }
+undefined;
