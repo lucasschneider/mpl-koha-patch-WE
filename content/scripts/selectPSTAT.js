@@ -1327,15 +1327,18 @@ var cleanAddr = function(addrElt, encodeForURI) {
       .replace(/ e /, ' east ')
       .replace(/ w /, ' west ');
 
-    addrParts = addr.split(" ");
-
-    if (/^(\#|apt|bldg|fl(oor)?|s(ui)?te|unit|r(oo)?m|dept)[0-9]+$/.test(addrParts[addrParts.length - 1])) {
-      addrParts.pop();
-    } else if (addrParts.length > 2 &&
-      /^(\#|apt|bldg|fl(oor)?|s(ui)?te|unit|r(oo)?m|dept)$/.test(addrParts[addrParts.length - 2]) &&
-      /^[0-9]+$/.test(addrParts[addrParts.length - 1])) {
-      addrParts.pop();
-      addrParts.pop();
+    if (addr.includes("#")) {
+      return addr.split("#")[0];
+    } else {
+      addrParts = addr.split(" ");
+      if (/^ [0-9]+$/.test(addrParts[addrParts.length - 1])) {
+        addrParts.pop();
+      } else if (addrParts.length > 2 &&
+        /^(apt|bldg|fl(oor)?|s(ui)?te|unit|r(oo)?m|dept)$/.test(addrParts[addrParts.length - 2]) &&
+        /^[0-9]+$/.test(addrParts[addrParts.length - 1])) {
+        addrParts.pop();
+        addrParts.pop();
+      }
     }
   }
 
