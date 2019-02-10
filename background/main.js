@@ -380,7 +380,7 @@ function handleMessages(request, sender, sendResponse) {
             if (matchAddr && county && countySub && censusTract && zip) {
               if (county === "Dane" && /^(Middleton|Sun Prairie|Verona) city$/.test(countySub)) {
                 const libCode = countySub.substring(0,3).toLowerCase(),
-                  alderURL = "https://mpl-bibex.lrschneider.com/pstats/" + libCode +
+                  alderURL = "https://mpl-koha-patch.lrschneider.com/pstats/" + libCode +
                     "?val=all&regex=true";
 
                 return resolve(fetch(alderURL, {"method": "GET"}).then(response => {
