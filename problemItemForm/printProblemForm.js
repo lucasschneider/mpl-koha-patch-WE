@@ -1,9 +1,8 @@
-console.log("test");
 browser.runtime.onMessage.addListener(message => {
   if (message.key === "printProblemForm" ) {
     for (let d of message.data) {
       var elt = document.getElementById(d[0]);
-      
+
       if (elt) {
         if (d[0] === "ckiBySorter" && d[1] === "true") {
           elt.classList.remove("hide");
@@ -16,7 +15,7 @@ browser.runtime.onMessage.addListener(message => {
         }
       }
     }
-    
+
     window.print();
   }
 });
