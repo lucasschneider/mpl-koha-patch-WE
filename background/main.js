@@ -346,9 +346,7 @@ function handleMessages(request, sender, sendResponse) {
       return Promise.all([getCounty,getCountySub,getCensusTract]).then(vals => {
         var countyData = vals[0], countySubData = vals[1],
             censusTractData = vals[2];
-console.log(countyData);
-console.log(countySubData);
-console.log(censusTractData);
+
         if (countyData.errors) {
           throw new Error(countyData.errors.join("; "));
         } else if (!countyData || !countyData.result || countyData.result.addressMatches.length === 0) {
@@ -379,7 +377,7 @@ console.log(censusTractData);
           if (censusTract) censusTract = censusTract[0].BASENAME;
 
           if (matchAddr && county && countySub && censusTract && zip) {
-            if (county === "Dane" && /^(Middleton|Sun Prairie|Verona) city$/.test(countySub)) {
+            if (county === "Dane" && /^(Middleton|Sun Prairie|Verona) (city|village)$/.test(countySub)) {
               const libCode = countySub.substring(0,3).toLowerCase(),
                 alderURL = "https://mpl-koha-patch.lrschneider.com/pstats/" + libCode +
                   "?val=all&regex=true";
@@ -395,7 +393,7 @@ console.log(censusTractData);
                     value = json[i].value;
                   }
                 }
-                console.log("zip: " + zip);
+
                 return Promise.resolve({
                   "key": "returnCensusData",
                   "matchAddr": matchAddr,
@@ -407,7 +405,6 @@ console.log(censusTractData);
                 });
               }));
             } else {
-              console.log("zip: " + zip);
               return Promise.resolve({
                 "key": "returnCensusData",
                 "matchAddr": matchAddr,
@@ -434,11 +431,8 @@ console.log(censusTractData);
       });
       break;
     case "queryAlderDists":
-      if (request.code === "mad") request.code = "madExceptions";
-
-      const alderURL = "https://mpl-koha-patch.lrschneider.com/pstats/"
-          + request.code + "?val=all&regex=true";
-
+      const alderURL = "https://mpl-koha-patch.lrschneider.com/pstats?library="
+          + request.code;
 
       return fetch(alderURL, {"method": "GET"}).then(response => {
         if(!response.ok) {

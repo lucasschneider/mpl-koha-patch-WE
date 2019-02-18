@@ -1,5 +1,5 @@
 "use strict"
-  
+
 var Address = function (addrRegEx, place) {
   // addrRegEx formated to be inserted at a regex literal
   this.addrRegEx = addrRegEx;
@@ -17,7 +17,7 @@ var addr = document.getElementById('address'),
   addressVal,
   date = new Date(),
   year = date.getUTCFullYear();
-  
+
 browser.runtime.onMessage.addListener(message => {
 if (message && message.key == "receivedMatchDorm") {
   switch (parseInt(date.getUTCMonth(), 10)) {
@@ -45,7 +45,7 @@ if (message && message.key == "receivedMatchDorm") {
      bn.value += "\n\n";
     }
     var noteBody = "Special expiration date of 05/15/" + year + " set due to residence at " + message.dormName + ", a university dorm. Patron must verbally update address before account renewal (proof of address not necessary).";
-    
+
    bn.value += noteBody;
     alert(noteBody)
  }
@@ -59,6 +59,8 @@ if (message && message.key == "receivedMatchDorm") {
 function fillDormExp() {
   if (zip && addr && expiry) {
     addressVal = addr2 !== null ? addr.value + " " + addr2.value : addr.value;
+    addressVal = addressVal.replace(/[^\w\s]|_/g, "");
+    
     if (/[ ]*mad(ison)?(,? wi)?/i.test(city.value)) {
       browser.runtime.sendMessage({
         key: "getDormData",
