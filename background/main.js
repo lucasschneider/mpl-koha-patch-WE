@@ -52,6 +52,16 @@
     });
   };
 
+var updatePopup = function() {
+  browser.storage.sync.get("laptopForm").then(res => {
+    if (res.laptopForm) {
+      browser.browserAction.setPopup({"popup": "/browserAction/popupLaptops.html"});
+    } else {
+      browser.browserAction.setPopup({"popup": "/browserAction/popup.html"});
+    }
+  });
+};
+
 var SCLSLibs = function() {
   this.data = {
     "MPL": {
@@ -173,6 +183,7 @@ var SCLSLibs = function() {
 };
 
 setIcon();
+updatePopup();
 
 // Load preference-selected function files
 browser.webNavigation.onCompleted.addListener(details => {
@@ -605,6 +616,9 @@ function handleMessages(request, sender, sendResponse) {
       break;
     case "updateExtensionIcon":
       setIcon();
+      break;
+    case "updatePopup":
+      updatePopup();
       break;
     case "pauseSundayDropbox":
         browser.storage.sync.set({sundayDropboxPaused: true});

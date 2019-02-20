@@ -7,6 +7,7 @@ var skin = document.getElementById("skin"),
   dueDateToggle = document.getElementById("dueDateToggle"),
   middleInitials = document.getElementById("middleInitials"),
   updateAccountType = document.getElementById("updateAccountType"),
+  laptopForm = document.getElementById("laptopForm"),
   cdams = document.getElementById("cdams"),
   cdamsid = document.getElementById("cdamsid"),
   cdjms = document.getElementById("cdjms"),
@@ -67,6 +68,8 @@ var skin = document.getElementById("skin"),
     "dueDateToggle": true,
     "middleInitials": true,
     "updateAccountType": true,
+    "laptopForm": false,
+    "laptopFormChecked": false,
     "cdams": true, "cdamsid": true, "cdjms": true, "cdyms": true,
     "dbrafe": false, "dbraff": false, "dbraid": false, "dbranf": false, "dbrarn": false, "dbratv": false, "dbrj": false, "dvdafe": false, "dvdaff": false, "dvdaid": false, "dvdanf": false, "dvdarn": false, "dvdatv": false, "dvdawl": false, "dvdjfe": false, "dvdjhl": false, "dvdjnf": false, "dvdjwl": false, "dvdyfe": false,
     "vga": false, "vgj": false, "vgy": false, "soa": false, "soawl": false, "soj": false,
@@ -88,7 +91,7 @@ var skin = document.getElementById("skin"),
     "shortcutLink6": "http://www.madisonpubliclibrary.org/research/referenc2"
   };
 
-function setDefaultOptions() {    
+function setDefaultOptions() {
   browser.storage.sync.set(defaultOptions);
   browser.runtime.sendMessage({key: "updateExtensionIcon"});
   restoreOptions();
@@ -105,6 +108,7 @@ function restoreOptions() {
     dueDateToggle.checked = res.dueDateToggle;
     middleInitials.checked = res.middleInitials;
     updateAccountType.checked = res.updateAccountType;
+    laptopForm.checked = res.laptopForm;
     cdams.checked = res.cdams;
     cdamsid.checked = res.cdamsid;
     cdjms.checked = res.cdjms;
@@ -161,33 +165,33 @@ document.addEventListener('DOMContentLoaded', function() {
 // Functions to check whether the class-level switches should be triggered
 function checkAllCD() {
   var numChecked = 0;
-  
+
   for (var i = 0; i < cdCodes.length; i++) {
     if (document.getElementById(cdCodes[i]).checked) numChecked++;
   }
-  
+
   sepAllCD.checked = numChecked === cdCodes.length;
   browser.storage.sync.set({sepAllCD: numChecked === cdCodes.length});
 }
 
 function checkAllDVD() {
   var numChecked = 0;
-  
+
   for (var i = 0; i < dvdCodes.length; i++) {
     if (document.getElementById(dvdCodes[i]).checked) numChecked++;
   }
-  
+
   sepAllDVD.checked = numChecked === dvdCodes.length;
   browser.storage.sync.set({sepAllDVD: numChecked === dvdCodes.length});
 }
 
 function checkOther() {
   var numChecked = 0;
-  
+
   for (var i = 0; i < otherCodes.length; i++) {
     if (document.getElementById(otherCodes[i]).checked) numChecked++;
   }
-  
+
   sepOther.checked = numChecked === otherCodes.length;
   browser.storage.sync.set({sepOther: numChecked === otherCodes.length});
 }
@@ -246,6 +250,11 @@ document.getElementById("middleInitialsSwitch").addEventListener('click', functi
 });
 document.getElementById("updateAccountTypeSwitch").addEventListener('click', function() {
   browser.storage.sync.set({updateAccountType: updateAccountType.checked});
+});
+document.getElementById("laptopFormSwitch").addEventListener('click', function() {
+  browser.storage.sync.set({"laptopForm": laptopForm.checked}).then(() => {
+    browser.runtime.sendMessage({"key": "updatePopup"});
+  });
 });
 document.getElementById("sepAllCDSwitch").addEventListener('click', function() {
   toggleAllCD();

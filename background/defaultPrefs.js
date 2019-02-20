@@ -26,6 +26,12 @@ browser.storage.sync.get().then((res) => {
   if (!res.hasOwnProperty('updateAccountType')) {
     browser.storage.sync.set({updateAccountType: true});
   }
+  if (!res.hasOwnProperty('laptopForm')) {
+    browser.storage.sync.set({"laptopForm": false});
+  }
+  if (!res.hasOwnProperty('laptopFormChecked')) {
+    browser.storage.sync.set({"laptopFormChecked": false});
+  }
   if (!res.hasOwnProperty("cdams")) {
     browser.storage.sync.set({cdams: true});
   }
