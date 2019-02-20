@@ -360,14 +360,9 @@ function handleMessages(request, sender, sendResponse) {
         } else if (!censusTractData || !censusTractData.result || censusTractData.result.addressMatches.length === 0) {
           throw new Error("No census tract data matched given address.");
         } else {
-          // Select the last match if multiple are found
-          // I'm not sure if this works for all cases of multiple addresses,
-          // But it does for a particular address in Monona
-          const lastIdx = countyData.result.addressMatches.length - 1;
-
-          countyData = countyData.result.addressMatches[lastIdx];
-          countySubData = countySubData.result.addressMatches[lastIdx];
-          censusTractData = censusTractData.result.addressMatches[lastIdx];
+          countyData = countyData.result.addressMatches[0];
+          countySubData = countySubData.result.addressMatches[0];
+          censusTractData = censusTractData.result.addressMatches[0];
 
           matchAddr = countyData.matchedAddress.split(',')[0].toUpperCase();
           county = countyData.geographies.Counties[0].BASENAME;

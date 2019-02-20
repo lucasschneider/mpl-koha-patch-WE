@@ -12,24 +12,20 @@ var paymentPlan = document.getElementById('paymentPlan'),
   prefs = document.getElementById('prefs');
 
 if (paymentPlan) paymentPlan.addEventListener('click', function() {
-  browser.runtime.sendMessage({key: "addNote"});
+  browser.runtime.sendMessage({"key": "addNote"});
 });
 
 if (lostcard) lostcard.addEventListener('click', function() {
-  browser.runtime.sendMessage({key: "addLostCardNote"});
+  browser.runtime.sendMessage({"key": "addLostCardNote"});
 });
 
 if (PSTAT2) PSTAT2.addEventListener('click', function() {
-  browser.runtime.sendMessage({key: "addr2PSTAT"});
-});
-
-if (calendarAnnouncements) calendarAnnouncements.addEventListener('click', function() {
-  browser.runtime.sendMessage({key: "calendarAnnouncements"});
+  browser.runtime.sendMessage({"key": "alternatePSTAT"});
 });
 
 if (problemItem) problemItem.addEventListener('click', function() {
   browser.tabs.create({
-    url: browser.runtime.getURL("../problemItemForm/problemItemForm.html")
+    "url": browser.runtime.getURL("../problemItemForm/problemItemForm.html")
   });
 });
 
