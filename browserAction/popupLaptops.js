@@ -1,9 +1,10 @@
-var barcode = document.getElementById("anyNumber").value;
-
 var defaultMenu = document.getElementById('defaultMenu'),
   laptopMenu = document.getElementById('laptopMenu'),
   laptopFormOn = document.getElementById("laptopFormOn"),
-  laptopFormOnSwitch = document.getElementById("laptopFormOnSwitch");
+  laptopFormOnSwitch = document.getElementById("laptopFormOnSwitch"),
+  patronBarcode = document.getElementById("anyNumber"),
+  accessory = document.getElementById("accessories"),
+  logLaptop = document.getElementById("logLaptop");
 
 
 function updateContent() {
@@ -20,27 +21,33 @@ function updateContent() {
   });
 }
 
-function setInputFilter(textbox, inputFilter) {
-  ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
-    textbox.addEventListener(event, function() {
-      if (inputFilter(this.value)) {
-        this.oldValue = this.value;
-        this.oldSelectionStart = this.selectionStart;
-        this.oldSelectionEnd = this.selectionEnd;
-      } else if (this.hasOwnProperty("oldValue")) {
-        this.value = this.oldValue;
-        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
-      }
-    });
-  });
-}
-
-updateContent();
-
 laptopFormOnSwitch.addEventListener('click', function() {
   browser.storage.sync.set({"laptopFormChecked": laptopFormOn.checked}).then(updateContent);
 });
 
-setInputFilter(document.getElementById("anyNumber"), function(value) {
-  return /^\d*$/.test(value);
+updateContent();
+
+patronBarcode.addEventListener('input', validateInput);
+accessory.addEventListener('input', function() {
+  if (!/^[1-4]$/.test(this.value)) this.value = "";
 });
+
+logLaptop.innerText = "Log Entry";
+logLaptop.style.cursor = "pointer";
+logLaptop.addEventListener('click', function() {
+  var a = document.createElement("a");
+  var text = "The date: " + (new Date());
+  var file = new Blob(text, {type: type});
+  a.href = URL.createObjectURL(file);
+  a.download = 'laptopCheckouts.txt';
+  a.click();
+});
+
+function validateInput() {
+  if (!/[0-9]/.test(this.value[this.value.length-1]) || (this.value.length === 1 && this.value !== "2")
+      || (this.value.length === 2 && this.value !== "29")
+      || (this.value.length === 3 && this.value !== "290")
+      || (this.value.length === 4 && this.value !== "2907")
+      || (this.value.length === 5 && this.value !== "29078")
+      || (this.value.length === 6 && this.value !== "290780")) this.value = this.value.slice(0,-2);
+}
