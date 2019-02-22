@@ -34,21 +34,29 @@ accessory.addEventListener('input', function() {
 
 logLaptop.innerText = "Log Entry";
 logLaptop.style.cursor = "pointer";
-logLaptop.addEventListener('click', function() {
-  // https://doc.esdoc.org/github.com/rpl/idb-file-storage/class/src/idb-file-storage.js~IDBFileStorage.html#instance-method-get
+logLaptop.addEventListener('click', logData);
 
+// https://doc.esdoc.org/github.com/rpl/idb-file-storage/class/src/idb-file-storage.js~IDBFileStorage.html#instance-method-get
+async function logData() {
   const laptopLogs = await IDBFiles.getFileStorage({"name": "laptopLogs"});
 
-  const file = await laptopLogs.createMutableFile("test.txt");
-  const fh = file.open("readwrite");
+  const fileList = await laptopLogs.list();
 
-  const metadata = await fh.getMetadata();
+  const idbMutableFile = fileList.includes("test.txt") ?
+      await laptopLogs.get("test.txt") :
+      await laptopLogs.createMutableFile("test.txt");
 
-  await fh.append((new Date()).toUTCString());
+  const lockedFile = idbMutableFile.open("readwrite");
 
-  await fh.close();
-  await file.persist();
-});
+  await lockedFile.append((new Date()).toUTCString() + "\n");
+
+  const metadata = await lockedFile.getMetadata();
+  const text = await lockedFile.readAsText(metadata.size);
+  console.log(text);
+
+  await lockedFile.close();
+  await idbMutableFile.persist();
+}
 
 function validateInput() {
   if (!/[0-9]/.test(this.value[this.value.length-1]) || (this.value.length === 1 && this.value !== "2")
