@@ -35,12 +35,19 @@ accessory.addEventListener('input', function() {
 logLaptop.innerText = "Log Entry";
 logLaptop.style.cursor = "pointer";
 logLaptop.addEventListener('click', function() {
-  var a = document.createElement("a");
-  var text = "The date: " + (new Date());
-  var file = new Blob(text, {type: type});
-  a.href = URL.createObjectURL(file);
-  a.download = 'laptopCheckouts.txt';
-  a.click();
+  // https://doc.esdoc.org/github.com/rpl/idb-file-storage/class/src/idb-file-storage.js~IDBFileStorage.html#instance-method-get
+
+  const laptopLogs = await IDBFiles.getFileStorage({"name": "laptopLogs"});
+
+  const file = await laptopLogs.createMutableFile("test.txt");
+  const fh = file.open("readwrite");
+
+  const metadata = await fh.getMetadata();
+
+  await fh.append((new Date()).toUTCString());
+
+  await fh.close();
+  await file.persist();
 });
 
 function validateInput() {
