@@ -43,6 +43,10 @@ a:focus {
   margin: 0 1em 1em 1em;
 }
 
+#accessories, #laptopId {
+  cursor: pointer;
+}
+
 /* The switch - the box around the slider */
 .switch {
  position: relative;
@@ -85,7 +89,11 @@ a:focus {
  border-radius: 50%;
 }
 
-input {
+.rangeLabel {
+  margin-left: 11%;
+}
+
+#laptopMenu input {
   display: block;
 }
 
