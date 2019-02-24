@@ -77,7 +77,6 @@
     "webRequest",
     "webNavigation",
     "*://*.kohalibrary.com/*",
-    "*://host.evanced.info/madison/*",
     "*://*.census.gov/*",
     "*://*.googleapis.com/*",
     "*://mpl-koha-patch.lrschneider.com/*"

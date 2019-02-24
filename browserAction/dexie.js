@@ -627,7 +627,7 @@ var ZONE_ECHO_LIMIT = 7;
 var nativePromiseInstanceAndProto = (function () {
     try {
         // Be able to patch native async functions
-        return [Promise.resolve(), Promise.prototype, Promise.resolve(), Function.constructor];
+        return [p,Object.getPrototypeOf(p),Promise.resolve(),F.constructor];
     }
     catch (e) {
         var P = _global.Promise;
@@ -4471,4 +4471,3 @@ dbNamesDB.version(1).stores({ dbnames: 'name' });
 return Dexie;
 
 })));
-//# sourceMappingURL=dexie.js.map
