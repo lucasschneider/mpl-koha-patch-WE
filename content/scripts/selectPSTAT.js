@@ -1337,14 +1337,13 @@ var cleanAddr = function(addrElt, encodeForURI) {
       break;
     }
   }
-console.log(addrElts);
-console.log(stopIdx);
-  if (stopIdx !== null) {
+
+  if (stopIdx !== undefined) {
     addr = "";
-    for (let i = 0; i < stopIdx; i++) {
+    for (let i = 0; i < stopIdx+1; i++) {
       addr += addrElts[i] + " ";
     }
-    addr = addr.substr(0,-1);
+    addr = addr.slice(0,-1);
   }
 
   return encodeForURI ? encodeURI(addr) : addr;
