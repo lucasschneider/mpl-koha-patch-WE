@@ -239,6 +239,12 @@ browser.webNavigation.onCompleted.addListener(details => {
         });
       }
 
+      if (res.hasOwnProperty('laptopForm') && res.laptopForm) {
+        browser.tabs.executeScript(details.tabId, {
+          file: "/content/scripts/laptopReturnListener.js"
+        });
+      }
+
       // If the Sunday dropbox option is enabled...
       if (res.hasOwnProperty('sundayDropbox') && res.sundayDropbox && day === 0) {
         // If sundayDropbox is not paused

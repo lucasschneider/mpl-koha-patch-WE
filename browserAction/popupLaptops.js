@@ -8,25 +8,6 @@ const numAcc = document.getElementById("accessories");
 const notes = document.getElementById("notes");
 const logLaptop = document.getElementById("logLaptop");
 
-const laptopMap = {
-  "39078083272006": "PC1-A1",
-  "39078083272014": "PC1-A2",
-  "39078083272071": "PC1-A3",
-  "39078091512427": "PC1-A4",
-  "39078083272246": "PC1-A5",
-  "39078091512484": "PC1-B1",
-  "39078083272121": "PC1-B2",
-  "39078083272063": "PC1-B3",
-  "39078083272667": "PC2-A1",
-  "39078083272600": "PC2-A2",
-  "39078091512369": "PC2-A3",
-  "": "PC2-A4",
-  "39078083272428": "PC2-A5",
-  "39078086196814": "PC2-B1",
-  "39078091512245": "PC2-B2",
-  "39078091512302": "PC2-B3"
-}
-
 const DB_NAME = "laptopCKO";
 const DB_VERSION = 1;
 const DB_STORE_NAME = "laptopCKOStore";
@@ -101,6 +82,23 @@ function issueLaptop(barcode, laptopID, numAcc, notes) {
   }
 }
 
+function getAllData() {
+  var store = getObjectStore(DB_STORE_NAME, 'readwrite');
+  var data = [];
+
+  store.openCursor().onsuccess = function(evt) {
+    var cursor = evt.target.result;
+    if (cursor) {
+      var entry = cursor.value;
+      entry.key = cursor.key;
+      data.push(entry);
+      cursor.continue();
+    }
+  }
+
+  return data;
+}
+
 function updateContent() {
   browser.storage.sync.get("laptopFormChecked").then(res => {
     laptopFormOn.checked = res.laptopFormChecked;
@@ -125,7 +123,17 @@ patronBarcode.addEventListener('input', function() {
 
 logLaptop.style.cursor = "pointer";
 logLaptop.addEventListener('click', function() {
-  issueLaptop(patronBarcode.value,laptopID.value,numAcc.value,notes.value);
+  if (/^290780\d{8}$/.test(patronBarcode.value)) {
+    issueLaptop(patronBarcode.value,laptopID.value,numAcc.value,notes.value);
+
+    patronBarcode.value = "";
+    laptopID.value = "PC1-A1";
+    numAcc.value = "0";
+    notes.value = "";
+  } else {
+    //alert("Enter a proper patron barcode.");
+    console.log(getAllData());
+  }
 });
 
 openDB();
