@@ -52,16 +52,6 @@
     });
   };
 
-var updatePopup = function() {
-  browser.storage.sync.get("laptopForm").then(res => {
-    if (res.laptopForm) {
-      browser.browserAction.setPopup({"popup": "/browserAction/popupLaptops.html"});
-    } else {
-      browser.browserAction.setPopup({"popup": "/browserAction/popup.html"});
-    }
-  });
-};
-
 var SCLSLibs = function() {
   this.data = {
     "MPL": {
@@ -183,7 +173,6 @@ var SCLSLibs = function() {
 };
 
 setIcon();
-updatePopup();
 
 // Load preference-selected function files
 browser.webNavigation.onCompleted.addListener(details => {
@@ -193,49 +182,49 @@ browser.webNavigation.onCompleted.addListener(details => {
     browser.storage.sync.get().then((res) => {
       if (!res.hasOwnProperty('patronMsg') || (res.hasOwnProperty('patronMsg') && res.patronMsg)) {
         browser.tabs.executeScript(details.tabId, {
-          file: "/content/scripts/patronMessages.js"
+          "file": "/content/scripts/patronMessages.js"
         });
       }
 
-      if (!res.hasOwnProperty('validAddr') || (res.hasOwnProperty('validAddr') && res.validAddr)) {
+      if (!res.hasOwnProperty('parseAddr') || (res.hasOwnProperty('parseAddr') && res.parseAddr)) {
         browser.tabs.executeScript(details.tabId, {
-          file: "/content/scripts/validateAddresses.js"
+          "file": "/content/scripts/parsePatronAddr.js"
         });
       }
 
       if (!res.hasOwnProperty('autoBarcode') || (res.hasOwnProperty('autoBarcode') && res.autoBarcode)) {
         browser.tabs.executeScript(details.tabId, {
-          file: "/content/scripts/autofillUserId.js"
+          "file": "/content/scripts/autofillUserId.js"
         });
       }
 
       if (!res.hasOwnProperty('lookupPSTAT') || (res.hasOwnProperty('lookupPSTAT') && res.lookupPSTAT)) {
         browser.tabs.executeScript(details.tabId, {
-          file: "/content/scripts/selectPSTAT.js"
+          "file": "/content/scripts/selectPSTAT.js"
         });
       }
 
       if (!res.hasOwnProperty('digestOnly') || (res.hasOwnProperty('digestOnly') && res.digestOnly)) {
         browser.tabs.executeScript(details.tabId, {
-          file: "/content/scripts/forceDigest.js"
+          "file": "/content/scripts/forceDigest.js"
         });
       }
 
       if (!res.hasOwnProperty('dueDateToggle') || (res.hasOwnProperty('dueDateToggle') && res.dueDateToggle)) {
         browser.tabs.executeScript(details.tabId, {
-          file: "/content/scripts/restrictNotificationOptions.js"
+          "file": "/content/scripts/restrictNotificationOptions.js"
         });
       }
 
       if (!res.hasOwnProperty('middleInitials') || (res.hasOwnProperty('middleInitials') && res.middleInitials)) {
         browser.tabs.executeScript(details.tabId, {
-          file: "/content/scripts/middleName.js"
+          "file": "/content/scripts/middleName.js"
         });
       }
 
       if (!res.hasOwnProperty('updateAccountType') || (res.hasOwnProperty('updateAccountType') && res.updateAccountType)) {
         browser.tabs.executeScript(details.tabId, {
-          file: "/content/scripts/updateAccountType.js"
+          "file": "/content/scripts/updateAccountType.js"
         });
       }
 
@@ -244,12 +233,12 @@ browser.webNavigation.onCompleted.addListener(details => {
         // If sundayDropbox is not paused
         if (res.hasOwnProperty('sundayDropboxPaused') && !res.sundayDropboxPaused) {
           browser.tabs.executeScript(details.tabId, {
-            file: "/content/scripts/sundayDropbox.js"
+            "file": "/content/scripts/sundayDropbox.js"
           });
         }
       } else {
         if (res.hasOwnProperty('sundayDropboxPaused') && res.sundayDropboxPaused) {
-          browser.storage.sync.set({sundayDropboxPaused: false});
+          browser.storage.sync.set({"sundayDropboxPaused": false});
         }
       }
     });
@@ -268,12 +257,12 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
 
     function sendErrorMsg(msg) {
       browser.tabs.query({
-        currentWindow: true,
-        active: true
+        "currentWindow": true,
+        "active": true
       }).then((tabs) => {
         for (let tab of tabs) {
           browser.tabs.executeScript(tab.id, {
-            code: "alert('" + msg + "');"
+            "code": "alert('" + msg + "');"
           });
         }
       });
@@ -298,12 +287,12 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
         switch (barcode.substr(0, 1)) {
           case "2":
             browser.tabs.create({
-              url: browser.runtime.getURL("../problemItemForm/problemItemForm.html") + "?patron=" + barcode
+              "url": browser.runtime.getURL("../problemItemForm/problemItemForm.html") + "?patron=" + barcode
             });
             break;
           case "3":
             browser.tabs.create({
-              url: browser.runtime.getURL("../problemItemForm/problemItemForm.html") + "?item=" + barcode
+              "url": browser.runtime.getURL("../problemItemForm/problemItemForm.html") + "?item=" + barcode
             });
             break;
           default:
@@ -531,87 +520,14 @@ function handleMessages(request, sender, sendResponse) {
         });
       });
       break;
-    case "getDormData":
-      $.getJSON("https://mpl-koha-patch.lrschneider.com/dormAddr").done(function(response) {
-        var dormName;
+    case "parsePatronAddr":
+      const madAddrURL = "https://mpl-koha-patch.lrschneider.com/madAddr";
 
-        for (var i = 0; i < response.length; i++) {
-          var regex = new RegExp(response[i].regex, "i");
-          if (regex.test(request.addrVal)) {
-            dormName = response[i].name;
-            break;
-          }
+      return fetch(madAddrURL, {"method": "GET"}).then(response => {
+        if (!response.ok) {
+          throw new Error('[lrschneider.com] HTTP error, status = ' + response.status);
         }
-
-        function onError(error) {
-          console.error(`Error: ${error}`);
-        }
-
-        function sendMapResponse(tabs) {
-          for (let tab of tabs) {
-            if (dormName && dormName != "") {
-              browser.tabs.sendMessage(tab.id, {
-                key: "receivedMatchDorm",
-                dormName: dormName
-              });
-            } else {
-              browser.tabs.sendMessage(tab.id, {
-                key: "failedMatchDorm"
-              });
-            }
-          }
-        }
-
-        browser.tabs.query({
-          currentWindow: true,
-          active: true
-        }).then(sendMapResponse).catch(onError);
-      });
-      break;
-    case "getBadAddrs":
-      $.getJSON("https://mpl-koha-patch.lrschneider.com/badAddr").done(function(response) {
-        var name,
-          type,
-          address,
-          note;
-
-        for (var i = 0; i < response.length; i++) {
-          var regex = new RegExp(response[i].regex, "i");
-          if (regex.test(request.addrVal)) {
-            name = response[i].name;
-            type = response[i].type;
-            address = response[i].address;
-            note = response[i].note;
-            break;
-          }
-        }
-
-        function onError(error) {
-          console.error(`Error: ${error}`);
-        }
-
-        function sendBadAddrs(tabs) {
-          for (let tab of tabs) {
-            if (name && type && address) {
-              browser.tabs.sendMessage(tab.id, {
-                key: "receivedBadAddrs",
-                name: name,
-                type: type,
-                address: address,
-                note: note
-              });
-            } else {
-              browser.tabs.sendMessage(tab.id, {
-                key: "noBadAddrs"
-              });
-            }
-          }
-        }
-
-        browser.tabs.query({
-          currentWindow: true,
-          active: true
-        }).then(sendBadAddrs).catch(onError);
+        return response.json();
       });
       break;
     case "updateExtensionIcon":

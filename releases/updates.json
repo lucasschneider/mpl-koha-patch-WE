@@ -511,6 +511,12 @@
           "applications": {
             "gecko": { "strict_min_version": "57" }
           }
+        },
+        { "version": "22.4.0",
+          "update_link": "https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/releases/mpl-koha-patch-22.4.0.xpi",
+          "applications": {
+            "gecko": { "strict_min_version": "57" }
+          }
         }
       ]
     }
