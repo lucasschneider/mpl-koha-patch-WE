@@ -3,8 +3,7 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="options.css" />
-    <script type="text/javascript" src="../background/browser-polyfill.min.js"></script>
-    <title>MPL BibEx Options</title>
+    <title>MPL Koha Patch Options</title>
   </head>
 
   <body>
@@ -21,6 +20,20 @@
         </select>
       </div>
       <div class="option">
+        <h1>Parse Patron Addresses</h1>
+        <table>
+          <tr>
+            <td>
+              <label class="switch" id="parseAddrSwitch">
+                <input type="checkbox" id="parseAddr">
+                <span class="slider"></span>
+              </label>
+            </td>
+            <td><label for="parseAddr">When creating or updating a patron record, compare their address against MPL's list of dorms, restricted addresses, and unacceptable addresses. Dorm addresses are given a special expiration date of May 15 of that academic year. Restricted addresses are automatically made limited use, and unacceptable addresses trigger the save button to be hidden (which could be overridden by staff). In each of these cases, staff are notified of the nature of the address, and a circulation note is automatically entered into the patron's record.</label></td>
+          </tr>
+        </table>
+      </div>
+      <div class="option">
         <h1>Additional Patron Messages</h1>
         <table>
           <tr>
@@ -31,20 +44,6 @@
               </label>
             </td>
             <td><label for="patronMsg">Replace several of LibLime's predefined patron messages with messages more often used by MPL circ</label></td>
-          </tr>
-        </table>
-      </div>
-      <div class="option">
-        <h1>Validate Madison Addresses</h1>
-        <table>
-          <tr>
-            <td>
-              <label class="switch" id="validAddrSwitch">
-                <input type="checkbox" id="validAddr">
-                <span class="slider"></span>
-              </label>
-            </td>
-            <td><label for="validAddr">Alerts library staff when an unacceptable or restricted Madison address has been entered</label></td>
           </tr>
         </table>
       </div>
@@ -129,20 +128,6 @@
               </label>
             </td>
             <td><label for="updateAccountType">Update JU -> AD and LUJ -> LU when saving a patron record if the patron is 18 years or older</label></td>
-          </tr>
-        </table>
-      </div>
-      <div class="option">
-        <h1>MPL Laptop Form</h1>
-        <table>
-          <tr>
-            <td>
-              <label class="switch" id="laptopFormSwitch">
-                <input type="checkbox" id="laptopForm">
-                <span class="slider"></span>
-              </label>
-            </td>
-            <td><label for="laptopForm">Include the MPL form for gathering laptop checkout data on the browser action button popup.</label></td>
           </tr>
         </table>
       </div>

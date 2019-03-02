@@ -1,13 +1,12 @@
 var skin = document.getElementById("skin"),
   patronMsg = document.getElementById("patronMsg"),
-  validAddr = document.getElementById("validAddr"),
+  parseAddr = document.getElementById("parseAddr"),
   autoBarcode = document.getElementById("autoBarcode"),
   lookupPSTAT = document.getElementById("lookupPSTAT"),
   digestOnly = document.getElementById("digestOnly"),
   dueDateToggle = document.getElementById("dueDateToggle"),
   middleInitials = document.getElementById("middleInitials"),
   updateAccountType = document.getElementById("updateAccountType"),
-  laptopForm = document.getElementById("laptopForm"),
   cdams = document.getElementById("cdams"),
   cdamsid = document.getElementById("cdamsid"),
   cdjms = document.getElementById("cdjms"),
@@ -61,15 +60,13 @@ var skin = document.getElementById("skin"),
   defaultOptions = {
     "skin": "MAD",
     "patronMsg": true,
-    "validAddr": true,
+    "parseAddr": true,
     "autoBarcode": true,
     "lookupPSTAT": true,
     "digestOnly": true,
     "dueDateToggle": true,
     "middleInitials": true,
     "updateAccountType": true,
-    "laptopForm": false,
-    "laptopFormChecked": false,
     "cdams": true, "cdamsid": true, "cdjms": true, "cdyms": true,
     "dbrafe": false, "dbraff": false, "dbraid": false, "dbranf": false, "dbrarn": false, "dbratv": false, "dbrj": false, "dvdafe": false, "dvdaff": false, "dvdaid": false, "dvdanf": false, "dvdarn": false, "dvdatv": false, "dvdawl": false, "dvdjfe": false, "dvdjhl": false, "dvdjnf": false, "dvdjwl": false, "dvdyfe": false,
     "vga": false, "vgj": false, "vgy": false, "soa": false, "soawl": false, "soj": false,
@@ -101,14 +98,13 @@ function restoreOptions() {
   browser.storage.sync.get().then((res) => {
     skin.value = res.skin;
     patronMsg.checked = res.patronMsg;
-    validAddr.checked = res.validAddr;
+    parseAddr.checked = res.parseAddr;
     autoBarcode.checked = res.autoBarcode;
     lookupPSTAT.checked = res.lookupPSTAT;
     digestOnly.checked = res.digestOnly;
     dueDateToggle.checked = res.dueDateToggle;
     middleInitials.checked = res.middleInitials;
     updateAccountType.checked = res.updateAccountType;
-    laptopForm.checked = res.laptopForm;
     cdams.checked = res.cdams;
     cdamsid.checked = res.cdamsid;
     cdjms.checked = res.cdjms;
@@ -171,7 +167,7 @@ function checkAllCD() {
   }
 
   sepAllCD.checked = numChecked === cdCodes.length;
-  browser.storage.sync.set({sepAllCD: numChecked === cdCodes.length});
+  browser.storage.sync.set({"sepAllCD": numChecked === cdCodes.length});
 }
 
 function checkAllDVD() {
@@ -182,7 +178,7 @@ function checkAllDVD() {
   }
 
   sepAllDVD.checked = numChecked === dvdCodes.length;
-  browser.storage.sync.set({sepAllDVD: numChecked === dvdCodes.length});
+  browser.storage.sync.set({"sepAllDVD": numChecked === dvdCodes.length});
 }
 
 function checkOther() {
@@ -193,7 +189,7 @@ function checkOther() {
   }
 
   sepOther.checked = numChecked === otherCodes.length;
-  browser.storage.sync.set({sepOther: numChecked === otherCodes.length});
+  browser.storage.sync.set({"sepOther": numChecked === otherCodes.length});
 }
 
 // Functions to see if all items of a collection category has been checked
@@ -228,33 +224,28 @@ document.getElementById("skin").addEventListener('change', function() {
   });
 });
 document.getElementById("patronMsgSwitch").addEventListener('click', function() {
-  browser.storage.sync.set({patronMsg: patronMsg.checked});
+  browser.storage.sync.set({"patronMsg": patronMsg.checked});
 });
-document.getElementById("validAddrSwitch").addEventListener('click', function() {
-  browser.storage.sync.set({validAddr: validAddr.checked});
+document.getElementById("parseAddrSwitch").addEventListener('click', function() {
+  browser.storage.sync.set({"parseAddr": parseAddr.checked});
 });
 document.getElementById("autoBarcodeSwitch").addEventListener('click', function() {
-  browser.storage.sync.set({autoBarcode: autoBarcode.checked});
+  browser.storage.sync.set({"autoBarcode": autoBarcode.checked});
 });
 document.getElementById("lookupPSTATSwitch").addEventListener('click', function() {
-  browser.storage.sync.set({lookupPSTAT: lookupPSTAT.checked});
+  browser.storage.sync.set({"lookupPSTAT": lookupPSTAT.checked});
 });
 document.getElementById("digestOnlySwitch").addEventListener('click', function() {
-  browser.storage.sync.set({digestOnly: digestOnly.checked});
+  browser.storage.sync.set({"digestOnly": digestOnly.checked});
 });
 document.getElementById("dueDateToggleSwitch").addEventListener('click', function() {
-  browser.storage.sync.set({dueDateToggle: dueDateToggle.checked});
+  browser.storage.sync.set({"dueDateToggle": dueDateToggle.checked});
 });
 document.getElementById("middleInitialsSwitch").addEventListener('click', function() {
-  browser.storage.sync.set({middleInitials: middleInitials.checked});
+  browser.storage.sync.set({"middleInitials": middleInitials.checked});
 });
 document.getElementById("updateAccountTypeSwitch").addEventListener('click', function() {
-  browser.storage.sync.set({updateAccountType: updateAccountType.checked});
-});
-document.getElementById("laptopFormSwitch").addEventListener('click', function() {
-  browser.storage.sync.set({"laptopForm": laptopForm.checked}).then(() => {
-    browser.runtime.sendMessage({"key": "updatePopup"});
-  });
+  browser.storage.sync.set({"updateAccountType": updateAccountType.checked});
 });
 document.getElementById("sepAllCDSwitch").addEventListener('click', function() {
   toggleAllCD();
@@ -267,159 +258,159 @@ document.getElementById("sepOtherSwitch").addEventListener('click', function() {
 });
 document.getElementById("cdamsSwitch").addEventListener('click', function() {
   checkAllCD();
-  browser.storage.sync.set({cdams: cdams.checked});
+  browser.storage.sync.set({"cdams": cdams.checked});
 });
 document.getElementById("cdamsidSwitch").addEventListener('click', function() {
   checkAllCD();
-  browser.storage.sync.set({cdamsid: cdamsid.checked});
+  browser.storage.sync.set({"cdamsid": cdamsid.checked});
 });
 document.getElementById("cdjmsSwitch").addEventListener('click', function() {
   checkAllCD();
-  browser.storage.sync.set({cdjms: cdjms.checked});
+  browser.storage.sync.set({"cdjms": cdjms.checked});
 });
 document.getElementById("cdymsSwitch").addEventListener('click', function() {
   checkAllCD();
-  browser.storage.sync.set({cdyms: cdyms.checked});
+  browser.storage.sync.set({"cdyms": cdyms.checked});
 });
 document.getElementById("dbrafeSwitch").addEventListener('click', function() {
   checkAllDVD();
-  browser.storage.sync.set({dbrafe: dbrafe.checked});
+  browser.storage.sync.set({"dbrafe": dbrafe.checked});
 });
 document.getElementById("dbraffSwitch").addEventListener('click', function() {
   checkAllDVD();
-  browser.storage.sync.set({dbraff: dbraff.checked});
+  browser.storage.sync.set({"dbraff": dbraff.checked});
 });
 document.getElementById("dbraidSwitch").addEventListener('click', function() {
   checkAllDVD();
-  browser.storage.sync.set({dbraid: dbraid.checked});
+  browser.storage.sync.set({"dbraid": dbraid.checked});
 });
 document.getElementById("dbranfSwitch").addEventListener('click', function() {
   checkAllDVD();
-  browser.storage.sync.set({dbranf: dbranf.checked});
+  browser.storage.sync.set({"dbranf": dbranf.checked});
 });
 document.getElementById("dbrarnSwitch").addEventListener('click', function() {
   checkAllDVD();
-  browser.storage.sync.set({dbrarn: dbrarn.checked});
+  browser.storage.sync.set({"dbrarn": dbrarn.checked});
 });
 document.getElementById("dbratvSwitch").addEventListener('click', function() {
   checkAllDVD();
-  browser.storage.sync.set({dbratv: dbratv.checked});
+  browser.storage.sync.set({"dbratv": dbratv.checked});
 });
 document.getElementById("dbrjSwitch").addEventListener('click', function() {
   checkAllDVD();
-  browser.storage.sync.set({dbrj: dbrj.checked});
+  browser.storage.sync.set({"dbrj": dbrj.checked});
 });
 document.getElementById("dvdafeSwitch").addEventListener('click', function() {
   checkAllDVD();
-  browser.storage.sync.set({dvdafe: dvdafe.checked});
+  browser.storage.sync.set({"dvdafe": dvdafe.checked});
 });
 document.getElementById("dvdaffSwitch").addEventListener('click', function() {
   checkAllDVD();
-  browser.storage.sync.set({dvdaff: dvdaff.checked});
+  browser.storage.sync.set({"dvdaff": dvdaff.checked});
 });
 document.getElementById("dvdaidSwitch").addEventListener('click', function() {
   checkAllDVD();
-  browser.storage.sync.set({dvdaid: dvdaid.checked});
+  browser.storage.sync.set({"dvdaid": dvdaid.checked});
 });
 document.getElementById("dvdanfSwitch").addEventListener('click', function() {
   checkAllDVD();
-  browser.storage.sync.set({dvdanf: dvdanf.checked});
+  browser.storage.sync.set({"dvdanf": dvdanf.checked});
 });
 document.getElementById("dvdarnSwitch").addEventListener('click', function() {
   checkAllDVD();
-  browser.storage.sync.set({dvdarn: dvdarn.checked});
+  browser.storage.sync.set({"dvdarn": dvdarn.checked});
 });
 document.getElementById("dvdatvSwitch").addEventListener('click', function() {
   checkAllDVD();
-  browser.storage.sync.set({dvdatv: dvdatv.checked});
+  browser.storage.sync.set({"dvdatv": dvdatv.checked});
 });
 document.getElementById("dvdawlSwitch").addEventListener('click', function() {
   checkAllDVD();
-  browser.storage.sync.set({dvdawl: dvdawl.checked});
+  browser.storage.sync.set({"dvdawl": dvdawl.checked});
 });
 document.getElementById("dvdjfeSwitch").addEventListener('click', function() {
   checkAllDVD();
-  browser.storage.sync.set({dvdjfe: dvdjfe.checked});
+  browser.storage.sync.set({"dvdjfe": dvdjfe.checked});
 });
 document.getElementById("dvdjhlSwitch").addEventListener('click', function() {
   checkAllDVD();
-  browser.storage.sync.set({dvdjhl: dvdjhl.checked});
+  browser.storage.sync.set({"dvdjhl": dvdjhl.checked});
 });
 document.getElementById("dvdjnfSwitch").addEventListener('click', function() {
   checkAllDVD();
-  browser.storage.sync.set({dvdjnf: dvdjnf.checked});
+  browser.storage.sync.set({"dvdjnf": dvdjnf.checked});
 });
 document.getElementById("dvdjwlSwitch").addEventListener('click', function() {
   checkAllDVD();
-  browser.storage.sync.set({dvdjwl: dvdjwl.checked});
+  browser.storage.sync.set({"dvdjwl": dvdjwl.checked});
 });
 document.getElementById("dvdyfeSwitch").addEventListener('click', function() {
   checkAllDVD();
-  browser.storage.sync.set({dvdyfe: dvdyfe.checked});
+  browser.storage.sync.set({"dvdyfe": dvdyfe.checked});
 });
 document.getElementById("vgaSwitch").addEventListener('click', function() {
   checkOther();
-  browser.storage.sync.set({vga: vga.checked});
+  browser.storage.sync.set({"vga": vga.checked});
 });
 document.getElementById("vgjSwitch").addEventListener('click', function() {
   checkOther();
-  browser.storage.sync.set({vgj: vgj.checked});
+  browser.storage.sync.set({"vgj": vgj.checked});
 });
 document.getElementById("vgySwitch").addEventListener('click', function() {
   checkOther();
-  browser.storage.sync.set({vgy: vgy.checked});
+  browser.storage.sync.set({"vgy": vgy.checked});
 });
 document.getElementById("soaSwitch").addEventListener('click', function() {
   checkOther();
-  browser.storage.sync.set({soa: soa.checked});
+  browser.storage.sync.set({"soa": soa.checked});
 });
 document.getElementById("soawlSwitch").addEventListener('click', function() {
   checkOther();
-  browser.storage.sync.set({soawl: soawl.checked});
+  browser.storage.sync.set({"soawl": soawl.checked});
 });
 document.getElementById("sojSwitch").addEventListener('click', function() {
   checkOther();
-  browser.storage.sync.set({soj: soj.checked});
+  browser.storage.sync.set({"soj": soj.checked});
 });
 document.getElementById("receiptFont").addEventListener('change', function() {
-  browser.storage.sync.set({receiptFont: receiptFont.value});
+  browser.storage.sync.set({"receiptFont": receiptFont.value});
 });
 document.getElementById("sundayDropboxSwitch").addEventListener('click', function() {
-   browser.storage.sync.set({sundayDropbox: sundayDropbox.checked});
+   browser.storage.sync.set({"sundayDropbox": sundayDropbox.checked});
 });
 document.getElementById("shortcutText1").addEventListener('blur', function() {
-  browser.storage.sync.set({shortcutText1: shortcutText1.value});
+  browser.storage.sync.set({"shortcutText1": shortcutText1.value});
 });
 document.getElementById("shortcutLink1").addEventListener('blur', function() {
-  browser.storage.sync.set({shortcutLink1: shortcutLink1.value});
+  browser.storage.sync.set({"shortcutLink1": shortcutLink1.value});
 });
 document.getElementById("shortcutText2").addEventListener('blur', function() {
-  browser.storage.sync.set({shortcutText2: shortcutText2.value});
+  browser.storage.sync.set({"shortcutText2": shortcutText2.value});
 });
 document.getElementById("shortcutLink2").addEventListener('blur', function() {
-  browser.storage.sync.set({shortcutLink2: "shortcutLink2".value});
+  browser.storage.sync.set({"shortcutLink2": "shortcutLink2".value});
 });
 document.getElementById("shortcutText3").addEventListener('blur', function() {
-  browser.storage.sync.set({shortcutText3: shortcutText3.value});
+  browser.storage.sync.set({"shortcutText3": shortcutText3.value});
 });
 document.getElementById("shortcutLink3").addEventListener('blur', function() {
-  browser.storage.sync.set({shortcutLink3: shortcutLink3.value});
+  browser.storage.sync.set({"shortcutLink3": shortcutLink3.value});
 });
 document.getElementById("shortcutText4").addEventListener('blur', function() {
-  browser.storage.sync.set({shortcutText4: shortcutText4.value});
+  browser.storage.sync.set({"shortcutText4": shortcutText4.value});
 });
 document.getElementById("shortcutLink4").addEventListener('blur', function() {
-  browser.storage.sync.set({shortcutLink4: shortcutLink4.value});
+  browser.storage.sync.set({"shortcutLink4": shortcutLink4.value});
 });
 document.getElementById("shortcutText5").addEventListener('blur', function() {
-  browser.storage.sync.set({shortcutText5: shortcutText5.value});
+  browser.storage.sync.set({"shortcutText5": shortcutText5.value});
 });
 document.getElementById("shortcutLink5").addEventListener('blur', function() {
-  browser.storage.sync.set({shortcutLink5: shortcutLink5.value});
+  browser.storage.sync.set({"shortcutLink5": shortcutLink5.value});
 });
 document.getElementById("shortcutText6").addEventListener('blur', function() {
-  browser.storage.sync.set({shortcutText6: shortcutText6.value});
+  browser.storage.sync.set({"shortcutText6": shortcutText6.value});
 });
 document.getElementById("shortcutLink6").addEventListener('blur', function() {
-  browser.storage.sync.set({shortcutLink6: shortcutLink6.value});
+  browser.storage.sync.set({"shortcutLink6": shortcutLink6.value});
 });

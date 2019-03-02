@@ -2,8 +2,8 @@
 
 | Current Version | Supported Browsers                          | Author          |
 | :-------------: | :-----------------------------------------: | :-------------: |
-|                 | (Click the appropriate browser to install.) |                 |
-| <br>22.3.5      | [Firefox][1]<br>[Google Chrome](https://chrome.google.com/webstore/detail/mpl-koha-patch/ojghlgghnljabcikeiipjadgblclkgpi) | Lucas Schneider<br>Library Page II<br>MPL–Central |
+|                 | (Click install.)                            |                 |
+| <br>22.4.0      | [Firefox][1] | Lucas Schneider<br>Library Page II<br>MPL–Central |
 
 The MPL Koha Patch is a WebExtension built for Firefox and Google Chrome which augments the display of LibLime Koha to make various tasks more convenient for library staff. While it is developed for use by member libraries of Wisconsin's South Central Library System, it is not supported by SCLS, but is an independent project by a Library Page at Madison Central Library.
 
@@ -12,7 +12,6 @@ This extension is ___not___ intended for use with the open source [Koha ILS](htt
 ## Table of Contents
 * [Inherent features of the extension](#inherent-features-of-the-extension)
 	* [Sorting lists of libraries in Koha](#sorting-lists-of-libraries-in-koha)
-	* [Generating dorm expiration dates](#generating-dorm-expiration-dates)
 	* [Standardize patron entry formatting](#standardize-patron-entry-formatting)
 	* [Bring 'Session Checkouts' list to top of screen](#bring-session-checkouts-list-to-top-of-screen)
 	* [Limit patron edit input fields](#limit-patron-edit-input-fields)
@@ -24,7 +23,7 @@ This extension is ___not___ intended for use with the open source [Koha ILS](htt
 * [Optional Features](#optional-features)
 	* [Select a display](#select-a-display)
 	* [Additional patron messages](#additional-patron-messages)
-	* [Validate Madison addresses](#validate-madison-addresses)
+	* [Parse patron addresses](#parse-patron-addresses)
 	* [Autofill OPAC login number](#autofill-opac-login-number)
 	* [Lookup "sort 1" (PSTAT)](#lookup-sort-1-pstat)
 	* [Autoselect "Digests Only"](#autoselect-digests-only)
@@ -69,8 +68,6 @@ You may customize the bookmark links from the extension preferences page.
 
 ## Sorting lists of libraries in Koha
 All lists of libraries in LibLime Koha are sorted alphabetically. This includes, but is not limited to, the "Library" list on the login screen, the list to select hold pickup locations, and the list to select a patron's home library.
-## Generating dorm expiration dates
-This feature automatically sets any new patron’s library card expiration date to the end of the current academic school year (5/15) if they are living at a UW--Madison university dorm.
 ## Standardize patron entry formatting
 All text fields of a patron's record are forced to be uppercase except for the email address fields which are forced to be lowercase. The city and state format for the City of Madison is forcibly "MADISON WI" and library staff may enter "mad" as a shortcut for a "MADISON WI" address.
 ## Bring 'Session Checkouts' list to top of screen
@@ -120,8 +117,8 @@ This option adds predefined messages to the selection list which are frequently 
 * "Patron has signed Laptop/iPad Loan Agreement form. Form on file."
 
 Additionally, selecting the checkbox for "Include notes for returned mail and bad emails" will include messages for mail or library cards returned by the post office, email addresses not being recognized, and email boxes being full.
-## Validate Madison addresses
-This option alerts staff with a dialog box whenever an unacceptable or restricted address has been entered in a patron record. This minimizes the number of limited use or unacceptable accounts being set up with full-access library cards. See examples below. A note on the patron’s account will be automatically generated.
+## Parse patron addresses
+When creating or updating a patron record, compare their address against MPL's list of dorms, restricted addresses, and unacceptable addresses. Dorm addresses are given a special expiration date of May 15 of that academic year. Restricted addresses are automatically made limited use, and unacceptable addresses trigger the save button to be hidden (which could be overridden by staff). In each of these cases, staff are notified of the nature of the address, and a circulation note is automatically entered into the patron's record.
 
 <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/scnShot-unacceptable-address.png" >
 
