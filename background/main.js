@@ -229,9 +229,11 @@ browser.webNavigation.onCompleted.addListener(details => {
       }
 
       // If the Sunday dropbox option is enabled...
-      if (res.hasOwnProperty('sundayDropbox') && res.sundayDropbox && day === 0) {
+      if ((!res.hasOwnProperty('sundayDropbox') ||
+          (res.hasOwnProperty('sundayDropbox') && res.sundayDropbox)) && day === 0) {
         // If sundayDropbox is not paused
-        if (res.hasOwnProperty('sundayDropboxPaused') && !res.sundayDropboxPaused) {
+        if (!res.hasOwnProperty('sundayDropboxPaused') ||
+            (res.hasOwnProperty('sundayDropboxPaused') && !res.sundayDropboxPaused)) {
           browser.tabs.executeScript(details.tabId, {
             "file": "/content/scripts/sundayDropbox.js"
           });
@@ -537,13 +539,13 @@ function handleMessages(request, sender, sendResponse) {
       updatePopup();
       break;
     case "pauseSundayDropbox":
-        browser.storage.sync.set({sundayDropboxPaused: true});
+        browser.storage.sync.set({"sundayDropboxPaused": true});
       setTimeout(function(){
-        browser.storage.sync.set({sundayDropboxPaused: false});
+        browser.storage.sync.set({"sundayDropboxPaused": false});
       }, 180000); // 3min
       break;
     case "resumeSundayDropbox":
-        browser.storage.sync.set({sundayDropboxPaused: false});
+        browser.storage.sync.set({"sundayDropboxPaused": false});
       break;
     case "addNote":
       browser.tabs.executeScript({
