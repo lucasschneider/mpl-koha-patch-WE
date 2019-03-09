@@ -218,9 +218,9 @@ function toggleOther() {
 document.getElementById("setDefault").addEventListener('click', setDefaultOptions);
 
 // Option update listeners
-document.getElementById("skin").addEventListener('change', function() {
-  browser.storage.sync.set({skin: skin.value}).then((res) => {
-    browser.runtime.sendMessage({key: "updateExtensionIcon"});
+skin.addEventListener('change', function() {
+  browser.storage.sync.set({"skin": skin.value}).then((res) => {
+    browser.runtime.sendMessage({"key": "updateExtensionIcon"});
   });
 });
 document.getElementById("patronMsgSwitch").addEventListener('click', function() {

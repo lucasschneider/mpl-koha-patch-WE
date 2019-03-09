@@ -1,132 +1,132 @@
 browser.storage.sync.get().then((res) => {
   if (!res.hasOwnProperty('skin')) {
-    browser.storage.sync.set({skin: "MAD"});
+    browser.storage.sync.set({"skin": "MAD"});
   }
   if (!res.hasOwnProperty('patronMsg')) {
-    browser.storage.sync.set({patronMsg: true});
+    browser.storage.sync.set({"patronMsg": true});
   }
   if (!res.hasOwnProperty('parseAddr')) {
-    browser.storage.sync.set({parseAddr: true});
+    browser.storage.sync.set({"parseAddr": true});
   }
   if (!res.hasOwnProperty('autoBarcode')) {
-    browser.storage.sync.set({autoBarcode: true});
+    browser.storage.sync.set({"autoBarcode": true});
   }
   if (!res.hasOwnProperty('lookupPSTAT')) {
-    browser.storage.sync.set({lookupPSTAT: true});
+    browser.storage.sync.set({"lookupPSTAT": true});
   }
   if (!res.hasOwnProperty('digestOnly')) {
-    browser.storage.sync.set({digestOnly: true});
+    browser.storage.sync.set({"digestOnly": true});
   }
   if (!res.hasOwnProperty('dueDateToggle')) {
-    browser.storage.sync.set({dueDateToggle: true});
+    browser.storage.sync.set({"dueDateToggle": true});
   }
   if (!res.hasOwnProperty('middleInitials')) {
-    browser.storage.sync.set({middleInitials: true});
+    browser.storage.sync.set({"middleInitials": true});
   }
   if (!res.hasOwnProperty('updateAccountType')) {
-    browser.storage.sync.set({updateAccountType: true});
+    browser.storage.sync.set({"updateAccountType": true});
   }
   if (!res.hasOwnProperty("cdams")) {
-    browser.storage.sync.set({cdams: true});
+    browser.storage.sync.set({"cdams": true});
   }
   if (!res.hasOwnProperty("cdamsid")) {
-    browser.storage.sync.set({cdamsid: true});
+    browser.storage.sync.set({"cdamsid": true});
   }
   if (!res.hasOwnProperty("cdjms")) {
-    browser.storage.sync.set({cdjms: true});
+    browser.storage.sync.set({"cdjms": true});
   }
   if (!res.hasOwnProperty("cdyms")) {
-    browser.storage.sync.set({cdyms: true});
+    browser.storage.sync.set({"cdyms": true});
   }
   if (!res.hasOwnProperty("dbrafe")) {
-    browser.storage.sync.set({dbrafe: false});
+    browser.storage.sync.set({"dbrafe": false});
   }
   if (!res.hasOwnProperty("dbraff")) {
-    browser.storage.sync.set({dbraff: false});
+    browser.storage.sync.set({"dbraff": false});
   }
   if (!res.hasOwnProperty("dbraid")) {
-    browser.storage.sync.set({dbraid: false});
+    browser.storage.sync.set({"dbraid": false});
   }
   if (!res.hasOwnProperty("dbranf")) {
-    browser.storage.sync.set({dbranf: false});
+    browser.storage.sync.set({"dbranf": false});
   }
   if (!res.hasOwnProperty("dbrarn")) {
-    browser.storage.sync.set({dbrarn: false});
+    browser.storage.sync.set({"dbrarn": false});
   }
   if (!res.hasOwnProperty("dbratv")) {
-    browser.storage.sync.set({dbratv: false});
+    browser.storage.sync.set({"dbratv": false});
   }
   if (!res.hasOwnProperty("dbrj")) {
-    browser.storage.sync.set({dbrj: false});
+    browser.storage.sync.set({"dbrj": false});
   }
   if (!res.hasOwnProperty("dvdafe")) {
-    browser.storage.sync.set({dvdafe: false});
+    browser.storage.sync.set({"dvdafe": false});
   }
   if (!res.hasOwnProperty("dvdaff")) {
-    browser.storage.sync.set({dvdaff: false});
+    browser.storage.sync.set({"dvdaff": false});
   }
   if (!res.hasOwnProperty("dvdaid")) {
-    browser.storage.sync.set({dvdaid: false});
+    browser.storage.sync.set({"dvdaid": false});
   }
   if (!res.hasOwnProperty("dvdanf")) {
-    browser.storage.sync.set({dvdanf: false});
+    browser.storage.sync.set({"dvdanf": false});
   }
   if (!res.hasOwnProperty("dvdarn")) {
-    browser.storage.sync.set({dvdarn: false});
+    browser.storage.sync.set({"dvdarn": false});
   }
   if (!res.hasOwnProperty("dvdatv")) {
-    browser.storage.sync.set({dvdatv: false});
+    browser.storage.sync.set({"dvdatv": false});
   }
   if (!res.hasOwnProperty("dvdawl")) {
-    browser.storage.sync.set({dvdawl: false});
+    browser.storage.sync.set({"dvdawl": false});
   }
   if (!res.hasOwnProperty("dvdjfe")) {
-    browser.storage.sync.set({dvdjfe: false});
+    browser.storage.sync.set({"dvdjfe": false});
   }
   if (!res.hasOwnProperty("dvdjhl")) {
-    browser.storage.sync.set({dvdjhl: false});
+    browser.storage.sync.set({"dvdjhl": false});
   }
   if (!res.hasOwnProperty("dvdjnf")) {
-    browser.storage.sync.set({dvdjnf: false});
+    browser.storage.sync.set({"dvdjnf": false});
   }
   if (!res.hasOwnProperty("dvdjwl")) {
-    browser.storage.sync.set({dvdjwl: false});
+    browser.storage.sync.set({"dvdjwl": false});
   }
   if (!res.hasOwnProperty("dvdyfe")) {
-    browser.storage.sync.set({dvdyfe: false});
+    browser.storage.sync.set({"dvdyfe": false});
   }
   if (!res.hasOwnProperty("vga")) {
-    browser.storage.sync.set({vga: false});
+    browser.storage.sync.set({"vga": false});
   }
   if (!res.hasOwnProperty("vgj")) {
-    browser.storage.sync.set({vgj: false});
+    browser.storage.sync.set({"vgj": false});
   }
   if (!res.hasOwnProperty("vgy")) {
-    browser.storage.sync.set({vgy: false});
+    browser.storage.sync.set({"vgy": false});
   }
   if (!res.hasOwnProperty("soa")) {
-    browser.storage.sync.set({soa: false});
+    browser.storage.sync.set({"soa": false});
   }
   if (!res.hasOwnProperty("soawl")) {
-    browser.storage.sync.set({soawl: false});
+    browser.storage.sync.set({"soawl": false});
   }
   if (!res.hasOwnProperty("soj")) {
-    browser.storage.sync.set({soj: false});
+    browser.storage.sync.set({"soj": false});
   }
   if (!res.hasOwnProperty("sepAllCD")) {
-    browser.storage.sync.set({sepAllCD: true});
+    browser.storage.sync.set({"sepAllCD": true});
   }
   if (!res.hasOwnProperty("sepAllDVD")) {
-    browser.storage.sync.set({sepAllDVD: false});
+    browser.storage.sync.set({"sepAllDVD": false});
   }
   if (!res.hasOwnProperty("sepOther")) {
-    browser.storage.sync.set({sepOther: false});
+    browser.storage.sync.set({"sepOther": false});
   }
   if (!res.hasOwnProperty('receiptFont')) {
-    browser.storage.sync.set({receiptFont: "MPL"});
+    browser.storage.sync.set({"receiptFont": "MPL"});
   }
   if (!res.hasOwnProperty('sundayDropbox')) {
-    browser.storage.sync.set({sundayDropbox: true});
+    browser.storage.sync.set({"sundayDropbox": true});
   }
   if (!res.hasOwnProperty('shortcutText1') || !res.hasOwnProperty('shortcutLink1')) {
     browser.storage.sync.set({

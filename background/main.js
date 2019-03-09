@@ -1,56 +1,56 @@
-﻿var d = new Date(),
-  day = d.getUTCDay(),
-  setIcon = function() {
-    browser.storage.sync.get('skin').then((res) => {
-      var skin = res.hasOwnProperty('skin') ? res.skin : 'mad'
+function setIcon() {
+  browser.storage.sync.get('skin').then((res) => {
+    var skin = res.hasOwnProperty('skin') ? res.skin : 'mad'
 
-      switch (skin) {
-        case "MID":
-          browser.browserAction.setIcon({
-            path: {
-              16: "content/img/mid-icon-16.png",
-              32: "content/img/mid-icon-32.png",
-              48: "content/img/mid-icon-48.png",
-              64: "content/img/mid-icon-64.png",
-              128: "content/img/mid-icon-128.png"
-            }
-          });
-          break;
-        case "SCLS":
-          browser.browserAction.setIcon({
-            path: {
-              16: "content/img/scls-icon-16.png",
-              32: "content/img/scls-icon-32.png",
-              48: "content/img/scls-icon-48.png",
-              64: "content/img/scls-icon-64.png",
-              128: "content/img/scls-icon-128.png"
-            }
-          });
-          break;
-        case "SUN":
-          browser.browserAction.setIcon({
-            path: {
-              16: "content/img/sun-icon2-16.png",
-              32: "content/img/sun-icon2-32.png",
-              48: "content/img/sun-icon2-48.png",
-              64: "content/img/sun-icon2-64.png",
-              128: "content/img/sun-icon2-128.png"
-            }
-          });
-          break;
-        default:
-          browser.browserAction.setIcon({
-            path: {
-              16: "content/img/mpl-icon-16.png",
-              32: "content/img/mpl-icon-32.png",
-              48: "content/img/mpl-icon-48.png",
-              64: "content/img/mpl-icon-64.png",
-              128: "content/img/mpl-icon-128.png"
-            }
-          });
-      }
-    });
-  };
+    switch (skin) {
+      case "MID":
+        browser.browserAction.setIcon({
+          "path": {
+            "16": "content/img/mid-icon-16.png",
+            "32": "content/img/mid-icon-32.png",
+            "48": "content/img/mid-icon-48.png",
+            "64": "content/img/mid-icon-64.png",
+            "128": "content/img/mid-icon-128.png"
+          }
+        });
+        break;
+      case "SCLS":
+        browser.browserAction.setIcon({
+          "path": {
+            "16": "content/img/scls-icon-16.png",
+            "32": "content/img/scls-icon-32.png",
+            "48": "content/img/scls-icon-48.png",
+            "64": "content/img/scls-icon-64.png",
+            "128": "content/img/scls-icon-128.png"
+          }
+        });
+        break;
+      case "SUN":
+        browser.browserAction.setIcon({
+          "path": {
+            "16": "content/img/sun-icon2-16.png",
+            "32": "content/img/sun-icon2-32.png",
+            "48": "content/img/sun-icon2-48.png",
+            "64": "content/img/sun-icon2-64.png",
+            "128": "content/img/sun-icon2-128.png"
+          }
+        });
+        break;
+      default:
+        browser.browserAction.setIcon({
+          "path": {
+            "16": "content/img/mpl-icon-16.png",
+            "32": "content/img/mpl-icon-32.png",
+            "48": "content/img/mpl-icon-48.png",
+            "64": "content/img/mpl-icon-64.png",
+            "128": "content/img/mpl-icon-128.png"
+          }
+        });
+    }
+  });
+};
+
+setIcon();
 
 var SCLSLibs = function() {
   this.data = {
@@ -172,8 +172,6 @@ var SCLSLibs = function() {
   };
 };
 
-setIcon();
-
 // Load preference-selected function files
 browser.webNavigation.onCompleted.addListener(details => {
   if (details.frameId == 0) { // 0 indicates the navigation happens in the tab content window;
@@ -235,9 +233,11 @@ browser.webNavigation.onCompleted.addListener(details => {
       }
 
       // If the Sunday dropbox option is enabled...
-      if (res.hasOwnProperty('sundayDropbox') && res.sundayDropbox && day === 0) {
+      if ((!res.hasOwnProperty('sundayDropbox') ||
+          (res.hasOwnProperty('sundayDropbox') && res.sundayDropbox)) && (new Date()).getUTCDay() === 0) {
         // If sundayDropbox is not paused
-        if (res.hasOwnProperty('sundayDropboxPaused') && !res.sundayDropboxPaused) {
+        if (!res.hasOwnProperty('sundayDropboxPaused') ||
+            (res.hasOwnProperty('sundayDropboxPaused') && !res.sundayDropboxPaused)) {
           browser.tabs.executeScript(details.tabId, {
             "file": "/content/scripts/sundayDropbox.js"
           });
@@ -252,12 +252,13 @@ browser.webNavigation.onCompleted.addListener(details => {
 });
 
 // Create and handle context menu item for problem item form
-browser.contextMenus.create({
-  id: "start-pi-form",
-  title: "Use Barcode in Problem Item Form",
-  contexts: ["link", "selection"]
+browser.menus.create({
+  "id": "start-pi-form",
+  "title": "Use Barcode in Problem Item Form",
+  "contexts": ["link", "selection"]
 });
-browser.contextMenus.onClicked.addListener((info, tab) => {
+
+browser.menus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === "start-pi-form") {
     var barcode;
 
@@ -315,7 +316,7 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
 });
 
 // Handle messages from content pages
-function handleMessages(request, sender, sendResponse) {
+browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.key) {
     case "queryGeocoder":
       var matchAddr, county, countySub, censusTract, zip;
@@ -543,13 +544,13 @@ function handleMessages(request, sender, sendResponse) {
       updatePopup();
       break;
     case "pauseSundayDropbox":
-        browser.storage.sync.set({sundayDropboxPaused: true});
+        browser.storage.sync.set({"sundayDropboxPaused": true});
       setTimeout(function(){
-        browser.storage.sync.set({sundayDropboxPaused: false});
+        browser.storage.sync.set({"sundayDropboxPaused": false});
       }, 180000); // 3min
       break;
     case "resumeSundayDropbox":
-        browser.storage.sync.set({sundayDropboxPaused: false});
+        browser.storage.sync.set({"sundayDropboxPaused": false});
       break;
     case "addNote":
       browser.tabs.executeScript({
@@ -732,6 +733,4 @@ function handleMessages(request, sender, sendResponse) {
       });
       break;
   }
-}
-
-browser.runtime.onMessage.addListener(handleMessages);
+});
