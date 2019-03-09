@@ -41,6 +41,23 @@
 
       allArray.sort(sortHoldTRs);
 
+      browser.storage.sync.get(avCodes).then((res) => {
+        for (var i = 0; i < avCodes.length; i++) {
+          if (res[avCodes[i]] === true) codesToFilter += avCodes[i] + "|";
+        }
+
+        codesToFilter = new RegExp(codesToFilter.slice(0,-1),"i");
+
+        // Separate array of all items
+        for (let row of allArray) {
+          if (codesToFilter.test(row.children[2].textContent.trim().substring(0,7))) {
+            avArray.push(row);
+          } else {
+            otherArray.push(row);
+          }
+        }
+      });
+
       function sortHoldTRs(a,b) {
         if (a.children[3].textContent.replace(/\s\s+/g, ' ') < b.children[3].textContent.replace(/\s\s+/g, ' '))
           return -1
@@ -51,35 +68,17 @@
 
       function filterHolds() {
 
-        if (this.checked) {
-          browser.storage.sync.get(avCodes).then((res) => {
-            for (var i = 0; i < avCodes.length; i++) {
-              if (res[avCodes[i]] === true) codesToFilter += avCodes[i] + "|";
-            }
+        if (box.checked) {
+          // Append sorted arrays
+          holdsBody.textContent = "";
 
-            codesToFilter = new RegExp(codesToFilter.slice(0,-1),"i");
+          for (let row of avArray.sort(sortHoldTRs)) {
+            holdsBody.appendChild(row);
+          }
 
-            // Separate array of all items
-            for (let row of allArray) {
-              if (codesToFilter.test(row.children[2].textContent.trim().substring(0,7))) {
-                avArray.push(row);
-              } else {
-                otherArray.push(row);
-              }
-            }
-
-            // Append sorted arrays
-            holdsBody.textContent = "";
-
-            for (let row of avArray.sort(sortHoldTRs)) {
-              holdsBody.appendChild(row);
-            }
-
-            for (let row of otherArray.sort(sortHoldTRs)) {
-              holdsBody.appendChild(row);
-            }
-
-          });
+          for (let row of otherArray.sort(sortHoldTRs)) {
+            holdsBody.appendChild(row);
+          }
         } else {
           holdsBody.textContent = "";
 
@@ -90,6 +89,9 @@
       }
 
       box.addEventListener('change', filterHolds);
+
+      // Sort alphabetically by patron's last name
+      filterHolds();
     }
   }
 })();
