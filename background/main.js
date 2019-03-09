@@ -50,7 +50,19 @@ function setIcon() {
   });
 };
 
+
+var updatePopup = function() {
+  browser.storage.sync.get("laptopForm").then(res => {
+    if (res.laptopForm) {
+      browser.browserAction.setPopup({"popup": "/browserAction/popupLaptops.html"});
+    } else {
+      browser.browserAction.setPopup({"popup": "/browserAction/popup.html"});
+    }
+  });
+};
+
 setIcon();
+updatePopup();
 
 var SCLSLibs = function() {
   this.data = {
