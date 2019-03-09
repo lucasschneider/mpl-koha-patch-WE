@@ -49,8 +49,8 @@
       "js": [
         "content/scripts/fastaddWarning.js",
         "content/scripts/fixSessionCkoDiv.js",
-        "content/scripts/holdsShelfActionCDs.js",
         "content/scripts/printBarcode.js",
+        "content/scripts/separateHSA.js",
         "content/scripts/sortHoldsByRank.js",
         "content/scripts/sortItemCheckoutHistory.js",
         "content/scripts/sortItemCopiesForHolds.js",
