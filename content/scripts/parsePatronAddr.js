@@ -85,7 +85,7 @@ if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
   }
 
   var parseAddr = function() {
-    if (addr.value && city.value) {
+    if (addr.value && city.value && /madison|monona/i.test(city.value)) {
       browser.runtime.sendMessage({
         "key": "parsePatronAddr"
       }).then(result => {

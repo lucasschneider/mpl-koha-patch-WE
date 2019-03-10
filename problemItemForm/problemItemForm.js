@@ -31,17 +31,17 @@ if (prepareItemData) prepareItemData.addEventListener("click", function () {
     holds = document.getElementById("holds"),
     copies = document.getElementById("copies"),
     use = document.getElementById("use");
-    
+
   itemTitle.value = "";
   cCode.value = "";
   holds.value = "";
   copies.value = "";
   use.value = "";
-  
+
   if (itemBarcode.value.length === 8) {
     itemBarcode.value = "390780" + itemBarcode.value;
   }
-  
+
   if (/^3[0-9]{13}$/.test(itemBarcode.value)) {
     if (itemBarcode.classList.contains("invalidInput")) {
       itemBarcode.classList.remove("invalidInput");
@@ -68,15 +68,15 @@ if (getPatronData) getPatronData.addEventListener("click", function() {
   var name = document.getElementById("name"),
     phone = document.getElementById("phone"),
     email = document.getElementById("email");
-  
+
   name.value = "";
   phone.value = "";
   email.value = "";
-  
+
   if (patronBarcode.value.length === 8) {
     patronBarcode.value = "290780" + patronBarcode.value;
   }
-  
+
   if (/^2[0-9]{13}$/.test(patronBarcode.value)) {
     if (patronBarcode.classList.contains("invalidInput")) {
       patronBarcode.classList.remove("invalidInput");
@@ -167,14 +167,14 @@ if (printForm) printForm.addEventListener("click", function() {
     nonDefectNonHold = document.getElementById("nonDefectNonHold"),
     nonDefectHold = document.getElementById("nonDefectHold"),
     defect = document.getElementById("defect");
-    
+
   var emailParts = patronEmail
-  
+
   if (to.value == "" | date.value == "" | from.value == "" | staffName.value == "" | type.value == "" | idBy.value == "" |receivedVia.value == "" | details.value == "" | itemTitle.value == "" | itemBarcode.value == "") {
     alert("Please check that all required fields have been filled in.");
   } else {
     instructions.style.display = "";
-    
+
     switch(type.value) {
       case "Defect Reported":
           nonDefectNonHold.style.display = "none";
@@ -191,18 +191,18 @@ if (printForm) printForm.addEventListener("click", function() {
           nonDefectHold.style.display = "none";
           defect.style.display = "none";
         }
-        break;    
+        break;
     }
-    
+
     window.location.hash = "instructions";
-    
+
     browser.runtime.sendMessage({
       "key": "printProblemForm",
       "data": [
-        ["to", to.value],
+        ["to", to.value.toUpperCase()],
         ["date", formatDateForDisplay(date.value)],
-        ["from", from.value],
-        ["staffName", staffName.value],
+        ["from", from.value.toUpperCase()],
+        ["staffName", staffName.value.toUpperCase()],
         ["type", type.value],
         ["idBy", idBy.value],
         ["receivedVia", receivedVia.value],
@@ -229,7 +229,7 @@ if (printForm) printForm.addEventListener("click", function() {
 /*** Handle cases when we're loading the problem form with barcode data ***/
 if (location.search.length > 0) {
   var data = location.search.substr(1).split("=");
-  
+
   if (data && data.length === 2) {
     if (data[0] === "item") {
       itemBarcode.value = data[1];
