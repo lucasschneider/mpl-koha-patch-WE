@@ -275,15 +275,8 @@ browser.menus.onClicked.addListener((info, tab) => {
     var barcode;
 
     function sendErrorMsg(msg) {
-      browser.tabs.query({
-        "currentWindow": true,
-        "active": true
-      }).then((tabs) => {
-        for (let tab of tabs) {
-          browser.tabs.executeScript(tab.id, {
-            "code": "alert('" + msg + "');"
-          });
-        }
+      browser.tabs.executeScript(tab.id, {
+        "code": "alert('" + msg + "');"
       });
     }
 
@@ -478,7 +471,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       break;
     case "openFactFinder":
-      let ffTab = browser.tabs.create({
+      browser.tabs.create({
         "url": "https://factfinder.census.gov/faces/nav/jsf/pages/searchresults.xhtml",
         "active": true
       }).then(tab => {
@@ -552,11 +545,8 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     case "updateExtensionIcon":
       setIcon();
       break;
-    case "updatePopup":
-      updatePopup();
-      break;
     case "pauseSundayDropbox":
-        browser.storage.sync.set({"sundayDropboxPaused": true});
+      browser.storage.sync.set({"sundayDropboxPaused": true});
       setTimeout(function(){
         browser.storage.sync.set({"sundayDropboxPaused": false});
       }, 180000); // 3min
@@ -566,37 +556,18 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       break;
     case "addNote":
       browser.tabs.executeScript({
-        file: "/browserAction/scripts/addPaymentPlanNote.js"
+        "file": "/browserAction/scripts/addPaymentPlanNote.js"
       });
       break;
     case "addLostCardNote":
       browser.tabs.executeScript({
-        file: "/browserAction/scripts/addLostCardNote.js"
-      });
-      break;
-    case "addr2PSTAT":
-      var querying = browser.tabs.query({
-        currentWindow: true,
-        active: true
-      });
-      querying.then((tabs) => {
-        for (let tab of tabs) {
-          if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/members\/memberentry\.pl.*/.test(tab.url)) {
-            browser.tabs.sendMessage(tab.id, {
-              key: "querySecondaryPSTAT"
-            });
-          } else {
-            browser.tabs.sendMessage(tab.id, {
-              key: "querySecondaryPSTATFail"
-            });
-          }
-        }
+        "file": "/browserAction/scripts/addLostCardNote.js"
       });
       break;
     case "printProblemForm":
       browser.tabs.create({
-        active: false,
-        url: browser.runtime.getURL("../problemItemForm/printProblemForm.html")
+        "active": false,
+        "url": browser.runtime.getURL("../problemItemForm/printProblemForm.html")
       }).then(tab => {
         setTimeout(() => {
           browser.tabs.sendMessage(tab.id, {
@@ -612,15 +583,15 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       break;
     case "prepareItemData":
       browser.tabs.create({
-        active: false,
-        url: browser.runtime.getURL("https://scls-staff.kohalibrary.com/cgi-bin/koha/circ/circulation-home.pl?mkpItemBarcode=" + request.itemBarcode + "#tabs-catalog_search")
+        "active": false,
+        "url": "https://scls-staff.kohalibrary.com/cgi-bin/koha/circ/circulation-home.pl?mkpItemBarcode=" + request.itemBarcode + "#tabs-catalog_search"
       }).then((tab) => {
         browser.tabs.executeScript(tab.id, {
-          file: "/problemItemForm/prepareItemData.js"
+          "file": "/problemItemForm/prepareItemData.js"
         }).then(() => {
           setTimeout(() => {
             browser.tabs.executeScript(tab.id, {
-              file: "/problemItemForm/getItemData.js"
+              "file": "/problemItemForm/getItemData.js"
             });
           }, 7000);
           setTimeout(() => {
@@ -631,11 +602,10 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       break;
     case "returnItemData":
     case "failedItemData":
-      var querying = browser.tabs.query({
-        currentWindow: true,
-        active: true
-      });
-      querying.then((tabs) => {
+      browser.tabs.query({
+        "currentWindow": true,
+        "active": true
+      }).then((tabs) => {
         for (let tab of tabs) {
           if (request.key === "returnItemData") {
             browser.tabs.sendMessage(tab.id, {
@@ -649,12 +619,12 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
             //Get Holds Data
             browser.tabs.create({
-              active: false,
-              url: "https://scls-staff.kohalibrary.com/cgi-bin/koha/catalogue/detail.pl?biblionumber=" + request.bibNum
+              "active": false,
+              "url": "https://scls-staff.kohalibrary.com/cgi-bin/koha/catalogue/detail.pl?biblionumber=" + request.bibNum
             }).then((holdsTab) => {
               setTimeout(() => {
                 browser.tabs.executeScript(holdsTab.id, {
-                  file: "/problemItemForm/getItemHolds.js"
+                  "file": "/problemItemForm/getItemHolds.js"
                 }).then(() => {
                   setTimeout(() => {
                     browser.tabs.remove(holdsTab.id);
@@ -672,11 +642,11 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       break;
     case "getPatronData":
       browser.tabs.create({
-        active: false,
-        url: browser.runtime.getURL("https://scls-staff.kohalibrary.com/cgi-bin/koha/circ/circulation.pl?findborrower=" + request.patronBarcode)
+        "active": false,
+        "url": "https://scls-staff.kohalibrary.com/cgi-bin/koha/circ/circulation.pl?findborrower=" + request.patronBarcode
       }).then((tab) => {
         browser.tabs.executeScript(tab.id, {
-          file: "/problemItemForm/getPatronData.js"
+          "file": "/problemItemForm/getPatronData.js"
         }).then(() => {
           setTimeout(() => {
             browser.tabs.remove(tab.id)
@@ -686,25 +656,24 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       break;
     case "getPatronFromURL":
       browser.tabs.create({
-        active: false,
-        url: browser.runtime.getURL("https://scls-staff.kohalibrary.com" + request.url)
+        "active": false,
+        "url": "https://scls-staff.kohalibrary.com" + request.url
       }).then((tab) => {
         browser.tabs.executeScript(tab.id, {
-          file: "/problemItemForm/getPatronData.js"
+          "file": "/problemItemForm/getPatronData.js"
         }).then(() => {
           setTimeout(() => {
-            browser.tabs.remove(tab.id)
+            browser.tabs.remove(tab.id);
           }, 2500);
         });
       });
       break;
     case "returnPatronData":
     case "failedPatronData":
-      var querying = browser.tabs.query({
-        currentWindow: true,
-        active: true
-      });
-      querying.then((tabs) => {
+      browser.tabs.query({
+        "currentWindow": true,
+        "active": true
+      }).then((tabs) => {
         for (let tab of tabs) {
           if (request.key === "returnPatronData") {
             browser.tabs.sendMessage(tab.id, {
@@ -724,11 +693,10 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       break;
     case "returnItemHolds":
     case "failedItemHolds":
-      var querying = browser.tabs.query({
-        currentWindow: true,
-        active: true
-      });
-      querying.then((tabs) => {
+      browser.tabs.query({
+        "currentWindow": true,
+        "active": true
+      }).then((tabs) => {
         for (let tab of tabs) {
           if (request.key === "returnItemHolds") {
             browser.tabs.sendMessage(tab.id, {
