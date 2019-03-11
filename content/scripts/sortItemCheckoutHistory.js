@@ -1,6 +1,5 @@
-(function () {"use strict"; /*jslint browser:true regexp: true indent: 2 devel: true plusplus: true*/
-  /*global self*/
-  
+(function(){
+  'use strict';
   var historyTable = document.getElementById('checkouthistt'),
     h1Elts = document.getElementsByTagName('h1'),
     groupItems,
@@ -189,7 +188,7 @@
     wrapper = document.createElement('div');
     wrapper.id = "sortWrapper";
     wrapper.style = "padding-left:50px;";
-    
+
     var h3 = document.createElement("h3"),
       table = document.createElement("table"),
       thead = document.createElement("thead"),
@@ -210,10 +209,10 @@
       input2 = document.createElement("input"),
       span1 = document.createElement("span"),
       span2 = document.createElement("span");
-    
+
     h3.textContent = "Sort by...";
     wrapper.appendChild(h3);
-    
+
     table.id = "sortSelectTable";
     td1.colSpan = "2";
     td1.textContent = "Checkout Date";
@@ -226,13 +225,13 @@
     tr1.appendChild(td3);
     thead.appendChild(tr1);
     table.appendChild(thead);
-    
+
     wrapper.appendChild(h3);
     tr1.appendChild(td1);
     tr1.appendChild(td2);
     tr1.appendChild(td3);
     thead.appendChild(tr1)
-    
+
     tr2.id = "sortOptions";
     td4.id = "checkoutASC";
     td4.textContent = "ASC";
@@ -247,7 +246,7 @@
     td8.textContent = "ASC";
     td9.id = "returnDESC";
     td9.textContent = "DESC";
-    
+
     tr2.appendChild(td4);
     tr2.appendChild(td5);
     tr2.appendChild(td6);
@@ -257,7 +256,7 @@
     tbody.appendChild(tr2);
     table.appendChild(tbody);
     wrapper.appendChild(table);
-    
+
     div1.style = "margin-top: 10px;";
     input1.id = "groupItems";
     input1.type = "checkbox";
@@ -335,4 +334,4 @@
       });
     }
   }
-  }()); //end use strict
+})();
