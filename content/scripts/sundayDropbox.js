@@ -1,4 +1,5 @@
-(function () {
+(function(){
+  'use strict';
   var dropbox = document.getElementById('dropboxcheck');
 
   if (dropbox) {

@@ -1,5 +1,8 @@
-var d = new Date(),
-  month = (d.getMonth()+1).toString(),
+// Convert date UTC -> CST
+let d = new Date();
+d.setHours(d.getHours() - 6);
+
+let month = (d.getMonth()+1).toString(),
   day = d.getDate().toString();
 
 if (month.length == 1) {

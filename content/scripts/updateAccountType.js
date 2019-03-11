@@ -1,4 +1,5 @@
-(function () {"use strict"; /*jslint browser:true regexp: true indent: 2 devel: true plusplus: true*/
+(function(){
+  'use strict';
   function calculateAge(birthday) { // birthday is a date
     var ageDifMs = Date.now() - birthday.getTime(),
       ageDate = new Date(ageDifMs); // miliseconds from epoch
@@ -31,4 +32,4 @@
       saveButtonWrapper.insertBefore(updateButton, saveButtonWrapper.children[0]);
     }
   }
-  }()); //end use strict
+})();
