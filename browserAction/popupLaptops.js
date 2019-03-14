@@ -131,7 +131,7 @@ logLaptop.addEventListener('click', function() {
     numAcc.value = "0";
     notes.value = "";
   } else {
-    //alert("Enter a proper patron barcode.");
+    alert("Enter a proper patron barcode.");
     console.log(getAllData());
   }
 });
