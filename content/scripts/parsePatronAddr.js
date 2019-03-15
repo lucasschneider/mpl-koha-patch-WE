@@ -10,12 +10,13 @@
       patronActions = document.getElementsByClassName('action'),
       dob = document.getElementById('dateofbirth'),
       year,
-      month = parseInt(date.getUTCMonth(), 10),
+      month,
       staffInit;
 
       // Convert date UTC -> CST
       let date = new Date();
       date.setHours(date.getHours() - 6);
+      month = parseInt(date.getUTCMonth(), 10)
 
     if (month < 4) {
       year = date.getUTCFullYear();
