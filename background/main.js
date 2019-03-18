@@ -415,6 +415,7 @@ function getAllData() {
 
   return data;
 }
+openDB();
 /********************/
 
 // Handle messages from content pages
@@ -665,11 +666,45 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       break;
     case "issueLaptop":
-      console.log("issueLaptop");
       issueLaptop(request.patronBC, request.laptopID, request.numAcc, request.notes);
       break;
     case "returnLaptop":
-      console.log("returnLaptop");
+      console.log("return laptop");
+      let store = getObjectStore(DB_STORE_NAME, 'readwrite');
+      let req = store.openCursor();
+
+      req.onerror = function(evt) {
+
+      };
+
+      req.onsuccess = function(evt) {
+        let cursor = evt.target.result;
+
+        if (cursor) {
+          let key = cursor.primaryKey;
+          let value = cursor.value;
+          console.log("cursor: " + key + "|" + value);
+
+          if (value.returnDate === null && value.laptopID === request.laptopID) {
+            value.returnDate = request.retDate;
+
+            let itemUpdate = store.put(value, key);
+
+            itemUpdate.onerror = function(evt) {
+              console.log("Item update error.");
+            };
+
+            itemUpdate.onsuccess = function(evt) {
+              console.log("Item update success!");
+            };
+            return;
+          }
+
+          cursor.continue();
+        } else {
+            // no more results
+        }
+      };
       break;
     case "printProblemForm":
       browser.tabs.create({

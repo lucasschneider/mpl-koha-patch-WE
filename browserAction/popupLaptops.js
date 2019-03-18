@@ -32,7 +32,6 @@ patronBarcode.addEventListener('input', function() {
 
 logLaptop.style.cursor = "pointer";
 logLaptop.addEventListener('click', function() {
-  browser.runtime.sendMessage({"key": "issueLaptop"});
   if (/^290780\d{8}$/.test(patronBarcode.value)) {
     browser.runtime.sendMessage({
       "key": "issueLaptop",
@@ -51,5 +50,4 @@ logLaptop.addEventListener('click', function() {
   }
 });
 
-openDB();
 updateContent();
