@@ -7,6 +7,7 @@ const laptopID = document.getElementById("laptopID");
 const numAcc = document.getElementById("accessories");
 const notes = document.getElementById("notes");
 const logLaptop = document.getElementById("logLaptop");
+const viewData = document.getElementById("viewData");
 
 function updateContent() {
   browser.storage.sync.get("laptopFormChecked").then(res => {
@@ -48,6 +49,10 @@ logLaptop.addEventListener('click', function() {
   } else {
     alert("Enter a proper patron barcode.");
   }
+});
+
+viewData.addEventListener('click',function() {
+  browser.runtime.sendMessage({"key": "viewLaptopData"});
 });
 
 updateContent();

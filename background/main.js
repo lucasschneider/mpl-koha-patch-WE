@@ -240,7 +240,7 @@ browser.webNavigation.onCompleted.addListener(details => {
 
       if (res.hasOwnProperty('laptopForm') && res.laptopForm) {
         browser.tabs.executeScript(details.tabId, {
-          file: "/content/scripts/laptopReturnListener.js"
+          file: "/content/scripts/laptopListener.js"
         });
       }
 
@@ -399,27 +399,13 @@ function issueLaptop(barcode, laptopID, numAcc, notes) {
   }
 }
 
-function getAllData() {
-  var store = getObjectStore(DB_STORE_NAME, 'readwrite');
-  var data = [];
-
-  store.openCursor().onsuccess = function(evt) {
-    var cursor = evt.target.result;
-    if (cursor) {
-      var entry = cursor.value;
-      entry.key = cursor.key;
-      data.push(entry);
-      cursor.continue();
-    }
-  }
-
-  return data;
-}
 openDB();
 /********************/
 
 // Handle messages from content pages
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  let store = getObjectStore(DB_STORE_NAME, 'readwrite');
+
   switch (request.key) {
     case "queryGeocoder":
       var matchAddr, county, countySub, censusTract, zip;
@@ -665,12 +651,29 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         "file": "/browserAction/scripts/addLostCardNote.js"
       });
       break;
+    case "viewLaptopData":
+      browser.tabs.create({
+        "active": true,
+        "url": browser.runtime.getURL("../laptopData/laptopData.html")
+      });
+      break;
+    case "getAllLaptopData":
+      return new Promise(function(resolve, reject) {
+        let req = store.getAll();
+
+        req.onsuccess = function(evt) {
+          resolve(evt.target.result);
+        };
+
+        req.onerror = function(evt) {
+          reject();
+        }
+      });
+      break;
     case "issueLaptop":
       issueLaptop(request.patronBC, request.laptopID, request.numAcc, request.notes);
       break;
     case "returnLaptop":
-      console.log("return laptop");
-      let store = getObjectStore(DB_STORE_NAME, 'readwrite');
       let req = store.openCursor();
 
       req.onerror = function(evt) {
@@ -683,7 +686,6 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         if (cursor) {
           let key = cursor.primaryKey;
           let value = cursor.value;
-          console.log("cursor: " + key + "|" + value);
 
           if (value.returnDate === null && value.laptopID === request.laptopID) {
             value.returnDate = request.retDate;
