@@ -4,6 +4,7 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="popup.css" />
+    <title>MPL Koha Patch</title>
   </head>
   <body>
     <table id="laptopButton">
@@ -33,42 +34,18 @@
     </div>
 
    <div id="laptopMenu" class="mainWrapper">
-        <h1>Laptop Checkout</h1>
-        <table>
-          <label for="Barcode">Patron Barcode:</label>
-          <input type="text" id="patronBarcode" name="barcode" maxlength="14" placeholder="290780XXXXXXXX" pattern="290780[0-9]{8}"><br>
+      <h1>Laptop Checkout</h1>
+      <p style="text-align:justify;">All laptop data is automatically stored by the MPL Koha Patch (including issue date, patron barcode, mouse, power supply, headphones, dvd player, laptop ID, and return date). If you need to add a note to a laptop issue record, enter the patron's barcode number and note below, <strong>before the laptop has been returned</strong>.</p>
+      <form>
+        <label for="patronBarcode">Patron Barcode:</label>
+        <input type="text" id="patronBarcode" name="barcode" maxlength="14" placeholder="290780XXXXXXXX" pattern="290780[0-9]{8}"><br>
 
-          <label for="LaptopID">Laptop/iPad ID:</label><br>
-          <select id="laptopID">
-            <option selected="true">PC1-A1</option>
-            <option>PC1-A2</option>
-            <option>PC1-A3</option>
-            <option>PC1-A4</option>
-            <option>PC1-A5</option>
-            <option>PC1-B1</option>
-            <option>PC1-B2</option>
-            <option>PC1-B3</option>
-            <option>PC2-A1</option>
-            <option>PC2-A2</option>
-            <option>PC2-A3</option>
-            <option>PC2-A5</option>
-            <option>PC2-B1</option>
-            <option>PC2-B2</option>
-            <option>PC2-B3</option>
-          </select><br><br>
-
-          <div>
-            <label for="accessories">Number of Accessories:</label>
-            <input id="accessories" name="accesories" type="range" min="0" max="4" step="1" value="0">
-            <label for="accessories"><span style="margin-left:10px;">0</span><span class="rangeLabel">1</span><span class="rangeLabel">2</span><span class="rangeLabel">3</span><span class="rangeLabel">4</span></label>
-          </div>
-        </table><br>
         <label for="notes">Notes:</label><br>
-        <textarea id="notes" rows="4"></textarea><br>
-        <div id="userMsg"></div><br>
-        <input id="logLaptop" type="submit" value="Issue Laptop">
-        <br><br>
-        <button id="viewData" type="button">View Data</button>
+        <textarea id="notes" rows="4" cols="28"></textarea><br>
+        <input id="addNote" type="submit" value="Add Note">
+      </form>
+      <br><br>
+      <button id="viewData" type="button">View Data</button>
     </div>
 
     <div id="prefWrapper"><a id="prefs">Extension Preferences</a></div>

@@ -3,10 +3,8 @@ const laptopMenu = document.getElementById('laptopMenu');
 const laptopFormOn = document.getElementById("laptopFormOn");
 const laptopFormOnSwitch = document.getElementById("laptopFormOnSwitch");
 const patronBarcode = document.getElementById("patronBarcode");
-const laptopID = document.getElementById("laptopID");
-const numAcc = document.getElementById("accessories");
 const notes = document.getElementById("notes");
-const logLaptop = document.getElementById("logLaptop");
+const addNote = document.getElementById("addNote");
 const viewData = document.getElementById("viewData");
 
 function updateContent() {
@@ -31,26 +29,23 @@ patronBarcode.addEventListener('input', function() {
   if (!/[0-9]/.test(this.value[this.value.length-1])) this.value = this.value.slice(0,-1);
 });
 
-logLaptop.style.cursor = "pointer";
-logLaptop.addEventListener('click', function() {
-  if (/^290780\d{8}$/.test(patronBarcode.value)) {
+addNote.style.cursor = "pointer";
+addNote.addEventListener('click', function() {
+  if (/^29078\d{9}$/.test(patronBarcode.value)) {
     browser.runtime.sendMessage({
-      "key": "issueLaptop",
+      "key": "addLaptopNote",
       "patronBC": patronBarcode.value,
-      "laptopID": laptopID.value,
-      "numAcc": numAcc.value,
       "notes": notes.value
     });
 
     patronBarcode.value = "";
-    laptopID.value = "PC1-A1";
-    numAcc.value = "0";
     notes.value = "";
   } else {
     alert("Enter a proper patron barcode.");
   }
 });
 
+viewData.style.cursor = "pointer";
 viewData.addEventListener('click',function() {
   browser.runtime.sendMessage({"key": "viewLaptopData"});
 });

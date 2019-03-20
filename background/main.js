@@ -350,7 +350,10 @@ function openDB() {
     store.createIndex('issueDate', 'issueDate', {'unique': true});
     store.createIndex('patronBarcode', 'patronBarcode', {'unique': false});
     store.createIndex('laptopID', 'laptopID', {'unique': false});
-    store.createIndex('numAccesories', 'numAccesories', {'unique': false});
+    store.createIndex('mouse', 'mouse', {'unique': false});
+    store.createIndex('headphones', 'headphones', {'unique': false});
+    store.createIndex('powersupply', 'powersupply', {'unique': false});
+    store.createIndex('dvdplayer', 'dvdplayer', {'unique': false});
     store.createIndex('notes', 'notes', {'unique': false});
     store.createIndex('returnDate', 'returnDate', {'unique': true});
   };
@@ -371,16 +374,17 @@ function getObjectStore(storeName, mode) {
  * @param {number} numAcc number of accessories
  * @param {string} notes
  */
-function issueLaptop(barcode, laptopID, numAcc, notes) {
-  // Convert date UTC -> CST
+function issueLaptop(barcode, laptopID, power, mouse, headphones, dvd, notes) {
   var date = new Date();
-  date.setHours(date.getHours() - (date.getTimezoneOffset()/60));
 
   var obj = {
     'issueDate': date,
     'patronBarcode': barcode,
     'laptopID': laptopID,
-    'numAccesories': numAcc,
+    'powersupply': power,
+    'mouse': mouse,
+    'headphones': headphones,
+    'dvdplayer': dvd,
     'notes': notes,
     'returnDate': null
   }
@@ -670,17 +674,47 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         }
       });
       break;
-    case "issueLaptop":
-      issueLaptop(request.patronBC, request.laptopID, request.numAcc, request.notes);
-      break;
-    case "returnLaptop":
-      let req = store.openCursor();
+    case "addLaptopNote":
+      let addNoteReq = store.openCursor(null, 'prev');
 
-      req.onerror = function(evt) {
+      addNoteReq.onerror = function(evt) {
 
       };
 
-      req.onsuccess = function(evt) {
+      addNoteReq.onsuccess = function(evt) {
+        let cursor = evt.target.result;
+
+        if (cursor) {
+          let key = cursor.primaryKey;
+          let value = cursor.value;
+
+          if (value.returnDate === null && value.patronBarcode === request.patronBC) {
+            value.notes = request.notes;
+
+            let itemUpdate = store.put(value, key);
+
+            itemUpdate.onerror = function(evt) {
+              console.log("Item update error.");
+            };
+
+            itemUpdate.onsuccess = function(evt) {
+              console.log("Item update success!");
+            };
+          }
+        }
+      };
+      break;
+    case "issueLaptop":
+      issueLaptop(request.patronBC, request.laptopID, request.power, request.headphones, request.mouse, request.dvd, request.notes);
+      break;
+    case "returnLaptop":
+      let returnReq = store.openCursor(null, 'prev');
+
+      returnReq.onerror = function(evt) {
+
+      };
+
+      returnReq.onsuccess = function(evt) {
         let cursor = evt.target.result;
 
         if (cursor) {

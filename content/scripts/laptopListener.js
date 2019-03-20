@@ -28,7 +28,7 @@ const ipads = [
   "39078083355348"
 ];
 
-const accesories = {
+const accessories = {
   "headphones": [
     "39078083378563",
     "39078083378621",
@@ -96,7 +96,7 @@ const accesories = {
     "39078091202201",
     "39078091402611"
   ]
-}
+};
 
 if (window.location.toString().includes("/cgi-bin/koha/circ/circulation.pl")) {
   let patronBC = document.querySelector('.patroninfo h5').textContent.match(/2\d{13}/)[0];
@@ -108,14 +108,29 @@ if (window.location.toString().includes("/cgi-bin/koha/circ/circulation.pl")) {
     itemBC = itemBC.textContent.match(/3\d{13}/)[0];
 
     if (itemTitle.includes("GENERIC EQUIPMENT")) {
-      if (Object.keys(laptopMap).includes(itemBC)) {
+      if ((itemTitle.includes("LAPTOP") && Object.keys(laptopMap).includes(itemBC)) ||
+          (itemTitle.includes("IPAD") && ipads.includes(itemBC))) {
+        let itemID;
+
+        if (laptopMap[itemBC]) {
+          itemID = laptopMap[itemBC];
+        } else if (ipads.includes(itemBC)) {
+          itemID = "ipad-" + itemBC.slice(-4);
+        }
+
         browser.runtime.sendMessage({
           "key": "issueLaptop",
           "patronBC": patronBC,
-          "laptopID": laptopMap[itemBC],
-          "numAcc": null,
-          "notes": null
+          "itemID": itemID
         });
+      } else if (itemTitle.includes("POWER SUPPLY") && accessories.powersupply.includes(itemBC)) {
+
+      } else if (itemTitle.includes("MOUSE") && accessories.mouse.includes(itemBC)) {
+
+      } else if (itemTitle.includes("HEADPHONES") && accessories.headphones.includes(itemBC)) {
+
+      } else if (itemTitle.includes("DVD PLAYER") && accessories.dvdplayer.includes(itemBC)) {
+
       }
     }
   }
@@ -128,7 +143,6 @@ if (window.location.toString().includes("/cgi-bin/koha/circ/circulation.pl")) {
 
     if (Object.keys(laptopMap).includes(returnBC)) {
       let d = new Date();
-      d.setHours(d.getHours() - (d.getTimezoneOffset()/60));
 
       browser.runtime.sendMessage({
         "key": "returnLaptop",
