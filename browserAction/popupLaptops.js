@@ -30,7 +30,8 @@ patronBarcode.addEventListener('input', function() {
 });
 
 addNote.style.cursor = "pointer";
-addNote.addEventListener('click', function() {
+addNote.addEventListener('click', function(e) {
+  e.preventDefault();
   if (/^29078\d{9}$/.test(patronBarcode.value)) {
     browser.runtime.sendMessage({
       "key": "addLaptopNote",

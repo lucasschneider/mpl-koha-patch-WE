@@ -349,7 +349,7 @@ function openDB() {
 
     store.createIndex('issueDate', 'issueDate', {'unique': true});
     store.createIndex('patronBarcode', 'patronBarcode', {'unique': false});
-    store.createIndex('laptopID', 'laptopID', {'unique': false});
+    store.createIndex('itemID', 'itemID', {'unique': false});
     store.createIndex('mouse', 'mouse', {'unique': false});
     store.createIndex('headphones', 'headphones', {'unique': false});
     store.createIndex('powersupply', 'powersupply', {'unique': false});
@@ -370,37 +370,145 @@ function getObjectStore(storeName, mode) {
 
 /**
  * @param {string} barcode patron's barcode number
- * @param {string} laptopID
+ * @param {string} itemID
  * @param {number} numAcc number of accessories
  * @param {string} notes
  */
-function issueLaptop(barcode, laptopID, power, mouse, headphones, dvd, notes) {
-  var date = new Date();
+function issueItem(type, patronBC, itemID) {
+  let store = getObjectStore(DB_STORE_NAME, 'readwrite');
 
-  var obj = {
-    'issueDate': date,
-    'patronBarcode': barcode,
-    'laptopID': laptopID,
-    'powersupply': power,
-    'mouse': mouse,
-    'headphones': headphones,
-    'dvdplayer': dvd,
-    'notes': notes,
-    'returnDate': null
-  }
+  let alreadyIssued = new Promise(function (resolve, reject) {
+    let updateReq = store.openCursor(null, 'prev');
 
-  var store = getObjectStore(DB_STORE_NAME, 'readwrite');
-  var req;
+    updateReq.onerror = function(evt) {
+      reject("issueItem(" + type + "," + patronBC + "," + itemID + ") failed.");
+    };
 
-  try {
-    req = store.add(obj);
-  } catch (e) {
-    throw e;
-  }
+    updateReq.onsuccess = function(evt) {
+      let cursor = evt.target.result;
+      let recordUpdated = false
 
-  req.onsuccess = function(evt) {
-    console.log('insertion success!')
-  }
+      if (cursor) {
+        let key = cursor.primaryKey;
+        let value = cursor.value;
+
+        if (value.returnDate === null && value.patronBarcode === patronBC &&
+            (type !== "laptop" || (type === "laptop" && value.itemID === null))) {
+          recordUpdated = true;
+
+          if (type === "laptop" && value.itemID === null) {
+            value.itemID = itemID;
+          } else if (type === "powersupply") {
+            value.powersupply = true;
+          } else if (type === "mouse") {
+            value.mouse = true;
+          } else if (type === "headphones") {
+            value.headphones = true;
+          } else if (type === "dvdplayer") {
+            value.dvdplayer = true;
+          }
+
+          let itemUpdate = store.put(value, key);
+
+          itemUpdate.onerror = function(evt) {
+            reject("Item update error.");
+          };
+
+          itemUpdate.onsuccess = function(evt) {
+            console.log("Item update success!");
+            resolve(recordUpdated);
+          };
+        } else {
+          cursor.continue();
+        }
+      } else {
+        resolve(recordUpdated);
+      }
+    };
+  }).then(wasUpdated => {
+    if (!wasUpdated) {
+      let obj = {
+        'issueDate': new Date(),
+        'patronBarcode': patronBC,
+        'itemID': itemID,
+        'powersupply': null,
+        'mouse': null,
+        'headphones': null,
+        'dvdplayer': null,
+        'notes': null,
+        'returnDate': null
+      };
+
+      let req = store.add(obj);
+
+      req.onsuccess = function(evt) {
+        console.log('insertion success!')
+      }
+    }
+  });
+}
+
+function returnLaptop(itemID, retDate) {
+  let store = getObjectStore(DB_STORE_NAME, 'readwrite');
+
+  let returnReq = store.openCursor(null, 'prev');
+
+  returnReq.onerror = function(evt) {
+    console.log("Return error");
+  };
+
+  returnReq.onsuccess = function(evt) {
+    let cursor = evt.target.result;
+
+    if (cursor) {
+      let key = cursor.primaryKey;
+      let value = cursor.value;
+      console.log(key+"|"+value);
+
+      if (value.returnDate === null && value.itemID === itemID) {
+        value.returnDate = retDate;
+
+        let laptopReturn = store.put(value, key);
+
+        laptopReturn.onerror = function(evt) {
+          console.log("Laptop return error.");
+        };
+
+        laptopReturn.onsuccess = function(evt) {
+          console.log("Laptop return success!");
+        };
+      } else {
+        cursor.continue();
+      }
+    } else {
+      // No more results
+    }
+  };
+}
+
+function getAllLaptopData() {
+  return new Promise(function(resolve, reject) {
+    let store = getObjectStore(DB_STORE_NAME, 'readwrite');
+    let data = [];
+
+    let req = store.openCursor();
+
+    req.onerror = function(evt) {
+      reject('getAllLaptopData() failed to open cursor');
+    };
+
+    req.onsuccess = function(evt) {
+      let cursor = evt.target.result;
+
+      if (cursor) {
+        cursor.value.primaryKey = cursor.primaryKey;
+        data.push(cursor.value);
+        cursor.continue();
+      } else {
+        resolve(data);
+      }
+    }
+  });
 }
 
 openDB();
@@ -662,17 +770,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       break;
     case "getAllLaptopData":
-      return new Promise(function(resolve, reject) {
-        let req = store.getAll();
-
-        req.onsuccess = function(evt) {
-          resolve(evt.target.result);
-        };
-
-        req.onerror = function(evt) {
-          reject();
-        }
-      });
+      return getAllLaptopData();
       break;
     case "addLaptopNote":
       let addNoteReq = store.openCursor(null, 'prev');
@@ -705,42 +803,22 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       };
       break;
     case "issueLaptop":
-      issueLaptop(request.patronBC, request.laptopID, request.power, request.headphones, request.mouse, request.dvd, request.notes);
+      issueItem("laptop", request.patronBC, request.itemID);
+      break;
+    case "issuePowerSupply":
+      issueItem("powersupply", request.patronBC);
+      break;
+    case "issueMouse":
+      issueItem("mouse", request.patronBC);
+      break;
+    case "issueHeadphones":
+      issueItem("headphones", request.patronBC);
+      break;
+    case "issueDVDPlayer":
+      issueItem("dvdplayer", request.patronBC);
       break;
     case "returnLaptop":
-      let returnReq = store.openCursor(null, 'prev');
-
-      returnReq.onerror = function(evt) {
-
-      };
-
-      returnReq.onsuccess = function(evt) {
-        let cursor = evt.target.result;
-
-        if (cursor) {
-          let key = cursor.primaryKey;
-          let value = cursor.value;
-
-          if (value.returnDate === null && value.laptopID === request.laptopID) {
-            value.returnDate = request.retDate;
-
-            let itemUpdate = store.put(value, key);
-
-            itemUpdate.onerror = function(evt) {
-              console.log("Item update error.");
-            };
-
-            itemUpdate.onsuccess = function(evt) {
-              console.log("Item update success!");
-            };
-            return;
-          }
-
-          cursor.continue();
-        } else {
-            // no more results
-        }
-      };
+      returnLaptop(request.itemID, request.returnDate);
       break;
     case "printProblemForm":
       browser.tabs.create({

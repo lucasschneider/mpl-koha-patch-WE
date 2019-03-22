@@ -5,7 +5,7 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
     let tr = document.createElement('tr');
     let issueDate = document.createElement('td');
     let patronBC = document.createElement('td');
-    let laptopID = document.createElement('td');
+    let itemID = document.createElement('td');
     let powerTD = document.createElement('td');
     let mouseTD = document.createElement('td');
     let headphonesTD = document.createElement('td');
@@ -17,18 +17,27 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
     let notes = document.createElement('td');
     let returnDate = document.createElement('td');
 
-    power.type = "checkbox";
-    power.disabled = "true";
-    mouse.type = "checkbox";
-    mouse.disabled = "true";
-    headphones.type = "checkbox";
-    headphones.disabled = "true";
-    dvd.type = "checkbox";
-    dvd.disabled = "true";
+    function preventDefault(e){e.preventDefault()};
 
+    if (i % 2 === 1) {
+      tr.style.background = "#ebf5fc";
+    }
+
+    powerTD.classList.add('center');
+    mouseTD.classList.add('center');
+    headphonesTD.classList.add('center');
+    dvdTD.classList.add('center');
+    power.type = "checkbox";
+    power.addEventListener('click', preventDefault);
+    mouse.type = "checkbox";
+    mouse.addEventListener('click', preventDefault);
+    headphones.type = "checkbox";
+    headphones.addEventListener('click', preventDefault);
+    dvd.type = "checkbox";
+    dvd.addEventListener('click', preventDefault);
     issueDate.textContent = res[i].issueDate.toLocaleString();
     patronBC.textContent = res[i].patronBarcode;
-    laptopID.textContent = res[i].laptopID;
+    itemID.textContent = res[i].itemID;
     notes.textContent = res[i].notes;
     power.checked = res[i].powersupply;
     mouse.checked = res[i].mouse;
@@ -45,7 +54,7 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
 
     tr.appendChild(issueDate);
     tr.appendChild(patronBC);
-    tr.appendChild(laptopID);
+    tr.appendChild(itemID);
     tr.appendChild(powerTD);
     tr.appendChild(mouseTD);
     tr.appendChild(headphonesTD);

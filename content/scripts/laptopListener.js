@@ -115,7 +115,7 @@ if (window.location.toString().includes("/cgi-bin/koha/circ/circulation.pl")) {
         if (laptopMap[itemBC]) {
           itemID = laptopMap[itemBC];
         } else if (ipads.includes(itemBC)) {
-          itemID = "ipad-" + itemBC.slice(-4);
+          itemID = "IPAD-" + itemBC.slice(-4);
         }
 
         browser.runtime.sendMessage({
@@ -124,13 +124,25 @@ if (window.location.toString().includes("/cgi-bin/koha/circ/circulation.pl")) {
           "itemID": itemID
         });
       } else if (itemTitle.includes("POWER SUPPLY") && accessories.powersupply.includes(itemBC)) {
-
+        browser.runtime.sendMessage({
+          "key": "issuePowerSupply",
+          "patronBC": patronBC
+        });
       } else if (itemTitle.includes("MOUSE") && accessories.mouse.includes(itemBC)) {
-
+        browser.runtime.sendMessage({
+          "key": "issueMouse",
+          "patronBC": patronBC
+        });
       } else if (itemTitle.includes("HEADPHONES") && accessories.headphones.includes(itemBC)) {
-
+        browser.runtime.sendMessage({
+          "key": "issueHeadphones",
+          "patronBC": patronBC
+        });
       } else if (itemTitle.includes("DVD PLAYER") && accessories.dvdplayer.includes(itemBC)) {
-
+        browser.runtime.sendMessage({
+          "key": "issueDVDPlayer",
+          "patronBC": patronBC
+        });
       }
     }
   }
@@ -141,14 +153,24 @@ if (window.location.toString().includes("/cgi-bin/koha/circ/circulation.pl")) {
   if (returnCells.length > 0 && returnCells[5].textContent.trim() !== "Not checked out") {
     let returnBC = returnCells[3].textContent.trim();
 
-    if (Object.keys(laptopMap).includes(returnBC)) {
+    if (Object.keys(laptopMap).includes(returnBC) || ipads.includes(returnBC)) {
       let d = new Date();
 
-      browser.runtime.sendMessage({
-        "key": "returnLaptop",
-        "laptopID": laptopMap[returnBC],
-        "retDate": d
-      });
+      let itemTitle = document.querySelector('#doc td:nth-of-type(2)');
+
+      if (returnCells[1].textContent.includes("IPAD")) {
+          browser.runtime.sendMessage({
+            "key": "returnLaptop",
+            "itemID": "IPAD-" + returnBC.slice(-4),
+            "returnDate": d
+          });
+      } else if (returnCells[1].textContent.includes("LAPTOP")) {
+        browser.runtime.sendMessage({
+          "key": "returnLaptop",
+          "itemID": laptopMap[returnBC],
+          "returnDate": d
+        });
+      }
     }
   }
 }

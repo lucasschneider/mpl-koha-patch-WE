@@ -1,0 +1,27 @@
+body {
+  font-family: sans-serif;
+}
+
+input[type='checkbox'],
+input[type='checkbox']:focus,
+input[type='checkbox']:active {
+  outline: none;
+}
+
+table {
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+
+th {
+  border-top: 1px solid black;
+}
+
+th, td {
+  padding: 4px 10px;
+  border-bottom: 1px solid black;
+}
+
+.center {
+  text-align: center;
+}
