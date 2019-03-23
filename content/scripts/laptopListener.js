@@ -99,12 +99,13 @@ const accessories = {
 };
 
 if (window.location.toString().includes("/cgi-bin/koha/circ/circulation.pl")) {
-  let patronBC = document.querySelector('.patroninfo h5').textContent.match(/2\d{13}/)[0];
+  let patronBC = document.querySelector('.patroninfo h5');
   let itemTitle = document.querySelector("#recent-issues li:first-of-type .booktitle");
   let itemBC = document.querySelector("#recent-issues li:first-of-type .itembarcode");
 
-  if (itemTitle) {
+  if (itemTitle && patronBC && itemBC) {
     itemTitle = itemTitle.textContent;
+    patronBC = patronBC.textContent.match(/2\d{13}/)[0];
     itemBC = itemBC.textContent.match(/3\d{13}/)[0];
 
     if (itemTitle.includes("GENERIC EQUIPMENT")) {

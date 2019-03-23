@@ -430,7 +430,7 @@ function issueItem(type, patronBC, itemID) {
       let obj = {
         'issueDate': new Date(),
         'patronBarcode': patronBC,
-        'itemID': itemID,
+        'itemID': null,
         'powersupply': null,
         'mouse': null,
         'headphones': null,
@@ -439,12 +439,54 @@ function issueItem(type, patronBC, itemID) {
         'returnDate': null
       };
 
+      if (type === "laptop") obj.itemID = itemID;
+      else if (type === "powersupply") obj.powersupply = true;
+      else if (type === "mouse") obj.mouse = true;
+      else if (type === "headphones") obj.headphones = true;
+      else if (type === "dvdplayer") obj.dvdplayer = true;
+
       let req = store.add(obj);
 
       req.onsuccess = function(evt) {
         console.log('insertion success!')
       }
     }
+  });
+}
+
+function addLaptopNote(patronBC, note) {
+  return new Promise(function (resolve, reject) {
+    let store = getObjectStore(DB_STORE_NAME, 'readwrite');
+
+    let noteReq = store.openCursor(null, 'prev');
+    noteReq.onerror = function(evt) {
+      console.error("Add laptop note error");
+    };
+
+    noteReq.onsuccess = function(evt) {
+      let cursor = evt.target.result;
+      let recordUpdated = false
+
+      if (cursor) {
+        let key = cursor.primaryKey;
+        let value = cursor.value;
+
+        if (value.issueDate.toLocaleDateString() === (new Date()).toLocaleDateString()) {
+          value.notes = note;
+
+          let addNote = store.put(value, key);
+
+          addNote.onerror = function(evt) {
+            reject("Note update error.");
+          };
+
+          itemUpdate.onsuccess = function(evt) {
+            addNote.log("Note update success!");
+            resolve(true);
+          };
+        }
+      }
+    };
   });
 }
 
@@ -463,7 +505,6 @@ function returnLaptop(itemID, retDate) {
     if (cursor) {
       let key = cursor.primaryKey;
       let value = cursor.value;
-      console.log(key+"|"+value);
 
       if (value.returnDate === null && value.itemID === itemID) {
         value.returnDate = retDate;
@@ -816,6 +857,9 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       break;
     case "issueDVDPlayer":
       issueItem("dvdplayer", request.patronBC);
+      break;
+    case "addLaptopNote":
+      return addLaptopNote(request.patronBC, request.note);
       break;
     case "returnLaptop":
       returnLaptop(request.itemID, request.returnDate);
