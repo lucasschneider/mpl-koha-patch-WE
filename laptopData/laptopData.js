@@ -3,6 +3,8 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
 
   for (let i = res.length-1; i >= 0; i--) {
     let tr = document.createElement('tr');
+    let editTD = document.createElement('td');
+    let edit = document.createElement('a');
     let issueDate = document.createElement('td');
     let patronBC = document.createElement('td');
     let itemID = document.createElement('td');
@@ -20,13 +22,30 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
     function preventDefault(e){e.preventDefault()};
 
     if (i % 2 === 1) {
-      tr.style.background = "#ebf5fc";
+      tr.style.backgroundColor = "#ebf5fc";
     }
 
+    edit.textContent = 'edit';
+    edit.href = '#';
+    edit.addEventListener('click', function(e) {
+      e.preventDefault();
+      let row = this.parentElement.parentElement
+      row.contentEditable = true;
+      row.style.backgroundColor = "#fcfaeb";
+
+      power.removeEventListener('click', preventDefault);
+      mouse.removeEventListener('click', preventDefault);
+      headphones.removeEventListener('click', preventDefault);
+      dvd.removeEventListener('click', preventDefault);
+    });
     powerTD.classList.add('center');
+    powerTD.contentEditable = false;
     mouseTD.classList.add('center');
+    mouseTD.contentEditable = false;
     headphonesTD.classList.add('center');
+    headphonesTD.contentEditable = false;
     dvdTD.classList.add('center');
+    dvdTD.contentEditable = false;
     power.type = "checkbox";
     power.addEventListener('click', preventDefault);
     mouse.type = "checkbox";
@@ -47,11 +66,13 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
       returnDate.textContent = res[i].returnDate.toLocaleString();
     }
 
+    editTD.appendChild(edit)
     powerTD.appendChild(power);
     mouseTD.appendChild(mouse);
     headphonesTD.appendChild(headphones);
     dvdTD.appendChild(dvd);
 
+    tr.appendChild(editTD);
     tr.appendChild(issueDate);
     tr.appendChild(patronBC);
     tr.appendChild(itemID);
