@@ -23,6 +23,10 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
       let noteTD = document.createElement('td');
       let note = document.createElement('span');
       let addNote = document.createElement('a');
+      let editdelWrapper = document.createElement('div');
+      let editNote = document.createElement('a');
+      let editDelSpacer = docuemnt.createElement('span');
+      let delNote = document.createElement('a')
       let returnDate = document.createElement('td');
 
       function preventDefault(e){e.preventDefault()};
