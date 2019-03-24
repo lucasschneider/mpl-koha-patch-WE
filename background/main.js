@@ -454,39 +454,32 @@ function issueItem(type, patronBC, itemID) {
   });
 }
 
-function addLaptopNote(patronBC, note) {
+function addLaptopNote(primaryKey, note) {
   return new Promise(function (resolve, reject) {
     let store = getObjectStore(DB_STORE_NAME, 'readwrite');
 
-    let noteReq = store.openCursor(null, 'prev');
-    noteReq.onerror = function(evt) {
-      console.error("Add laptop note error");
-    };
+    let req = store.get(primaryKey);
 
-    noteReq.onsuccess = function(evt) {
-      let cursor = evt.target.result;
-      let recordUpdated = false
+    req.onerror = function(evt) {
+      reject();
+    }
 
-      if (cursor) {
-        let key = cursor.primaryKey;
-        let value = cursor.value;
+    req.onsuccess = function(evt) {
+      let data = req.result;
 
-        if (value.issueDate.toLocaleDateString() === (new Date()).toLocaleDateString()) {
-          value.notes = note;
+      data.notes = note;
 
-          let addNote = store.put(value, key);
+       let addNote = store.put(data, primaryKey);
 
-          addNote.onerror = function(evt) {
-            reject("Note update error.");
-          };
+       addNote.onerror = function(evt) {
+         reject("Add laptop note error.");
+       };
 
-          itemUpdate.onsuccess = function(evt) {
-            addNote.log("Note update success!");
-            resolve(true);
-          };
-        }
-      }
-    };
+       addNote.onsuccess = function(evt) {
+         console.log("Add laptop note success!");
+         resolve(true);
+       };
+    }
   });
 }
 
@@ -813,36 +806,6 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     case "getAllLaptopData":
       return getAllLaptopData();
       break;
-    case "addLaptopNote":
-      let addNoteReq = store.openCursor(null, 'prev');
-
-      addNoteReq.onerror = function(evt) {
-
-      };
-
-      addNoteReq.onsuccess = function(evt) {
-        let cursor = evt.target.result;
-
-        if (cursor) {
-          let key = cursor.primaryKey;
-          let value = cursor.value;
-
-          if (value.returnDate === null && value.patronBarcode === request.patronBC) {
-            value.notes = request.notes;
-
-            let itemUpdate = store.put(value, key);
-
-            itemUpdate.onerror = function(evt) {
-              console.log("Item update error.");
-            };
-
-            itemUpdate.onsuccess = function(evt) {
-              console.log("Item update success!");
-            };
-          }
-        }
-      };
-      break;
     case "issueLaptop":
       issueItem("laptop", request.patronBC, request.itemID);
       break;
@@ -859,7 +822,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       issueItem("dvdplayer", request.patronBC);
       break;
     case "addLaptopNote":
-      return addLaptopNote(request.patronBC, request.note);
+      return addLaptopNote(request.primaryKey, request.note);
       break;
     case "returnLaptop":
       returnLaptop(request.itemID, request.returnDate);

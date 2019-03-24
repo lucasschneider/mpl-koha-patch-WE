@@ -43,7 +43,7 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
           note.textContent = n;
           browser.runtime.sendMessage({
             "key": "addLaptopNote",
-            "patronBC": res[i].patronBarcode,
+            "primaryKey": res[i].primaryKey,
             "note": n
         }).then(resolve => {
           console.log("Note added!");
