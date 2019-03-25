@@ -23,13 +23,34 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
       let noteTD = document.createElement('td');
       let note = document.createElement('span');
       let addNote = document.createElement('a');
-      let editdelWrapper = document.createElement('div');
+      let editDelWrapper = document.createElement('div');
       let editNote = document.createElement('a');
-      let editDelSpacer = docuemnt.createElement('span');
-      let delNote = document.createElement('a')
+      let editDelSpacer = document.createElement('span');
+      let delNote = document.createElement('a');
       let returnDate = document.createElement('td');
 
       function preventDefault(e){e.preventDefault()};
+
+      function addEditNote(e) {
+        e.preventDefault();
+        let n = prompt('Add a note:', note.textContent || '');
+        if (n) {
+          browser.runtime.sendMessage({
+            "key": "addLaptopNote",
+            "primaryKey": res[i].primaryKey,
+            "note": n
+          }).then(resolve => {
+            console.log("Note added!");
+            addNote.style.display = 'none';
+            editDelWrapper.style.display = 'block';
+            note.textContent = n;
+          }, reject => {
+            console.error(reject.message);
+          });
+        } else {
+
+        }
+      }
 
       if (i % 2 === 1) {
         tr.classList.add('odd');
@@ -39,25 +60,37 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
 
       addNote.textContent = 'add note';
       addNote.href = '#';
-      addNote.addEventListener('click', function(e) {
+      addNote.addEventListener('click', addEditNote);
+      editNote.textContent = 'edit';
+      editNote.href = '#';
+      editNote.addEventListener('click', addEditNote);
+      editDelSpacer.textContent = ' | ';
+      delNote.textContent = 'delete';
+      delNote.href = '#';
+      delNote.addEventListener('click', function(e) {
         e.preventDefault();
-        let n = prompt('Add a note:', note.textContent || '');
-        if (n) {
-          addNote.style.display = 'none';
-          note.textContent = n;
+        let conf = confirm('Are you sure you want to delete the note "' + note.textContent + '"?');
+
+        if (conf) {
           browser.runtime.sendMessage({
             "key": "addLaptopNote",
             "primaryKey": res[i].primaryKey,
-            "note": n
-        }).then(resolve => {
-          console.log("Note added!");
-        }, reject => {
-          console.error(reject.message);
-        });
-        } else {
-
+            "note": null
+          }).then(resolve => {
+            console.log("Note deleted.");
+            addNote.style.display = 'block';
+            editDelWrapper.style.display = 'none';
+            note.textContent = '';
+          }, reject => {
+            console.error(reject.message);
+          });
         }
       });
+
+      editDelWrapper.appendChild(editNote);
+      editDelWrapper.appendChild(editDelSpacer);
+      editDelWrapper.appendChild(delNote);
+
       powerTD.classList.add('center');
       mouseTD.classList.add('center');
       headphonesTD.classList.add('center');
@@ -89,11 +122,15 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
       headphonesTD.appendChild(headphones);
       dvdTD.appendChild(dvd);
       noteTD.appendChild(note);
+      noteTD.appendChild(addNote);
+      noteTD.appendChild(editDelWrapper);
       if (res[i].issueDate.toLocaleDateString() === (new Date()).toLocaleDateString()) {
         if (note.textContent === '') {
-          noteTD.appendChild(addNote);
+          addNote.style.display = 'block';
+          editDelWrapper.style.display = 'none';
         } else {
-
+          addNote.style.display = 'none';
+          editDelWrapper.style.display = 'block';
         }
       }
 
