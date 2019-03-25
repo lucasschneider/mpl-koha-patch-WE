@@ -127,22 +127,26 @@ if (window.location.toString().includes("/cgi-bin/koha/circ/circulation.pl")) {
       } else if (itemTitle.includes("POWER SUPPLY") && accessories.powersupply.includes(itemBC)) {
         browser.runtime.sendMessage({
           "key": "issuePowerSupply",
-          "patronBC": patronBC
+          "patronBC": patronBC,
+          "itemBC": itemBC
         });
       } else if (itemTitle.includes("MOUSE") && accessories.mouse.includes(itemBC)) {
         browser.runtime.sendMessage({
           "key": "issueMouse",
-          "patronBC": patronBC
+          "patronBC": patronBC,
+          "itemBC": itemBC
         });
       } else if (itemTitle.includes("HEADPHONES") && accessories.headphones.includes(itemBC)) {
         browser.runtime.sendMessage({
           "key": "issueHeadphones",
-          "patronBC": patronBC
+          "patronBC": patronBC,
+          "itemBC": itemBC
         });
       } else if (itemTitle.includes("DVD PLAYER") && accessories.dvdplayer.includes(itemBC)) {
         browser.runtime.sendMessage({
           "key": "issueDVDPlayer",
-          "patronBC": patronBC
+          "patronBC": patronBC,
+          "itemBC": itemBC
         });
       }
     }
@@ -172,6 +176,30 @@ if (window.location.toString().includes("/cgi-bin/koha/circ/circulation.pl")) {
           "returnDate": d
         });
       }
+    } else if (accessories.headphones.includes(returnBC)) {
+      browser.runtime.sendMessage({
+        "key": "removeRow",
+        "type": "headphones",
+        "itemID": returnBC
+      });
+    } else if (accessories.powersupply.includes(returnBC)) {
+      browser.runtime.sendMessage({
+        "key": "removeRow",
+        "type": "powersupply",
+        "itemID": returnBC
+      });
+    } else if (accessories.mouse.includes(returnBC)) {
+      browser.runtime.sendMessage({
+        "key": "removeRow",
+        "type": "mouse",
+        "itemID": returnBC
+      });
+    } else if (accessories.dvdplayer.includes(returnBC)) {
+      browser.runtime.sendMessage({
+        "key": "removeRow",
+        "type": "dvdplayer",
+        "itemID": returnBC
+      });
     }
   }
 }

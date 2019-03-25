@@ -440,10 +440,10 @@ function issueItem(type, patronBC, itemID) {
       };
 
       if (type === "laptop") obj.itemID = itemID;
-      else if (type === "powersupply") obj.powersupply = true;
-      else if (type === "mouse") obj.mouse = true;
-      else if (type === "headphones") obj.headphones = true;
-      else if (type === "dvdplayer") obj.dvdplayer = true;
+      else if (type === "powersupply") obj.powersupply = itemID;
+      else if (type === "mouse") obj.mouse = itemID;
+      else if (type === "headphones") obj.headphones = itemID;
+      else if (type === "dvdplayer") obj.dvdplayer = itemID;
 
       let req = store.add(obj);
 
@@ -481,6 +481,39 @@ function addLaptopNote(primaryKey, note) {
        };
     }
   });
+}
+
+function removeRow(type, itemID) {
+  let store = getObjectStore(DB_STORE_NAME, 'readwrite');
+
+  let delReq = store.openCursor(null, 'prev');
+
+  delReq.onerror = function(evt) {
+    console.log("Deletion error.");
+  };
+
+  delReq.onsuccess = function(evt) {
+    let cursor = evt.target.result;
+
+    if (cursor) {
+      if (cursor.value.itemID === null && (type === 'headphones' && cursor.value.headphones === itemID ||
+          type === 'powersuppy' && cursor.value.powersupply === itemID ||
+          type === 'mouse' && cursor.value.mouse === itemID ||
+          type === 'dvdplayer' && cursor.value.dvdplayer === itemID)) {
+        let delRow = cursor.delete();
+
+        delRow.onerror = function() {
+          console.log("Failed to delete row");
+        };
+
+        delRow.onsuccess = function() {
+          console.log("Deleted row!")
+        }
+      } else {
+        cursor.continue();
+      }
+    }
+  }
 }
 
 function returnLaptop(itemID, retDate) {
@@ -810,19 +843,22 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       issueItem("laptop", request.patronBC, request.itemID);
       break;
     case "issuePowerSupply":
-      issueItem("powersupply", request.patronBC);
+      issueItem("powersupply", request.patronBC, request.itemBC);
       break;
     case "issueMouse":
-      issueItem("mouse", request.patronBC);
+      issueItem("mouse", request.patronBC, request.itemBC);
       break;
     case "issueHeadphones":
-      issueItem("headphones", request.patronBC);
+      issueItem("headphones", request.patronBC, request.itemBC);
       break;
     case "issueDVDPlayer":
-      issueItem("dvdplayer", request.patronBC);
+      issueItem("dvdplayer", request.patronBC, request.itemBC);
       break;
     case "addLaptopNote":
       return addLaptopNote(request.primaryKey, request.note);
+      break;
+    case "removeRow":
+      removeRow(request.type, request.itemID);
       break;
     case "returnLaptop":
       returnLaptop(request.itemID, request.returnDate);

@@ -109,10 +109,10 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
       patronBC.textContent = res[i].patronBarcode;
       itemID.textContent = res[i].itemID;
       note.textContent = res[i].notes;
-      power.checked = res[i].powersupply;
-      mouse.checked = res[i].mouse;
-      headphones.checked = res[i].headphones;
-      dvd.checked = res[i].dvdplayer;
+      power.checked = /^39078\d{9}$/.test(res[i].powersupply);
+      mouse.checked = /^39078\d{9}$/.test(res[i].mouse);
+      headphones.checked = /^39078\d{9}$/.test(res[i].headphones);
+      dvd.checked = /^39078\d{9}$/.test(res[i].dvdplayer);
       if (res[i].returnDate) {
         returnDate.textContent = res[i].returnDate.toLocaleString();
       }
@@ -121,10 +121,10 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
       mouseTD.appendChild(mouse);
       headphonesTD.appendChild(headphones);
       dvdTD.appendChild(dvd);
-      noteTD.appendChild(note);
-      noteTD.appendChild(addNote);
-      noteTD.appendChild(editDelWrapper);
       if (res[i].issueDate.toLocaleDateString() === (new Date()).toLocaleDateString()) {
+        noteTD.appendChild(note);
+        noteTD.appendChild(addNote);
+        noteTD.appendChild(editDelWrapper);
         if (note.textContent === '') {
           addNote.style.display = 'block';
           editDelWrapper.style.display = 'none';
