@@ -399,13 +399,13 @@ function issueItem(type, patronBC, itemID) {
           if (type === "laptop" && value.itemID === null) {
             value.itemID = itemID;
           } else if (type === "powersupply") {
-            value.powersupply = true;
+            value.powersupply = itemID;
           } else if (type === "mouse") {
-            value.mouse = true;
+            value.mouse = itemID;
           } else if (type === "headphones") {
-            value.headphones = true;
+            value.headphones = itemID;
           } else if (type === "dvdplayer") {
-            value.dvdplayer = true;
+            value.dvdplayer = itemID;
           }
 
           let itemUpdate = store.put(value, key);

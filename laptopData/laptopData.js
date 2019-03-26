@@ -28,6 +28,7 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
       let editDelSpacer = document.createElement('span');
       let delNote = document.createElement('a');
       let returnDate = document.createElement('td');
+      let useLen = document.createElement('td');
 
       function preventDefault(e){e.preventDefault()};
 
@@ -52,7 +53,7 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
         }
       }
 
-      if (i % 2 === 1) {
+      if (res.length-i % 2 === 1) {
         tr.classList.add('odd');
       } else {
         tr.classList.add('even');
@@ -96,10 +97,8 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
       headphonesTD.classList.add('center');
       dvdTD.classList.add('center');
       power.type = "checkbox";
-      power.style.cursor = 'pointer';
       power.addEventListener('click', preventDefault);
       mouse.type = "checkbox";
-      mouse.style.cursor = 'pointer';
       mouse.addEventListener('click', preventDefault);
       headphones.type = "checkbox";
       headphones.addEventListener('click', preventDefault);
@@ -134,6 +133,28 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
         }
       }
 
+      let endDateTime = returnDate.textContent !== '' ? new Date(returnDate.textContent) : new Date();
+      let milli = endDateTime - new Date(issueDate.textContent);
+      let hr = 0;
+      if (milli >= 3600000) {
+        hr = Math.floor(milli / 3600000);
+        milli = milli - (hr * 3600000);
+      }
+      let min = 0;
+      if (milli >= 60000) {
+        min = Math.floor(milli / 60000);
+        milli = milli - (min * 60000);
+      }
+      let sec = 0;
+      if (milli >= 1000) {
+        sec = Math.floor(milli / 1000);
+        milli = milli - (sec * 1000);
+      }
+
+      useLen.textContent = hr === 0 ? '00:' : hr < 9 ? '0' + hr + ':' : hr + ':';
+      useLen.textContent += min === 0 ? '00:' : min < 9 ? '0' + min + ':' : min + ':';
+      useLen.textContent += sec < 9 ? '0' + sec + '.' + milli : sec + '.' + milli;
+
       tr.appendChild(issueDate);
       tr.appendChild(patronBC);
       tr.appendChild(itemID);
@@ -143,6 +164,7 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
       tr.appendChild(dvdTD);
       tr.appendChild(noteTD);
       tr.appendChild(returnDate);
+      tr.appendChild(useLen);
 
       tableBody.appendChild(tr);
     }
