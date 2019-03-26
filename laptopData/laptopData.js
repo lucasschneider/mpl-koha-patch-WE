@@ -120,8 +120,8 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
       mouseTD.appendChild(mouse);
       headphonesTD.appendChild(headphones);
       dvdTD.appendChild(dvd);
+      noteTD.appendChild(note);
       if (res[i].issueDate.toLocaleDateString() === (new Date()).toLocaleDateString()) {
-        noteTD.appendChild(note);
         noteTD.appendChild(addNote);
         noteTD.appendChild(editDelWrapper);
         if (note.textContent === '') {
