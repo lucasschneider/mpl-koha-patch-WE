@@ -69,7 +69,6 @@ var skin = document.getElementById("skin"),
     "middleInitials": true,
     "updateAccountType": true,
     "laptopForm": false,
-    "laptopFormChecked": false,
     "cdams": true, "cdamsid": true, "cdjms": true, "cdyms": true,
     "dbrafe": false, "dbraff": false, "dbraid": false, "dbranf": false, "dbrarn": false, "dbratv": false, "dbrj": false, "dvdafe": false, "dvdaff": false, "dvdaid": false, "dvdanf": false, "dvdarn": false, "dvdatv": false, "dvdawl": false, "dvdjfe": false, "dvdjhl": false, "dvdjnf": false, "dvdjwl": false, "dvdyfe": false,
     "vga": false, "vgj": false, "vgy": false, "soa": false, "soawl": false, "soj": false,
@@ -252,9 +251,7 @@ document.getElementById("updateAccountTypeSwitch").addEventListener('click', fun
   browser.storage.sync.set({"updateAccountType": updateAccountType.checked});
 });
 document.getElementById("laptopFormSwitch").addEventListener('click', function() {
-  browser.storage.sync.set({"laptopForm": laptopForm.checked}).then(() => {
-    browser.runtime.sendMessage({"key": "updatePopup"});
-  });
+  browser.storage.sync.set({"laptopForm": laptopForm.checked});
 });
 document.getElementById("sepAllCDSwitch").addEventListener('click', function() {
   toggleAllCD();

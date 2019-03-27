@@ -50,19 +50,7 @@ function setIcon() {
   });
 };
 
-
-var updatePopup = function() {
-  browser.storage.sync.get("laptopForm").then(res => {
-    if (res.laptopForm) {
-      browser.browserAction.setPopup({"popup": "/browserAction/popupLaptops.html"});
-    } else {
-      browser.browserAction.setPopup({"popup": "/browserAction/popup.html"});
-    }
-  });
-};
-
 setIcon();
-updatePopup();
 
 var SCLSLibs = function() {
   this.data = {
@@ -807,9 +795,6 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       break;
     case "updateExtensionIcon":
       setIcon();
-      break;
-    case "updatePopup":
-      updatePopup();
       break;
     case "pauseSundayDropbox":
       browser.storage.sync.set({"sundayDropboxPaused": true});
