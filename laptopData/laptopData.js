@@ -1,9 +1,11 @@
 browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
+  let download = document.getElementById('downloadData');
   let table = document.getElementById('laptopData');
   let tableBody = document.getElementById('laptopDataBody');
   let noData = document.getElementById('noData');
 
   if (res.length === 0) {
+    download.style.display = 'none';
     table.style.display = 'none';
     noData.style.display = 'block';
   } else {
@@ -41,7 +43,6 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
             "primaryKey": res[i].primaryKey,
             "note": n
           }).then(resolve => {
-            console.log("Note added!");
             addNote.style.display = 'none';
             editDelWrapper.style.display = 'block';
             note.textContent = n;
@@ -53,10 +54,12 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
         }
       }
 
-      if (res.length-i % 2 === 1) {
-        tr.classList.add('odd');
-      } else {
-        tr.classList.add('even');
+      if (res.length > 2) {
+        if ((res.length-i) % 2 === 1) {
+          tr.classList.add('odd');
+        } else {
+          tr.classList.add('even');
+        }
       }
 
       addNote.textContent = 'add note';
@@ -78,7 +81,6 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
             "primaryKey": res[i].primaryKey,
             "note": null
           }).then(resolve => {
-            console.log("Note deleted.");
             addNote.style.display = 'block';
             editDelWrapper.style.display = 'none';
             note.textContent = '';
@@ -133,8 +135,8 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
         }
       }
 
-      let endDateTime = returnDate.textContent !== '' ? new Date(returnDate.textContent) : new Date();
-      let milli = endDateTime - new Date(issueDate.textContent);
+      let endDateTime = res[i].returnDate ? res[i].returnDate : new Date();
+      let milli = endDateTime - res[i].issueDate;
       let hr = 0;
       if (milli >= 3600000) {
         hr = Math.floor(milli / 3600000);
@@ -168,5 +170,11 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
 
       tableBody.appendChild(tr);
     }
+
+    let dateParts = (new Date()).toLocaleDateString().split('/');
+    let day = dateParts[1].length === 1 ? "0" + dateParts[1] : dateParts[1];
+    let month = dateParts[0].length === 1 ? "0" + dateParts[0] : dateParts[0];
+    download.download = "laptop-data-" + dateParts[2] + "-" + month + "-" + day;
+    download.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8," + table.outerHTML;
   }
 });

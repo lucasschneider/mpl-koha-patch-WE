@@ -374,7 +374,8 @@ function issueItem(type, patronBC, itemID) {
 
     updateReq.onsuccess = function(evt) {
       let cursor = evt.target.result;
-      let recordUpdated = false
+      let notUpdated = true;
+      let notIssued = true;
 
       if (cursor) {
         let key = cursor.primaryKey;
@@ -382,7 +383,7 @@ function issueItem(type, patronBC, itemID) {
 
         if (value.returnDate === null && value.patronBarcode === patronBC &&
             (type !== "laptop" || (type === "laptop" && value.itemID === null))) {
-          recordUpdated = true;
+          notUpdated = false;
 
           if (type === "laptop" && value.itemID === null) {
             value.itemID = itemID;
@@ -404,17 +405,20 @@ function issueItem(type, patronBC, itemID) {
 
           itemUpdate.onsuccess = function(evt) {
             console.log("Item update success!");
-            resolve(recordUpdated);
+            resolve(notUpdated && notIssued);
           };
+        } else if (type === "laptop" && value.returnDate === null &&
+            value.patronBarcode === patronBC && value.itemID === itemID) {
+          notIssued = false;
         } else {
           cursor.continue();
         }
       } else {
-        resolve(recordUpdated);
+        resolve(notUpdated && notIssued);
       }
     };
-  }).then(wasUpdated => {
-    if (!wasUpdated) {
+  }).then(newIssue => {
+    if (newIssue) {
       let obj = {
         'issueDate': new Date(),
         'patronBarcode': patronBC,
@@ -464,7 +468,6 @@ function addLaptopNote(primaryKey, note) {
        };
 
        addNote.onsuccess = function(evt) {
-         console.log("Add laptop note success!");
          resolve(true);
        };
     }
@@ -824,20 +827,8 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     case "getAllLaptopData":
       return getAllLaptopData();
       break;
-    case "issueLaptop":
-      issueItem("laptop", request.patronBC, request.itemID);
-      break;
-    case "issuePowerSupply":
-      issueItem("powersupply", request.patronBC, request.itemBC);
-      break;
-    case "issueMouse":
-      issueItem("mouse", request.patronBC, request.itemBC);
-      break;
-    case "issueHeadphones":
-      issueItem("headphones", request.patronBC, request.itemBC);
-      break;
-    case "issueDVDPlayer":
-      issueItem("dvdplayer", request.patronBC, request.itemBC);
+    case "issueItem":
+      issueItem(request.type, request.patronBC, request.itemID);
       break;
     case "addLaptopNote":
       return addLaptopNote(request.primaryKey, request.note);

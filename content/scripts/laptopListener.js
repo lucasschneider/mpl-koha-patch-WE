@@ -120,33 +120,38 @@ if (window.location.toString().includes("/cgi-bin/koha/circ/circulation.pl")) {
         }
 
         browser.runtime.sendMessage({
-          "key": "issueLaptop",
+          "key": "issueItem",
+          "type": "laptop",
           "patronBC": patronBC,
           "itemID": itemID
         });
       } else if (itemTitle.includes("POWER SUPPLY") && accessories.powersupply.includes(itemBC)) {
         browser.runtime.sendMessage({
-          "key": "issuePowerSupply",
+          "key": "issueItem",
+          "type": "powersupply",
           "patronBC": patronBC,
-          "itemBC": itemBC
+          "itemID": itemBC
         });
       } else if (itemTitle.includes("MOUSE") && accessories.mouse.includes(itemBC)) {
         browser.runtime.sendMessage({
-          "key": "issueMouse",
+          "key": "issueItem",
+          "type": "mouse",
           "patronBC": patronBC,
-          "itemBC": itemBC
+          "itemID": itemBC
         });
       } else if (itemTitle.includes("HEADPHONES") && accessories.headphones.includes(itemBC)) {
         browser.runtime.sendMessage({
-          "key": "issueHeadphones",
+          "key": "issueItem",
+          "type": "headphones",
           "patronBC": patronBC,
-          "itemBC": itemBC
+          "itemID": itemBC
         });
       } else if (itemTitle.includes("DVD PLAYER") && accessories.dvdplayer.includes(itemBC)) {
         browser.runtime.sendMessage({
-          "key": "issueDVDPlayer",
+          "key": "issueItem",
+          "type": "dvdplayer",
           "patronBC": patronBC,
-          "itemBC": itemBC
+          "itemID": itemBC
         });
       }
     }
