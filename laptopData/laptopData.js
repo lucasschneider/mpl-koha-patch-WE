@@ -188,6 +188,10 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
   let noData = document.getElementById('noData');
   let data = [];
 
+  function getCSV() {
+    let csv = "";
+  }
+
   if (res.length === 0) {
     download.style.display = 'none';
     table.style.display = 'none';
@@ -199,6 +203,6 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
     }
 
     download.download = "laptop-data-" + getCurrYYYYMMDD();
-    download.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8," + table.outerHTML;
+    download.href = "data:text/csv;charset=utf-8," + getCSV;
   }
 });
