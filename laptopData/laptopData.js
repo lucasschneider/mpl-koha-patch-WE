@@ -1,4 +1,6 @@
-//Setting the current date
+/**
+ * @returns {string} The current date in the format YYYY-MM-DD
+ */
 let getCurrYYYYMMDD = function() {
   var d = new Date(),
       month = '' + (d.getMonth() + 1),
@@ -11,7 +13,10 @@ let getCurrYYYYMMDD = function() {
   return [year, month, day].join('-');
 }
 
-//Setting the current time
+/**
+ * @param {number} milliseconds
+ * @returns {string} Time in the format HH:MM:SS.mmm
+ */
 let getHrMinSec = function(milliseconds) {
   if (typeof milliseconds === 'number' && milliseconds >= 0) {
     let hr = 0;
@@ -120,7 +125,7 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
     delNote.textContent = 'delete';
     delNote.href = '#';
 
-    //'Add note' field 
+    //'Add note' field
     function addEditNote(e) {
       e.preventDefault();
       let n = prompt('Add a note:', note.textContent || '');
@@ -138,8 +143,8 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
         });
       }
     };
-    
-    //'Delete note' field 
+
+    //'Delete note' field
     delNote.addEventListener('click', function(e) {
       e.preventDefault();
       let conf = confirm('Are you sure you want to delete the note "' + note.textContent + '"?');
@@ -204,7 +209,7 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
       csv += (issue.returnDate || '') + ",";
       csv += getHrMinSec((issue.returnDate || Date.now()) - issue.issueDate) + '\r\n';
     }
-    console.log(csv);
+    
     return encodeURIComponent(csv);
   }
 

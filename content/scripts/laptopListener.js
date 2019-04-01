@@ -18,7 +18,7 @@ const laptopMap = {
   "39078091512302": "PC2-B3"
 };
 
-//Creating map of iPads
+//Creating an array of iPads
 const ipads = [
   "39078083354804",
   "39078083354929",
@@ -30,7 +30,7 @@ const ipads = [
   "39078083355348"
 ];
 
-//Creating map of Accessories
+//Creating map of accessories
 const accessories = {
   "headphones": [
     "39078083378563",
