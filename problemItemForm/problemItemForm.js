@@ -76,6 +76,8 @@
     holds.value = "";
     copies.value = "";
     use.value = "";
+    use.removeAttribute('data-currUse');
+    use.removeAttribute('data-pastUse');
 
     if (itemBarcode.value.length === 8) {
       itemBarcode.value = "390780" + itemBarcode.value;
@@ -206,15 +208,9 @@
     switch (message.key) {
       case "returnItemData":
         itemDataErrMsg.style.display = "none";
-        itemTitle.value = message.itemTitle;
         cCode.value = message.cCode;
         copies.value = message.copies;
-        break;
-      case "failedItemData":
-        itemDataErrMsg.style.display = "";
-        itemTitle.value = "";
-        cCode.value = "";
-        copies.value = "";
+        use.setAttribute('data-currUse', message.ckoHist);
         break;
       case "returnItemHolds":
         holds.value = message.holds;
@@ -222,8 +218,15 @@
           itemTitle.value = message.itemTitle;
         }
         break;
-      case "failedItemHolds":
-        holds.value = "";
+      case "returnItemPastUse":
+        use.setAttribute('data-pastUse', message.pastUse);
+
+        let currUse = parseInt(use.getAttribute('data-currUse'));
+        let pastUse = parseInt(use.getAttribute('data-pastUse'));
+
+        if (!isNaN(currUse) && !isNaN(pastUse)) {
+          use.value = currUse + pastUse;
+        }
         break;
       case "returnPatronData":
         patronDataErrMsg.style.display = "none";
@@ -231,12 +234,6 @@
         patronBarcode.value = message.patronBarcode;
         patronPhone.value = !!message.patronPhone ? message.patronPhone : "";
         patronEmail.value = !!message.patronEmail ? message.patronEmail : "";
-        break;
-      case "failedPatronData":
-        patronDataErrMsg.style.display = "";
-        patron.value = "";
-        patronPhone.value = "";
-        patronEmail.value = "";
         break;
     }
   });

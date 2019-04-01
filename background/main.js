@@ -586,117 +586,125 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         });
       });
       break;
-    case "returnItemData":
-    case "failedItemData":
-      browser.tabs.query({
-        "currentWindow": true,
-        "active": true
-      }).then((tabs) => {
-        for (let tab of tabs) {
-          if (request.key === "returnItemData") {
-            browser.tabs.sendMessage(tab.id, {
-              "key": "returnItemData",
-              "bibNum": request.bibNum,
-              "itemNum": request.itemNum,
-              "itemTitle": request.itemTitle,
-              "copies": request.copies,
-              "cCode": request.cCode
-            });
+      case "returnItemData":
+      case "failedItemData":
+        browser.tabs.query({
+          "currentWindow": true,
+          "active": true
+        }).then((tabs) => {
+          for (let tab of tabs) {
+            if (request.key === "returnItemData") {
+              browser.tabs.sendMessage(tab.id, {
+                "key": "returnItemData",
+                "bibNum": request.bibNum,
+                "itemNum": request.itemNum,
+                "itemTitle": request.itemTitle,
+                "copies": request.copies,
+                "cCode": request.cCode,
+                "ckoHist": request.ckoHist
+              });
 
-            //Get Holds Data
-            browser.tabs.create({
-              "active": false,
-              "url": "https://scls-staff.kohalibrary.com/cgi-bin/koha/catalogue/detail.pl?biblionumber=" + request.bibNum
-            }).then((holdsTab) => {
-              setTimeout(() => {
-                browser.tabs.executeScript(holdsTab.id, {
-                  "file": "/problemItemForm/getItemHolds.js"
-                }).then(() => {
-                  setTimeout(() => {
-                    browser.tabs.remove(holdsTab.id);
-                  }, 1000);
-                });
-              }, 7000);
-            });
-          } else { // Failed
-            browser.tabs.sendMessage(tab.id, {
-              "key": "failedItemData"
-            });
+              // Get Holds Data
+              browser.tabs.create({
+                "active": false,
+                "url": "https://scls-staff.kohalibrary.com/cgi-bin/koha/catalogue/detail.pl?biblionumber=" + request.bibNum
+              }).then(holdsTab => {
+                setTimeout(() => {
+                  browser.tabs.executeScript(holdsTab.id, {
+                    "file": "/problemItemForm/getItemHolds.js"
+                  }).then(() => {
+                    setTimeout(() => {
+                      browser.tabs.remove(holdsTab.id);
+                    }, 1000);
+                  });
+                }, 7000);
+              });
+
+              // Get Dynix/Koha Past Use
+              browser.tabs.create({
+                "active": false,
+                "url": "https://scls-staff.kohalibrary.com/cgi-bin/koha/cataloguing/additem.pl?op=edititem&biblionumber=" +
+                    request.bibNum + "&itemnumber=" + request.itemNum + "#edititem"
+              }).then(pastUseTab => {
+                setTimeout(() => {
+                  browser.tabs.executeScript(pastUseTab.id, {
+                    "file": "/problemItemForm/getItemPastUse.js"
+                  }).then(() => {
+                    setTimeout(() => {
+                      browser.tabs.remove(pastUseTab.id);
+                    }, 1000);
+                  });
+                }, 7000);
+              });
+            } else { // Failed
+              browser.tabs.sendMessage(tab.id, {
+                "key": "failedItemData"
+              });
+            }
           }
-        }
-      });
-      break;
-    case "getPatronData":
-      browser.tabs.create({
-        "active": false,
-        "url": "https://scls-staff.kohalibrary.com/cgi-bin/koha/circ/circulation.pl?findborrower=" + request.patronBarcode
-      }).then((tab) => {
-        browser.tabs.executeScript(tab.id, {
-          "file": "/problemItemForm/getPatronData.js"
-        }).then(() => {
-          setTimeout(() => {
-            browser.tabs.remove(tab.id)
-          }, 2500);
         });
-      });
-      break;
-    case "getPatronFromURL":
-      browser.tabs.create({
-        "active": false,
-        "url": "https://scls-staff.kohalibrary.com" + request.url
-      }).then((tab) => {
-        browser.tabs.executeScript(tab.id, {
-          "file": "/problemItemForm/getPatronData.js"
-        }).then(() => {
-          setTimeout(() => {
-            browser.tabs.remove(tab.id);
-          }, 2500);
+        break;
+      case "getPatronData":
+        browser.tabs.create({
+          "active": false,
+          "url": "https://scls-staff.kohalibrary.com/cgi-bin/koha/circ/circulation.pl?findborrower=" + request.patronBarcode
+        }).then((tab) => {
+          browser.tabs.executeScript(tab.id, {
+            "file": "/problemItemForm/getPatronData.js"
+          }).then(() => {
+            setTimeout(() => {
+              browser.tabs.remove(tab.id)
+            }, 2500);
+          });
         });
-      });
-      break;
-    case "returnPatronData":
-    case "failedPatronData":
-      browser.tabs.query({
-        "currentWindow": true,
-        "active": true
-      }).then((tabs) => {
-        for (let tab of tabs) {
-          if (request.key === "returnPatronData") {
+        break;
+      case "getPatronFromURL":
+        browser.tabs.create({
+          "active": false,
+          "url": "https://scls-staff.kohalibrary.com" + request.url
+        }).then((tab) => {
+          browser.tabs.executeScript(tab.id, {
+            "file": "/problemItemForm/getPatronData.js"
+          }).then(() => {
+            setTimeout(() => {
+              browser.tabs.remove(tab.id);
+            }, 2500);
+          });
+        });
+        break;
+      case "returnItemHolds":
+      case "failedItemHolds":
+        browser.tabs.query({
+          "currentWindow": true,
+          "active": true
+        }).then((tabs) => {
+          for (let tab of tabs) {
+            if (request.key === "returnItemHolds") {
+              browser.tabs.sendMessage(tab.id, {
+                "key": "returnItemHolds",
+                "holds": request.holds,
+                "itemTitle": request.itemTitle
+              });
+            } else { // Failed
+              browser.tabs.sendMessage(tab.id, {
+                "key": "failedItemHolds"
+              });
+            }
+          }
+        });
+        break;
+      case "returnItemPastUse":
+        browser.tabs.query({
+          "currentWindow": true,
+          "active": true
+        }).then((tabs) => {
+          for (let tab of tabs) {
             browser.tabs.sendMessage(tab.id, {
-              "key": "returnPatronData",
-              "patronName": request.patronName,
-              "patronBarcode": request.patronBarcode,
-              "patronPhone": request.patronPhone,
-              "patronEmail": request.patronEmail
-            });
-          } else { // Failed
-            browser.tabs.sendMessage(tab.id, {
-              "key": "failedPatronData"
+              "key": "returnItemPastUse",
+              "pastUse": request.pastUse
             });
           }
-        }
-      });
-      break;
-    case "returnItemHolds":
-    case "failedItemHolds":
-      browser.tabs.query({
-        "currentWindow": true,
-        "active": true
-      }).then((tabs) => {
-        for (let tab of tabs) {
-          if (request.key === "returnItemHolds") {
-            browser.tabs.sendMessage(tab.id, {
-              "key": "returnItemHolds",
-              "holds": request.holds,
-              "itemTitle": request.itemTitle
-            });
-          } else { // Failed
-            browser.tabs.sendMessage(tab.id, {
-              "key": "failedItemHolds"
-            });
-          }
-        }
-      });
-      break;
+        });
+        break
   }
 });
