@@ -1,3 +1,4 @@
+//Setting the current date
 let getCurrYYYYMMDD = function() {
   var d = new Date(),
       month = '' + (d.getMonth() + 1),
@@ -10,6 +11,7 @@ let getCurrYYYYMMDD = function() {
   return [year, month, day].join('-');
 }
 
+//Setting the current time
 let getHrMinSec = function(milliseconds) {
   if (typeof milliseconds === 'number' && milliseconds >= 0) {
     let hr = 0;
@@ -118,6 +120,7 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
     delNote.textContent = 'delete';
     delNote.href = '#';
 
+    //'Add note' field 
     function addEditNote(e) {
       e.preventDefault();
       let n = prompt('Add a note:', note.textContent || '');
@@ -135,7 +138,8 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
         });
       }
     };
-
+    
+    //'Delete note' field 
     delNote.addEventListener('click', function(e) {
       e.preventDefault();
       let conf = confirm('Are you sure you want to delete the note "' + note.textContent + '"?');
@@ -187,6 +191,7 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
   function getCSV() {
     let csv = "Issue Date/Time, Patron Barcode, Laptop/iPad, Power Supply, Mouse, Headphones, DVD Player, Notes, Return Date/Time, Length of Use\r\n";
 
+    //Iterating through data table and assigning values separted by commas
     for (let issue of data) {
       csv += issue.issueDate + ",";
       csv += issue.patronBarcode + ",";

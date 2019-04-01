@@ -1,3 +1,4 @@
+//Creating a map of all the laptops and corresponing barcodes
 const laptopMap = {
   "39078083272006": "PC1-A1",
   "39078083272014": "PC1-A2",
@@ -17,6 +18,7 @@ const laptopMap = {
   "39078091512302": "PC2-B3"
 };
 
+//Creating map of iPads
 const ipads = [
   "39078083354804",
   "39078083354929",
@@ -28,6 +30,7 @@ const ipads = [
   "39078083355348"
 ];
 
+//Creating map of Accessories
 const accessories = {
   "headphones": [
     "39078083378563",
@@ -98,6 +101,7 @@ const accessories = {
   ]
 };
 
+//listening for laptop/iPad checkout and storing values
 if (window.location.toString().includes("/cgi-bin/koha/circ/circulation.pl")) {
   let patronBC = document.querySelector('.patroninfo h5');
   let itemTitle = document.querySelector("#recent-issues li:first-of-type .booktitle");
@@ -156,7 +160,7 @@ if (window.location.toString().includes("/cgi-bin/koha/circ/circulation.pl")) {
       }
     }
   }
-
+//Listening for returns
 } else if (window.location.toString().includes("/cgi-bin/koha/circ/returns.pl")) {
   let returnCells = document.querySelectorAll('#bd td');
 
