@@ -209,7 +209,7 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
       csv += (issue.returnDate || '') + ",";
       csv += getHrMinSec((issue.returnDate || Date.now()) - issue.issueDate) + '\r\n';
     }
-    
+
     return encodeURIComponent(csv);
   }
 
@@ -218,6 +218,15 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
   let table = document.getElementById('laptopData');
   let tableBody = document.getElementById('laptopDataBody');
   let data = [];
+  let search = document.getElementById('searchBar');
+
+  /* search.addEventListener('keyup', e => {
+    for (let item of data) {
+      if (item.patronBarcode.includes(search.value)) {
+        table.style.display = 'none';
+      }
+    }
+  }); */
 
   if (res.length === 0) {
     download.style.display = 'none';
