@@ -120,7 +120,7 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
     delNote.textContent = 'delete';
     delNote.href = '#';
 
-    //'Add note' field 
+    //'Add note' field
     function addEditNote(e) {
       e.preventDefault();
       let n = prompt('Add a note:', note.textContent || '');
@@ -138,8 +138,8 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
         });
       }
     };
-    
-    //'Delete note' field 
+
+    //'Delete note' field
     delNote.addEventListener('click', function(e) {
       e.preventDefault();
       let conf = confirm('Are you sure you want to delete the note "' + note.textContent + '"?');
@@ -204,7 +204,7 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
       csv += (issue.returnDate || '') + ",";
       csv += getHrMinSec((issue.returnDate || Date.now()) - issue.issueDate) + '\r\n';
     }
-    console.log(csv);
+
     return encodeURIComponent(csv);
   }
 
@@ -213,6 +213,15 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
   let table = document.getElementById('laptopData');
   let tableBody = document.getElementById('laptopDataBody');
   let data = [];
+  let search = document.getElementById('searchBar');
+
+  /* search.addEventListener('keyup', e => {
+    for (let item of data) {
+      if (item.patronBarcode.includes(search.value)) {
+        table.style.display = 'none';
+      }
+    }
+  }); */
 
   if (res.length === 0) {
     download.style.display = 'none';
