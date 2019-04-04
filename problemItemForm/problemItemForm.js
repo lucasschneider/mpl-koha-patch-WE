@@ -61,41 +61,6 @@
 
   date.value = getCurrDate();
 
-  // Trigger prepareItemData() when enter is pressed in itemBarcode input
-  itemBarcode.addEventListener("keyup", evt => {
-    if (evt.key !== "Enter") return;
-    prepareItemData.click();
-    evt.preventDefault();
-  });
-
-  prepareItemData.addEventListener("click", function () {
-    itemTitle.value = "";
-    cCode.value = "";
-    holds.value = "";
-    copies.value = "";
-    use.value = "";
-    use.removeAttribute('data-currUse');
-    use.removeAttribute('data-pastUse');
-
-    if (itemBarcode.value.length === 8) {
-      itemBarcode.value = "390780" + itemBarcode.value;
-    }
-
-    if (/^39078\d{9}$/.test(itemBarcode.value)) {
-      if (itemBarcode.classList.contains("invalidInput")) {
-        itemBarcode.classList.remove("invalidInput");
-      }
-      browser.runtime.sendMessage({
-        "key": "prepareItemData",
-        "itemBarcode": itemBarcode.value
-      });
-    } else {
-      if (!itemBarcode.classList.contains("invalidInput")) {
-        itemBarcode.classList.add("invalidInput");
-      }
-    }
-  });
-
   // Trigger getPatronData() when enter is pressed in patronBarcode input
   patronBarcode.addEventListener("keyup", evt => {
     if (evt.key !== "Enter") return;
@@ -120,7 +85,6 @@
         "key": "getPatronData",
         "patronBarcode": patronBarcode.value
       }).then(resArr => {
-        console.log(resArr);
         if (resArr.length > 0) {
           let res = resArr[0];
 
@@ -137,6 +101,45 @@
     }
   });
 
+  // Trigger prepareItemData() when enter is pressed in itemBarcode input
+  itemBarcode.addEventListener("keyup", evt => {
+    if (evt.key !== "Enter") return;
+    prepareItemData.click();
+    evt.preventDefault();
+  });
+
+  prepareItemData.addEventListener("click", function () {
+    itemTitle.value = "";
+    cCode.value = "";
+    holds.value = "";
+    copies.value = "";
+    use.value = "";
+
+    if (itemBarcode.value.length === 8) {
+      itemBarcode.value = "390780" + itemBarcode.value;
+    }
+
+    if (/^39078\d{9}$/.test(itemBarcode.value)) {
+      if (itemBarcode.classList.contains("invalidInput")) {
+        itemBarcode.classList.remove("invalidInput");
+      }
+      browser.runtime.sendMessage({
+        "key": "getItemData",
+        "itemBarcode": itemBarcode.value
+      }).then(res => {
+        itemTitle.value = res.title;
+        cCode.value = res.cCode;
+        holds.value = res.holds;
+        copies.value = res.copies;
+        use.value = res.totalUse;
+      });
+    } else {
+      if (!itemBarcode.classList.contains("invalidInput")) {
+        itemBarcode.classList.add("invalidInput");
+      }
+    }
+  });
+
   printForm.addEventListener("click", function() {
 
     var emailParts = patronEmail
@@ -146,23 +149,20 @@
     } else {
       instructions.style.display = "";
 
-      switch(type.value) {
-        case "Defect Reported":
-            nonDefectNonHold.style.display = "none";
-            nonDefectHold.style.display = "none";
-            defect.style.display = "";
-          break;
-        default:
-          if (receivedVia.value === "Transit Hold") {
-            nonDefectNonHold.style.display = "none";
-            nonDefectHold.style.display = "";
-            defect.style.display = "none";
-          } else {
-            nonDefectNonHold.style.display = "";
-            nonDefectHold.style.display = "none";
-            defect.style.display = "none";
-          }
-          break;
+      if (type.value === "Defect Reported") {
+          nonDefectNonHold.style.display = "none";
+          nonDefectHold.style.display = "none";
+          defect.style.display = "";
+      } else {
+        if (receivedVia.value === "Transit Hold") {
+          nonDefectNonHold.style.display = "none";
+          nonDefectHold.style.display = "";
+          defect.style.display = "none";
+        } else {
+          nonDefectNonHold.style.display = "";
+          nonDefectHold.style.display = "none";
+          defect.style.display = "none";
+        }
       }
 
       window.location.hash = "instructions";
@@ -212,30 +212,12 @@
     }
   }
 
-  browser.runtime.onMessage.addListener(message => {
-    switch (message.key) {
-      case "returnItemData":
-        itemDataErrMsg.style.display = "none";
-        cCode.value = message.cCode;
-        copies.value = message.copies;
-        use.setAttribute('data-currUse', message.ckoHist);
-        break;
-      case "returnItemHolds":
-        holds.value = message.holds;
-        if (message.itemTitle) {
-          itemTitle.value = message.itemTitle;
-        }
-        break;
-      case "returnItemPastUse":
-        use.setAttribute('data-pastUse', message.pastUse);
-
-        let currUse = parseInt(use.getAttribute('data-currUse'));
-        let pastUse = parseInt(use.getAttribute('data-pastUse'));
-
-        if (!isNaN(currUse) && !isNaN(pastUse)) {
-          use.value = currUse + pastUse;
-        }
-        break;
+  browser.runtime.onMessage.addListener(msg => {
+    if (msg.key === "patronData") {
+      patron.value = msg.data.patronName;
+      patronBarcode.value = msg.data.patronBarcode;
+      patronPhone.value = msg.data.patronPhone;
+      patronEmail.value = msg.data.patronEmail;
     }
   });
 })();
