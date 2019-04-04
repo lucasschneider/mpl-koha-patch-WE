@@ -30,8 +30,6 @@
 
   const prepareItemData = document.getElementById("prepareItemData");
   const getPatronData = document.getElementById("getPatronData");
-  const itemDataErrMsg  = document.getElementById("itemDataErrMsg");
-  const patronDataErrMsg = document.getElementById("patronDataErrMsg");
   const printForm = document.getElementById("printForm");
 
   let getCurrDate = function() {
@@ -83,7 +81,7 @@
       itemBarcode.value = "390780" + itemBarcode.value;
     }
 
-    if (/^3[0-9]{13}$/.test(itemBarcode.value)) {
+    if (/^39078\d{9}$/.test(itemBarcode.value)) {
       if (itemBarcode.classList.contains("invalidInput")) {
         itemBarcode.classList.remove("invalidInput");
       }
@@ -114,13 +112,23 @@
       patronBarcode.value = "290780" + patronBarcode.value;
     }
 
-    if (/^2[0-9]{13}$/.test(patronBarcode.value)) {
+    if (/^29078\d{9}$/.test(patronBarcode.value)) {
       if (patronBarcode.classList.contains("invalidInput")) {
         patronBarcode.classList.remove("invalidInput");
       }
       browser.runtime.sendMessage({
         "key": "getPatronData",
         "patronBarcode": patronBarcode.value
+      }).then(resArr => {
+        console.log(resArr);
+        if (resArr.length > 0) {
+          let res = resArr[0];
+
+          patron.value = res.patronName;
+          patronBarcode.value = res.patronBarcode;
+          patronPhone.value = res.patronPhone;
+          patronEmail.value = res.patronEmail;
+        }
       });
     } else {
       if (!patronBarcode.classList.contains("invalidInput")) {
@@ -227,13 +235,6 @@
         if (!isNaN(currUse) && !isNaN(pastUse)) {
           use.value = currUse + pastUse;
         }
-        break;
-      case "returnPatronData":
-        patronDataErrMsg.style.display = "none";
-        patron.value = message.patronName;
-        patronBarcode.value = message.patronBarcode;
-        patronPhone.value = !!message.patronPhone ? message.patronPhone : "";
-        patronEmail.value = !!message.patronEmail ? message.patronEmail : "";
         break;
     }
   });
