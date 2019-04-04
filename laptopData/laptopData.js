@@ -45,6 +45,11 @@ let getHrMinSec = function(milliseconds) {
 }
 
 browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
+  /**
+   * Represents an issued laptop
+   * @constructor
+   * @param {object} obj - An object with laptop data
+   */
   let LaptopIssue = function(obj) {
     this.primaryKey = obj.primaryKey;
     this.issueDate = obj.issueDate;
