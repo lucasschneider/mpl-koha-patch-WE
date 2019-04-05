@@ -131,7 +131,10 @@
         cCode.value = res.cCode;
         holds.value = res.holds;
         copies.value = res.copies;
-        use.value = res.totalUse;
+
+        if (!isNaN(res.totalUse)) {
+          use.value = res.totalUse;
+        }
       });
     } else {
       if (!itemBarcode.classList.contains("invalidInput")) {
