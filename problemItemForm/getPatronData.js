@@ -13,5 +13,5 @@
     data.patronPhone = phoneMatchArr && phoneMatchArr.length > 0 ? phoneMatchArr[0] : '';
     data.patronEmail = emailWrap !== null ? emailWrap.textContent : '';
   }
-return data;
+  return data;
 })();
