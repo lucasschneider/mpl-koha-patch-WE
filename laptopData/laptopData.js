@@ -224,14 +224,24 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
   let tableBody = document.getElementById('laptopDataBody');
   let data = [];
   let search = document.getElementById('searchBar');
+  let found = false;
 
-  /* search.addEventListener('keyup', e => {
+  search.addEventListener('keyup', e => {
     for (let item of data) {
-      if (item.patronBarcode.includes(search.value)) {
-        table.style.display = 'none';
+      for (let td of item.htmlTR.children) {
+        if (td.textContent.toLowerCase().includes(search.value.toLowerCase())) {
+          found = true;
+          break;
+        }
       }
-    }
-  }); */
+      if (found) {
+        item.htmlTR.style.display = "";
+        found = false;
+      } else {
+        item.htmlTR.style.display = "none";
+      }
+  }
+  });
 
   if (res.length === 0) {
     download.style.display = 'none';
