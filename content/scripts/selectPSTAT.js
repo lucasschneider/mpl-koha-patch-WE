@@ -11,8 +11,7 @@
    * @this {PSTATS}
    * @return {PSTATS} The new PSTATS object
    */
-
-  var PSTATS = function() {
+  const pstats = new function() {
     this.data = {
       "Adams": {
         "Adams city": "A-ADM-C",
@@ -1290,19 +1289,14 @@
             this.data.__default__;
       }
     };
-  };
+  }();
 
-  var streetTypes = ['ALLEE','ALLEY','ALLY','ALY','ANEX','ANNEX','ANNX','ANX','ARC','ARCADE','AV','AVE','AVEN','AVENU','AVENUE','AVN','AVNUE','BAYOO','BAYOU','BCH','BEACH','BEND','BND','BLF','BLUF','BLUFF','BLUFFS','BOT','BTM','BOTTM','BOTTOM','BLVD','BOUL','BOULEVARD','BOULV','BR','BRNCH','BRANCH','BRDGE','BRG','BRIDGE','BRK','BROOK','BROOKS','BURG','BURGS','BYP','BYPA','BYPAS','BYPASS','BYPS','CAMP','CP','CMP','CANYN','CANYON','CNYN','CAPE','CPE','CAUSEWAY','CAUSWA','CSWY','CEN','CENT','CENTER','CENTR','CENTRE','CNTER','CNTR','CTR','CENTERS','CIR','CIRC','CIRCL','CIRCLE','CRCL','CRCLE','CIRCLES','CLF','CLIFF','CLFS','CLIFFS','CLB','CLUB','COMMON','COMMONS','COR','CORNER','CORNERS','CORS','COURSE','CRSE','COURT','CT','COURTS','CTS','COVE','CV','COVES','CREEK','CRK','CRESCENT','CRES','CRSENT','CRSNT','CREST','CROSSING','CRSSNG','XING','CROSSROAD','CROSSROADS','CURVE','DALE','DL','DAM','DM','DIV','DIVIDE','DV','DVD','DR','DRIV','DRIVE','DRV','DRIVES','EST','ESTATE','ESTATES','ESTS','EXP','EXPR','EXPRESS','EXPRESSWAY','EXPW','EXPY','EXT','EXTENSION','EXTN','EXTNSN','EXTS','FALL','FALLS','FLS','FERRY','FRRY','FRY','FIELD','FLD','FIELDS','FLDS','FLAT','FLT','FLATS','FLTS','FORD','FRD','FORDS','FOREST','FORESTS','FRST','FORG','FORGE','FRG','FORGES','FORK','FRK','FORKS','FRKS','FORT','FRT','FT','FREEWAY','FREEWY','FRWAY','FRWY','FWY','GARDEN','GARDN','GRDEN','GRDN','GARDENS','GDNS','GRDNS','GATEWAY','GATEWY','GATWAY','GTWAY','GTWY','GLEN','GLN','GLENS','GREEN','GRN','GREENS','GROV','GROVE','GRV','GROVES','HARB','HARBOR','HARBR','HBR','HRBOR','HARBORS','HAVEN','HVN','HT','HTS','HIGHWAY','HIGHWY','HIWAY','HIWY','HWAY','HWY','HILL','HL','HILLS','HLS','HLLW','HOLLOW','HOLLOWS','HOLW','HOLWS','INLT','IS','ISLAND','ISLND','ISLANDS','ISLNDS','ISS','ISLE','ISLES','JCT','JCTION','JCTN','JUNCTION','JUNCTN','JUNCTON','JCTNS','JCTS','JUNCTIONS','KEY','KY','KEYS','KYS','KNL','KNOL','KNOLL','KNLS','KNOLLS','LK','LAKE','LKS','LAKES','LAND','LANDING','LNDG','LNDNG','LANE','LN','LGT','LIGHT','LIGHTS','LF','LOAF','LCK','LOCK','LCKS','LOCKS','LDG','LDGE','LODG','LODGE','LOOP','LOOPS','MALL','MNR','MANOR','MANORS','MNRS','MEADOW','MDW','MDWS','MEADOWS','MEDOWS','MEWS','MILL','MILLS','MISSN','MSSN','MOTORWAY','MNT','MT','MOUNT','MNTAIN','MNTN','MOUNTAIN','MOUNTIN','MTIN','MTN','MNTNS','MOUNTAINS','NCK','NECK','ORCH','ORCHARD','ORCHRD','OVAL','OVL','OVERPASS','PARK','PRK','PARKS','PARKWAY','PARKWY','PKWAY','PKWY','PKY','PARKWAYS','PKWYS','PASS','PASSAGE','PATH','PATHS','PIKE','PIKES','PINE','PINES','PNES','PL','PLAIN','PLN','PLAINS','PLNS','PLAZA','PLZ','PLZA','POINT','PT','POINTS','PTS','PORT','PRT','PORTS','PRTS','PR','PRAIRIE','PRR','RAD','RADIAL','RADIEL','RADL','RAMP','RANCH','RANCHES','RNCH','RNCHS','RAPID','RPD','RAPIDS','RPDS','REST','RST','RDG','RDGE','RIDGE','RDGS','RIDGES','RIV','RIVER','RVR','RIVR','RD','ROAD','ROADS','RDS','ROUTE','ROW','RUE','RUN','SHL','SHOAL','SHLS','SHOALS','SHOAR','SHORE','SHR','SHOARS','SHORES','SHRS','SKYWAY','SPG','SPNG','SPRING','SPRNG','SPGS','SPNGS','SPRINGS','SPRNGS','SPUR','SPURS','SQ','SQR','SQRE','SQU','SQUARE','SQRS','SQUARES','STA','STATION','STATN','STN','STRA','STRAV','STRAVEN','STRAVENUE','STRAVN','STRVN','STRVNUE','STREAM','STREME','STRM','STREET','STRT','ST','STR','STREETS','SMT','SUMIT','SUMITT','SUMMIT','TER','TERR','TERRACE','THROUGHWAY','TRACE','TRACES','TRCE','TRACK','TRACKS','TRAK','TRK','TRKS','TRAFFICWAY','TRAIL','TRAILS','TRL','TRLS','TRAILER','TRLR','TRLRS','TUNEL','TUNL','TUNLS','TUNNEL','TUNNELS','TUNNL','TRNPK','TURNPIKE','TURNPK','UNDERPASS','UN','UNION','UNIONS','VALLEY','VALLY','VLLY','VLY','VALLEYS','VLYS','VDCT','VIA','VIADCT','VIADUCT','VIEW','VW','VIEWS','VWS','VILL','VILLAG','VILLAGE','VILLG','VILLIAGE','VLG','VILLAGES','VLGS','VILLE','VL','VIS','VIST','VISTA','VST','VSTA','WALK','WALKS','WALL','WY','WAY','WAYS','WELL','WELLS','WLS'];
-
-  var Messenger = function() {
-    this.send = function(type, message, altPSTAT) {
-      var pstatNotice = document.getElementById('pstatNotice'),
-        pstatNoticeAlt = document.getElementById('pstatNoticeAlt'),
-        targetNotice,
-        otherNotice;
-
-      targetNotice = altPSTAT ? pstatNoticeAlt : pstatNotice;
-      otherNotice = !altPSTAT ? pstatNoticeAlt : pstatNotice;
+  const pstatMsg = new function() {
+    this.send = (type, message, altPSTAT) => {
+      const pstatNotice = document.getElementById('pstatNotice');
+      const pstatNoticeAlt = document.getElementById('pstatNoticeAlt');
+      const targetNotice = altPSTAT ? pstatNoticeAlt : pstatNotice;
+      const otherNotice = !altPSTAT ? pstatNoticeAlt : pstatNotice;
 
       targetNotice.style.display = "block";
       otherNotice.style.display = "none";
@@ -1310,7 +1304,7 @@
       targetNotice.style.color = type;
       targetNotice.textContent = message;
     }
-  };
+  }();
 
   /**
    * Processes the given address to make it more accurately interpreted by
@@ -1320,35 +1314,20 @@
    * @param {boolean} encodeForURI Whether the returned string should be URI encoded
    * @return {string} The cleaned, URI encoded address
    */
-   var cleanAddr = function(addrElt, encodeForURI) {
-     var addr = "", addrElts, stopIdx;
+  const cleanAddr = (addrElt, encodeForURI) => {
+    let addr = "";
 
-     addr = addrElt.value.trim().toUpperCase()
-       .replace(/\/./, '')
-       .replace(/ C(OU)?N?TY /, ' CO ')
-       .replace(/ N /, ' NORTH ')
-       .replace(/ S /, ' SOUTH ')
-       .replace(/ E /, ' EAST ')
-       .replace(/ W /, ' WEST ');
+    if (addrElt && addrElt.value) {
+      addr = addrElt.value.trim().toUpperCase()
+        .replace(/[^a-z0-9 ]/ig, '')
+        .replace(/ C(OU)?N?TY /, ' CO ')
+        .replace(/ N /, ' NORTH ')
+        .replace(/ S /, ' SOUTH ')
+        .replace(/ E /, ' EAST ')
+        .replace(/ W /, ' WEST ');
+    }
 
-     addrElts = addr.split(' ');
-
-     for (let i = addrElts.length - 1; i > -1; i--) {
-       if (streetTypes.includes(addrElts[i])) {
-         stopIdx = i;
-         break;
-       }
-     }
-
-     if (stopIdx !== undefined) {
-       addr = "";
-       for (let i = 0; i < stopIdx+1; i++) {
-         addr += addrElts[i] + " ";
-       }
-       addr = addr.slice(0,-1);
-     }
-
-     return encodeForURI ? encodeURI(addr) : addr;
+    return encodeForURI ? encodeURI(addr) : addr;
    };
 
   /**
@@ -1358,11 +1337,9 @@
    * @param {boolean} encodeForURI Whether the returned string should be URI encoded
    * @return {string} The URI encoded city
    */
-  var getCity = function(cityElt, encodeForURI) {
-    var cityArr;
-
+  const getCity = (cityElt, encodeForURI) => {
     if (cityElt && cityElt.value) {
-      cityArr = cityElt.value.replace(/[^a-zA-Z0-9 \-]+/g,'').toLowerCase().split(' ');
+      let cityArr = cityElt.value.replace(/[^a-zA-Z0-9 \-]+/g,'').toLowerCase().split(' ');
       cityArr.pop();
       return encodeForURI ? encodeURI(cityArr.join(' ')) : cityArr.join(' ');
     }
@@ -1371,32 +1348,119 @@
   }
 
   // Message colors
-  const MSG_SEARCHING = "#337AB7",
-    MSG_SUCCESS = "#00c000",
-    MSG_ERROR = "#c00c00";
+  const MSG_SEARCHING = "#337AB7";
+  const MSG_SUCCESS = "#00c000";
+  const MSG_ERROR = "#c00c00";
 
   // Only execute script in the patron edit page
   if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
     // Variables for PSTAT selection
-    var pstats = new PSTATS(),
-      pstatMsg = new Messenger(),
-      addrElt = document.getElementById('address'),
-      addrEltAlt = document.getElementById('B_address'),
-      targetAddr,
-      cityElt = document.getElementById('city'),
-      cityEltAlt = document.getElementById('B_city'),
-      targetCity,
-      zipElt = document.getElementById('zipcode'),
-      zipEltAlt = document.getElementById('B_zipcode'),
-      targetZip,
-      selectList = document.getElementsByName('sort1'),
-      pstatNotice = document.createElement('div'),
-      pstatNoticeAlt = document.createElement('div'),
-      openFactFinder = document.createElement('div'),
-      nearestLib = document.createElement('div'),
-      mapRegionList = document.createElement('select'),
-      gmapResponse = document.createElement('div'),
-      lnBrk = document.createElement('br');
+    const addrElt = document.getElementById('address');
+    const addrEltAlt = document.getElementById('B_address');
+    const cityElt = document.getElementById('city');
+    const cityEltAlt = document.getElementById('B_city');
+    const zipElt = document.getElementById('zipcode');
+    const zipEltAlt = document.getElementById('B_zipcode');
+    const selectList = document.getElementsByName('sort1');
+    const pstatNotice = document.createElement('div');
+    const pstatNoticeAlt = document.createElement('div');
+    const openFactFinder = document.createElement('div');
+    const nearestLib = document.createElement('div');
+    const mapRegionList = document.createElement('select');
+    const gmapResponse = document.createElement('div');
+    const lnBrk = document.createElement('br');
+
+    let targetAddr;
+    let targetCity;
+    let targetZip;
+
+    const branchList = document.getElementById('branchcode');
+    const madison = document.createElement('option');
+    const counties = document.createElement('optgroup');
+    const adams = document.createElement('option');
+    const columbia = document.createElement('option');
+    const dane = document.createElement('option');
+    const green = document.createElement('option');
+    const portage = document.createElement('option');
+    const sauk = document.createElement('option');
+    const wood = document.createElement('option');
+    const scls = document.createElement('option');
+
+    // Build Google Map elements
+    nearestLib.id = "nearestLib";
+    nearestLib.textContent = "Click to find closest location within...";
+    nearestLib.style = "margin-top:0.8em;margin-left:118px;cursor:pointer;color:#337AB7;"+
+        "font-size:1.25em;font-weight:bold;font-style:italic;display:none";
+    nearestLib.onmouseover = function() {
+      document.getElementById('nearestLib').style.color = "#4A90D9";
+    };
+    nearestLib.onmouseout = function() {
+      document.getElementById('nearestLib').style.color = "#337AB7";
+    };
+
+    mapRegionList.id = "mapRegionList";
+    mapRegionList.style = "margin-left:25px;cursor:pointer;display:none;";
+
+    gmapResponse.id = "gmapResponse";
+    gmapResponse.style = "margin-top:0.8em;margin-left:118px;font-size:1.25em;" +
+        "font-weight:bold;font-style:italic;display:none";
+
+    madison.textContent = "Madison";
+    madison.value = "MPL";
+    madison.selected = true;
+    mapRegionList.appendChild(madison);
+
+    counties.label = "Counties";
+
+    adams.textContent = "Adams County";
+    adams.value = "Adams";
+    counties.appendChild(adams);
+
+    columbia.textContent = "Columbia County";
+    columbia.value = "Columbia";
+    counties.appendChild(columbia);
+
+    dane.textContent = "Dane County";
+    dane.value = "Dane";
+    counties.appendChild(dane);
+
+    green.textContent = "Green County";
+    green.value = "Green";
+    counties.appendChild(green);
+
+    portage.textContent = "Portage County";
+    portage.value = "Portage";
+    counties.appendChild(portage);
+
+    sauk.textContent = "Sauk County";
+    sauk.value = "Sauk";
+    counties.appendChild(sauk);
+
+    wood.textContent = "Wood County";
+    wood.value = "Wood";
+    counties.appendChild(wood);
+
+    mapRegionList.appendChild(counties);
+
+    scls.textContent = "SCLS";
+    scls.value = "SCLS";
+    mapRegionList.appendChild(scls);
+
+    nearestLib.onclick = function() {
+      let selected = document.getElementById('mapRegionList').selectedOptions[0].value;
+
+      browser.runtime.sendMessage({
+        "key": "findNearestLib",
+        "address": encodeURI(cleanAddr(targetAddr, false) + ", " +
+            targetCity.value.toLowerCase()),
+        "selected": selected
+      }).then(result => {
+        branchList.value = result[0];
+        showGMapResponse("Closest Library: " + result[0], MSG_SUCCESS);
+      }, reject => {
+        showGMapResponse(reject.message, MSG_ERROR);
+      });
+    };
 
     // Add event listeners to the primary address and city fields
     if (addrElt && addrEltAlt && cityElt && cityEltAlt) {
@@ -1443,19 +1507,8 @@
      * @param {boolean} findAltPSTAT Whether the the query should use the patron's
      *   primary or alternate address
      */
-    var queryPSTAT = function(findAltPSTAT) {
-      var initialRejectMsg = "Unknown error occured.",
-        branchList = document.getElementById('branchcode'),
-        madison = madison = document.createElement('option'),
-        counties = counties = document.createElement('optgroup'),
-        adams = document.createElement('option'),
-        columbia = document.createElement('option'),
-        dane = document.createElement('option'),
-        green = document.createElement('option'),
-        portage = document.createElement('option'),
-        sauk = document.createElement('option'),
-        wood = document.createElement('option'),
-        scls = document.createElement('option');
+    const queryPSTAT = function(findAltPSTAT) {
+      let initialRejectMsg = "Unknown error occured.";
 
       targetAddr = findAltPSTAT ? addrEltAlt : addrElt;
       targetCity = findAltPSTAT ? cityEltAlt : cityElt;
@@ -1522,82 +1575,7 @@
         }
       });
 
-      // Build Google Map elements
-      nearestLib.id = "nearestLib";
-      nearestLib.textContent = "Click to find closest location within...";
-      nearestLib.style = "margin-top:0.8em;margin-left:118px;cursor:pointer;color:#337AB7;"+
-          "font-size:1.25em;font-weight:bold;font-style:italic;display:none";
-      nearestLib.onmouseover = function() {
-        document.getElementById('nearestLib').style.color = "#4A90D9";
-      };
-      nearestLib.onmouseout = function() {
-        document.getElementById('nearestLib').style.color = "#337AB7";
-      };
-
-      mapRegionList.id = "mapRegionList";
-      mapRegionList.style = "margin-left:25px;cursor:pointer;display:none;";
-
-      gmapResponse.id = "gmapResponse";
-      gmapResponse.style = "margin-top:0.8em;margin-left:118px;font-size:1.25em;" +
-          "font-weight:bold;font-style:italic;display:none";
-
-      madison.textContent = "Madison";
-      madison.value = "MPL";
-      madison.selected = true;
-      mapRegionList.appendChild(madison);
-
-      counties.label = "Counties";
-
-      adams.textContent = "Adams County";
-      adams.value = "Adams";
-      counties.appendChild(adams);
-
-      columbia.textContent = "Columbia County";
-      columbia.value = "Columbia";
-      counties.appendChild(columbia);
-
-      dane.textContent = "Dane County";
-      dane.value = "Dane";
-      counties.appendChild(dane);
-
-      green.textContent = "Green County";
-      green.value = "Green";
-      counties.appendChild(green);
-
-      portage.textContent = "Portage County";
-      portage.value = "Portage";
-      counties.appendChild(portage);
-
-      sauk.textContent = "Sauk County";
-      sauk.value = "Sauk";
-      counties.appendChild(sauk);
-
-      wood.textContent = "Wood County";
-      wood.value = "Wood";
-      counties.appendChild(wood);
-
-      mapRegionList.appendChild(counties);
-
-      scls.textContent = "SCLS";
-      scls.value = "SCLS";
-      mapRegionList.appendChild(scls);
-
-      nearestLib.onclick = function() {
-        var selected = document.getElementById('mapRegionList').selectedOptions[0].value;
-
-        browser.runtime.sendMessage({
-          "key": "findNearestLib",
-          "address": encodeURI(cleanAddr(targetAddr, false) + ", " +
-              targetCity.value.toLowerCase()),
-          "selected": selected
-        }).then(result => {
-          branchList.value = result[0];
-          showGMapResponse("Closest Library: " + result[0], MSG_SUCCESS);
-        }, reject => {
-          showGMapResponse(reject.message, MSG_ERROR);
-        });
-      };
-
+      // Append Google Map elements
       branchList.parentElement.appendChild(lnBrk);
       branchList.parentElement.appendChild(gmapResponse);
       branchList.parentElement.appendChild(nearestLib);
