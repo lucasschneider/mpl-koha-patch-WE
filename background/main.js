@@ -172,8 +172,6 @@ var SCLSLibs = function() {
   };
 };
 
-let problemItemFormTabId;
-
 // Load preference-selected function files
 browser.webNavigation.onCompleted.addListener(details => {
   if (details.frameId == 0) { // 0 indicates the navigation happens in the tab content window;
@@ -288,12 +286,12 @@ browser.menus.onClicked.addListener((info, tab) => {
           case "2":
             browser.tabs.create({
               "url": browser.runtime.getURL("../problemItemForm/problemItemForm.html") + "?patron=" + barcode
-            }).then(tab => {problemItemFormTabId = tab.id});
+            });
             break;
           case "3":
             browser.tabs.create({
               "url": browser.runtime.getURL("../problemItemForm/problemItemForm.html") + "?item=" + barcode
-            }).then(tab => {problemItemFormTabId = tab.id});
+            });
             break;
           default:
             sendErrorMsg("ERROR: Unable to determine barcode type.");
@@ -377,7 +375,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 alderURL = "https://mpl-koha-patch.lrschneider.com/pstats/" + libCode +
                   "?val=all&regex=true";
 
-              return resolve(fetch(alderURL, {"method": "GET"}).then(response => {
+              return fetch(alderURL, {"method": "GET"}).then(response => {
                 return response.json();
               }).then(json => {
                 var value = "";
@@ -398,7 +396,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
                   "zip": zip,
                   "value": value
                 });
-              }));
+              });
             } else {
               return Promise.resolve({
                 "key": "returnCensusData",
@@ -566,19 +564,26 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       break;
     case "getPatronFromURL":
-      browser.tabs.create({
-        "active": false,
-        "url": "https://scls-staff.kohalibrary.com" + request.url
-      }).then(tab => {
-        browser.tabs.executeScript(tab.id, {
-          "file": "/problemItemForm/getPatronData.js"
-        }).then(res => {
-          browser.tabs.remove(tab.id);
-          browser.tabs.sendMessage(problemItemFormTabId, {
-            "key": "patronData",
-            "data": res[0]
-          });
-        });
+      browser.tabs.query({}).then(tabs => {
+        const piFormUrl = browser.runtime.getURL("/problemItemForm/problemItemForm.html");
+        for (let piFormTab of tabs) {
+          if (piFormTab.url === piFormUrl) {
+            browser.tabs.create({
+              "active": false,
+              "url": "https://scls-staff.kohalibrary.com" + request.url
+            }).then(tab => {
+              browser.tabs.executeScript(tab.id, {
+                "file": "/problemItemForm/getPatronData.js"
+              }).then(res => {
+                browser.tabs.remove(tab.id);
+                browser.tabs.sendMessage(piFormTab.id, {
+                  "key": "patronData",
+                  "data": res[0]
+                });
+              });
+            });
+          }
+        }
       });
       break;
     case "getItemData":

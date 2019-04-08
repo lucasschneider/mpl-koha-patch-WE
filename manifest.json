@@ -10,7 +10,7 @@
     "gecko": {
       "id": "3338f72b-be88-4c0b-98ec-d24eeef851b4@jetpack",
       "update_url": "https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/releases/updates.json",
-      "strict_min_version": "58.0"
+      "strict_min_version": "58.1"
     }
   },
 

@@ -77,7 +77,7 @@
       patronBarcode.value = "290780" + patronBarcode.value;
     }
 
-    if (/^29078\d{9}$/.test(patronBarcode.value)) {
+    if (/^2\d{13}$/.test(patronBarcode.value)) {
       if (patronBarcode.classList.contains("invalidInput")) {
         patronBarcode.classList.remove("invalidInput");
       }
@@ -119,7 +119,7 @@
       itemBarcode.value = "390780" + itemBarcode.value;
     }
 
-    if (/^39078\d{9}$/.test(itemBarcode.value)) {
+    if (/^3\d{13}$/.test(itemBarcode.value)) {
       if (itemBarcode.classList.contains("invalidInput")) {
         itemBarcode.classList.remove("invalidInput");
       }

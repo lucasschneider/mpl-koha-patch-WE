@@ -1,22 +1,23 @@
 (function(){
   'use strict';
   if (/cgi-bin\/koha\/members\/memberentry\.pl/.test(window.location)) {
-    var addr = document.getElementById('address'),
-      addr2 = document.getElementById('address2'),
-      city = document.getElementById('city'),
-      expDate = document.getElementById('dateexpiry'),
-      bn = document.getElementById('borrowernotes'),
-      cc = document.getElementsByClassName('categorycode')[0],
-      patronActions = document.getElementsByClassName('action'),
-      dob = document.getElementById('dateofbirth'),
-      year,
-      month,
-      staffInit;
+    const addr = document.getElementById('address');
+    const addr2 = document.getElementById('address2');
+    const city = document.getElementById('city');
+    const expDate = document.getElementById('dateexpiry');
+    const bn = document.getElementById('borrowernotes');
+    const cc = document.getElementsByClassName('categorycode')[0];
+    const patronActions = document.getElementsByClassName('action');
+    const dob = document.getElementById('dateofbirth');
+    const date = new Date();
 
-      // Convert date UTC -> CST
-      let date = new Date();
-      date.setHours(date.getHours() - 6);
-      month = parseInt(date.getUTCMonth(), 10)
+    let year;
+    let month;
+    let staffInit;
+
+    // Convert date UTC -> CST
+    date.setHours(date.getHours() - 6);
+    month = parseInt(date.getUTCMonth(), 10)
 
     if (month < 4) {
       year = date.getUTCFullYear();
@@ -86,7 +87,7 @@
     }
 
     function deleteDormNotice() {
-      alert('Please delete the circulation note regarding the patron\'s previous dorm address')
+      alert('Please delete the circulation note regarding the patron\'s previous dorm address');
     }
 
     var parseAddr = function() {

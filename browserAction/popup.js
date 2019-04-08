@@ -24,9 +24,7 @@ if (PSTAT2) PSTAT2.addEventListener('click', function() {
 });
 
 if (problemItem) problemItem.addEventListener('click', function() {
-  browser.tabs.create({
-    "url": browser.runtime.getURL("../problemItemForm/problemItemForm.html")
-  });
+  browser.tabs.create({"url": browser.runtime.getURL("../problemItemForm/problemItemForm.html")});
 });
 
 if (prefs) prefs.addEventListener('click', function() {
