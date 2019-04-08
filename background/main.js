@@ -567,7 +567,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       browser.tabs.query({}).then(tabs => {
         const piFormUrl = browser.runtime.getURL("/problemItemForm/problemItemForm.html");
         for (let piFormTab of tabs) {
-          if (piFormTab.url === piFormUrl) {
+          if (piFormTab.url.includes(piFormUrl)) {
             browser.tabs.create({
               "active": false,
               "url": "https://scls-staff.kohalibrary.com" + request.url
