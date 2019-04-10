@@ -88,7 +88,7 @@
         "__default__": "BY-LIB"
       },
       "Brown": {
-        "default": "BR-LIB"
+        "__default__": "BR-LIB"
       },
       "Buffalo": {
         "Alma city": "BU-LIB",
@@ -1318,8 +1318,8 @@
     let addr = "";
 
     if (addrElt && addrElt.value) {
-      addr = addrElt.value.trim().toUpperCase()
-        .replace(/[^a-z0-9 ]/ig, '')
+      addr = addrElt.value.trim().toLowerCase()
+        .replace(/[^a-z0-9/ ]/ig, '')
         .replace(/ C(OU)?N?TY /, ' CO ')
         .replace(/ N /, ' NORTH ')
         .replace(/ S /, ' SOUTH ')
@@ -1339,7 +1339,7 @@
    */
   const getCity = (cityElt, encodeForURI) => {
     if (cityElt && cityElt.value) {
-      let cityArr = cityElt.value.replace(/[^a-zA-Z0-9 \-]+/g,'').toLowerCase().split(' ');
+      let cityArr = cityElt.value.replace(/[^a-z0-9 \-]+/ig,'').toLowerCase().split(' ');
       cityArr.pop();
       return encodeForURI ? encodeURI(cityArr.join(' ')) : cityArr.join(' ');
     }
@@ -1490,7 +1490,7 @@
         browser.runtime.sendMessage({
           "key": "openFactFinder",
           "address": cleanAddr(targetAddr, false),
-          "city": getCity(targetCity, true)
+          "city": getCity(targetCity, false)
         });
       });
 
