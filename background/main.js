@@ -452,7 +452,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         } else if (value) {
           return Promise.resolve({"value": value});
         } else {
-          throw new Error("");
+          throw new Error("Address not found in database of aldermanic districts.");
         }
       });
       break;
@@ -670,7 +670,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
           }).then(() => {
             browser.tabs.remove(tab.id)
           });
-        }, 250);
+        }, 500);
       });
       break;
   }
