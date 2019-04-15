@@ -109,6 +109,13 @@
   });
 
   prepareItemData.addEventListener("click", function () {
+    // Clear patorn data
+    patron.value = "";
+    patronBarcode.value = "";
+    patronPhone.value = "";
+    patronEmail.value = "";
+
+    // Clear item data
     itemTitle.value = "";
     cCode.value = "";
     holds.value = "";
@@ -117,6 +124,8 @@
 
     if (itemBarcode.value.length === 8) {
       itemBarcode.value = "390780" + itemBarcode.value;
+    } else if (itemBarcode.value.length === 9) {
+      itemBarcode.value = "39078" + itemBarcode.value;
     }
 
     if (/^3\d{13}$/.test(itemBarcode.value)) {
@@ -202,7 +211,7 @@
 
   // Handle cases when we're loading the problem form with barcode data
   if (location.search.length > 0) {
-    var data = location.search.substr(1).split("=");
+    const data = location.search.substr(1).split("=");
 
     if (data && data.length === 2) {
       if (data[0] === "item") {

@@ -282,9 +282,9 @@ browser.menus.onClicked.addListener((info, tab) => {
       return;
     }
 
-    if (barcode.match(/[0-9]{14}/g)) {
-      if (barcode.match(/[0-9]{14}/g).length === 1) {
-        barcode = /[0-9]{14}/.exec(barcode);
+    if (barcode.match(/[23]\d{13}/g)) {
+      if (barcode.match(/[23]\d{13}/g).length === 1) {
+        barcode = /[23]\d{13}/.exec(barcode);
 
         if (barcode) barcode = barcode[0];
 
@@ -720,7 +720,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         } else if (value) {
           return Promise.resolve({"value": value});
         } else {
-          throw new Error("");
+          throw new Error("Address not found in database of aldermanic districts.");
         }
       });
       break;
@@ -773,13 +773,13 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
       break;
     case "printBarcode":
-      browser.storage.sync.get().then((res) => {
+      browser.storage.sync.get().then(res => {
         var barcodeLib = res.hasOwnProperty('receiptFont') ? res.receiptFont : "MPL";
 
         browser.tabs.create({
           active: false,
           url: "/printBarcode/printBarcode.html?barcode=" + request.data + "&lib=" + barcodeLib
-        }).then((tab) => {
+        }).then(tab => {
           setTimeout(() => {
             browser.tabs.remove(tab.id)
           }, 1000);
@@ -801,7 +801,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       break;
     case "pauseSundayDropbox":
       browser.storage.sync.set({"sundayDropboxPaused": true});
-      setTimeout(function(){
+      setTimeout(() => {
         browser.storage.sync.set({"sundayDropboxPaused": false});
       }, 180000); // 3min
       break;
@@ -890,55 +890,59 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
           browser.tabs.executeScript(tab.id, {
             "file": "/problemItemForm/prepareItemData.js"
           }).then(() => {
-            setTimeout(() => {
+            let getItemDataListener = setInterval(() => {
               browser.tabs.executeScript(tab.id, {
                 "file": "/problemItemForm/getItemData.js"
               }).then(res => {
                 res = res[0];
-                browser.tabs.remove(tab.id);
-                bibNum = res.bibNum;
-                itemNum = res.itemNum;
-                useThisYear = res.ckoHist;
+                if (res.hasOwnProperty('found') && res.found) {
+                  clearInterval(getItemDataListener);
+                  browser.tabs.remove(tab.id);
 
-                data.copies = res.copies;
-                data.cCode = res.cCode;
+                  bibNum = res.bibNum;
+                  itemNum = res.itemNum;
+                  useThisYear = res.ckoHist;
 
-                let getHolds = browser.tabs.create({
-                  "url": "https://scls-staff.kohalibrary.com/cgi-bin/koha/catalogue/detail.pl?biblionumber=" + bibNum,
-                  "active": false
-                }).then(holdsTab => {
-                  return browser.tabs.executeScript(holdsTab.id, {
-                    "file": "/problemItemForm/getItemHolds.js"
-                  }).then(res => {
-                    browser.tabs.remove(holdsTab.id);
-                    return res;
+                  data.copies = res.copies;
+                  data.cCode = res.cCode;
+
+                  let getHolds = browser.tabs.create({
+                    "url": "https://scls-staff.kohalibrary.com/cgi-bin/koha/catalogue/detail.pl?biblionumber=" + bibNum,
+                    "active": false
+                  }).then(holdsTab => {
+                    return browser.tabs.executeScript(holdsTab.id, {
+                      "file": "/problemItemForm/getItemHolds.js"
+                    }).then(res => {
+                      browser.tabs.remove(holdsTab.id);
+                      return res;
+                    });
                   });
-                });
 
-                let getPastUse = browser.tabs.create({
-                  "url": "https://scls-staff.kohalibrary.com/cgi-bin/koha/cataloguing/additem.pl?op=edititem&biblionumber=" +
-                      bibNum + "&itemnumber=" + itemNum + "#edititem",
-                  "active": false
-                }).then(pastUseTab => {
-                  return browser.tabs.executeScript(pastUseTab.id, {
-                    "file": "/problemItemForm/getItemPastUse.js"
-                  }).then(res => {
-                    browser.tabs.remove(pastUseTab.id);
-                    return res;
+                  let getPastUse = browser.tabs.create({
+                    "url": "https://scls-staff.kohalibrary.com/cgi-bin/koha/cataloguing/additem.pl?op=edititem&biblionumber=" +
+                        bibNum + "&itemnumber=" + itemNum + "#edititem",
+                    "active": false
+                  }).then(pastUseTab => {
+                    return browser.tabs.executeScript(pastUseTab.id, {
+                      "file": "/problemItemForm/getItemPastUse.js"
+                    }).then(res => {
+                      browser.tabs.remove(pastUseTab.id);
+                      return res;
+                    });
                   });
-                });
 
-                Promise.all([getHolds, getPastUse]).then(resArr => {
-                  let holds = resArr[0][0];
-                  pastUse = resArr[1][0];
+                  Promise.all([getHolds, getPastUse]).then(resArr => {
+                    let holds = resArr[0][0];
+                    pastUse = resArr[1][0];
 
-                  data.title = holds.title;
-                  data.holds = holds.holds;
-                  data.totalUse = parseInt(useThisYear) + parseInt(pastUse);
-                  resolve(data);
-                });
+                    data.title = holds.title;
+                    data.holds = holds.holds;
+                    data.totalUse = parseInt(useThisYear) + parseInt(pastUse);
+                    resolve(data);
+                  });
+                }
               });
-            }, 3000);
+            }, 650);
           });
         });
       });
@@ -955,7 +959,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
           }).then(() => {
             browser.tabs.remove(tab.id)
           });
-        }, 250);
+        }, 500);
       });
       break;
   }

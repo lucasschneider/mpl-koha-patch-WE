@@ -1319,14 +1319,15 @@
 
     if (addrElt && addrElt.value) {
       addr = addrElt.value.trim().toLowerCase()
-        .replace(/[^a-z0-9/ ]/ig, '')
+        .replace(/[^#a-z0-9/ ]/ig, '')
         .replace(/ C(OU)?N?TY /, ' CO ')
         .replace(/ N /, ' NORTH ')
         .replace(/ S /, ' SOUTH ')
         .replace(/ E /, ' EAST ')
-        .replace(/ W /, ' WEST ');
+        .replace(/ W /, ' WEST ')
+        .split('#')[0];
     }
-
+    
     return encodeForURI ? encodeURI(addr) : addr;
    };
 
@@ -1561,7 +1562,7 @@
                 findAltPSTAT);
             toggleGMapSearch(true);
           }, reject => {
-            pstatMsg.send(MSG_ERROR, "PSTAT Error: " + initialRejectMsg, findAltPSTAT);
+            pstatMsg.send(MSG_ERROR, "PSTAT " + reject, findAltPSTAT);
           }).then(() => {
             if (selectList[0].value === "X-UND") {
               openFactFinder.style.display = 'block';
