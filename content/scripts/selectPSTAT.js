@@ -1327,7 +1327,7 @@
         .replace(/ W /, ' WEST ')
         .split('#')[0];
     }
-    
+
     return encodeForURI ? encodeURI(addr) : addr;
    };
 
@@ -1562,8 +1562,11 @@
                 findAltPSTAT);
             toggleGMapSearch(true);
           }, reject => {
-            pstatMsg.send(MSG_ERROR, "PSTAT " + reject, findAltPSTAT);
+            if (/middleton|sun prairie|verona/i.test(targetCity.value)) {
+              initialRejectMsg = reject.message;
+            }
           }).then(() => {
+            pstatMsg.send(MSG_ERROR, "PSTAT " + initialRejectMsg, findAltPSTAT);
             if (selectList[0].value === "X-UND") {
               openFactFinder.style.display = 'block';
               if (findAltPSTAT) {
