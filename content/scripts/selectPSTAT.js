@@ -1319,12 +1319,12 @@
 
     if (addrElt && addrElt.value) {
       addr = addrElt.value.trim().toLowerCase()
-        .replace(/[^#a-z0-9/ ]/ig, '')
-        .replace(/ C(OU)?N?TY /, ' CO ')
-        .replace(/ N /, ' NORTH ')
-        .replace(/ S /, ' SOUTH ')
-        .replace(/ E /, ' EAST ')
-        .replace(/ W /, ' WEST ')
+        .replace(/[^#a-z0-9/ ]/g, '')
+        .replace(/ c(ou)?n?ty /, ' co ')
+        .replace(/ n /, ' north ')
+        .replace(/ s /, ' south ')
+        .replace(/ e /, ' east ')
+        .replace(/ w /, ' west ')
         .split('#')[0];
     }
 
