@@ -225,6 +225,23 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
   let data = [];
   let search = document.getElementById('searchBar');
   let found = false;
+  let startDate = document.getElementById('startDate');
+  let endDate = document.getElementById('endDate');
+
+  function dateChange(e) {
+    tableBody.innerHTML = '';
+    let sDate = new Date(startDate.value);
+
+    for (let item of data) {
+      if (startDate.value != '') {
+        if (sDate.getFullYear() <= item.issueDate.getFullYear() &&
+            sDate.getMonth() <= item.issueDate.getMonth() &&
+            sDate.getDate() <= item.issueDate.getDate()) {
+          tableBody.appendChild(item.htmlTR);
+        }
+      }
+    }
+  };
 
   search.addEventListener('keyup', e => {
     for (let item of data) {
@@ -242,6 +259,9 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
       }
   }
   });
+
+  startDate.addEventListener('change', dateChange);
+  endDate.addEventListener('change', dateChange);
 
   if (res.length === 0) {
     download.style.display = 'none';
