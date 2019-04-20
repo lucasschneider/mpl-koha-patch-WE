@@ -232,13 +232,9 @@ browser.webNavigation.onCompleted.addListener(details => {
         });
       }
 
-      // Convert date UTC -> CST
-      let date = new Date();
-      date.setHours(date.getHours() - 6);
-
       // If the Sunday dropbox option is enabled...
       if ((!res.hasOwnProperty('sundayDropbox') ||
-          (res.hasOwnProperty('sundayDropbox') && res.sundayDropbox)) && date.getUTCDay() === 0) {
+          (res.hasOwnProperty('sundayDropbox') && res.sundayDropbox)) && (new Date()).getDay() === 0) {
         // If sundayDropbox is not paused
         if (!res.hasOwnProperty('sundayDropboxPaused') ||
             (res.hasOwnProperty('sundayDropboxPaused') && !res.sundayDropboxPaused)) {

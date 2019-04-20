@@ -1,28 +1,25 @@
 (function(){
   'use strict';
-  var opacNote = document.getElementById('opacnote'),
-    circNote = document.getElementById('borrowernotes'),
-    date,
-    month,
-    day,
-    currDate = '',
-    library;
+  const opacNote = document.getElementById('opacnote');
+  const circNote = document.getElementById('borrowernotes');
+  const date = new Date();
+  let month = date.getMonth();
+  let day = date.getDate();
+  let currDate = '';
+
   if (opacNote !== null && circNote !== null) {
-    library = prompt('Please enter the name of the library from which the patron\'s library card may be retrieved (e.g. MPL-Central, MPL-Pinney, Middleton Public Library, etc.).');
-    date = new Date();
-    // Convert date UTC -> CST
-    date.setHours(date.getHours() - 6);
-    month = date.getUTCMonth();
+    let library = prompt('Please enter the name of the library from which the patron\'s library card may be retrieved (e.g. MPL-Central, MPL-Pinney, Middleton Public Library, etc.).');
+
     if (month+1 < 10) {
       currDate += '0' + (month+1) + '/';
     } else {
       currDate += (month+1) + '/';
     }
-    day = date.getUTCDate();
+
     if (day < 10) {
       day = '0' + day;
     }
-    currDate += day + '/' + date.getUTCFullYear();
+    currDate += day + '/' + date.getFullYear();
     if (opacNote.value && opacNote.value !== '') {
       opacNote.value += "\n\n";
     }

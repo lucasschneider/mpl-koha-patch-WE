@@ -33,11 +33,10 @@
   const printForm = document.getElementById("printForm");
 
   let getCurrDate = function() {
-    let d = new Date();
-    d.setHours(d.getHours() - 6);
+    const d = new Date();
 
-    let month = (d.getMonth()+1).toString(),
-      day = d.getDate().toString();
+    let month = (d.getMonth()+1).toString();
+    let day = d.getDate().toString();
 
     if (month.length == 1) {
        month = "0" + month;
@@ -52,8 +51,8 @@
 
   let formatDateForDisplay = function(date) {
     if (date && date !== "") {
-      var d = new Date(date);
-      return (d.getUTCMonth()+1) + "/" + d.getUTCDate() + "/" + d.getUTCFullYear();
+      const d = new Date(date);
+      return (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
     } else {
       return "";
     }

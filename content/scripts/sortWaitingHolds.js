@@ -1,17 +1,16 @@
 (function(){
   'use strict';
   ﻿if (/^https?\:\/\/scls-staff\.kohalibrary\.com\/cgi-bin\/koha\/circ\/waitingreserves\.pl.*/.test(location.href)) {
-    /** Define global variables **/
-    var holdTable = document.getElementById('holdst'),
-      holdTableHead = holdTable.tHead,
-      holdTableBody = holdTable.tBodies[0],
-      trArray = holdTableBody.children,
-      newTBody,
-      waitingHolds = [],
-      numWaitingHolds = 0,
-      sortCode = "patron",
-      isDateFiltered = false,
-      expirationDateTH = document.createElement('th');
+    const holdTable = document.getElementById('holdst');
+    let holdTableHead = holdTable.tHead;
+    let holdTableBody = holdTable.tBodies[0];
+    let trArray = holdTableBody.children;
+    let newTBody;
+    let waitingHolds = [];
+    let numWaitingHolds = 0;
+    let sortCode = "patron";
+    let isDateFiltered = false;
+    let expirationDateTH = document.createElement('th');
 
     expirationDateTH.textContent = "Item held through";
 
@@ -22,8 +21,8 @@
 
     function getExpiration(date) {
       date.addDays(8);
-      var days = "" + date.getUTCDate(),
-        month = "" + (date.getUTCMonth()+1),
+      var days = "" + date.getDate(),
+        month = "" + (date.getMonth()+1),
         year = date.getFullYear();
 
         if (days.length == 1) {
@@ -38,8 +37,8 @@
     }
 
     /** Define waiting hold object **/
-    function WaitingHold(htmlTR) {
-      var i = 0;
+    let WaitingHold = function(htmlTR) {
+      let i = 0;
       if (htmlTR.children.length > 5) i++
       this.html = htmlTR;
       this.availableSince = htmlTR.children[0].textContent.trim().substring(0,11);
@@ -200,28 +199,28 @@
     }
 
     // Generate sort options
-    var sortWrapper = document.createElement('div'),
-      title = document.createElement('span'),
-      dateTypeWrapper = document.createElement('span'),
-      sortTypeWrapper = document.createElement('span'),
-      availableSinceLabel = document.createElement('label'),
-      availableSince = document.createElement('input'),
-      br = document.createElement('br'),
-      br2 = document.createElement('br'),
-      br3 = document.createElement('br'),
-      heldThroughLabel = document.createElement('label'),
-      heldThrough = document.createElement('input'),
-      dateFilterLabel = document.createElement('label'),
-      dateFilter = document.createElement('input'),
-      sortDirectionWrapper = document.createElement('span'),
-      ascLabel = document.createElement('label'),
-      asc = document.createElement('input'),
-      descLabel = document.createElement('label'),
-      desc = document.createElement('input'),
-      dateSortLabel = document.createElement('label'),
-      dateSort = document.createElement('input'),
-      patronSortLabel = document.createElement('label'),
-      patronSort = document.createElement('input');
+    const sortWrapper = document.createElement('div');
+    const title = document.createElement('span');
+    const dateTypeWrapper = document.createElement('span');
+    const sortTypeWrapper = document.createElement('span');
+    const availableSinceLabel = document.createElement('label');
+    const availableSince = document.createElement('input');
+    const br = document.createElement('br');
+    const br2 = document.createElement('br');
+    const br3 = document.createElement('br');
+    const heldThroughLabel = document.createElement('label');
+    const heldThrough = document.createElement('input');
+    const dateFilterLabel = document.createElement('label');
+    const dateFilter = document.createElement('input');
+    const sortDirectionWrapper = document.createElement('span');
+    const ascLabel = document.createElement('label');
+    const asc = document.createElement('input');
+    const descLabel = document.createElement('label');
+    const desc = document.createElement('input');
+    const dateSortLabel = document.createElement('label');
+    const dateSort = document.createElement('input');
+    const patronSortLabel = document.createElement('label');
+    const patronSort = document.createElement('input');
 
     // Define input fields
     availableSince.name = "dateType";
