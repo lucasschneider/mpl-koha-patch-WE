@@ -1,6 +1,6 @@
 function setIcon() {
   browser.storage.sync.get('skin').then((res) => {
-    var skin = res.hasOwnProperty('skin') ? res.skin : 'mad'
+    var skin = res.hasOwnProperty('skin') ? res.skin : 'MAD';
 
     switch (skin) {
       case "MID":
