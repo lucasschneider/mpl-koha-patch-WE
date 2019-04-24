@@ -602,7 +602,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 "file": "/problemItemForm/getItemData.js"
               }).then(res => {
                 res = res[0];
-                if (res.hasOwnProperty('found') && res.found) {
+                if (res && res.hasOwnProperty('found') && res.found) {
                   clearInterval(getItemDataListener);
                   browser.tabs.remove(tab.id);
 
