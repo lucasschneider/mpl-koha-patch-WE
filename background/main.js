@@ -1,6 +1,6 @@
 function setIcon() {
   browser.storage.sync.get('skin').then((res) => {
-    var skin = res.hasOwnProperty('skin') ? res.skin : 'mad'
+    var skin = res.hasOwnProperty('skin') ? res.skin : 'MAD';
 
     switch (skin) {
       case "MID":
@@ -891,7 +891,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 "file": "/problemItemForm/getItemData.js"
               }).then(res => {
                 res = res[0];
-                if (res.hasOwnProperty('found') && res.found) {
+                if (res && res.hasOwnProperty('found') && res.found) {
                   clearInterval(getItemDataListener);
                   browser.tabs.remove(tab.id);
 

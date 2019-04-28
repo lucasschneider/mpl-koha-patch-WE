@@ -1320,6 +1320,7 @@
     if (addrElt && addrElt.value) {
       addr = addrElt.value.trim().toLowerCase()
         .replace(/[^#a-z0-9/ ]/g, '')
+        .replace(/ave (apt|unit|fl) ?/, 'ave #')
         .replace(/ c(ou)?n?ty /, ' co ')
         .replace(/ n /, ' north ')
         .replace(/ s /, ' south ')
@@ -1558,14 +1559,14 @@
             }
 
             pstatMsg.send(MSG_SUCCESS,
-                "PSTAT Matched with: " + decodeURI(targetAddr.value).toUpperCase(),
+                "PSTAT Matched with: " + targetAddr.value.toUpperCase(),
                 findAltPSTAT);
             toggleGMapSearch(true);
           }, reject => {
             if (/middleton|sun prairie|verona/i.test(targetCity.value)) {
               initialRejectMsg = reject.message;
             }
-          }).then(() => {
+
             pstatMsg.send(MSG_ERROR, "PSTAT " + initialRejectMsg, findAltPSTAT);
             if (selectList[0].value === "X-UND") {
               openFactFinder.style.display = 'block';
