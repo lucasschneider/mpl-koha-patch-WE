@@ -61,6 +61,7 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
     this.headphones = obj.headphones;
     this.dvdPlayer = obj.dvdplayer;
     this.returnDate = obj.returnDate;
+    this.visible = true;
 
     let tr = document.createElement('tr');
     this.htmlTR = tr;
@@ -201,18 +202,20 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
   function getCSV() {
     let csv = "Issue Date/Time, Patron Barcode, Laptop/iPad, Power Supply, Mouse, Headphones, DVD Player, Notes, Return Date/Time, Length of Use\r\n";
 
-    //Iterating through data table and assigning values separted by commas
+    //Iterating through data array and assigning values separted by commas
     for (let issue of data) {
-      csv += issue.issueDate + ",";
-      csv += issue.patronBarcode + ",";
-      csv += issue.itemID + ",";
-      csv += /^39078\d{9}$/.test(issue.powerSupply) + ",";
-      csv += /^39078\d{9}$/.test(issue.mouse) + ",";
-      csv += /^39078\d{9}$/.test(issue.headphones) + ",";
-      csv += /^39078\d{9}$/.test(issue.dvdPlayer) + ",";
-      csv += (issue.notes || '') + ',';
-      csv += (issue.returnDate || '') + ",";
-      csv += getHrMinSec((issue.returnDate || Date.now()) - issue.issueDate) + '\r\n';
+      if (issue.visible === true) {
+        csv += issue.issueDate + ",";
+        csv += issue.patronBarcode + ",";
+        csv += issue.itemID + ",";
+        csv += /^39078\d{9}$/.test(issue.powerSupply) + ",";
+        csv += /^39078\d{9}$/.test(issue.mouse) + ",";
+        csv += /^39078\d{9}$/.test(issue.headphones) + ",";
+        csv += /^39078\d{9}$/.test(issue.dvdPlayer) + ",";
+        csv += (issue.notes || '') + ',';
+        csv += (issue.returnDate || '') + ",";
+        csv += getHrMinSec((issue.returnDate || Date.now()) - issue.issueDate) + '\r\n';
+      }
     }
 
     return encodeURIComponent(csv);
@@ -229,16 +232,55 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
   let endDate = document.getElementById('endDate');
 
   function dateChange(e) {
+    let sDate = new Date(startDate.value+'T00:00:00');
+    let eDate = new Date(endDate.value+'T00:00:00');
+
     tableBody.innerHTML = '';
-    let sDate = new Date(startDate.value);
 
     for (let item of data) {
       if (startDate.value != '') {
-        if (sDate.getFullYear() <= item.issueDate.getFullYear() &&
-            sDate.getMonth() <= item.issueDate.getMonth() &&
-            sDate.getDate() <= item.issueDate.getDate()) {
-          tableBody.appendChild(item.htmlTR);
+        if ((sDate.getFullYear() === item.issueDate.getFullYear() &&
+            sDate.getMonth() === item.issueDate.getMonth() &&
+            sDate.getDate() <= item.issueDate.getDate()) ||
+            (sDate.getFullYear() === item.issueDate.getFullYear() &&
+            sDate.getMonth() < item.issueDate.getMonth()) ||
+            (sDate.getFullYear() < item.issueDate.getFullYear())) {
+          if (endDate.value != '') {
+            //Start and end date
+            if ((eDate.getFullYear() === item.issueDate.getFullYear() &&
+                eDate.getMonth() === item.issueDate.getMonth() &&
+                eDate.getDate() >= item.issueDate.getDate()) ||
+                (eDate.getFullYear() === item.issueDate.getFullYear() &&
+                eDate.getMonth() > item.issueDate.getMonth()) ||
+                (eDate.getFullYear() > item.issueDate.getFullYear())) {
+                  tableBody.appendChild(item.htmlTR);
+                  item.visible = true;
+            } else {
+              item.visible = false;
+            }
+          } else {
+            tableBody.appendChild(item.htmlTR);
+            item.visible = true;
+          }
+        } else {
+          item.visible = false;
         }
+      } else if (endDate.value != '') {
+        //Only end date
+        if ((eDate.getFullYear() === item.issueDate.getFullYear() &&
+            eDate.getMonth() === item.issueDate.getMonth() &&
+            eDate.getDate() >= item.issueDate.getDate()) ||
+            (eDate.getFullYear() === item.issueDate.getFullYear() &&
+            eDate.getMonth() > item.issueDate.getMonth()) ||
+            (eDate.getFullYear() > item.issueDate.getFullYear())) {
+              tableBody.appendChild(item.htmlTR);
+              item.visible = true;
+        } else {
+          item.visible = false;
+        }
+      } else {
+        tableBody.appendChild(item.htmlTR);
+        item.visible = true;
       }
     }
   };
