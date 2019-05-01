@@ -1,9 +1,15 @@
 body {
   font-family: sans-serif;
+  background: #77797c;
 }
 
 h1 {
+  background: #1C6677;
   text-align: center;
+  color: #ffffff;
+  text-shadow: 2px 2px #000000;
+  margin: 0;
+  padding: 0.75em 0;
 }
 
 input[type='checkbox'],
@@ -13,9 +19,18 @@ a, a:focus, a:active {
   outline: none;
 }
 
+section {
+  padding: 0 15px;
+}
+
 table {
     border-collapse: collapse;
     border: 1px solid black;
+}
+
+table#laptopData {
+  width: fixed;
+  margin: 0 auto;
 }
 
 thead tr {
@@ -24,6 +39,8 @@ thead tr {
 
 th {
   border-top: 1px solid black;
+  align: center;
+  text-shadow: 2px 2px #ffffff;
 }
 
 th, td {
@@ -31,9 +48,18 @@ th, td {
   border-bottom: 1px solid black;
 }
 
+td {
+  background-color: #ffffff;
+}
+
 tr.even {
   background-color: #ebf5fc;
 }
+
+p {
+  color: #000000;
+}
+
 
 .center {
   text-align: center;
