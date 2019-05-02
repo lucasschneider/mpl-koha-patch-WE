@@ -8,34 +8,39 @@
   </head>
   <body>
     <h1>Laptop Checkout Data</h1>
-    <p style="text-align:justify;" >All laptop data is automatically stored by the MPL Koha Patch (including issue date, patron barcode, mouse, power supply, headphones, dvd player, laptop ID, and return date). If you need to add a note to an issued laptop, you may do so using the table below. Notes may only be modified on the same day the laptop was issued.</p>
-    <a id="downloadData" style="text-align: right;">Download Data</a>
-    <input type="text" id="searchBar" placeholder="Type to search">
-    <br><br>
-    <table id="dateRange">
-      <p style="font-size: 14px">Date Range Search</p>
-      <tr>Start:</tr>
-      <input type="date" id="startDate"><br>
-      <tr>End: </tr>
-      <input type="date" id="endDate">
-    </table>
+    <div id="bodyContent">
+      <p style="text-align:justify;" >All laptop data is automatically stored by the MPL Koha Patch (including issue date, patron barcode, mouse, power supply, headphones, dvd player, laptop ID, and return date). If you need to add a note to an issued laptop, you may do so using the table below. Notes may only be modified on the same day the laptop was issued.</p>
+      <a id="downloadData" style="text-align: right;">Download Data</a>
 
-    <table id="laptopData">
-      <thead>
-        <tr>
-          <th>Issue Date/Time</th>
-          <th>Patron Barcode</th>
-          <th>Laptop/iPad</th>
-          <th>Power Supply</th>
-          <th>Mouse</th>
-          <th>Headphones</th>
-          <th>DVD Player</th>
-          <th>Notes</th>
-          <th>Return Date/Time</th>
-          <th>Length of Use</th>
-      </thead>
-      <tbody id="laptopDataBody"></tbody>
-    </table>
-    <p id="noData">No data found.</p>
+      <fieldset class="box">
+        <legend class="boxLabel">Filters</legend>
+        <div>
+          <b>Search:</b>
+          <input type="text" id="searchBar" placeholder="Type to search">
+        </div>
+        <div>
+          <b>Date:</b>
+          From <input type="date" id="startDate"> to <input type="date" id="endDate">
+        </div>
+      </fieldset>
+
+      <table id="laptopData">
+        <thead>
+          <tr>
+            <th>Issue Date/Time</th>
+            <th>Patron Barcode</th>
+            <th>Laptop/iPad</th>
+            <th>Power Supply</th>
+            <th>Mouse</th>
+            <th>Headphones</th>
+            <th>DVD Player</th>
+            <th>Notes</th>
+            <th>Return Date/Time</th>
+            <th>Length of Use</th>
+        </thead>
+        <tbody id="laptopDataBody"></tbody>
+      </table>
+      <p id="noData">No data found.</p>
+    </div>
   </body>
 </html>
