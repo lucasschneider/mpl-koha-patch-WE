@@ -204,7 +204,10 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
 
     //Iterating through data array and assigning values separted by commas
     for (let issue of data) {
-      if (issue.visible === true) {
+      console.log(issue);
+      console.log(issue.patronBarcode);
+      console.log(issue.visible);
+      if (issue.visible) {
         csv += issue.issueDate + ",";
         csv += issue.patronBarcode + ",";
         csv += issue.itemID + ",";
@@ -231,7 +234,7 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
   let startDate = document.getElementById('startDate');
   let endDate = document.getElementById('endDate');
 
-  function dateChange(e) {
+  function dateChange() {
     let sDate = new Date(startDate.value+'T00:00:00');
     let eDate = new Date(endDate.value+'T00:00:00');
 
@@ -315,7 +318,15 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
       tableBody.appendChild(data[data.length-1].htmlTR);
     }
 
-    download.download = "laptop-data-" + getCurrYYYYMMDD() + ".csv";
-    download.href = "data:text/csv;charset=utf-8," + getCSV();
+    download.href="#";
+
+    if (startDate.value === '') startDate.value = getCurrYYYYMMDD();
+    if (endDate.value === '') endDate.value = getCurrYYYYMMDD();
+    dateChange();
+
+    download.addEventListener('click', function(e) {
+      download.download = "laptop-data-" + getCurrYYYYMMDD() + ".csv";
+      download.href = "data:text/csv;charset=utf-8," + getCSV();
+    });
   }
 });
