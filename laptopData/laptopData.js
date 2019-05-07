@@ -204,9 +204,6 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
 
     //Iterating through data array and assigning values separted by commas
     for (let issue of data) {
-      console.log(issue);
-      console.log(issue.patronBarcode);
-      console.log(issue.visible);
       if (issue.visible) {
         csv += issue.issueDate + ",";
         csv += issue.patronBarcode + ",";
@@ -234,79 +231,87 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
   let startDate = document.getElementById('startDate');
   let endDate = document.getElementById('endDate');
 
-  function dateChange() {
-    let sDate = new Date(startDate.value+'T00:00:00');
-    let eDate = new Date(endDate.value+'T00:00:00');
+  function filterChange() {
+    function isOnOrAfterStartDate(sDate, issueDate) {
+      return (sDate.getFullYear() === issueDate.getFullYear() &&
+          sDate.getMonth() === issueDate.getMonth() &&
+          sDate.getDate() <= issueDate.getDate()) ||
+        (sDate.getFullYear() === issueDate.getFullYear() &&
+          sDate.getMonth() < issueDate.getMonth()) ||
+        (sDate.getFullYear() < issueDate.getFullYear());
+    };
+
+    function isOnOrBeforeEndDate(eDate, issueDate) {
+      return (eDate.getFullYear() === issueDate.getFullYear() &&
+          eDate.getMonth() === issueDate.getMonth() &&
+          eDate.getDate() >= issueDate.getDate()) ||
+        (eDate.getFullYear() === issueDate.getFullYear() &&
+          eDate.getMonth() > issueDate.getMonth()) ||
+        (eDate.getFullYear() > issueDate.getFullYear());
+    };
 
     tableBody.innerHTML = '';
 
     for (let item of data) {
-      if (startDate.value != '') {
-        if ((sDate.getFullYear() === item.issueDate.getFullYear() &&
-            sDate.getMonth() === item.issueDate.getMonth() &&
-            sDate.getDate() <= item.issueDate.getDate()) ||
-            (sDate.getFullYear() === item.issueDate.getFullYear() &&
-            sDate.getMonth() < item.issueDate.getMonth()) ||
-            (sDate.getFullYear() < item.issueDate.getFullYear())) {
-          if (endDate.value != '') {
-            //Start and end date
-            if ((eDate.getFullYear() === item.issueDate.getFullYear() &&
-                eDate.getMonth() === item.issueDate.getMonth() &&
-                eDate.getDate() >= item.issueDate.getDate()) ||
-                (eDate.getFullYear() === item.issueDate.getFullYear() &&
-                eDate.getMonth() > item.issueDate.getMonth()) ||
-                (eDate.getFullYear() > item.issueDate.getFullYear())) {
-                  tableBody.appendChild(item.htmlTR);
-                  item.visible = true;
+      // Check for date filter
+      if (startDate.value != '' || endDate.value != '') {
+        let sDate = new Date(startDate.value + 'T00:00:00');
+        let eDate = new Date(endDate.value + 'T00:00:00');
+
+        if (startDate.value != '') {
+          if (isOnOrAfterStartDate(sDate, item.issueDate)) {
+            if (endDate.value != '') {
+              // Start and end date
+              if (isOnOrBeforeEndDate(eDate, item.issueDate)) {
+                item.visible = true;
+              } else {
+                item.visible = false;
+              }
             } else {
-              item.visible = false;
+              item.visible = true;
             }
           } else {
-            tableBody.appendChild(item.htmlTR);
+            item.visible = false;
+          }
+        } else if (endDate.value != '') {
+          // Only end date
+          if (isOnOrBeforeEndDate(eDate, item.issueDate)) {
             item.visible = true;
+          } else {
+            item.visible = false;
           }
         } else {
-          item.visible = false;
+          item.visible = true;
         }
-      } else if (endDate.value != '') {
-        //Only end date
-        if ((eDate.getFullYear() === item.issueDate.getFullYear() &&
-            eDate.getMonth() === item.issueDate.getMonth() &&
-            eDate.getDate() >= item.issueDate.getDate()) ||
-            (eDate.getFullYear() === item.issueDate.getFullYear() &&
-            eDate.getMonth() > item.issueDate.getMonth()) ||
-            (eDate.getFullYear() > item.issueDate.getFullYear())) {
-              tableBody.appendChild(item.htmlTR);
-              item.visible = true;
+      } else {
+        item.visible = true;
+      }
+
+      if (item.visible) { // Only continue checking filters if the previous one passed
+        // Check for search filter
+        for (let td of item.htmlTR.children) {
+          if (td.textContent.toLowerCase().includes(search.value.toLowerCase())) {
+            found = true;
+            break;
+          }
+        }
+
+        if (found) {
+          item.visible = true;
+          found = false;
         } else {
           item.visible = false;
         }
-      } else {
-        tableBody.appendChild(item.htmlTR);
-        item.visible = true;
       }
+
+      // Append item if it matches all conditions
+      if (item.visible) tableBody.appendChild(item.htmlTR);
     }
-  };
-
-  search.addEventListener('keyup', e => {
-    for (let item of data) {
-      for (let td of item.htmlTR.children) {
-        if (td.textContent.toLowerCase().includes(search.value.toLowerCase())) {
-          found = true;
-          break;
-        }
-      }
-      if (found) {
-        item.htmlTR.style.display = "";
-        found = false;
-      } else {
-        item.htmlTR.style.display = "none";
-      }
   }
-  });
 
-  startDate.addEventListener('change', dateChange);
-  endDate.addEventListener('change', dateChange);
+  search.addEventListener('keyup', filterChange)
+  startDate.addEventListener('change', filterChange);
+  endDate.addEventListener('change', filterChange);
 
   if (res.length === 0) {
     download.style.display = 'none';
@@ -322,7 +327,7 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
 
     if (startDate.value === '') startDate.value = getCurrYYYYMMDD();
     if (endDate.value === '') endDate.value = getCurrYYYYMMDD();
-    dateChange();
+    filterChange();
 
     download.addEventListener('click', function(e) {
       download.download = "laptop-data-" + getCurrYYYYMMDD() + ".csv";
