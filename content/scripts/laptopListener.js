@@ -114,14 +114,8 @@ if (window.location.toString().includes("/cgi-bin/koha/circ/circulation.pl")) {
 
     if (itemTitle.includes("GENERIC EQUIPMENT")) {
       if ((itemTitle.includes("LAPTOP") && Object.keys(laptopMap).includes(itemBC)) ||
-          (itemTitle.includes("IPAD") && ipads.includes(itemBC))) {
-        let itemID;
-
-        if (laptopMap[itemBC]) {
-          itemID = laptopMap[itemBC];
-        } else if (ipadMap[itemBC]) {
-          itemID = ipadMap[itemBC];
-        }
+          (itemTitle.includes("IPAD") && Object.keys(ipadMap).includes(itemBC))) {
+        let itemID = (laptopMap[itemBC] || ipadMap[itemBC]);
 
         browser.runtime.sendMessage({
           "key": "issueItem",
