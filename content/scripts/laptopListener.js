@@ -18,17 +18,17 @@ const laptopMap = {
   "39078091512302": "PC2-B3"
 };
 
-//Creating an array of iPads
-const ipads = [
-  "39078083354804",
-  "39078083354929",
-  "39078083354986",
-  "39078083355041",
-  "39078083355108",
-  "39078083355165",
-  "39078083355280",
-  "39078083355348"
-];
+//Creating a map of all the ipads and corresponing barcodes
+const ipadMap = {
+  "39078083354804": "IPAD-A7",
+  "39078083354929": "IPAD-A8",
+  "39078083354986": "IPAD-4986", // 2019-05-08 Laptop not found in cabinet
+  "39078083355041": "IPAD-5041", // 2019-05-08 Laptop not found in cabinet
+  "39078083355108": "IPAD-5108", // 2019-05-08 Laptop not found in cabinet
+  "39078083355165": "IPAD-B6",
+  "39078083355280": "IPAD-A10",
+  "39078083355348": "IPAD-A9"
+};
 
 //Creating map of accessories
 const accessories = {
@@ -119,8 +119,8 @@ if (window.location.toString().includes("/cgi-bin/koha/circ/circulation.pl")) {
 
         if (laptopMap[itemBC]) {
           itemID = laptopMap[itemBC];
-        } else if (ipads.includes(itemBC)) {
-          itemID = "IPAD-" + itemBC.slice(-4);
+        } else if (ipadMap[itemBC]) {
+          itemID = ipadMap[itemBC];
         }
 
         browser.runtime.sendMessage({
