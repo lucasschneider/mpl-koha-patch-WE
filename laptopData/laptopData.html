@@ -14,17 +14,28 @@
       <fieldset class="box">
         <legend class="boxLabel">Filters</legend>
         <div>
-          <b>Search:</b>
-          <input type="text" id="searchBar" placeholder="Type to search">
-        </div>
-        <div>
           <b>Date:</b>
           from <input type="date" id="startDate"> to <input type="date" id="endDate">
         </div>
+        <div>
+          <b>Search:</b>
+          <input type="text" id="searchBar" placeholder="Type to search">
+        </div>
       </fieldset>
 
-      <fieldset class="box">
+      <fieldset class="box statistics">
         <legend class="boxLabel">Statistics</legend>
+        <div>
+          <b>Unique / Total Checkouts:</b>
+          <span id="uniqCKO"></span> / <span id="totalCKO"></span>
+        </div>
+        <div>
+          <b>Total Time used:</b>
+          <span id="totalTime"></span>
+        <div>
+          <b>Average use:</b>
+          <span id="avgUse">0 hrs/cko</span>
+        </div>
       </fieldset>
 
       <table id="laptopData">

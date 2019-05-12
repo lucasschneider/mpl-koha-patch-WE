@@ -41,7 +41,7 @@ let getHrMinSec = function(milliseconds) {
 
     return value;
   }
-  return undefined;
+  return '0';
 }
 
 browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
@@ -68,6 +68,7 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
 
     let issueDate = document.createElement('td');
     let patronBC = document.createElement('td');
+    let patronBCLink = document.createElement('a');
     let itemID = document.createElement('td');
     let powerTD = document.createElement('td');
     let mouseTD = document.createElement('td');
@@ -88,7 +89,10 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
     let useLen = document.createElement('td');
 
     issueDate.textContent = this.issueDate.toLocaleString();
-    patronBC.textContent = this.patronBarcode;
+    patronBC.appendChild(patronBCLink);
+    patronBCLink.target = "_blank";
+    patronBCLink.href = "https://scls-staff.kohalibrary.com/cgi-bin/koha/circ/circulation.pl?findborrower=" + this.patronBarcode;
+    patronBCLink.textContent = this.patronBarcode;
     itemID.textContent = this.itemID;
     note.id = "noteData";
     note.textContent = this.notes;
@@ -231,7 +235,16 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
   let startDate = document.getElementById('startDate');
   let endDate = document.getElementById('endDate');
 
+  let totalTimeUsed = document.getElementById('totalTime');
+  let uniqCKO = document.getElementById('uniqCKO');
+  let totalCKO = document.getElementById('totalCKO');
+  let averageUse = document.getElementById('avgUse');
+
   function filterChange() {
+    let totalTime = 0;
+    let numVisible = 0;
+    let numOutstanding = 0;
+
     function isOnOrAfterStartDate(sDate, issueDate) {
       return (sDate.getFullYear() === issueDate.getFullYear() &&
           sDate.getMonth() === issueDate.getMonth() &&
@@ -251,6 +264,8 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
     };
 
     tableBody.innerHTML = '';
+
+    let uniqPatrons = []; // Array of unique patron barcodess
 
     for (let item of data) {
       // Check for date filter
@@ -305,8 +320,31 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
       }
 
       // Append item if it matches all conditions
-      if (item.visible) tableBody.appendChild(item.htmlTR);
+      if (item.visible) {
+        if (!uniqPatrons.includes(item.patronBarcode)) {
+          uniqPatrons.push(item.patronBarcode);
+        }
+
+        if (item.returnDate) {
+          numVisible++;
+          totalTime += item.returnDate - item.issueDate;
+        } else {
+          numOutstanding++;
+        }
+
+        tableBody.appendChild(item.htmlTR);
+      }
     }
+
+    // Set unique/total issues stat
+    totalCKO.textContent = numVisible + numOutstanding;
+    uniqCKO.textContent = uniqPatrons.length;
+
+    // Set total time used
+    totalTimeUsed.textContent = getHrMinSec(totalTime);
+
+    // Set average use stat
+    averageUse.textContent = getHrMinSec(Math.floor(totalTime / numVisible)) + " hrs/cko";
   }
 
   search.addEventListener('keyup', filterChange)

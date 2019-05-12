@@ -80,6 +80,8 @@ p {
 }
 
 .box div {
+  float: left;
+  margin-right: 1em;
   margin-bottom: 10px;
 }
 
