@@ -101,9 +101,9 @@ The following features may be turned on or off from the extension's preferences 
 
 | MPL | MID | SCLS | SUN |
 | --- | --- | ---- | --- |
-| <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/mpl-logo.png" width="64px" > | <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/mid-logo.png" width="64px" > |<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/scls-logo.png" width="64px" > |<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/content/img/sun-icon2-64.png" width="64px" > |
+| <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-firefox/master/docs/markdown-img/mpl-logo.png" width="64px" > | <img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-firefox/master/docs/markdown-img/mid-logo.png" width="64px" > |<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-firefox/master/docs/markdown-img/scls-logo.png" width="64px" > |<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-firefox/master/content/img/sun-icon2-64.png" width="64px" > |
 
-<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/scnShot-highlighted-logo.png" >
+<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-firefox/master/docs/markdown-img/scnShot-highlighted-logo.png" >
 
 ## Additional patron messages
 This option removes the predefined patron message "Special Note" provided by LibLime Koha, which  is rarely or never used by MPL staff.
@@ -117,19 +117,19 @@ Additionally, selecting the checkbox for "Include notes for returned mail and ba
 ## Parse patron addresses
 When creating or updating a patron record, compare their address against MPL's list of dorms, restricted addresses, and unacceptable addresses. Dorm addresses are given a special expiration date of May 15 of that academic year. Restricted addresses are automatically made limited use, and unacceptable addresses trigger the save button to be hidden (which could be overridden by staff). In each of these cases, staff are notified of the nature of the address, and a circulation note is automatically entered into the patron's record.
 
-<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/scnShot-unacceptable-address.png" >
+<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-firefox/master/docs/markdown-img/scnShot-unacceptable-address.png" >
 
-<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/scnShot-restricted-address.png" >
+<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-firefox/master/docs/markdown-img/scnShot-restricted-address.png" >
 
 ## Autofill OPAC login number
 Because a patron's library card number is used for their OPAC username, this feature automatically enters
 the OPAC login when a barcode is scanned into the barcode field.
 ## Lookup "sort 1" (PSTAT)
-<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/scnShot-pstat-lookup.png" >
+<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-firefox/master/docs/markdown-img/scnShot-pstat-lookup.png" >
 
-This feature will attempt to automatically enter the zipcode and PSTAT for any address. It is important to ensure that the street address, city, and state abbreviation are entered and correctly spelled. It starts with the most recent census data, and falls back on the 2010 census data. This will look up the census tract number for Madison address, and the county subdivision for addresses both within and outside SCLS. The cities of Middleton, Monona, Sun Prairie, and Verona select the PSTAT based on the patron’s aldermanic district.
+This feature will attempt to automatically enter the zipcode and PSTAT for any address. It is important to ensure that the street address, city, and state abbreviation are entered and correctly spelled. It starts with the most recent census data, and falls back on the 2010 census data. This will look up the census tract number for Madison address, and the county subdivision for addresses both within and outside SCLS. The cities of Middleton, Sun Prairie, and Verona select the PSTAT based on the patron’s aldermanic district.
 
-<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/docs/markdown-img/scnShot-geo-home-library.png" >
+<img src="https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-firefox/master/docs/markdown-img/scnShot-geo-home-library.png" >
 
 You also have the option to find the SCLS location that is geographically closest to the patron’s address. You may search among the MPL locations, within one of the seven counties, or within SCLS as a whole. This is particularly useful for reciprocal library patrons or those who have recently moved.
 
@@ -160,4 +160,4 @@ You can email Lucas comments, questions, or feature requests at [lschneider@madi
 # Disclaimer
 This extension has been vetted for security by SCLS, however, it is neither supported nor endorsed by LibLime or SCLS. It is independently developed by Lucas Schneider, a Library Page at MPL-Central. Please use the extension only at the discretion of your circulation or departmental supervisor.
 
-  [1]: javascript:void(InstallTrigger.install({'MPL Koha Patch':'https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-WE/master/releases/currXPI/mpl-koha-patch.xpi'}));
+  [1]: javascript:void(InstallTrigger.install({'MPL Koha Patch':'https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-firefox/master/releases/currXPI/mpl-koha-patch.xpi'}));
