@@ -1,11 +1,10 @@
 /**
  * @returns {string} The current date in the format YYYY-MM-DD
  */
-let getCurrYYYYMMDD = function() {
-  var d = new Date(),
-      month = '' + (d.getMonth() + 1),
-      day = '' + d.getDate(),
-      year = d.getFullYear();
+let getYYYYMMDD = function(d) {
+  let month = '' + (d.getMonth() + 1);
+  let day = '' + d.getDate();
+  let year = d.getFullYear();
 
   if (month.length < 2) month = '0' + month;
   if (day.length < 2) day = '0' + day;
@@ -35,9 +34,9 @@ let getHrMinSec = function(milliseconds) {
       milliseconds = milliseconds - (sec * 1000);
     }
 
-    let value = hr < 9 ? '0' + hr + ':' : hr + ':';
-    value += min < 9 ? '0' + min + ':' : min + ':';
-    value += sec < 9 ? '0' + sec + '.' + milliseconds : sec + '.' + milliseconds;
+    let value = hr <= 9 ? '0' + hr + ':' : hr + ':';
+    value += min <= 9 ? '0' + min + ':' : min + ':';
+    value += sec <= 9 ? '0' + sec + '.' + milliseconds : sec + '.' + milliseconds;
 
     return value;
   }
@@ -361,14 +360,51 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
       tableBody.appendChild(data[data.length-1].htmlTR);
     }
 
+    const today = new Date();
+
+    const setRangeWeek = document.getElementById('setRangeWeek');
+    const setRangeMonth = document.getElementById('setRangeMonth');
+    const setRangeYear = document.getElementById('setRangeYear');
+
+    setRangeWeek.addEventListener('click', e => {
+      const firstOfWeek = new Date(today.getFullYear(),today.getMonth(),today.getDate()-today.getDay());
+      const lastOfWeek = new Date(today.getFullYear(),today.getMonth(),firstOfWeek.getDate()+6);
+
+      e.preventDefault();
+
+      startDate.value = getYYYYMMDD(firstOfWeek);
+      endDate.value = getYYYYMMDD(lastOfWeek);
+      filterChange();
+    });
+
+    setRangeMonth.addEventListener('click', e => {
+      const firstOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+      const lastOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+      e.preventDefault();
+
+      startDate.value = getYYYYMMDD(firstOfMonth);
+      endDate.value = getYYYYMMDD(lastOfMonth);
+      filterChange();
+    });
+
+    setRangeYear.addEventListener('click', e => {
+      e.preventDefault();
+
+      startDate.value = today.getFullYear() + '-01-01';
+      endDate.value = today.getFullYear() + '-12-31';
+      filterChange();
+    });
+
+
     download.href="#";
 
-    if (startDate.value === '') startDate.value = getCurrYYYYMMDD();
-    if (endDate.value === '') endDate.value = getCurrYYYYMMDD();
+    if (startDate.value === '') startDate.value = getYYYYMMDD(today);
+    if (endDate.value === '') endDate.value = getYYYYMMDD(today);
     filterChange();
 
     download.addEventListener('click', function(e) {
-      download.download = "laptop-data-" + getCurrYYYYMMDD() + ".csv";
+      download.download = "laptop-data-" + getYYYYMMDD(today) + ".csv";
       download.href = "data:text/csv;charset=utf-8," + getCSV();
     });
   }

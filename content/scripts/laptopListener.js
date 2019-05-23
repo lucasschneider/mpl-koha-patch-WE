@@ -22,9 +22,9 @@ const laptopMap = {
 const ipadMap = {
   "39078083354804": "IPAD-A7",
   "39078083354929": "IPAD-A8",
-  "39078083354986": "IPAD-4986", // 2019-05-08 Laptop not found in cabinet
-  "39078083355041": "IPAD-5041", // 2019-05-08 Laptop not found in cabinet
-  "39078083355108": "IPAD-5108", // 2019-05-08 Laptop not found in cabinet
+  "39078083354986": "IPAD-4986", // 2019-05-08 iPad not found in cabinet
+  "39078083355041": "IPAD-5041", // 2019-05-08 iPad not found in cabinet
+  "39078083355108": "IPAD-5108", // 2019-05-08 iPad not found in cabinet
   "39078083355165": "IPAD-B6",
   "39078083355280": "IPAD-A10",
   "39078083355348": "IPAD-A9"
@@ -161,7 +161,7 @@ if (window.location.toString().includes("/cgi-bin/koha/circ/circulation.pl")) {
   if (returnCells.length > 0 && returnCells[5].textContent.trim() !== "Not checked out") {
     let returnBC = returnCells[3].textContent.trim();
 
-    if (Object.keys(laptopMap).includes(returnBC) || ipads.includes(returnBC)) {
+    if (laptopMap.hasOwnProperty(returnBC) || ipadMap.hasOwnProperty(returnBC)) {
       let d = new Date();
 
       let itemTitle = document.querySelector('#doc td:nth-of-type(2)');
@@ -169,7 +169,7 @@ if (window.location.toString().includes("/cgi-bin/koha/circ/circulation.pl")) {
       if (returnCells[1].textContent.includes("IPAD")) {
           browser.runtime.sendMessage({
             "key": "returnLaptop",
-            "itemID": "IPAD-" + returnBC.slice(-4),
+            "itemID": ipadMap[returnBC],
             "returnDate": d
           });
       } else if (returnCells[1].textContent.includes("LAPTOP")) {

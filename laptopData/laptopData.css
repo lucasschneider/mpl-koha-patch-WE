@@ -72,6 +72,14 @@ p {
   color: #000000;
 }
 
+a,
+a:hover,
+a:active,
+a:visited {
+  color: #1C6677;
+  text-decoration: underline;
+}
+
 .box {
   border: 2px solid #70A43F;
   border-radius: 5px;

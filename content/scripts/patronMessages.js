@@ -8,24 +8,12 @@
     if (msgSelect.options[4].value === "Special Note") {
       msgSelect.remove(4);
     }
-
-    var cardAtNxtCko = document.createElement('option');
-    cardAtNxtCko.value = "Patron must have library card at next checkout. ";
-    cardAtNxtCko.textContent = "Have card at next CKO";
-    msgSelect.insertBefore(cardAtNxtCko,msgSelect.options[1]);
-
+    
     if (/mad|hpb|seq|pin|mea|smb|msb|haw|lak/i.test(document.getElementsByClassName('loggedinusername')[0].textContent.trim())) {
       var laptopAgreement = document.createElement('option');
       laptopAgreement.value = "Patron has signed Laptop/iPad Loan Agreement form. Form on file.";
       laptopAgreement.textContent = "Patron signed laptop agreement";
       msgSelect.insertBefore(laptopAgreement,msgSelect.options[2]);
-
-  	/* Margie doesn't want this as a predefined note as of June 5, 2017
-      var lostPaymentNote = document.createElement('option');
-      lostPaymentNote.value = "Check for $[X.XX] will be issued by Madison City Finance to [Owning Library] for [Item Title] ([barcode]). [Initials/Library]";
-      lostPaymentNote.textContent = "Check for $[X.XX] will be issued by Madison City Finance..."
-      msgSelect.insertBefore(lostPaymentNote,msgSelect.options[3]);
-  	*/
     }
 
     msgSelect.onchange = function () {
