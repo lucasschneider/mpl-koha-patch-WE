@@ -107,6 +107,10 @@ a:visited {
   padding: 3px;
 }
 
+.center {
+  text-align: center;
+}
+
 
 #noData {
   display: none;

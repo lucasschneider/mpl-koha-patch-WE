@@ -483,10 +483,10 @@ function removeRow(type, itemID) {
     let cursor = evt.target.result;
 
     if (cursor) {
-      if (cursor.value.itemID === null && (type === 'headphones' && cursor.value.headphones === itemID) ||
+      if (cursor.value.itemID === null && ((type === 'headphones' && cursor.value.headphones === itemID) ||
           (type === 'powersuppy' && cursor.value.powersupply === itemID) ||
           (type === 'mouse' && cursor.value.mouse === itemID) ||
-          (type === 'dvdplayer' && cursor.value.dvdplayer === itemID)) {
+          (type === 'dvdplayer' && cursor.value.dvdplayer === itemID))) {
         let delRow = cursor.delete();
 
         delRow.onerror = function() {

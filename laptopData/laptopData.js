@@ -34,11 +34,7 @@ let getHrMinSec = function(milliseconds) {
       milliseconds = milliseconds - (sec * 1000);
     }
 
-    let value = hr <= 9 ? '0' + hr + ':' : hr + ':';
-    value += min <= 9 ? '0' + min + ':' : min + ':';
-    value += sec <= 9 ? '0' + sec + '.' + milliseconds : sec + '.' + milliseconds;
-
-    return value;
+    return hr + ' hr ' + min + ' min ' + sec + ' sec';
   }
   return '0';
 }
@@ -203,12 +199,12 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
 
   //Creating the CSV file and Excel Spreadsheet
   function getCSV() {
-    let csv = "Issue Date/Time, Patron Barcode, Laptop/iPad, Power Supply, Mouse, Headphones, DVD Player, Notes, Return Date/Time, Length of Use\r\n";
+    let csv = "Issue Date, Issue Time, Patron Barcode, Laptop/iPad, Power Supply, Mouse, Headphones, DVD Player, Notes, Return Date, Return Time, Length of Use (hrs)\r\n";
 
     //Iterating through data array and assigning values separted by commas
     for (let issue of data) {
       if (issue.visible) {
-        csv += issue.issueDate + ",";
+        csv += issue.issueDate.toLocaleString() + ",";
         csv += issue.patronBarcode + ",";
         csv += issue.itemID + ",";
         csv += /^39078\d{9}$/.test(issue.powerSupply) + ",";
@@ -216,8 +212,8 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
         csv += /^39078\d{9}$/.test(issue.headphones) + ",";
         csv += /^39078\d{9}$/.test(issue.dvdPlayer) + ",";
         csv += (issue.notes || '') + ',';
-        csv += (issue.returnDate || '') + ",";
-        csv += getHrMinSec((issue.returnDate || Date.now()) - issue.issueDate) + '\r\n';
+        csv += issue.returnDate ? issue.returnDate.toLocaleString() + ',' : ',';
+        csv += ((issue.returnDate || Date.now()) - issue.issueDate)/3600000 + '\r\n';
       }
     }
 
@@ -359,53 +355,58 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
       data.push(new LaptopIssue(res[i]));
       tableBody.appendChild(data[data.length-1].htmlTR);
     }
-
-    const today = new Date();
-
-    const setRangeWeek = document.getElementById('setRangeWeek');
-    const setRangeMonth = document.getElementById('setRangeMonth');
-    const setRangeYear = document.getElementById('setRangeYear');
-
-    setRangeWeek.addEventListener('click', e => {
-      const firstOfWeek = new Date(today.getFullYear(),today.getMonth(),today.getDate()-today.getDay());
-      const lastOfWeek = new Date(today.getFullYear(),today.getMonth(),firstOfWeek.getDate()+6);
-
-      e.preventDefault();
-
-      startDate.value = getYYYYMMDD(firstOfWeek);
-      endDate.value = getYYYYMMDD(lastOfWeek);
-      filterChange();
-    });
-
-    setRangeMonth.addEventListener('click', e => {
-      const firstOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-      const lastOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-
-      e.preventDefault();
-
-      startDate.value = getYYYYMMDD(firstOfMonth);
-      endDate.value = getYYYYMMDD(lastOfMonth);
-      filterChange();
-    });
-
-    setRangeYear.addEventListener('click', e => {
-      e.preventDefault();
-
-      startDate.value = today.getFullYear() + '-01-01';
-      endDate.value = today.getFullYear() + '-12-31';
-      filterChange();
-    });
-
-
-    download.href="#";
-
-    if (startDate.value === '') startDate.value = getYYYYMMDD(today);
-    if (endDate.value === '') endDate.value = getYYYYMMDD(today);
-    filterChange();
-
-    download.addEventListener('click', function(e) {
-      download.download = "laptop-data-" + getYYYYMMDD(today) + ".csv";
-      download.href = "data:text/csv;charset=utf-8," + getCSV();
-    });
   }
+
+  const today = new Date();
+
+  const setRangeWeek = document.getElementById('setRangeWeek');
+  const setRangeMonth = document.getElementById('setRangeMonth');
+  const setRangeYear = document.getElementById('setRangeYear');
+
+  setRangeWeek.addEventListener('click', e => {
+    const firstOfWeek = new Date(today.getFullYear(),today.getMonth(),today.getDate()-today.getDay());
+    const lastOfWeek = new Date(firstOfWeek.getFullYear(),firstOfWeek.getMonth(),firstOfWeek.getDate()+6);
+
+    e.preventDefault();
+
+    startDate.value = getYYYYMMDD(firstOfWeek);
+    endDate.value = getYYYYMMDD(lastOfWeek);
+    filterChange();
+  });
+
+  setRangeMonth.addEventListener('click', e => {
+    const firstOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    const lastOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+    e.preventDefault();
+
+    startDate.value = getYYYYMMDD(firstOfMonth);
+    endDate.value = getYYYYMMDD(lastOfMonth);
+    filterChange();
+  });
+
+  setRangeYear.addEventListener('click', e => {
+    e.preventDefault();
+
+    startDate.value = today.getFullYear() + '-01-01';
+    endDate.value = today.getFullYear() + '-12-31';
+    filterChange();
+  });
+
+
+  download.href="#";
+
+  if (startDate.value === '') startDate.value = getYYYYMMDD(today);
+  if (endDate.value === '') endDate.value = getYYYYMMDD(today);
+  filterChange();
+
+  download.addEventListener('click', function(e) {
+  if (startDate.value === endDate.value) {
+    download.download = "laptop-data-" + getYYYYMMDD(new Date(startDate.value+'T00:00:00')) + ".csv";
+  } else {
+    download.download = "laptop-data-" + getYYYYMMDD(new Date(startDate.value+'T00:00:00')) +
+        "-to-" + getYYYYMMDD(new Date(endDate.value+'T00:00:00')) + ".csv";
+  }
+    download.href = "data:text/csv;charset=utf-8," + getCSV();
+  });
 });
