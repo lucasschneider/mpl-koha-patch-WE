@@ -565,6 +565,50 @@ function getAllLaptopData() {
   });
 }
 
+function idbToJSON() {
+  return new Promise(function(resolve, reject) {
+    let store = getObjectStore(DB_STORE_NAME, 'readwrite');
+    let data = {"key": "laptopDataBackup"};
+
+    let req = store.openCursor();
+
+    req.onerror = function(e) {
+      reject('idbToJSON() failed to open cursor');
+    };
+
+    req.onsuccess = function(e) {
+      let cursor = e.target.result;
+
+      if (cursor) {
+        data[cursor.primaryKey] = cursor.value;
+        cursor.continue();
+      } else {
+        resolve(JSON.stringify(data));
+      }
+    }
+  });
+}
+
+function fillIDB(laptopData) {
+  if (jsonString.hasOwnProperty('key')) {
+    delete jsonString.key;
+  }
+
+  let store = getObjectStore(DB_STORE_NAME, 'readwrite');
+
+  let req = store.openCursor();
+
+  req.onerror = function(e) {
+    console.error('fillIDB() failed to open cursor');
+  };
+
+  req.onsuccess = function(e) {
+    for (let key in data) {
+      console.log(data[key]);
+    }
+  }
+}
+
 openDB();
 /********************/
 
@@ -813,6 +857,9 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       browser.tabs.executeScript({
         "file": "/browserAction/scripts/addLostCardNote.js"
       });
+      break;
+    case "backupLaptopDB":
+      return idbToJSON();
       break;
     case "viewLaptopData":
       browser.tabs.create({

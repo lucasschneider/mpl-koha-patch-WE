@@ -212,7 +212,7 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
         csv += /^39078\d{9}$/.test(issue.headphones) + ",";
         csv += /^39078\d{9}$/.test(issue.dvdPlayer) + ",";
         csv += (issue.notes || '') + ',';
-        csv += issue.returnDate ? issue.returnDate.toLocaleString() + ',' : ',';
+        csv += issue.returnDate ? issue.returnDate.toLocaleString() + ',' : ',,';
         csv += ((issue.returnDate || Date.now()) - issue.issueDate)/3600000 + '\r\n';
       }
     }
@@ -221,6 +221,7 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
   }
 
   let download = document.getElementById('downloadData');
+  let backupDB = document.getElementById('fullBackup');
   let noData = document.getElementById('noData');
   let table = document.getElementById('laptopData');
   let tableBody = document.getElementById('laptopDataBody');
@@ -393,20 +394,26 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
     filterChange();
   });
 
-
-  download.href="#";
+  download.href = "#";
+  backupDB.href = "#";
+  backupDB.download = 'laptop-database-backup-' + getYYYYMMDD(today) + '.txt';
+  backupDB.addEventListener('click', function(e) {
+    browser.runtime.sendMessage({'key': 'backupLaptopDB'}).then(res => {
+      
+    });
+  });
 
   if (startDate.value === '') startDate.value = getYYYYMMDD(today);
   if (endDate.value === '') endDate.value = getYYYYMMDD(today);
   filterChange();
 
   download.addEventListener('click', function(e) {
-  if (startDate.value === endDate.value) {
-    download.download = "laptop-data-" + getYYYYMMDD(new Date(startDate.value+'T00:00:00')) + ".csv";
-  } else {
-    download.download = "laptop-data-" + getYYYYMMDD(new Date(startDate.value+'T00:00:00')) +
-        "-to-" + getYYYYMMDD(new Date(endDate.value+'T00:00:00')) + ".csv";
-  }
+    if (startDate.value === endDate.value) {
+      download.download = "laptop-data-" + getYYYYMMDD(new Date(startDate.value+'T00:00:00')) + ".csv";
+    } else {
+      download.download = "laptop-data-" + getYYYYMMDD(new Date(startDate.value+'T00:00:00')) +
+          "-to-" + getYYYYMMDD(new Date(endDate.value+'T00:00:00')) + ".csv";
+    }
     download.href = "data:text/csv;charset=utf-8," + getCSV();
   });
 });
