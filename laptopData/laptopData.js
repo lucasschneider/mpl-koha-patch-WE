@@ -396,10 +396,15 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
 
   download.href = "#";
   backupDB.href = "#";
-  backupDB.download = 'laptop-database-backup-' + getYYYYMMDD(today) + '.txt';
   backupDB.addEventListener('click', function(e) {
+    e.preventDefault();
     browser.runtime.sendMessage({'key': 'backupLaptopDB'}).then(res => {
-      
+      const dlNode = document.createElement('a');
+      dlNode.download = 'laptop-database-backup-' + getYYYYMMDD(today) + '.txt';
+      dlNode.href = "data:application/json;charset=utf-8," + res;
+      document.body.appendChild(dlNode);
+      dlNode.click();
+      dlNode.remove();
     });
   });
 
