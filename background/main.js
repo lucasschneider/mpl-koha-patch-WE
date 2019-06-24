@@ -509,7 +509,7 @@ function returnLaptop(itemID, retDate) {
   let returnReq = store.openCursor(null, 'prev');
 
   returnReq.onerror = function(evt) {
-    console.log("Return error");
+    console.error(evt.target.error);
   };
 
   returnReq.onsuccess = function(evt) {
@@ -524,8 +524,8 @@ function returnLaptop(itemID, retDate) {
 
         let laptopReturn = store.put(value, key);
 
-        laptopReturn.onerror = function(evt) {
-          console.log("Laptop return error.");
+        laptopReturn.onerror = function(e) {
+          console.error(e.target.error);
         };
 
         laptopReturn.onsuccess = function(evt) {
@@ -551,8 +551,8 @@ function getAllLaptopData() {
       reject('getAllLaptopData() failed to open cursor');
     };
 
-    req.onsuccess = function(evt) {
-      let cursor = evt.target.result;
+    req.onsuccess = function(e) {
+      let cursor = e.target.result;
 
       if (cursor) {
         cursor.value.primaryKey = cursor.primaryKey;
@@ -573,7 +573,7 @@ function idbToJSON() {
     let req = store.openCursor();
 
     req.onerror = function(e) {
-      reject('idbToJSON() failed to open cursor');
+      console.error(e.target.error);
     };
 
     req.onsuccess = function(e) {
@@ -596,27 +596,19 @@ function fillIDB(laptopData) {
 
   let store = getObjectStore(DB_STORE_NAME, 'readwrite');
 
-  let req = store.openCursor();
+  for (let key in laptopData) {
 
-  req.onerror = function(e) {
-    console.error('fillIDB() failed to open cursor');
-  };
+    laptopData[key].issueDate = new Date(laptopData[key].issueDate);
+    laptopData[key].returnDate = new Date(laptopData[key].returnDate);
 
-  req.onsuccess = function(e) {
-    for (let key in laptopData) {
+    let req = store.add(laptopData[key],key);
 
-      laptopData[key].issueDate = new Date(laptopData[key].issueDate);
-      laptopData[key].returnDate = new Date(laptopData[key].returnDate);
+    req.onsuccess = function(e) {
+      console.log('insertion success!');
+    }
 
-      let req = store.add(laptopData[key],key);
-
-      req.onsuccess = function(evt) {
-        console.log('insertion success!');
-      }
-
-      req.onerror = function(evt) {
-        console.log('insertion error');
-      }
+    req.onerror = function(e) {
+      console.error(e.target.error);
     }
   }
 }
