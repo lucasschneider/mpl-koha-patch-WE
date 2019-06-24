@@ -436,7 +436,7 @@ function issueItem(type, patronBC, itemID) {
       let req = store.add(obj);
 
       req.onsuccess = function(evt) {
-        console.log('insertion success!')
+        console.log('insertion success!');
       }
     }
   });
@@ -494,7 +494,7 @@ function removeRow(type, itemID) {
         };
 
         delRow.onsuccess = function() {
-          console.log("Deleted row!")
+          console.log("Deleted row!");
         }
       } else {
         cursor.continue();
@@ -590,8 +590,8 @@ function idbToJSON() {
 }
 
 function fillIDB(laptopData) {
-  if (jsonString.hasOwnProperty('key')) {
-    delete jsonString.key;
+  if (laptopData.hasOwnProperty('key')) {
+    delete laptopData.key;
   }
 
   let store = getObjectStore(DB_STORE_NAME, 'readwrite');
@@ -603,8 +603,20 @@ function fillIDB(laptopData) {
   };
 
   req.onsuccess = function(e) {
-    for (let key in data) {
-      console.log(data[key]);
+    for (let key in laptopData) {
+
+      laptopData[key].issueDate = new Date(laptopData[key].issueDate);
+      laptopData[key].returnDate = new Date(laptopData[key].returnDate);
+
+      let req = store.add(laptopData[key],key);
+
+      req.onsuccess = function(evt) {
+        console.log('insertion success!');
+      }
+
+      req.onerror = function(evt) {
+        console.log('insertion error');
+      }
     }
   }
 }
@@ -861,6 +873,8 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     case "backupLaptopDB":
       return idbToJSON();
       break;
+    case "restoreLaptopDB":
+      fillIDB(request.laptopJSON);
     case "viewLaptopData":
       browser.tabs.create({
         "active": true,

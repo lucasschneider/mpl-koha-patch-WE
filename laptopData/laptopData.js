@@ -222,6 +222,7 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
 
   let download = document.getElementById('downloadData');
   let backupDB = document.getElementById('fullBackup');
+  let fullRestore = document.getElementById('fullRestore');
   let noData = document.getElementById('noData');
   let table = document.getElementById('laptopData');
   let tableBody = document.getElementById('laptopDataBody');
@@ -400,13 +401,31 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
     e.preventDefault();
     browser.runtime.sendMessage({'key': 'backupLaptopDB'}).then(res => {
       const dlNode = document.createElement('a');
-      dlNode.download = 'laptop-database-backup-' + getYYYYMMDD(today) + '.txt';
+      dlNode.download = 'laptop-database-backup-' + getYYYYMMDD(today) + '.json';
       dlNode.href = "data:application/json;charset=utf-8," + res;
       document.body.appendChild(dlNode);
       dlNode.click();
       dlNode.remove();
     });
   });
+
+  fullRestore.addEventListener('change', function(e) {
+    let file = e.target.files[0];
+    if (!file) return;
+
+    let reader = new FileReader();
+    reader.onload = function(e) {
+      let laptopJSON = JSON.parse(e.target.result);
+
+      if (laptopJSON && laptopJSON.key === 'laptopDataBackup') {
+        browser.runtime.sendMessage({
+          'key': 'restoreLaptopDB',
+          'laptopJSON': laptopJSON
+        });
+      }
+    };
+    reader.readAsText(file);
+  }, false);
 
   if (startDate.value === '') startDate.value = getYYYYMMDD(today);
   if (endDate.value === '') endDate.value = getYYYYMMDD(today);
