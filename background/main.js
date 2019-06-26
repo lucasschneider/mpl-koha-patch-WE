@@ -598,17 +598,22 @@ function fillIDB(laptopData) {
 
   for (let key in laptopData) {
 
-    laptopData[key].issueDate = new Date(laptopData[key].issueDate);
-    laptopData[key].returnDate = new Date(laptopData[key].returnDate);
+    if (laptopData.hasOwnProperty(key)) {
+      if (laptopData[key].issueDate !== null) laptopData[key].issueDate = new Date(laptopData[key].issueDate);
+      if (laptopData[key].returnDate !== null) laptopData[key].returnDate = new Date(laptopData[key].returnDate);
 
-    let req = store.add(laptopData[key],key);
 
-    req.onsuccess = function(e) {
-      console.log('insertion success!');
-    }
+      let req = store.add(laptopData[key],key);
 
-    req.onerror = function(e) {
-      console.error(e.target.error);
+      req.onsuccess = function(e) {
+        console.log('insertion success!');
+      }
+
+      req.onerror = function(e) {
+        console.log(key);
+        console.log(laptopData[key]);
+        console.error(e.target.error);
+      }
     }
   }
 }
