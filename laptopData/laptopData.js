@@ -81,6 +81,7 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
     let editDelSpacer = document.createElement('span');
     let delNote = document.createElement('a');
     let returnDate = document.createElement('td');
+    let setReturnDate = document.createElement('a');
     let useLen = document.createElement('td');
 
     issueDate.textContent = this.issueDate.toLocaleString();
@@ -129,6 +130,32 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
     editDelSpacer.textContent = ' | ';
     delNote.textContent = 'delete';
     delNote.href = '#';
+
+    setReturnDate.textContent = 'set date';
+    setReturnDate.href = '#';
+    setReturnDate.addEventListener('click', function(e) {
+      e.preventDefault();
+      let d = new Date(prompt('Set return date (Format: YYYY-MM-DD HH:MM)\nHours should range from 00 to 23.').replace(' ', 'T'));
+
+      if (d.toLocaleString() === 'Invalid Date') {
+        alert('Invalid Date');
+      } else if (confirm('Set return date to ' + d.toLocaleString() + ' ?')) {
+        browser.runtime.sendMessage({
+          "key": "setReturnTime",
+          "primaryKey": obj.primaryKey,
+          "returnDate": d
+        }).then(res => {
+          setReturnDate.remove();
+          returnDate.textContent = d.toLocaleString();
+        }, rej => {
+          console.error(reject.message);
+        })
+      }
+    });
+
+    if (obj.returnDate == null && (Date.now() - obj.issueDate) >= 43200000) {
+      returnDate.appendChild(setReturnDate);
+    }
 
     //'Add note' field
     function addEditNote(e) {
@@ -357,6 +384,11 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
       data.push(new LaptopIssue(res[i]));
       tableBody.appendChild(data[data.length-1].htmlTR);
     }
+    data.sort((a,b) => {
+      if (parseInt(a.primaryKey) > parseInt(b.primaryKey)) return -1;
+      else if (parseInt(a.primaryKey) < parseInt(b.primaryKey)) return 1;
+      else return 0;
+    });
   }
 
   const today = new Date();
@@ -402,7 +434,7 @@ browser.runtime.sendMessage({"key": "getAllLaptopData"}).then(res => {
     browser.runtime.sendMessage({'key': 'backupLaptopDB'}).then(res => {
       const dlNode = document.createElement('a');
       dlNode.download = 'laptop-database-backup-' + getYYYYMMDD(today) + '.json';
-      dlNode.href = "data:application/json;charset=utf-8," + res;
+      dlNode.href = "data:application/json;charset=utf-8," + encodeURIComponent(res);
       document.body.appendChild(dlNode);
       dlNode.click();
       dlNode.remove();

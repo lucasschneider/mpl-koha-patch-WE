@@ -470,6 +470,34 @@ function addLaptopNote(primaryKey, note) {
   });
 }
 
+function setReturnTime(primaryKey, returnDate) {
+  return new Promise(function (resolve, reject) {
+    let store = getObjectStore(DB_STORE_NAME, 'readwrite');
+
+    let req = store.get(primaryKey);
+
+    req.onerror = function(evt) {
+      reject();
+    }
+
+    req.onsuccess = function(evt) {
+      let data = req.result;
+
+      data.returnDate = returnDate;
+
+       let setReturn = store.put(data, primaryKey);
+
+       setReturn.onerror = function(evt) {
+         reject("Set return date error.");
+       };
+
+       setReturn.onsuccess = function(evt) {
+         resolve(true);
+       };
+    }
+  });
+}
+
 function removeRow(type, itemID) {
   let store = getObjectStore(DB_STORE_NAME, 'readwrite');
 
@@ -886,6 +914,9 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       break;
     case "addLaptopNote":
       return addLaptopNote(request.primaryKey, request.note);
+      break;
+    case "setReturnTime":
+      return setReturnTime(request.primaryKey, request.returnDate);
       break;
     case "removeRow":
       removeRow(request.type, request.itemID);

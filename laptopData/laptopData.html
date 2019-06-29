@@ -9,10 +9,12 @@
     <h1>Laptop Checkout Data</h1>
     <div id="bodyContent">
       <p style="text-align:justify;" >All laptop data is automatically stored by the MPL Koha Patch (including issue date, patron barcode, mouse, power supply, headphones, dvd player, laptop ID, and return date). If you need to add a note to an issued laptop, you may do so using the table below. Notes may only be modified on the same day the laptop was issued.</p>
-      <a id="downloadData" style="text-align: right;">Download Data</a><br>
-      <a id="fullBackup" style="text-align: right;">Backup Full Database</a><br>
-      Restore from laptop data file: <input type="file" id="fullRestore" />
-
+      <fieldset class="box">
+        <legend class="boxLabel">Tools</legend>
+        <div><a id="downloadData" style="text-align: right;">Download Visible Data</a></div>
+        <div><a id="fullBackup" style="text-align: right;">Backup Full Database</a></div>
+        <div>Restore from laptop data file: <input type="file" id="fullRestore" /></div>
+      </fieldset>
       <fieldset class="box">
         <legend class="boxLabel">Filters</legend>
         <div>
