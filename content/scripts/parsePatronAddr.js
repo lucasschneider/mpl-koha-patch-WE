@@ -178,12 +178,6 @@
           if (bn.value.includes("Special expiration date of 05/15/")) {
             deleteDormNotice();
           }
-
-          if (cc.value === "LU") {
-            cc.value = "AD";
-          } else if (cc.value === "LUJ") {
-            cc.value = "JU";
-          }
         }, reject => {
           console.error(reject.message);
         });
