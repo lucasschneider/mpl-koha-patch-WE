@@ -664,7 +664,7 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
             "key": "printProblemForm",
             "data": request.data
           }).then(() => {
-            browser.tabs.remove(tab.id)
+            browser.tabs.remove(tab.id);
           });
         }, 500);
       });
