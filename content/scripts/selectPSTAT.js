@@ -1469,13 +1469,19 @@
     if (addrElt && addrEltAlt && cityElt && cityEltAlt) {
       addrElt.addEventListener('blur', function() {
         if (addrElt.value && cityElt.value) {
-          queryPSTAT(false);
+          // Don't lookup PSTAT for MPL web-use cards
+          if (addrElt.value !== 'NA' && zipElt.value !== '00088') {
+            queryPSTAT(false);
+          }
         }
       });
 
       cityElt.addEventListener('blur', function() {
         if (addrElt.value && cityElt.value) {
-          queryPSTAT(false);
+          // Don't lookup PSTAT for MPL web-use cards
+          if (addrElt.value !== 'NA' && zipElt.value !== '00088') {
+            queryPSTAT(false);
+          }
         }
       });
 
