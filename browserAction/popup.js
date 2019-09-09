@@ -3,6 +3,7 @@ var paymentPlan = document.getElementById('paymentPlan'),
   PSTAT2 = document.getElementById('PSTAT2'),
   calendarAnnouncements = document.getElementById('calendarAnnouncements'),
   problemItem = document.getElementById('problemItem'),
+  laptopData = document.getElementById('laptopData'),
   shortcut1 = document.getElementById('shortcut1'),
   shortcut2 = document.getElementById('shortcut2'),
   shortcut3 = document.getElementById('shortcut3'),
@@ -27,8 +28,19 @@ if (problemItem) problemItem.addEventListener('click', function() {
   browser.tabs.create({"url": browser.runtime.getURL("../problemItemForm/problemItemForm.html")});
 });
 
+if (laptopData) laptopData.addEventListener('click', function() {
+  browser.runtime.sendMessage({"key": "viewLaptopData"});
+});
+
 if (prefs) prefs.addEventListener('click', function() {
   browser.runtime.openOptionsPage();
+});
+
+// Get Laptop Data Preferences
+browser.storage.sync.get("laptopForm").then(res => {
+  if (res.laptopForm) {
+    laptopData.style.display = 'block';
+  }
 });
 
 /** Generate shortcut options **/

@@ -631,6 +631,12 @@
           "applications": {
             "gecko": { "strict_min_version": "58" }
           }
+        },
+        { "version": "23.0.0",
+          "update_link": "https://raw.githubusercontent.com/lucasschneider/mpl-koha-patch-firefox/master/releases/mpl-koha-patch-23.0.0.xpi",
+          "applications": {
+            "gecko": { "strict_min_version": "58" }
+          }
         }
       ]
     }

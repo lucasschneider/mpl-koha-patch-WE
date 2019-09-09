@@ -237,6 +237,12 @@ browser.webNavigation.onCompleted.addListener(details => {
         });
       }
 
+      if (res.hasOwnProperty('laptopForm') && res.laptopForm) {
+        browser.tabs.executeScript(details.tabId, {
+          file: "/content/scripts/laptopListener.js"
+        });
+      }
+
       // If the Sunday dropbox option is enabled...
       if ((!res.hasOwnProperty('sundayDropbox') ||
           (res.hasOwnProperty('sundayDropbox') && res.sundayDropbox)) && (new Date()).getDay() === 0) {
@@ -313,8 +319,351 @@ browser.menus.onClicked.addListener((info, tab) => {
   }
 });
 
+/** LAPTOP CECKOUT **/
+const DB_NAME = "laptopCKO";
+const DB_VERSION = 1;
+const DB_STORE_NAME = "laptopCKOStore";
+
+var db;
+
+function openDB() {
+  var req = indexedDB.open(DB_NAME, DB_VERSION);
+  req.onsuccess = function(evt) {
+    db = this.result;
+  };
+
+  req.onerror = function(evt) {
+    console.error("openDB:", evt.target.errorCode);
+  };
+
+  req.onupgradeneeded = function(evt) {
+    var store = evt.currentTarget.result.createObjectStore(DB_STORE_NAME, {
+      "keypath": "id",
+      "autoIncrement": true
+    });
+
+    store.createIndex('issueDate', 'issueDate', {'unique': true});
+    store.createIndex('patronBarcode', 'patronBarcode', {'unique': false});
+    store.createIndex('itemID', 'itemID', {'unique': false});
+    store.createIndex('mouse', 'mouse', {'unique': false});
+    store.createIndex('headphones', 'headphones', {'unique': false});
+    store.createIndex('powersupply', 'powersupply', {'unique': false});
+    store.createIndex('dvdplayer', 'dvdplayer', {'unique': false});
+    store.createIndex('notes', 'notes', {'unique': false});
+    store.createIndex('returnDate', 'returnDate', {'unique': true});
+  };
+}
+
+/**
+ * @param {string} storeName
+ * @param {string} mode either "readonly" or "readwrite"
+ */
+function getObjectStore(storeName, mode) {
+  var tx = db.transaction(storeName, mode);
+  return tx.objectStore(storeName);
+}
+
+/**
+ * @param {string} barcode patron's barcode number
+ * @param {string} itemID
+ * @param {number} numAcc number of accessories
+ * @param {string} notes
+ */
+function issueItem(type, patronBC, itemID) {
+  let store = getObjectStore(DB_STORE_NAME, 'readwrite');
+
+  let alreadyIssued = new Promise(function (resolve, reject) {
+    let updateReq = store.openCursor(null, 'prev');
+
+    updateReq.onerror = function(evt) {
+      reject("issueItem(" + type + "," + patronBC + "," + itemID + ") failed.");
+    };
+
+    updateReq.onsuccess = function(evt) {
+      let cursor = evt.target.result;
+      let notUpdated = true;
+      let notIssued = true;
+
+      if (cursor) {
+        let key = cursor.primaryKey;
+        let value = cursor.value;
+
+        if (value.returnDate === null && value.patronBarcode === patronBC &&
+            (type !== "laptop" || (type === "laptop" && value.itemID === null))) {
+          notUpdated = false;
+
+          if (type === "laptop" && value.itemID === null) {
+            value.itemID = itemID;
+          } else if (type === "powersupply") {
+            value.powersupply = itemID;
+          } else if (type === "mouse") {
+            value.mouse = itemID;
+          } else if (type === "headphones") {
+            value.headphones = itemID;
+          } else if (type === "dvdplayer") {
+            value.dvdplayer = itemID;
+          }
+
+          let itemUpdate = store.put(value, key);
+
+          itemUpdate.onerror = function(evt) {
+            reject("Item update error.");
+          };
+
+          itemUpdate.onsuccess = function(evt) {
+            console.log("Item update success!");
+            resolve(notUpdated && notIssued);
+          };
+        } else if (type === "laptop" && value.returnDate === null &&
+            value.patronBarcode === patronBC && value.itemID === itemID) {
+          notIssued = false;
+        } else {
+          cursor.continue();
+        }
+      } else {
+        resolve(notUpdated && notIssued);
+      }
+    };
+  }).then(newIssue => {
+    if (newIssue) {
+      let obj = {
+        'issueDate': new Date(),
+        'patronBarcode': patronBC,
+        'itemID': null,
+        'powersupply': null,
+        'mouse': null,
+        'headphones': null,
+        'dvdplayer': null,
+        'notes': null,
+        'returnDate': null
+      };
+
+      if (type === "laptop") obj.itemID = itemID;
+      else if (type === "powersupply") obj.powersupply = itemID;
+      else if (type === "mouse") obj.mouse = itemID;
+      else if (type === "headphones") obj.headphones = itemID;
+      else if (type === "dvdplayer") obj.dvdplayer = itemID;
+
+      let req = store.add(obj);
+
+      req.onsuccess = function(evt) {
+        console.log('insertion success!');
+      }
+    }
+  });
+}
+
+function addLaptopNote(primaryKey, note) {
+  return new Promise(function (resolve, reject) {
+    let store = getObjectStore(DB_STORE_NAME, 'readwrite');
+
+    let req = store.get(primaryKey);
+
+    req.onerror = function(evt) {
+      reject();
+    }
+
+    req.onsuccess = function(evt) {
+      let data = req.result;
+
+      data.notes = note;
+
+       let addNote = store.put(data, primaryKey);
+
+       addNote.onerror = function(evt) {
+         reject("Add laptop note error.");
+       };
+
+       addNote.onsuccess = function(evt) {
+         resolve(true);
+       };
+    }
+  });
+}
+
+function setReturnTime(primaryKey, returnDate) {
+  return new Promise(function (resolve, reject) {
+    let store = getObjectStore(DB_STORE_NAME, 'readwrite');
+
+    let req = store.get(primaryKey);
+
+    req.onerror = function(evt) {
+      reject();
+    }
+
+    req.onsuccess = function(evt) {
+      let data = req.result;
+
+      data.returnDate = returnDate;
+
+       let setReturn = store.put(data, primaryKey);
+
+       setReturn.onerror = function(evt) {
+         reject("Set return date error.");
+       };
+
+       setReturn.onsuccess = function(evt) {
+         resolve(true);
+       };
+    }
+  });
+}
+
+function removeRow(type, itemID) {
+  let store = getObjectStore(DB_STORE_NAME, 'readwrite');
+
+  let delReq = store.openCursor(null, 'prev');
+
+  delReq.onerror = function(evt) {
+    console.log("Deletion error.");
+  };
+
+  delReq.onsuccess = function(evt) {
+    let cursor = evt.target.result;
+
+    if (cursor) {
+      if (cursor.value.itemID === null && ((type === 'headphones' && cursor.value.headphones === itemID) ||
+          (type === 'powersuppy' && cursor.value.powersupply === itemID) ||
+          (type === 'mouse' && cursor.value.mouse === itemID) ||
+          (type === 'dvdplayer' && cursor.value.dvdplayer === itemID))) {
+        let delRow = cursor.delete();
+
+        delRow.onerror = function() {
+          console.log("Failed to delete row");
+        };
+
+        delRow.onsuccess = function() {
+          console.log("Deleted row!");
+        }
+      } else {
+        cursor.continue();
+      }
+    }
+  }
+}
+
+function returnLaptop(itemID, retDate) {
+  let store = getObjectStore(DB_STORE_NAME, 'readwrite');
+
+  let returnReq = store.openCursor(null, 'prev');
+
+  returnReq.onerror = function(evt) {
+    console.error(evt.target.error);
+  };
+
+  returnReq.onsuccess = function(evt) {
+    let cursor = evt.target.result;
+
+    if (cursor) {
+      let key = cursor.primaryKey;
+      let value = cursor.value;
+
+      if (value.returnDate === null && value.itemID === itemID) {
+        value.returnDate = retDate;
+
+        let laptopReturn = store.put(value, key);
+
+        laptopReturn.onerror = function(e) {
+          console.error(e.target.error);
+        };
+
+        laptopReturn.onsuccess = function(evt) {
+          console.log("Laptop return success!");
+        };
+      } else {
+        cursor.continue();
+      }
+    } else {
+      // No more results
+    }
+  };
+}
+
+function getAllLaptopData() {
+  return new Promise(function(resolve, reject) {
+    let store = getObjectStore(DB_STORE_NAME, 'readwrite');
+    let data = [];
+
+    let req = store.openCursor();
+
+    req.onerror = function(evt) {
+      reject('getAllLaptopData() failed to open cursor');
+    };
+
+    req.onsuccess = function(e) {
+      let cursor = e.target.result;
+
+      if (cursor) {
+        cursor.value.primaryKey = cursor.primaryKey;
+        data.push(cursor.value);
+        cursor.continue();
+      } else {
+        resolve(data);
+      }
+    }
+  });
+}
+
+function idbToJSON() {
+  return new Promise(function(resolve, reject) {
+    let store = getObjectStore(DB_STORE_NAME, 'readwrite');
+    let data = {"key": "laptopDataBackup"};
+
+    let req = store.openCursor();
+
+    req.onerror = function(e) {
+      console.error(e.target.error);
+    };
+
+    req.onsuccess = function(e) {
+      let cursor = e.target.result;
+
+      if (cursor) {
+        data[cursor.primaryKey] = cursor.value;
+        cursor.continue();
+      } else {
+        resolve(JSON.stringify(data));
+      }
+    }
+  });
+}
+
+function fillIDB(laptopData) {
+  if (laptopData.hasOwnProperty('key')) {
+    delete laptopData.key;
+  }
+
+  let store = getObjectStore(DB_STORE_NAME, 'readwrite');
+
+  for (let key in laptopData) {
+
+    if (laptopData.hasOwnProperty(key)) {
+      if (laptopData[key].issueDate !== null) laptopData[key].issueDate = new Date(laptopData[key].issueDate);
+      if (laptopData[key].returnDate !== null) laptopData[key].returnDate = new Date(laptopData[key].returnDate);
+
+
+      let req = store.add(laptopData[key],key);
+
+      req.onsuccess = function(e) {
+        console.log('insertion success!');
+      }
+
+      req.onerror = function(e) {
+        console.log(key);
+        console.log(laptopData[key]);
+        console.error(e.target.error);
+      }
+    }
+  }
+}
+
+openDB();
+/********************/
+
 // Handle messages from content pages
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  let store = getObjectStore(DB_STORE_NAME, 'readwrite');
+
   switch (request.key) {
     case "queryGeocoder":
       var matchAddr, county, countySub, censusTract, zip;
@@ -556,6 +905,35 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       browser.tabs.executeScript({
         "file": "/browserAction/scripts/addLostCardNote.js"
       });
+      break;
+    case "backupLaptopDB":
+      return idbToJSON();
+      break;
+    case "restoreLaptopDB":
+      fillIDB(request.laptopJSON);
+    case "viewLaptopData":
+      browser.tabs.create({
+        "active": true,
+        "url": browser.runtime.getURL("../laptopData/laptopData.html")
+      });
+      break;
+    case "getAllLaptopData":
+      return getAllLaptopData();
+      break;
+    case "issueItem":
+      issueItem(request.type, request.patronBC, request.itemID);
+      break;
+    case "addLaptopNote":
+      return addLaptopNote(request.primaryKey, request.note);
+      break;
+    case "setReturnTime":
+      return setReturnTime(request.primaryKey, request.returnDate);
+      break;
+    case "removeRow":
+      removeRow(request.type, request.itemID);
+      break;
+    case "returnLaptop":
+      returnLaptop(request.itemID, request.returnDate);
       break;
     case "getPatronData":
       return browser.tabs.create({

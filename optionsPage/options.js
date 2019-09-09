@@ -7,6 +7,7 @@ var skin = document.getElementById("skin"),
   dueDateToggle = document.getElementById("dueDateToggle"),
   middleInitials = document.getElementById("middleInitials"),
   updateAccountType = document.getElementById("updateAccountType"),
+  laptopForm = document.getElementById("laptopForm"),
   cdams = document.getElementById("cdams"),
   cdamsid = document.getElementById("cdamsid"),
   cdjms = document.getElementById("cdjms"),
@@ -67,6 +68,7 @@ var skin = document.getElementById("skin"),
     "dueDateToggle": true,
     "middleInitials": true,
     "updateAccountType": true,
+    "laptopForm": false,
     "cdams": true, "cdamsid": true, "cdjms": true, "cdyms": true,
     "dbrafe": false, "dbraff": false, "dbraid": false, "dbranf": false, "dbrarn": false, "dbratv": false, "dbrj": false, "dvdafe": false, "dvdaff": false, "dvdaid": false, "dvdanf": false, "dvdarn": false, "dvdatv": false, "dvdawl": false, "dvdjfe": false, "dvdjhl": false, "dvdjnf": false, "dvdjwl": false, "dvdyfe": false,
     "vga": false, "vgj": false, "vgy": false, "soa": false, "soawl": false, "soj": false,
@@ -105,6 +107,7 @@ function restoreOptions() {
     dueDateToggle.checked = res.dueDateToggle;
     middleInitials.checked = res.middleInitials;
     updateAccountType.checked = res.updateAccountType;
+    laptopForm.checked = res.laptopForm;
     cdams.checked = res.cdams;
     cdamsid.checked = res.cdamsid;
     cdjms.checked = res.cdjms;
@@ -246,6 +249,9 @@ document.getElementById("middleInitialsSwitch").addEventListener('click', functi
 });
 document.getElementById("updateAccountTypeSwitch").addEventListener('click', function() {
   browser.storage.sync.set({"updateAccountType": updateAccountType.checked});
+});
+document.getElementById("laptopFormSwitch").addEventListener('click', function() {
+  browser.storage.sync.set({"laptopForm": laptopForm.checked});
 });
 document.getElementById("sepAllCDSwitch").addEventListener('click', function() {
   toggleAllCD();

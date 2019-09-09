@@ -104,7 +104,7 @@
                 if (bn && !bn.value.includes(noteBody)) {
                   expDate.value = "05/15/" + year;
                   if (bn.value !== "") {
-                    if (/Special expiration date of 05\/15\/[0-9]{4} set due to residence at/.test(bn.value)) {
+                    if (/Special expiration date of 05\/15\/20[0-9]{2} set due to residence at/.test(bn.value)) {
                       msg = "Please remove old dorm expiration note.\n\n" + noteBody;
                     }
                     bn.value += "\n\n";
@@ -146,7 +146,7 @@
                 }
 
                 if (!(bn.value.includes("Patron's account is Limited Use due to temporary residence at "
-                    + item.name + ' (' + item.address + ')') && bn.value.includes(currDate()))) {
+                    + item.name + ' (' + item.address + ')'))) {
                   if (item.type === "restricted") {
                     staffInit = prompt("--- NOTE ---\nA library card issued to " + item.address + " (" +item.name + ") must be LIMITED USE.\n\nIn order to have the limited use restrictions removed from their account, a patron must first provide proof that they are living at a valid residential address.\n\nFor more info refer to the list of unacceptable addresses on the staff wiki:\nhttp://www.mplnet.org/system/files/UNACCEPTABLE%20ADDRESSES.pdf\n\nIf this is a new address, enter your initials and library code to confirm: (e.g. LS/MAD)");
                   } else if (item.type === "unique") {
