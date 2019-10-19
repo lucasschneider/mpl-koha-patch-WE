@@ -8,7 +8,12 @@
     if (msgSelect.options[4].value === "Special Note") {
       msgSelect.remove(4);
     }
-    
+
+    let cardAtNextCKO = document.createElement('option');
+    cardAtNextCKO.value = "Patron must have library card at next checkout. ";
+    cardAtNextCKO.textContent = "Must have card at next CKO";
+    msgSelect.insertBefore(cardAtNextCKO,msgSelect.options[1]);
+
     if (/mad|hpb|seq|pin|mea|smb|msb|haw|lak/i.test(document.getElementsByClassName('loggedinusername')[0].textContent.trim())) {
       var laptopAgreement = document.createElement('option');
       laptopAgreement.value = "Patron has signed Laptop/iPad Loan Agreement form. Form on file.";
